@@ -1,0 +1,105 @@
+$themeColor: var(--theme-color);
+$themeColor3: var(--theme-themeC3);
+$f_f: "Plus Jakarta Sans", sans-serif;
+// @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import "https://code.highcharts.com/css/stocktools/gui.css";
+@import "https://code.highcharts.com/css/annotations/popup.css";
+
+
+
+* {
+  font-family: $f_f!important;
+}
+p {
+  font-family: $f_f !important;
+}
+
+main {
+  // padding: 1rem;
+}
+aside {
+  &.main-sidebar {
+    background-color: $themeColor3;
+    height: calc(100vh - 1rem);
+    position: sticky;
+    top: 0.5rem;
+    max-width: 70px;
+  }
+} 
+.home-section {
+  height: calc(100vh - 74px);
+  // margin-top: .5rem;
+  & > div {
+    height: 100%;
+    background-color: #e9edef;
+  }
+}
+
+.m-item {
+  font-size: 10px !important;
+  text-align: center;
+  a{
+    gap: .25rem;
+    line-height: 1;
+  }
+  img {
+    width: 1.1rem;
+  }
+}
+
+.main-tab-indicator {
+  border-radius: 5px 5px 0 0 !important;
+  padding: 1.1rem 0rem 0rem 0rem !important;
+}
+
+.cd-tabs {
+  .tabs-header {
+    width: fit-content;
+    li {
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+.bse-new-container{
+  padding: .5rem;
+  &>div{
+    min-height: calc(100vh - 90px);
+  };
+
+  .wishlistBody-list{
+    &ul {
+      &>li {
+          // background: #f0f4fb;
+          // border-radius: 8px;
+          // margin-bottom: .5rem;
+          // padding: .25rem .5rem;
+      }
+    }
+  }
+  
+}
+
+.addcooment-Media {
+  .ql-editor.ql-blank {
+  height: 85px;
+  }
+}
+
+.react-pdf__Page {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  user-select: none;
+}
+
+.EditorComment .ql-container {
+  min-height: 250px;
+}
+
+.EditorComment .ql-editor strong {
+  font-weight: 900; 
+}
+.EditorComment .ql-container.ql-snow{
+background-color: #E9EDEF;
+}

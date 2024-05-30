@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+:root{
+    --theme-color: theme(colors.theme);
+    --theme-themeC3: theme(colors.theme-c3);
+    --theme-themeC4: theme(colors.theme-c4);
+}
