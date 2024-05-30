@@ -96,7 +96,7 @@ const NotesFinalOutput = () => {
       if(crtType.value === "1"){
         filteredData = FirstFilterUploadDocuments;
       }else{
-        filteredData = FirstFilterUploadDocuments.filter(item=>item.DocumentType.trim() == crtType?.search_label);
+        filteredData = FirstFilterUploadDocuments.filter(item=>item._CommentDetails.CommentType.trim() == crtType?.search_label);
       }
       setAllUploadDocuments(filteredData);      
     }else
@@ -109,7 +109,8 @@ const NotesFinalOutput = () => {
       
       let arrNew = [];
       FirstFilterUploadDocuments.forEach(function (a) {
-          var fName = a.fileName.toLowerCase();
+          var fName = a._CommentDetails.Heading.toLowerCase();
+          // console.log('fName >>> ', fName)
           if (fName.indexOf(val) > -1) {
             
                   arrNew.push(a)
@@ -213,10 +214,13 @@ const NotesFinalOutput = () => {
             {
               AllUploadDocuments && AllUploadDocuments.length > 0 && AllUploadDocuments.map((c_item, i)=>{
                 let item = c_item?._CommentDetails;
-
+                // console.log('item > ', item)
                 return (
-                  <li key={i} className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b ">
-                    <div className="flex items-center gap-4">
+                  <li key={i} className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b  cursor-pointer">
+                    <div className="flex items-center gap-4"  onClick={()=> {
+                      setSelectedItem(item);
+                      setOpen(!open)
+                    }}>
                       <img
                         src={
                           import.meta.env.VITE_BASE_URL + "/images/icons/pdfIcon.svg"
@@ -235,13 +239,13 @@ const NotesFinalOutput = () => {
                       </div>
                     </div>
                     <div className="flex gap-1 w-17">
-                    <IconButton onClick={()=> {
+                    {/* <IconButton onClick={()=> {
                       console.log('aa');
                       setSelectedItem(item);
                       setOpen(!open)
                     }} className=" bg-transparent text-theme shadow-none hover:shadow-none" size="sm">
                           <FaEye  size={20} />
-                        </IconButton>
+                        </IconButton> */}
                         {/* <IconButton className=" bg-transparent text-theme shadow-none hover:shadow-none" size="sm">
                           <MdEdit  size={20} />
                         </IconButton> */}

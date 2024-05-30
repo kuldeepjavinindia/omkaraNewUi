@@ -11,6 +11,7 @@ import AnnalPL_Main from "./AnnalPL/AnnalPL_Main";
 import Brief_Main from "./Brief/Brief_Main";
 import Forensic_Main from "./Forensic/Forensic_Main";
 import MediaRoom_Main from "./Media/MediaRoom_Main";
+import PeerComponent from "./peer/PeerComponent";
 
 export {
     Financial_Main,
@@ -25,5 +26,6 @@ export {
     AnnalPL_Main,
     Brief_Main,
     Forensic_Main,
+    PeerComponent,
     MediaRoom_Main
 }

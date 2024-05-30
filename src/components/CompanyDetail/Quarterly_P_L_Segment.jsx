@@ -83,7 +83,7 @@ const Quarterly_P_L_Segment = () => {
   return (
     <>
       <div className="pl_segment-container">
-        <table className="w-full min-w-max table-auto text-left">
+        <table className="forensicTable w-full min-w-max table-auto text-left">
           <thead>
             <tr>
               {QuarterlySegmentData._Headers.map((column, cKey) => {

@@ -103,3 +103,25 @@ aside {
 .EditorComment .ql-container.ql-snow{
 background-color: #E9EDEF;
 }
+
+
+table.forensicTable  {
+  thead tr {
+    th{
+      text-align: right ;
+    }
+    th:nth-child(1){
+      text-align: left;
+    }
+  }
+  tbody tr {
+    td div{
+      justify-content: end;
+    }
+
+    td:nth-child(1) div{
+      justify-content: start;
+    }
+      
+  }
+}

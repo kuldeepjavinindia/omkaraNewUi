@@ -12,7 +12,7 @@ import PieChart from "./PieChart";
 import { LuHelpCircle } from "react-icons/lu";
 import EditCommentModal from "../ModalComment/EditCommentModal";
 
-const ForensicData = ({ActiveSHTab, TableWidth, setTableWidth}) => {
+const ForensicData = ({ActiveSHTab}) => {
 
 
   const rr_dispatch = useDispatch()
@@ -249,13 +249,13 @@ const handleOpen = () => setOpen(!open);
             return (
               <>
               {/* <div style={{ display: !checked && i == 2 && typeData == "CF" ? 'none': 'unset' }} ></div> */}
-                <div className={`mb-3 
-                px-5 py-5 mt-3
-                ${typeData == "ratios"  ? "bg-transparent px-0 !py-0 mt-0" : "bg-[#fff]"} 
+                <div className=
+                 {`mb-3 px-5 py-5 mt-2  rounded
+                  ${typeData == "ratios"  ? "bg-transparent px-0 !py-0 mt-0" : "bg-[#fff]"} 
                   ${(!checked && i == 2 && typeData == "CF") ? "hidden " : "block"}  
                   ${typeData == "CF"  ? "bg-transparent px-0 !py-0 mt-0" : "bg-[#fff]"} 
-                
-                `}>
+                  `}
+                  >
   {/* {
    typeData === "CAP" ? (
     <div className="col-span-5 mt-5 bg-white py-4 rounded-md p-4">
@@ -296,11 +296,7 @@ const handleOpen = () => setOpen(!open);
               }  `}
                >
                 <div>
-              <table className=  {`forensicTable   h-full overflow-scroll border-[1px] border-[#E5E5E5] rounded bg-clip-border
-               ${TableWidth[typeData]}
-               
-               
-               `}>
+              <table className=  " forensicTable w-full h-full overflow-scroll border-[1px] border-[#E5E5E5] rounded bg-clip-border ">
                 <thead>
                     <tr>
                         {
@@ -311,7 +307,7 @@ const handleOpen = () => setOpen(!open);
                             }
 
                             return (
-                              <th key={clm} className="border-b border-blue-gray-100 bg-[#1E233A] text-white p-2 text-[13px]  font-medium text-left px-4">{column.label}</th>
+                              <th className="border-b border-blue-gray-100 bg-[#1E233A] text-white p-2 text-[13px]  font-medium text-left px-4">{column.label}</th>
                             )
                           })
                         }
@@ -324,7 +320,7 @@ const handleOpen = () => setOpen(!open);
                       let lastR = false;
                       return (
 
-                        <tr key={is} className="odd:bg-[#E8F0F4] even:bg-[#fff]">
+                        <tr className="odd:bg-[#E8F0F4] even:bg-[#fff]">
                           {
                             mColArr.map((column, c1)=>{
                               let crtCellData = row[column?.id];      
@@ -437,7 +433,7 @@ const handleOpen = () => setOpen(!open);
                                       }
 
                               return (
-                                <td  key={c1} style={cStyle} className="text-[#000] text-[13px]  px-4 py-1 relative">
+                                <td  style={cStyle} className="text-[#000] text-[13px] px-4 py-1 relative">
                                   <div className=" flex  items-center gap-1">
 
                                     
@@ -573,14 +569,20 @@ const handleOpen = () => setOpen(!open);
 </div>
 
 {/* ---- Start PL Box ----- */}
-<div className="grid grid-cols-8 gap-2 mt-5">
+<div className="grid grid-cols-4 gap-2 mt-5">
 
 {
-              highlights && highlights.length > 0 && highlights.map((highlight, i00) => {
+                                highlights && highlights.length > 0 && highlights.map((highlight, i00) => {
                                   {/* console.log('highlight >> ', highlight) */}
                                   return (
-                                    <div key={i00} className="bg-[#E8F0F4] text-center rounded-md pt-3" 
-                                
+                                    <div className="bg-[#E8F0F4] text-center rounded pt-3" 
+                                    sx={{
+                                      backgroundColor: '#c7dbb0',
+                                      borderRadius: '4px',
+                                      border: '1px solid #ddd',
+                                      margin: '0.5rem',
+                                      textAlign: 'center',
+                                    }}
                                     >
                                       <div >
                                         <Typography className="text-[15px] text-[#000] font-bold" >
@@ -590,10 +592,8 @@ const handleOpen = () => setOpen(!open);
                                           {highlight?.subtitle}
                                         </Typography>
                                       </div>
-                                      <div className="flex  p-4 items-center justify-center text-[#000] font-bold rounded-b border border-[#DAE9F7]"
-                                       style={{
-                                        backgroundColor: (typeData == "BS" ? "#fff" : highlight?.arrow == 'Up' && highlight?.value > 50 ? '#3ED179' : highlight?.arrow == '' ? '#F43F3F' : '#F43F3F')
-                                        }} >
+                                      <div className="flex  p-4 items-center justify-center text-[#000] font-bold rounded-b"  style={{
+                                        backgroundColor: (highlight?.arrow == 'Up' && highlight?.value > 50 ? '#3ED179' : highlight?.arrow == '' ? '#F43F3F' : '#F43F3F')}} >
                                         <Typography className="text-[#000] font-bold text-[15px]" sx={{ marginTop:.5 }} variant="subtitle2" fontWeight='bold' >
                                           {highlight?.value}
                                         </Typography>
@@ -629,8 +629,7 @@ const handleOpen = () => setOpen(!open);
  <EditCommentModal open = {open} setOpen = {setOpen}   cancelButton = "CANCEL" updatButton= "UPDATE" 
  modalTitle = {companyData?.CompanyName}
  />
-<div className="bg-[#fff] pt-4 pl-4 pb-7 pr-4 mt-3 rounded border border-[#DAE9F7]">
-<div className="flex justify-between ">
+<div className="flex justify-between bg-[#fff] border-[1px] border-[#DAE9F7] pt-4 pl-4 pb-7 pr-4 mt-3 rounded">
   <Typography className="text-[#000] text-[16px] font-bold">
   Comment
   </Typography>
@@ -638,12 +637,6 @@ const handleOpen = () => setOpen(!open);
 Edit
   </Button>
 
-</div>
-<div className="text-[#606F7B] text-[15px] font-bold"  dangerouslySetInnerHTML={{ 
-  __html:`<h3>eff. Tax Rate (%) 23.1</h3>`
- }}>
-  
-</div>
 </div>
 {/* ========== End Comment Box============ */}
 

@@ -86,7 +86,8 @@ const Forensic_Main = ()=> {
 
   const rrd_params = useParams();
   const dispatch  = useDispatch();
-  const [forensicDataType, setForensicDataType] = useState()
+  // const [forensicDataType, setForensicDataType] = useState()
+  const [TableWidth, setTableWidth] = useState({});
 
   let cmpId = rrd_params?.company_id;
   if(cmpId){
@@ -112,9 +113,44 @@ useEffect(()=> {
     dispatch(ForensicTabsShowHideApi({companyID: cmpId}))
   }
   if(!ForensicTabShowHideLoading){
+
+
     setActiveSHTab(TabsData?.[0]); 
     
-let activebtn = ActiveSHTab.title;
+    // let activebtn = ActiveSHTab.title;
+    let a0 = TableWidth;
+    TabsData.map(item => {
+      let wCls = 'w-full';
+      let typeData = item.type;
+      
+      if(typeData == "ESOP"){
+        wCls = "w-1/2"
+      }
+
+      if(typeData == "AH"){
+        wCls = "w-1/4"
+      }
+
+      if(typeData == "DH"){
+        wCls = "w-1/4"
+      }
+
+      if(typeData == "DIR"){
+        wCls = "w-3/4"
+      }
+
+      a0 = {
+        ...a0,
+        [typeData] : wCls
+      }
+
+    })
+
+    setTableWidth(a0);
+
+
+
+
   }
   
   
@@ -127,6 +163,7 @@ let activebtn = ActiveSHTab.title;
         <>
         {
           TabsData && TabsData.length > 0 && TabsData.map(item=>{
+            
             return (
               <>
                 <Button size="sm" onClick={()=>setActiveSHTab(item)}  
@@ -137,10 +174,11 @@ let activebtn = ActiveSHTab.title;
               </>
             )
           })
+          
         }
 
             <div> 
-            <ForensicData ActiveSHTab={ActiveSHTab} />
+            <ForensicData ActiveSHTab={ActiveSHTab} TableWidth={TableWidth} setTableWidth={setTableWidth} />
            </div>
 
           

@@ -12,6 +12,7 @@ import BalanceSheet_Main from "./BalanceSheet/BalanceSheet_Main";
 import CashFlows_Main from "./CashFlows/CashFlows_Main";
 import RatioComponent from "./Ratio/Ratio";
 import ShareholdingComponent from "./Shareholding/ShareholdingComponent";
+import PeerComponent from "./peer/PeerComponent";
    
 // QUARTERLY P&L
 // ANNAL P&L
@@ -75,7 +76,11 @@ import ShareholdingComponent from "./Shareholding/ShareholdingComponent";
       {
         label: "PEERS",
         value: "6",
-        desc: `PEERS`,
+        desc: (
+          <>
+            <PeerComponent />
+          </>
+        ),
       },
       {
         label: "SHAREHOLDING %",
