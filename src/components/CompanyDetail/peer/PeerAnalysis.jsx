@@ -38,8 +38,6 @@ useEffect(() => {
             }
           cols.push(dd);
       })
-      
-      // setTableHead(TThead)
       setTableColumns(cols)
     }
     
@@ -74,6 +72,8 @@ useEffect(() => {
 
   return (
     <>
+
+    
 
     </>
   )

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BarChartData_Columns_Rows, QuarterlyResultApi } from '../../store/slice/SingleCompnaySlice';
-import { SC_QResult_Req } from '../../constants/defaultRequest';
+import { BarChartData_Columns_Rows, QuarterlyResultApi, ResultDocumentApi } from '../../store/slice/SingleCompnaySlice';
+import { Result_Document_Req, SC_QResult_Req } from '../../constants/defaultRequest';
 import { useParams } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
-import { BsFillBarChartFill } from 'react-icons/bs';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
+import QuarterlyAnalyticsInfoModal from './Modals/QuarterlyAnalyticsInfoModal';
 
 
 
@@ -21,6 +22,7 @@ const Quarterly_P_L_Result = (props) => {
 
   const [TableColumns, setTableColumns] = useState([]);
   const [TableBody, setTableBody] = useState([]);
+  const [DialogData, setDialogData] = useState(false);
 
   const rr_dispatch = useDispatch();
   const rrd_params = useParams();
@@ -50,16 +52,26 @@ const Quarterly_P_L_Result = (props) => {
 
 
   const showChart = (row) => {
-    // rr_dispatch({
-    //   type:"Columns_Rows",
-    //   payload:{columns:TableColumns, rows:row}
-    // })
     rr_dispatch(BarChartData_Columns_Rows({columns:TableColumns, rows:row}))
   }
 
-  useEffect(() => {
-      // console.log('UpdateRightSideTabs >> ', UpdateRightSideTabs);
 
+  const clickInfo = (e, yearMonth) => {
+    let yearMonthArr = yearMonth.split('-')
+    let params = Result_Document_Req;
+        params = {
+          ...params,
+          CompanyID: cmpId,
+          UserId: "",
+          month: yearMonthArr[0],
+          year: yearMonthArr[1],
+          Type: tab_1?.activeType,
+        }
+        rr_dispatch(ResultDocumentApi(params))
+        setDialogData(yearMonth)
+  }
+
+  useEffect(() => {
       callApi()
   }, [rr_dispatch])
   
@@ -132,6 +144,7 @@ const Quarterly_P_L_Result = (props) => {
   
   return (
     <>
+    <QuarterlyAnalyticsInfoModal DialogData={DialogData} setDialogData={setDialogData} activeType={tab_1?.activeType} />
       <div className="pl_segment-container">
         <table className="forensicTable w-full min-w-max table-auto text-left">
           <thead>
@@ -185,7 +198,9 @@ const Quarterly_P_L_Result = (props) => {
                                         {
                                           i === 0 && 
                                           <IconButton className={` bg-transparent text-black shadow-none hover:shadow-none`} size='sm' onClick={()=>showChart(row)} sx={{ padding:0 }}>
-                                            <BsFillBarChartFill size={12} />
+                                        
+                                          <img src= {import.meta.env.VITE_BASE_URL  + "/images/icons/resultChartIcon.svg"} alt=""  className="w-[20px]" />
+                                            {/* <BsFillBarChartFill size={12} />  */}
                                           </IconButton>
                                         }
                                       </span>
@@ -199,6 +214,55 @@ const Quarterly_P_L_Result = (props) => {
                           )
                         })
                       }
+
+
+<tr className="odd:bg-[#E8F0F4] even:bg-[#fff]">
+                      {
+                        TableColumns.map((item,i)=>{
+                          if(i === 0){
+                            return (
+                              <td className={`text-[13px] px-2 font-medium `} key={i}>
+                                <b>Analysis</b>
+                              </td>
+                            ) 
+                          }else{
+                            // let singleData = [];
+                            let $key = item.label;
+                            if($key){
+                              $key = $key.replace(' ', '-');                             
+                              // singleData = QuarterlyResultsData[$key]
+                              // console.log('singleData >>>> ', singleData)
+                            }
+                            return (
+                              <td key={i} className={`text-[13px] px-2 font-medium `} >
+                                {
+                                  $key ?
+                                  <>
+                                  <div style={{ 
+                                    display:'flex',
+                                    alignItems:'baseline',
+                                    justifyContent:'end',
+                                    gap:'.5rem'
+                                  }}>
+                                    <IconButton className={` bg-transparent text-black shadow-none hover:shadow-none`} size='sm' onClick={(e)=>clickInfo(e, $key)}  >
+                                      <AiOutlineInfoCircle style={{ fontSize:'1rem' }} />
+                                    </IconButton>
+                                    
+                                  </div>
+                                  </>
+                                  :
+                                  <></>
+
+                                }
+                                
+                              </td>
+                            )
+                          }
+                          
+                        })
+                      }
+                      </tr>
+
           </tbody>
         </table>
       </div>

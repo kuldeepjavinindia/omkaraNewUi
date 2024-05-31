@@ -1,6 +1,6 @@
 export const watchListReq = {
   ID: "",
-  // UserID: localUser?.UserID,
+  UserID: "",
   WatchListNAme: "",
   status: false,
   input: 4, //1 insert --- 2 update --- 3 delete --- 4 list
@@ -157,4 +157,21 @@ export const MediaRoomDataReq = {
   SectorID: "",
   IndustryID: [],
   Type: "SC_Media",
+};
+// ResultDocument_New_ACEAPI
+export const Result_Document_Req = {
+  CompanyID: "",
+  UserId: "",
+  month: "",
+  year: "",
+  Type: "con",
+};
+export const Forensic_Comments_Req = {
+  "type": "1",
+  "userid": "1",
+  "CompanyID": "",
+  "SectorID": "",
+  "IndustryID": "",
+  "TableType": "",
+  "description": ""
 };

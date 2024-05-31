@@ -106,14 +106,14 @@ const initialState = {
     error: null,
   },
   BarChartData: {
-    Columns_Rows:{
-      Columns:[],
-      Rows:{}
+    Columns_Rows: {
+      Columns: [],
+      Rows: {},
     },
-    Open:false,
-    isPercentage:false,
+    Open: false,
+    isPercentage: false,
   },
-  
+
   ForensicTabShowHide: {
     loading: true,
     data: [],
@@ -121,6 +121,13 @@ const initialState = {
     error: null,
   },
   Forensic: {
+    loading: true,
+    data: [],
+    button_status: null,
+    msg: null,
+    error: null,
+  },
+  ForensicComment: {
     loading: true,
     data: [],
     msg: null,
@@ -146,9 +153,12 @@ const initialState = {
     msg: null,
     error: null,
   },
-  
-
-  
+  ResultDocument: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -178,10 +188,11 @@ let SCValuationDataReq = `${slice_base_url}/ValuationData_New`; // for Brief_tab
 
 let ForensicTabsShowHideReq = `${slice_base_url}/ForensicTabShowHide`;
 let ForensicReq = `${slice_base_url}/forensic`;
+let ForensicCommentReq = `${slice_base_url}/ForensicModelComments`;
 let ForensiTooltipReq = `${slice_base_url}/ForensicTooltip`;
 let MediaRoomReq = `${slice_base_url}/media`;
 let VideoLikeDislikeReq = `${slice_base_url}/VDRMediaUserLiskeDislike`;
-
+let ResultDocumentReq = `${slice_base_url}/ResultDocument_New_ACEAPI`;
 
 export const companyNotesAPI = createAsyncThunk(
   "companyNotes",
@@ -213,12 +224,11 @@ export const RepositoryListAPI = createAsyncThunk(
 // ForensicTabsApi Thunk
 export const ForensicTabsShowHideApi = createAsyncThunk(
   "ForensicTabShowHide",
-  async (param)=> {
-    const response = await axios.post( `${ForensicTabsShowHideReq}`, param);
+  async (param) => {
+    const response = await axios.post(`${ForensicTabsShowHideReq}`, param);
     return response?.data;
   }
 );
-
 
 // UploadDocumentAnalysNoteApi Thunk
 export const UploadDocumentAnalysNoteApi = createAsyncThunk(
@@ -339,22 +349,29 @@ export const SCValuationDataApi = createAsyncThunk(
   }
 );
 
-
 // ForensicsApi Thunk
 export const ForensicApi = createAsyncThunk(
   "Forensic",
-  async (all_param = {})=> {
-    const response = await axios.post( `${ForensicReq}`, all_param);
+  async (all_param = {}) => {
+    const response = await axios.post(`${ForensicReq}`, all_param);
     return response?.data;
   }
 );
 
+// ForensicCommentApi Thunk
+export const ForensicCommentApi = createAsyncThunk(
+  "ForensicComment",
+  async (all_param = {}) => {
+    const response = await axios.post(`${ForensicCommentReq}`, all_param);
+    return response?.data;
+  }
+);
 
 // ForensiTooltipApi Thunk
 export const ForensiTooltipApi = createAsyncThunk(
   "ForensiTooltip",
-  async (all_param = {})=> {
-    const response = await axios.post( `${ForensiTooltipReq}`, all_param);
+  async (all_param = {}) => {
+    const response = await axios.post(`${ForensiTooltipReq}`, all_param);
     return response?.data;
   }
 );
@@ -362,8 +379,8 @@ export const ForensiTooltipApi = createAsyncThunk(
 // MediaRoomApi Thunk
 export const MediaRoomApi = createAsyncThunk(
   "MediaRoom",
-  async (all_param = {})=> {
-    const response = await axios.post( `${MediaRoomReq}`, all_param);
+  async (all_param = {}) => {
+    const response = await axios.post(`${MediaRoomReq}`, all_param);
     return response?.data;
   }
 );
@@ -371,13 +388,20 @@ export const MediaRoomApi = createAsyncThunk(
 // VideoLikeDislikeApi Thunk
 export const VideoLikeDislikeApi = createAsyncThunk(
   "VideoLikeDislike",
-  async (all_param = {})=> {
-    const response = await axios.post( `${VideoLikeDislikeReq}`, all_param);
+  async (all_param = {}) => {
+    const response = await axios.post(`${VideoLikeDislikeReq}`, all_param);
     return response?.data;
   }
 );
 
-
+// ResultDocumentApi Thunk
+export const ResultDocumentApi = createAsyncThunk(
+  "ResultDocument",
+  async (all_param = {}) => {
+    const response = await axios.post(`${ResultDocumentReq}`, all_param);
+    return response?.data;
+  }
+);
 
 const SingleCompanySlice = createSlice({
   name: "SingleCompany",
@@ -387,7 +411,9 @@ const SingleCompanySlice = createSlice({
       state.BarChartData.Columns_Rows.Columns = action.payload.columns;
       state.BarChartData.Columns_Rows.Rows = action.payload.rows;
       state.BarChartData.Open = true;
-      state.BarChartData.isPercentage = action.payload.isPercentage ? true : false;
+      state.BarChartData.isPercentage = action.payload.isPercentage
+        ? true
+        : false;
     },
     BarChartData_Columns_Rows_close: (state) => {
       state.BarChartData.Columns_Rows.Columns = [];
@@ -489,7 +515,6 @@ const SingleCompanySlice = createSlice({
     });
     // End UploadDocumentAnalysNoteData
 
-
     // Start QuarterlyResult
     builder.addCase(QuarterlyResultApi.pending, (state) => {
       state.QuarterlyResult.loading = true;
@@ -509,7 +534,6 @@ const SingleCompanySlice = createSlice({
     });
     // End QuarterlyResult
 
-
     // Start SCData20Years
     builder.addCase(SCData20YearsApi.pending, (state) => {
       state.SCData20Years.loading = true;
@@ -528,10 +552,6 @@ const SingleCompanySlice = createSlice({
       state.SCData20Years.error = true;
     });
     // End SCData20Years
-
-
-
-
 
     // Start SCQtrSegment
     builder.addCase(SCQtrSegmentApi.pending, (state) => {
@@ -742,121 +762,158 @@ const SingleCompanySlice = createSlice({
     });
     // End SCShareHolding
 
+    // Start ForensicTabData
+    builder.addCase(ForensicTabsShowHideApi.pending, (state) => {
+      (state.ForensicTabShowHide.loading = true),
+        (state.ForensicTabShowHide.error = false),
+        (state.ForensicTabShowHide.msg = false);
+    });
+    builder.addCase(ForensicTabsShowHideApi.fulfilled, (state, action) => {
+      (state.ForensicTabShowHide.loading = false),
+        (state.ForensicTabShowHide.data = action.payload?.Data || []);
+      state.ForensicTabShowHide.msg = "success";
+      // state.ForensicTabShowHide.error = state.ForensicTab.error
+    });
+    builder.addCase(ForensicTabsShowHideApi.rejected, (state, action) => {
+      (state.ForensicTabShowHide.loading = false),
+        (state.ForensicTabShowHide.data = action.payload);
+      state.ForensicTabShowHide.msg = action.payload?.msg;
+      state.ForensicTabShowHide.error = true;
+    });
+    // End ForensicTabData
+
+    // Start ForensicData
+    builder.addCase(ForensicApi.pending, (state) => {
+      (state.Forensic.loading = true),
+        (state.Forensic.error = false),
+        (state.Forensic.msg = false);
+    });
+    builder.addCase(ForensicApi.fulfilled, (state, action) => {
+      state.Forensic.loading = false;
+      state.Forensic.data = action.payload?.Data || [];
+      state.Forensic.button_status = action.payload?.button_status || {};
+      state.Forensic.msg = "success";
+      // state.Forensic.error = state.ForensicTab.error
+    });
+    builder.addCase(ForensicApi.rejected, (state, action) => {
+      (state.Forensic.loading = false), (state.Forensic.data = action.payload);
+      state.Forensic.msg = action.payload?.msg;
+      state.Forensic.error = true;
+    });
+    // End ForensicData
+
+    
+    // Start ForensicComment
+    builder.addCase(ForensicCommentApi.pending, (state) => {
+      (state.ForensicComment.loading = true),
+        (state.ForensicComment.error = false),
+        (state.ForensicComment.msg = false);
+    });
+    builder.addCase(ForensicCommentApi.fulfilled, (state, action) => {
+      state.ForensicComment.loading = false;
+      state.ForensicComment.data = action.payload?.Data || [];
+      state.ForensicComment.button_status = action.payload?.button_status || {};
+      state.ForensicComment.msg = "success";
+    });
+    builder.addCase(ForensicCommentApi.rejected, (state, action) => {
+      (state.ForensicComment.loading = false), (state.ForensicComment.data = action.payload);
+      state.ForensicComment.msg = action.payload?.msg;
+      state.ForensicComment.error = true;
+    });
+    // End ForensicComment
 
 
-// Start ForensicTabData
-   builder.addCase(ForensicTabsShowHideApi.pending, (state)=> {
-      state.ForensicTabShowHide.loading = true,
-      state.ForensicTabShowHide.error = false,
-      state.ForensicTabShowHide.msg = false
-  });
-  builder.addCase(ForensicTabsShowHideApi.fulfilled, (state, action)=> {
-    state.ForensicTabShowHide.loading = false,
-    state.ForensicTabShowHide.data = action.payload?.Data || [];
-    state.ForensicTabShowHide.msg = "success"
-    // state.ForensicTabShowHide.error = state.ForensicTab.error
-});
-builder.addCase(ForensicTabsShowHideApi.rejected, (state, action)=> {
-  state.ForensicTabShowHide.loading = false,
-  state.ForensicTabShowHide.data = action.payload;
-  state.ForensicTabShowHide.msg = action.payload?.msg
-  state.ForensicTabShowHide.error = true
-});
-// End ForensicTabData
+    // // START  ForensiTooltip DATA
+    builder.addCase(ForensiTooltipApi.pending, (state) => {
+      state.ForensiTooltip.loading = true;
+      state.ForensiTooltip.error = false;
+      state.ForensiTooltip.msgType = null;
+    });
+    builder.addCase(ForensiTooltipApi.fulfilled, (state, action) => {
+      //   let allData = current(state);
 
+      state.ForensiTooltip.data = action.payload;
+      state.ForensiTooltip.loading = false;
+      state.ForensiTooltip.msg = "success";
+      state.ForensiTooltip.msgType = "success";
+    });
+    builder.addCase(ForensiTooltipApi.rejected, (state, action) => {
+      state.ForensiTooltip.loading = false;
+      state.ForensiTooltip.error = true;
+      state.ForensiTooltip.msgType = "error";
+      state.ForensiTooltip.msg = action.payload?.msg;
+      state.ForensiTooltip.data = action.payload;
+    });
+    // // END ForensiTooltip DATA
 
-// Start ForensicData
-builder.addCase(ForensicApi.pending, (state)=> {    
-state.Forensic.loading = true,
-state.Forensic.error = false,
-state.Forensic.msg = false
-});
-builder.addCase(ForensicApi.fulfilled, (state, action)=> {
-state.Forensic.loading = false,
-state.Forensic.data = action.payload?.Data || [];
-state.Forensic.msg = "success"
-// state.Forensic.error = state.ForensicTab.error
-});
-builder.addCase(ForensicApi.rejected, (state, action)=> {
-state.Forensic.loading = false,
-state.Forensic.data = action.payload;
-state.Forensic.msg = action.payload?.msg
-state.Forensic.error = true
-});
-// End ForensicData
+    // // START  MediaRoom DATA
+    builder.addCase(MediaRoomApi.pending, (state) => {
+      state.MediaRoom.loading = true;
+      state.MediaRoom.error = false;
+      state.MediaRoom.msgType = null;
+    });
+    builder.addCase(MediaRoomApi.fulfilled, (state, action) => {
+      //   let allData = current(state);
 
+      state.MediaRoom.data = action.payload;
+      state.MediaRoom.loading = false;
+      state.MediaRoom.msg = "success";
+      state.MediaRoom.msgType = "success";
+    });
+    builder.addCase(MediaRoomApi.rejected, (state, action) => {
+      state.MediaRoom.loading = false;
+      state.MediaRoom.error = true;
+      state.MediaRoom.msgType = "error";
+      state.MediaRoom.msg = action.payload?.msg;
+      state.MediaRoom.data = action.payload;
+    });
+    // // END MediaRoom DATA
 
-// // START  ForensiTooltip DATA
-builder.addCase(ForensiTooltipApi.pending, (state) => {
-state.ForensiTooltip.loading = true;
-state.ForensiTooltip.error = false;
-state.ForensiTooltip.msgType = null;
-});
-builder.addCase(ForensiTooltipApi.fulfilled, (state, action) => {
-//   let allData = current(state);
+    // // START  VideoLikeDislike DATA
+    builder.addCase(VideoLikeDislikeApi.pending, (state) => {
+      state.VideoLikeDislike.loading = true;
+      state.VideoLikeDislike.error = false;
+      state.VideoLikeDislike.msgType = null;
+    });
+    builder.addCase(VideoLikeDislikeApi.fulfilled, (state, action) => {
+      //   let allData = current(state);
 
-state.ForensiTooltip.data = action.payload;
-state.ForensiTooltip.loading = false;
-state.ForensiTooltip.msg = "success";
-state.ForensiTooltip.msgType = "success";
-});
-builder.addCase(ForensiTooltipApi.rejected, (state, action) => {
-state.ForensiTooltip.loading = false;
-state.ForensiTooltip.error = true;
-state.ForensiTooltip.msgType = "error";
-state.ForensiTooltip.msg = action.payload?.msg;
-state.ForensiTooltip.data = action.payload;
-});
-// // END ForensiTooltip DATA
+      state.VideoLikeDislike.data = action.payload;
+      state.VideoLikeDislike.loading = false;
+      state.VideoLikeDislike.msg = "success";
+      state.VideoLikeDislike.msgType = "success";
+    });
+    builder.addCase(VideoLikeDislikeApi.rejected, (state, action) => {
+      state.VideoLikeDislike.loading = false;
+      state.VideoLikeDislike.error = true;
+      state.VideoLikeDislike.msgType = "error";
+      state.VideoLikeDislike.msg = action.payload?.msg;
+      state.VideoLikeDislike.data = action.payload;
+    });
+    // // END VideoLikeDislike DATA
 
-// // START  MediaRoom DATA
-builder.addCase(MediaRoomApi.pending, (state) => {
-state.MediaRoom.loading = true;
-state.MediaRoom.error = false;
-state.MediaRoom.msgType = null;
-});
-builder.addCase(MediaRoomApi.fulfilled, (state, action) => {
-//   let allData = current(state);
+    // // START  ResultDocument DATA
+    builder.addCase(ResultDocumentApi.pending, (state) => {
+      state.ResultDocument.loading = true;
+      state.ResultDocument.error = false;
+      state.ResultDocument.msgType = null;
+    });
+    builder.addCase(ResultDocumentApi.fulfilled, (state, action) => {
+      //   let allData = current(state);
 
-state.MediaRoom.data = action.payload;
-state.MediaRoom.loading = false;
-state.MediaRoom.msg = "success";
-state.MediaRoom.msgType = "success";
-});
-builder.addCase(MediaRoomApi.rejected, (state, action) => {
-state.MediaRoom.loading = false;
-state.MediaRoom.error = true;
-state.MediaRoom.msgType = "error";
-state.MediaRoom.msg = action.payload?.msg;
-state.MediaRoom.data = action.payload;
-});
-// // END MediaRoom DATA
-
-// // START  VideoLikeDislike DATA
-builder.addCase(VideoLikeDislikeApi.pending, (state) => {
-state.VideoLikeDislike.loading = true;
-state.VideoLikeDislike.error = false;
-state.VideoLikeDislike.msgType = null;
-});
-builder.addCase(VideoLikeDislikeApi.fulfilled, (state, action) => {
-//   let allData = current(state);
-
-state.VideoLikeDislike.data = action.payload;
-state.VideoLikeDislike.loading = false;
-state.VideoLikeDislike.msg = "success";
-state.VideoLikeDislike.msgType = "success";
-});
-builder.addCase(VideoLikeDislikeApi.rejected, (state, action) => {
-state.VideoLikeDislike.loading = false;
-state.VideoLikeDislike.error = true;
-state.VideoLikeDislike.msgType = "error";
-state.VideoLikeDislike.msg = action.payload?.msg;
-state.VideoLikeDislike.data = action.payload;
-});
-// // END VideoLikeDislike DATA
-
-
-
+      state.ResultDocument.data = action.payload?.Data || [];
+      state.ResultDocument.loading = false;
+      state.ResultDocument.msg = "success";
+      state.ResultDocument.msgType = "success";
+    });
+    builder.addCase(ResultDocumentApi.rejected, (state, action) => {
+      state.ResultDocument.loading = false;
+      state.ResultDocument.error = true;
+      state.ResultDocument.msgType = "error";
+      state.ResultDocument.msg = action.payload?.msg;
+      state.ResultDocument.data = action.payload;
+    });
+    // // END ResultDocument DATA
 
   },
 });

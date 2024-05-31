@@ -4,6 +4,7 @@ import Quarterly_P_L_Chart from "./Quarterly_P_L_Chart";
 import Quarterly_P_L_Segment from "./Quarterly_P_L_Segment";
 import Quarterly_P_L_Result from "./Quarterly_P_L_Result";
 import Quarterly_P_L_LastQuarter from "./Quarterly_P_L_LastQuarter";
+import { ConStdArray } from "../../constants/helper";
 
 const Quarterly_P_L = () => {
 
@@ -43,19 +44,7 @@ const Quarterly_P_L = () => {
       func: () => {}
     },
   };
-  const primaryButton = [
-    {
-      label: "Consolidate",
-      isConStd: true,
-      value: "con",
-      id: "1",
-    },
-    {
-      label: "Standalone ",
-      value: "std",
-      id: "2",
-    },
-  ];
+  const primaryButton = ConStdArray;
 
   const [PrimaryBtn, setPrimaryBtn] = useState(primaryButton[0]);
 

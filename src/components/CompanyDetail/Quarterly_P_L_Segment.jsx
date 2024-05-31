@@ -181,7 +181,7 @@ const Quarterly_P_L_Segment = () => {
                         QuarterlySegmentData._Headers.length
                       }
                     >
-                      <div className="flex  justify-between w-full">
+                      <div className="flex  !justify-between w-full">
                         <Typography className=" font-bold text-[14px]">
                           Sales
                         </Typography>

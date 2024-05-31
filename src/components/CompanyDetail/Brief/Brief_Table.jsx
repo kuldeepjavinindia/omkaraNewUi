@@ -140,7 +140,7 @@ const Brief_Table = () => {
                                 size="sm"
                                 onClick={() => showChart(row)}
                               >
-                                <BsFillBarChartFill size={16} />
+                                <img src= {import.meta.env.VITE_BASE_URL  + "/images/icons/resultChartIcon.svg"} alt=""  className="w-[20px]" />
                               </IconButton>
                             )}
                           </span>

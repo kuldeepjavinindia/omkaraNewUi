@@ -164,7 +164,7 @@ const Quarterly_P_L_LastQuarter = () => {
                                         {
                                           i === 0 && 
                                           <IconButton className={` bg-transparent text-black shadow-none hover:shadow-none`} size='sm' onClick={()=>showChart(row)} sx={{ padding:0 }}>
-                                            <BsFillBarChartFill size={12} />
+                                            <img src= {import.meta.env.VITE_BASE_URL  + "/images/icons/resultChartIcon.svg"} alt=""  className="w-[20px]" />
                                           </IconButton>
                                         }
                                       </span>

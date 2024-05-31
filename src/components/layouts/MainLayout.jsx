@@ -61,9 +61,15 @@ const MainLayout = () => {
         }
         rr_dispatch(wlAPI(params))
       }
+    }
+  }, [authState])
+
+  useEffect( () => {
+
+    if(authState.isAuthenticated){
       if(!wlLoading){
         let params = watchListCompanyReq;
-        let firstWL = wldata?.[0];
+        let firstWL = localStorage.getItem("selectedWL") ? JSON.parse(localStorage.getItem("selectedWL")) : wldata?.[0];
 
         if(wldata.length > 0){
           localStorage.setItem("selectedWL", JSON.stringify(firstWL));
@@ -79,7 +85,7 @@ const MainLayout = () => {
         
       }
     }
-  }, [wlLoading, authState])
+  }, [wlLoading])
 
 
   // useEffect(() => {

@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import CompanySearch from "../CompanySearch";
+import { Link } from "react-router-dom";
 
 const MainHeader = () => {
 
@@ -72,7 +73,9 @@ const MainHeader = () => {
                     wlLoading === false && wldata && wldata.length > 0 && wldata.map((item, i)=>{
                       return (
                         <>
-                          <MenuItem className="p-0" key={i}>
+                          <MenuItem className="p-0" key={i} onClick={()=>{
+                            localStorage.setItem('selectedWL', JSON.stringify(item))
+                          }}>
                             <label
                               htmlFor="item-1"
                               className="flex cursor-pointer items-center gap-2 p-2"
@@ -85,53 +88,28 @@ const MainHeader = () => {
                     })
                   }
                   
-                  
-                  {/* <MenuItem className="p-0">
-                    <label
-                      htmlFor="item-2"
-                      className="flex cursor-pointer items-center gap-2 p-2"
-                    >
-                      <Checkbox
-                        ripple={false}
-                        id="item-2"
-                        containerProps={{ className: "p-0" }}
-                        className="hover:before:content-none"
-                      />
-                      Company 2
-                    </label>
-                  </MenuItem>
-                  <MenuItem className="p-0">
-                    <label
-                      htmlFor="item-3"
-                      className="flex cursor-pointer items-center gap-2 p-2"
-                    >
-                      <Checkbox
-                        ripple={false}
-                        id="item-3"
-                        containerProps={{ className: "p-0" }}
-                        className="hover:before:content-none"
-                      />
-                      Company 3
-                    </label>
-                  </MenuItem> */}
                 </MenuList>
               </Menu>
               </li>
 
               <li>
-                <Button size="sm" className="flex items-center gap-1 bg-[#e7e8f9] rounded text-theme shadow-none hover:shadow-none">
-                  <AiOutlinePlus />
-                  Add Companies
-                </Button>           
+                <Link to={`/watchlist/add-company`}>
+                  <Button size="sm" className="flex items-center gap-1 bg-[#e7e8f9] rounded text-theme shadow-none hover:shadow-none">
+                    <AiOutlinePlus />
+                    Add Companies
+                  </Button>  
+                </Link>         
               </li>
               <li>
                 <Button size="sm" className="bg-[#e7e8f9] rounded text-[#fff] text-theme shadow-none hover:shadow-none">Edit</Button>
               </li>
               <li>
+                <Link to= "/watchlist/create">
                 <Button size="sm" className="bg-theme rounded text-[#fff] flex items-center gap-1 shadow-none hover:shadow-none">
                   <AiOutlinePlus />
                   Create New Watchlist
                 </Button>
+                </Link>
               </li>
            </ul>
         </div>

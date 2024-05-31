@@ -2,7 +2,11 @@
 import { Button, Dialog, DialogBody, DialogHeader, DialogFooter, Typography } from '@material-tailwind/react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getForensicUpdateTitle } from '../../../constants/helper';
+import { Forensic_Comments_Req } from '../../../constants/defaultRequest';
+import { useDispatch } from 'react-redux';
+import { ForensicCommentApi } from '../../../store/slice/SingleCompnaySlice';
 
 
 
@@ -27,19 +31,46 @@ const modules = {
   ];
 
 
-const EditCommentModal = ({setOpen, open, modalTitle, cancelButton, updatButton })=> {
+const EditCommentModal = (props)=> {
   
-    const [commentInput, setCommentInput] = useState("");
+
+    const {setOpen, open, modalTitle, cancelButton, updatButton } = props
+
+    const [commentInput, setCommentInput] = useState((""));
+
+    const updateTitle = getForensicUpdateTitle(modalTitle?.Type, modalTitle?.typeData);
+
+    const rr_dispatch = useDispatch();
+
+
 
 
     const handleAddComment = () => {
-        if (commentInput.trim()) {
-          // setComments([...comments, commentInput]);
-          // setCommentInput("");
-        }
+        // if (commentInput.trim()) {
+        //   // setComments([...comments, commentInput]);
+        //   // setCommentInput("");
+        // }
+        let params = Forensic_Comments_Req;
+
+        params = {
+          ...params,
+          "CompanyID":modalTitle?.companyId,
+          "TableType": updateTitle?.type,
+          "description": commentInput
+      }
+
+      rr_dispatch(ForensicCommentApi([params]));
+
+      setOpen(!open)
       };
     
     const handleOpen = () => setOpen(!open);
+
+
+    useEffect(() => {
+      setCommentInput(modalTitle?.description)
+    }, [props])
+    
 
     return (
         <>
@@ -49,8 +80,10 @@ const EditCommentModal = ({setOpen, open, modalTitle, cancelButton, updatButton 
         // handler={handleOpen}
         size="xxl"
       >
-        <DialogHeader className='w-[50%] mx-auto justify-center text-[15px] '> {modalTitle} </DialogHeader>
+        <DialogHeader className='w-[50%] mx-auto justify-center text-[15px] '> Comment - {updateTitle?.title || modalTitle?.title} </DialogHeader>
+
         <DialogBody className='w-[50%] mx-auto pt-0'>
+      
         <ReactQuill
           value={commentInput}
           onChange={setCommentInput}
@@ -63,7 +96,7 @@ const EditCommentModal = ({setOpen, open, modalTitle, cancelButton, updatButton 
         <DialogFooter className='justify-start w-[50%] mx-auto pt-0'>
         <Button
             variant="text"
-            onClick={handleOpen}
+            onClick={handleAddComment}
             className="mr-1 bg-theme text-[#fff] py-2 rounded"
           >
             <span>{updatButton}</span>

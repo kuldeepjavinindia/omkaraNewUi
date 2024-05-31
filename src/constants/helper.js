@@ -42,8 +42,6 @@ export const rangeArray = (start, end) => {
     return Array(end - start + 1).fill().map((_, idx) => start + idx)
 }
 
-
-
 export const openPdfWithWaterMark = (link, file_type="") => {
   let openUrl = import.meta.env.VITE_BASE_URL+'/MyPdfViewer';
   let enLink = window.btoa(link);
@@ -52,4 +50,93 @@ export const openPdfWithWaterMark = (link, file_type="") => {
   openCompany(openUrl, 'other')
 }
 
+
+
+
+export const ConStdArray = [
+  {
+    label: "Consolidate",
+    isConStd: true,
+    value: "con",
+    id: "1",
+  },
+  {
+    label: "Standalone ",
+    value: "std",
+    id: "2",
+  },
+]
+
+
+export const capStructured_Menu = [
+  {
+    id: 0,
+    title: "Fund Flow",
+    value: "Fund_Flow",
+    short_name: "ff",
+    type: "CAP",
+  },
+  {
+    id: 1,
+    title: "Working Capital Flow",
+    value: "Working_Capital",
+    short_name: "cap",
+    type: "CAP",
+  },
+];
+
+
+
+
+
+export const getForensicUpdateTitle = (title="", type="") => {
+
+  let CTitle = '';
+  let n_title = '';
+  let c_type = '';
+
+  if(type == 'DH'){
+      CTitle = 'Dividend History';
+  }
+  if(type == 'AH'){
+      CTitle = 'Auditor History';
+  }
+  if(type == 'SH'){
+      CTitle = 'Shareholding Pattern';
+  }
+  if(type == 'ESOP'){
+      CTitle = 'ESOP';
+  }
+  if(type == 'CH'){
+      CTitle = 'Capital History';
+  }
+
+  if(type == 'ratios'){
+      CTitle = 'Ratios';
+  }
+
+  if(type == 'CF'){
+      CTitle = 'Capital Allocation';
+  }
+
+  if(title && type != 'SH'){
+      n_title = title;
+      c_type = n_title;
+  }else{
+      n_title = CTitle;
+      c_type = type;
+  }
+
+
+  // if(type == 'CF'){
+  //     c_type = 'Capital Allocation';
+  // }
+  let res = {
+      title:n_title,
+      type:c_type,
+  }
+  
+  return res
+
+}
 

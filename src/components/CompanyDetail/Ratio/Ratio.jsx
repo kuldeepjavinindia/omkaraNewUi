@@ -224,7 +224,7 @@ const showChart = (row, level=1)=>{
                                 {
                                   ( i === 0) &&
                                   <IconButton className={` bg-transparent text-black shadow-none hover:shadow-none`} size='sm' onClick={()=>showChart(row)} sx={{ padding:0 }}>
-                                    <BsFillBarChartFill size={12} />
+                                    <img src= {import.meta.env.VITE_BASE_URL  + "/images/icons/resultChartIcon.svg"} alt=""  className="w-[20px]" />
                                   </IconButton>
                                 }
                               </span>
@@ -274,7 +274,7 @@ const showChart = (row, level=1)=>{
                                                 {
                                                   i0 === 0 && 
                                                   <IconButton className={` bg-transparent text-black shadow-none hover:shadow-none`} size='sm' onClick={()=>showChart(child, 2)}>
-                                                    <BsFillBarChartFill size={12} />
+                                                    <img src= {import.meta.env.VITE_BASE_URL  + "/images/icons/resultChartIcon.svg"} alt=""  className="w-[20px]" />
                                                   </IconButton>
                                                 }
                                               </span>
