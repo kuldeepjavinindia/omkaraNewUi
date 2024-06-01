@@ -178,7 +178,7 @@ const showChart = (row, level=1)=>{
 
                 return (
                   <>
-                    <tr className="odd:bg-[#E8F0F4] even:bg-[#fff]">
+                    <tr className="odd:bg-[#E8F0F4] even:bg-[#fff]" key={r_i}>
                       {
                         TableColumns.map((item,i)=>{
                           let rowData = row[item.id]

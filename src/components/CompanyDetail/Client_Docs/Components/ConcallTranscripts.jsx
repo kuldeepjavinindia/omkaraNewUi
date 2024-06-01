@@ -176,7 +176,7 @@ const ConcallTranscripts = () => {
             <Typography className="text-[15px] text-[#000000] font-semibold">
               Concall Transcripts
             </Typography>
-            <FaSortAlphaDown className="text-theme" size={18} />
+            {/* <FaSortAlphaDown className="text-theme" size={18} /> */}
           </div>
 
           <Input

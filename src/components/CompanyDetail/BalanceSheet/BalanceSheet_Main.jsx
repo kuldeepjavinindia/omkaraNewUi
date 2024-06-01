@@ -42,7 +42,7 @@ const BalanceSheet_Main = () => {
     }, [])
     useEffect(() => {
         if(!BsLoading){
-                if(BsData.header && BsData.header.length > 0){
+                if(BsData && BsData.header && BsData.header.length > 0){
                   let cols = []
                   let firstObj = BsData.header[0];
                   let a0 = firstObj.row;

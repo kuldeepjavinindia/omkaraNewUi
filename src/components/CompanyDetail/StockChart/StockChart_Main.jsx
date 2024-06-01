@@ -44,7 +44,7 @@ const StockChart_Main = () => {
                 className={`${
                   ChartBtn?.id == item?.id
                     ? "bg-theme"
-                    : "text-gray-400 border border-gray-400"
+                    : "text-gray-500 border border-gray-500"
                 }`}
                 key={i}
               >

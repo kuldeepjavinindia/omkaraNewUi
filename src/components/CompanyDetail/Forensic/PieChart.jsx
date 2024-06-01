@@ -152,9 +152,9 @@ const PieChart = (props) => {
        <ul>
 
         {
-          Legends.map((legend)=>{
+          Legends.map((legend, i)=>{
             return (
-              <li className='text-[12px] mb-3 flex gap-2 '>
+              <li className='text-[12px] mb-3 flex gap-2 ' key={i}>
                 <span style={{ backgroundColor: legend.fillStyle }} className='!text-[#000]  p-2 rounded-full w-[10px] h-[10px] font-medium'></span>
                 {legend.text}
               </li>

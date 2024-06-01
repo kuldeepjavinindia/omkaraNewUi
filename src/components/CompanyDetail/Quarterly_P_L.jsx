@@ -1,5 +1,5 @@
 import { Button, ButtonGroup } from "@material-tailwind/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Quarterly_P_L_Chart from "./Quarterly_P_L_Chart";
 import Quarterly_P_L_Segment from "./Quarterly_P_L_Segment";
 import Quarterly_P_L_Result from "./Quarterly_P_L_Result";
@@ -8,7 +8,6 @@ import { ConStdArray } from "../../constants/helper";
 
 const Quarterly_P_L = () => {
 
-  const childRef = useRef(null);
 
   const RightSideTabs = {
     tab_1: {
@@ -55,7 +54,7 @@ const Quarterly_P_L = () => {
       label: "Result",
       component: (
         <>
-          <Quarterly_P_L_Result ref={childRef}
+          <Quarterly_P_L_Result
             UpdateRightSideTabs={UpdateRightSideTabs} setUpdateRightSideTabs={setUpdateRightSideTabs}
           />
         </>

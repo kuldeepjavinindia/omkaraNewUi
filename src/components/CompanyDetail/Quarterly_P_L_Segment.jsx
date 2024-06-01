@@ -5,8 +5,16 @@ import { SCQtrSegmentApi } from "../../store/slice/SingleCompnaySlice";
 import { SC_Segment_Req } from "../../constants/defaultRequest";
 import { useParams } from "react-router-dom";
 
-const Quarterly_P_L_Segment = () => {
+const Quarterly_P_L_Segment = (props) => {
   const rr_dispatch = useDispatch();
+
+  const {
+    UpdateRightSideTabs,
+    setUpdateRightSideTabs
+  } = props
+
+  const tab_1 = UpdateRightSideTabs.tab_2;
+
   const {
     SCQtrSegment: { data: SCQtrSegmentData, loading: SCQtrSegmentLoading },
   } = useSelector((state) => state.SingleCompany);
@@ -34,15 +42,20 @@ const Quarterly_P_L_Segment = () => {
     console.log(QuarterlySegmentActiveFilter)
   }
 
+  const callApi = () => {
+    
+    let params = SC_Segment_Req;
+    params = {
+      ...params,
+      companyID: cmpId,
+    };
+    rr_dispatch(SCQtrSegmentApi(params));
+
+  }
 
   useEffect(() => {
     if (SCQtrSegmentLoading) {
-      let params = SC_Segment_Req;
-      params = {
-        ...params,
-        companyID: cmpId,
-      };
-      rr_dispatch(SCQtrSegmentApi(params));
+      callApi()
     }
   }, [rr_dispatch]);
 
@@ -74,6 +87,16 @@ const Quarterly_P_L_Segment = () => {
         };
 
         setQuarterlySegmentData(sData);
+        let button_status = SCQtrSegmentData.button_status;
+        let nTab_1 = tab_1;
+        nTab_1 = {
+          ...nTab_1,
+          button_status: button_status,
+          activeType: SCQtrSegmentData?.activeType,
+          func: callApi
+        }
+        setUpdateRightSideTabs(prev=>({...prev, tab_2: nTab_1}));
+
 
         // console.log('SC_Segment_Req >>> ', sData);
       }

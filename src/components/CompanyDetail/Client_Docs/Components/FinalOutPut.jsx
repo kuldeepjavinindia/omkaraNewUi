@@ -1,7 +1,7 @@
 import { AiFillDelete } from "react-icons/ai"; 
 import { AiOutlineMail } from "react-icons/ai"; 
 import { TbArrowsSort } from "react-icons/tb";
-import { Button, Typography, Input, IconButton, Spinner } from "@material-tailwind/react";
+import { Button, Typography, Input, IconButton, Spinner, Menu, MenuHandler, MenuList, MenuItem } from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,11 +10,15 @@ import { UploadDocumentReq } from "../../../../constants/defaultRequest";
 import { useParams } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { openCompany, openPdfWithWaterMark } from "../../../../constants/helper";
+import moment from "moment";
+import { BiSortAZ, BiSortZA } from "react-icons/bi";
 
 const FinalOutPut = () => {
 
   const [AllUploadDocuments, setAllUploadDocuments] = useState([]);
   const [FirstFilterUploadDocuments, setFirstFilterUploadDocuments] = useState([]); // filter docs according to tabs
+
+  const [ToggleData, setToggleData] = useState(false);
 
   const finalOutPutBtn = [
     {
@@ -79,23 +83,19 @@ const FinalOutPut = () => {
     if(type == "search"){
       let val = e.target.value.toLowerCase();
       let filteredData = [];
+
+      let itemData = FirstFilterUploadDocuments;
+      let crtType = finalOutPutBtn.find((itm) => itm.value == isActive.value);
+      itemData = itemData.filter((item) => item.DocumentType.trim() == crtType?.search_label );
+
       if(val == ""){
-        filteredData = FirstFilterUploadDocuments;
+        filteredData = itemData;
       }
       
       let arrNew = [];
-      FirstFilterUploadDocuments.forEach(function (a) {
+      itemData.forEach(function (a) {
           var fName = a.fileName.toLowerCase();
           if (fName.indexOf(val) > -1) {
-            
-              // if(buttonsArr.find(item=>item.value===a.DocumentType && item.id===ActiveBtn))
-              // {
-              //     arrNew.push(a)
-              // }
-              // if (ActiveBtn === 1)
-              // {
-              //     arrNew.push(a)
-              // }
                   arrNew.push(a)
           }
       });
@@ -103,6 +103,66 @@ const FinalOutPut = () => {
       setAllUploadDocuments(filteredData);    
     }
   }
+
+
+  
+  const sortData = (itemData, type) => {
+    let sData;
+    
+    let a0 = FirstFilterUploadDocuments;
+    if(isActive?.search_label !== "All"){
+      a0 = itemData;
+    }
+
+    // return false
+    if (type === "name") {
+      if (ToggleData) {
+        sData = a0.slice().sort((a, b) =>
+          a.fileName.localeCompare(b.fileName)
+        );
+      } else {
+        sData = a0.slice().sort((a, b) =>
+          b.fileName.localeCompare(a.fileName)
+        );
+      }
+    } else if (type === "date") {
+      if (ToggleData) {
+        sData = a0.slice().sort((a, b) => {
+          var a1 = moment(
+            a.Date,
+            "DD-MM-YYYY HH:mm:ss",
+            true
+          ).format("DD-MMM-YYYY HH:mm:ss"); //a.Date
+          var b1 = moment(
+            b.Date,
+            "DD-MM-YYYY HH:mm:ss",
+            true
+          ).format("DD-MMM-YYYY HH:mm:ss"); //b.Date
+          var dd = new Date(a1) - new Date(b1);
+          return dd;
+        });
+      } else {
+        sData = a0.slice().sort((a, b) => {
+          var a1 = moment(
+            a.Date,
+            "DD-MM-YYYY HH:mm:ss",
+            true
+          ).format("DD-MMM-YYYY HH:mm:ss"); //a.Date
+          var b1 = moment(
+            b.Date,
+            "DD-MM-YYYY HH:mm:ss",
+            true
+          ).format("DD-MMM-YYYY HH:mm:ss"); //b.Date
+          var dd = new Date(b1) - new Date(a1);
+          return dd;
+        });
+      }
+    }
+    setToggleData(!ToggleData);
+    setAllUploadDocuments(sData);
+  };
+
+
 
 
   useEffect(() => {
@@ -137,7 +197,33 @@ const FinalOutPut = () => {
               Final Output
             </Typography>
             <div>
-              <TbArrowsSort className="text-theme" size={18} />
+            <Menu className=" w-fit">
+                <MenuHandler>
+                  <IconButton className=" bg-transparent shadow-none hover:shadow-none">
+                    {ToggleData ? (
+                      <BiSortAZ className="text-theme" size={18} />
+                    ) : (
+                      <BiSortZA className="text-theme" size={18} />
+                    )}
+                  </IconButton>
+                </MenuHandler>
+                <MenuList>
+                  <MenuItem
+                    onClick={() => {
+                      sortData(AllUploadDocuments, "date");
+                    }}
+                  >
+                    Sort by Date
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      sortData(AllUploadDocuments, "name");
+                    }}
+                  >
+                    Sort by Name
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </div>
           </div>
 
@@ -181,11 +267,12 @@ const FinalOutPut = () => {
 
         <div className="clientDocs_horizontalCardsList px-4">
           {
-            UploadDocumentLoading && (
+            UploadDocumentLoading ? (
               <Spinner />
             )
-          }
-          {
+            :
+            <>
+            {
             AllUploadDocuments && AllUploadDocuments.length === 0 && (
               <>
                 <Typography className="mt-2">No Data Found In <u>{isActive?.search_label}</u>!</Typography>
@@ -234,6 +321,9 @@ const FinalOutPut = () => {
             }
             
           </ul>
+            </>
+          }
+          
         </div>
       </div>
       {/* End Component Final Output */}

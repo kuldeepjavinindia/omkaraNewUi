@@ -159,6 +159,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  BoardOfDirectorDetail: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -193,6 +199,8 @@ let ForensiTooltipReq = `${slice_base_url}/ForensicTooltip`;
 let MediaRoomReq = `${slice_base_url}/media`;
 let VideoLikeDislikeReq = `${slice_base_url}/VDRMediaUserLiskeDislike`;
 let ResultDocumentReq = `${slice_base_url}/ResultDocument_New_ACEAPI`;
+
+let BoardOfDirectorDetailReq = `${slice_base_url}/BoardOfDirectorDetails`;
 
 export const companyNotesAPI = createAsyncThunk(
   "companyNotes",
@@ -399,6 +407,15 @@ export const ResultDocumentApi = createAsyncThunk(
   "ResultDocument",
   async (all_param = {}) => {
     const response = await axios.post(`${ResultDocumentReq}`, all_param);
+    return response?.data;
+  }
+);
+
+// BoardOfDirectorDetail Thunk
+export const BoardOfDirectorDetailApi = createAsyncThunk(
+  "BoardOfDirectorDetail",
+  async (all_param = {}) => {
+    const response = await axios.post(`${BoardOfDirectorDetailReq}`, all_param);
     return response?.data;
   }
 );
@@ -914,6 +931,27 @@ const SingleCompanySlice = createSlice({
       state.ResultDocument.data = action.payload;
     });
     // // END ResultDocument DATA
+
+    // // START  BoardOfDirectorDetail DATA
+    builder.addCase(BoardOfDirectorDetailApi.pending, (state) => {
+      state.BoardOfDirectorDetail.loading = true;
+      state.BoardOfDirectorDetail.error = false;
+      state.BoardOfDirectorDetail.msgType = null;
+    });
+    builder.addCase(BoardOfDirectorDetailApi.fulfilled, (state, action) => {
+      state.BoardOfDirectorDetail.data = action.payload || [];
+      state.BoardOfDirectorDetail.loading = false;
+      state.BoardOfDirectorDetail.msg = "success";
+      state.BoardOfDirectorDetail.msgType = "success";
+    });
+    builder.addCase(BoardOfDirectorDetailApi.rejected, (state, action) => {
+      state.BoardOfDirectorDetail.loading = false;
+      state.BoardOfDirectorDetail.error = true;
+      state.BoardOfDirectorDetail.msgType = "error";
+      state.BoardOfDirectorDetail.msg = action.payload?.msg;
+      state.BoardOfDirectorDetail.data = action.payload;
+    });
+    // // END BoardOfDirectorDetail DATA
 
   },
 });

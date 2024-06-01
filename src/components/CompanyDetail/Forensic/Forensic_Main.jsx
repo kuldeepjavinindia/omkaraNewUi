@@ -94,7 +94,6 @@ const Forensic_Main = ()=> {
      cmpId = window.atob(cmpId);
   }
 
-
   const [ActiveSHTab, setActiveSHTab] = useState({});
   const [activeButton, setActiveButton] = useState()
 

@@ -1,4 +1,4 @@
-import { Typography, Input } from "@material-tailwind/react";
+import { Typography, Input, Menu, MenuHandler, IconButton, MenuList, MenuItem } from "@material-tailwind/react";
 import { FaSortAlphaDown } from "react-icons/fa";
 import { CgSearch } from "react-icons/cg";
 import { Fragment, useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import { AnnualReportAPI } from "../../../../store/slice/TrendlyneSlice";
 import { TrendlyneReq } from "../../../../constants/defaultRequest";
 import moment from "moment";
 import { openCompany, openPdfWithWaterMark } from "../../../../constants/helper";
+import { BiSortAZ, BiSortZA } from "react-icons/bi";
 
 const AnnualReport = () => {
   const {
@@ -22,6 +23,10 @@ const AnnualReport = () => {
 
   const [AllApiData, setAllApiData] = useState([]);
   const [FilteredData, setFilteredData] = useState([]);
+
+
+  const [ToggleData, setToggleData] = useState(false);
+
   const rr_dispatch = useDispatch();
 
   const handleChange = (event, itemData) => {
@@ -37,6 +42,66 @@ const AnnualReport = () => {
     });
     setFilteredData(arrNew);
   };
+
+
+  
+  const sortData = (itemData, type) => {
+    // let sData;
+    
+    // let a0 = FilteredData;
+    // if(isActive?.search_label !== "All"){
+    //   a0 = itemData;
+    // }
+
+    // // return false
+    // if (type === "name") {
+    //   if (ToggleData) {
+    //     sData = a0.slice().sort((a, b) =>
+    //       a.fileName.localeCompare(b.fileName)
+    //     );
+    //   } else {
+    //     sData = a0.slice().sort((a, b) =>
+    //       b.fileName.localeCompare(a.fileName)
+    //     );
+    //   }
+    // } else if (type === "date") {
+    //   if (ToggleData) {
+    //     sData = a0.slice().sort((a, b) => {
+    //       var a1 = moment(
+    //         a.Date,
+    //         "DD-MM-YYYY HH:mm:ss",
+    //         true
+    //       ).format("DD-MMM-YYYY HH:mm:ss"); //a.Date
+    //       var b1 = moment(
+    //         b.Date,
+    //         "DD-MM-YYYY HH:mm:ss",
+    //         true
+    //       ).format("DD-MMM-YYYY HH:mm:ss"); //b.Date
+    //       var dd = new Date(a1) - new Date(b1);
+    //       return dd;
+    //     });
+    //   } else {
+    //     sData = a0.slice().sort((a, b) => {
+    //       var a1 = moment(
+    //         a.Date,
+    //         "DD-MM-YYYY HH:mm:ss",
+    //         true
+    //       ).format("DD-MMM-YYYY HH:mm:ss"); //a.Date
+    //       var b1 = moment(
+    //         b.Date,
+    //         "DD-MM-YYYY HH:mm:ss",
+    //         true
+    //       ).format("DD-MMM-YYYY HH:mm:ss"); //b.Date
+    //       var dd = new Date(b1) - new Date(a1);
+    //       return dd;
+    //     });
+    //   }
+    // }
+    // setToggleData(!ToggleData);
+    // setFilteredData(sData);
+  };
+
+
 
   useEffect(() => {
     if (AnnualReportLoading) {
@@ -71,7 +136,29 @@ const AnnualReport = () => {
             <Typography className="text-[15px] text-[#000000] font-semibold">
               Annual Reports
             </Typography>
-            <FaSortAlphaDown className="text-theme" size={18} />
+            <div>
+            <Menu className=" w-fit">
+                <MenuHandler>
+                  <IconButton className=" bg-transparent shadow-none hover:shadow-none">
+                    {ToggleData ? (
+                      <BiSortAZ className="text-theme" size={18} />
+                    ) : (
+                      <BiSortZA className="text-theme" size={18} />
+                    )}
+                  </IconButton>
+                </MenuHandler>
+                <MenuList>
+                  <MenuItem
+                    onClick={() => {
+                      sortData(AllApiData, "date");
+                    }}
+                  >
+                    Sort by Date
+                  </MenuItem>
+                  
+                </MenuList>
+              </Menu>
+            </div>
           </div>
 
           <Input

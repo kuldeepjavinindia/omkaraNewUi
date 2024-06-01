@@ -6,7 +6,7 @@ import {
   Button,
   Tooltip,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ForensicDataReq } from "../../../constants/defaultRequest";
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosHelpCircleOutline } from "react-icons/io";
@@ -22,6 +22,8 @@ import PieChart from "./PieChart";
 import { LuHelpCircle } from "react-icons/lu";
 import EditCommentModal from "../ModalComment/EditCommentModal";
 import { ConStdArray, capStructured_Menu } from "../../../constants/helper";
+import { GlobalContext } from "../../../context/GlobalContext";
+import ForensicModal from "../Modals/ForensicModal";
 
 const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
   const rr_dispatch = useDispatch();
@@ -52,6 +54,9 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
 
   const {
     companyNotes: { loading: cmpNotesLoading, data: cmpNotesData },
+    ForensicComment:{
+      loading: ForensicCommentLoading
+    }
   } = useSelector((state) => state.SingleCompany);
 
   const companyData = cmpNotesData?.Data?.[0] || [];
@@ -97,6 +102,12 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
     callAPI();
   }, [ActiveSHTab]);
 
+  useEffect(() => {
+    if(!ForensicLoading && !ForensicCommentLoading){
+      callAPI();
+    }
+  }, [ForensicCommentLoading]);
+
   useEffect(() => {}, [ActiveSHTab]);
 
   useEffect(() => {
@@ -131,6 +142,14 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
     
     setOpen(!open)
   };
+  
+  const {
+    DIR_Model,
+    setDIR_Model,
+    SelectedDIR,
+    setSelectedDIR,
+  } = useContext(GlobalContext);
+
 
   if (ForensicLoading) {
     return <Spinner className="w-12 h-12" />;
@@ -138,14 +157,12 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
 
   return (
     <>
+      <ForensicModal />
       <div>
-        
         {
           ActiveSHTab.type === "CAP" && (
             <>
-        
             <div>
-    
               <ButtonGroup
                   ripple={false}
                   size="sm"
@@ -589,11 +606,14 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                                             ["DIR", "AH"].includes(typeData) ? (
                                               <>
                                                 <span
-                                                  style={{ cursor: "pointer" }}
+                                                  className="cursor-pointer"
                                                   onClick={() => {
                                                     // dispatch({type:"BoardOfDirectorDetailRequest"});
-                                                    // setDIR_Model(true);
-                                                    // setSelectedDIR(row);
+                                                    setDIR_Model({
+                                                      typeData,
+                                                      cmpId
+                                                    });
+                                                    setSelectedDIR(row);
                                                   }}
                                                 >
                                                   {column.format &&
@@ -767,7 +787,7 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
 
              
                         {
-                          ((typeData == 'CF' && i > 1)) && (
+                          ((typeData == 'CF' && i > 1) || (typeData != 'CF')) && (
                               <>  
                                {/* ========== Start Comment Box============ */}
                                   <div></div>
@@ -794,34 +814,7 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                               </>
                           )
                         }
-                        {
-                          ((typeData != 'CF')) && (
-                              <>  
-                               {/* ========== Start Comment Box============ */}
-                                  <div></div>
-                                  <div className="bg-[#fff] pt-4 pl-4 pb-7 pr-4 mt-3 rounded border border-[#DAE9F7]">
-                                    <div className="flex justify-between ">
-                                      <Typography className="text-[#000] text-[16px] font-bold">
-                                        Comment
-                                      </Typography>
-                                      <Button
-                                        onClick={()=>handleOpen(details, res.Comment)}
-                                        className="cursor-pointer py-1 px-3 shadow-none text-[12px] text-[#4448F5] bg-[#ECEDFE]"
-                                      >
-                                        Edit
-                                      </Button>
-                                    </div>
-                                    <div
-                                      className="text-[#606F7B] text-[15px] font-bold"
-                                      dangerouslySetInnerHTML={{
-                                        __html: res.Comment[0] ? res.Comment[0].description : "",
-                                      }}
-                                    ></div>
-                                  </div>
-                                  {/* ========== End Comment Box============ */}
-                              </>
-                          )
-                        }
+                        
                     
                   </div>
                   {/* end Main div */}

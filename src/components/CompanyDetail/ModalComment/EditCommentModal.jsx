@@ -5,7 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useEffect, useState } from 'react';
 import { getForensicUpdateTitle } from '../../../constants/helper';
 import { Forensic_Comments_Req } from '../../../constants/defaultRequest';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ForensicCommentApi } from '../../../store/slice/SingleCompnaySlice';
 
 
@@ -42,16 +42,18 @@ const EditCommentModal = (props)=> {
 
     const rr_dispatch = useDispatch();
 
+    // const {
+    //   ForensicComment:{
+    //     data,
+    //     loading,
+    //   }
+    // } = useSelector(state=>state.SingleCompany)
 
 
 
     const handleAddComment = () => {
-        // if (commentInput.trim()) {
-        //   // setComments([...comments, commentInput]);
-        //   // setCommentInput("");
-        // }
-        let params = Forensic_Comments_Req;
 
+        let params = Forensic_Comments_Req;
         params = {
           ...params,
           "CompanyID":modalTitle?.companyId,

@@ -175,3 +175,8 @@ export const Forensic_Comments_Req = {
   "TableType": "",
   "description": ""
 };
+export const BoardOfDirectorDetail_Req = {
+  "Type": "",
+  "DirName": "",
+  "companyId": ""
+};
