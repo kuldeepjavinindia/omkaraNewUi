@@ -43,6 +43,8 @@ const Quarterly_P_L = () => {
       func: () => {}
     },
   };
+
+  
   const primaryButton = ConStdArray;
 
   const [PrimaryBtn, setPrimaryBtn] = useState(primaryButton[0]);
@@ -114,7 +116,6 @@ const Quarterly_P_L = () => {
               if(itm.id == SecondaryBtn.id){
                 let keyName = `tab_${i+1}`;
                 let tabBtnData = UpdateRightSideTabs[keyName];
-                // console.log('tabBtnData >> ', tabBtnData)
                 
                 return (
                   <div className="flex gap-2 mb-4" key={i}>

@@ -5,12 +5,39 @@ import P_L_Statement from './P_L_Statement';
 import P_L_Chart from './P_L_Chart';
 
 const AnnalPL_Main = () => {
+
+  
+
+  const RightSideTabs = {
+    tab_1: {
+      activeType: "con",
+      button_status: {
+        con: true,
+        std: true,
+      },
+      func: () => {}
+    },
+    tab_2: {
+      activeType: "con",
+      button_status: {
+        con: true,
+        std: true,
+      },
+      func: () => {}
+    }
+  };
+
+
+  
     const rrd_params = useParams();
     
     let cmpId = rrd_params?.company_id;
     if(cmpId){
       cmpId = window.atob(cmpId);
     }
+    
+  const [UpdateRightSideTabs, setUpdateRightSideTabs] = useState(RightSideTabs);
+
 
     const primaryButton = [
         {
@@ -31,7 +58,7 @@ const AnnalPL_Main = () => {
           label: "P&L Statement",
           component:(
             <>
-                <P_L_Statement />
+                <P_L_Statement UpdateRightSideTabs={UpdateRightSideTabs} setUpdateRightSideTabs={setUpdateRightSideTabs} />
             </>
           ),
           value: "con",
@@ -42,7 +69,7 @@ const AnnalPL_Main = () => {
           isConStd:true,
           component:(
             <>
-                <P_L_Chart />
+                <P_L_Chart UpdateRightSideTabs={UpdateRightSideTabs} setUpdateRightSideTabs={setUpdateRightSideTabs} />
             </>
           ),
           value: "std",
@@ -62,25 +89,44 @@ const AnnalPL_Main = () => {
   return (
     <>
       
-
+{/* {JSON.stringify(UpdateRightSideTabs)} */}
       <div className="flex justify-between mb-2">
         <div>
           <div className="flex gap-2 mb-4">
-            {primaryButton.map((item, i) => (
-              <Button
-                onClick={() => setPrimaryBtn(item)}
-                size="sm"
-                variant={`${PrimaryBtn?.id == item?.id ? "" : "outlined"}`}
-                className={`${
-                  PrimaryBtn?.id == item?.id
-                    ? "bg-theme"
-                    : "text-theme border-theme"
-                }`}
-                key={i}
-              >
-                {item.label}
-              </Button>
-            ))}
+            {primaryButton.map((item, i) => {
+                
+              let keyName = `tab_${i+1}`;
+              let tabBtnData = UpdateRightSideTabs[keyName];
+
+              return (
+                <>
+                
+                  <Button
+                    disabled={tabBtnData?.button_status[item?.value] ? false : true}
+                    onClick={() => {
+                      setPrimaryBtn(item)
+                      let nTab_1 = tabBtnData;
+                      nTab_1 = {
+                        ...nTab_1,
+                        activeType: item?.value
+                      }
+                      setUpdateRightSideTabs(prev=>({...prev, [keyName]: nTab_1}));
+                      tabBtnData.func(item?.value);
+                    
+                    }}
+                    size="sm"
+                    variant={`${PrimaryBtn?.id == item?.id ? "" : "outlined"}`}
+                    className={`${
+                      PrimaryBtn?.id == item?.id
+                        ? "bg-theme"
+                        : "text-theme border-theme"
+                    }`}
+                    key={i}
+                  >
+                    {item.label}
+                  </Button>
+                </>
+            )})}
           </div>
         </div>
         <div>

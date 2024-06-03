@@ -1,6 +1,6 @@
 // import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { BSENewsPage, CompanyDetailPage, HomePage, LoginPage, MyPDFViewerPage ,  WatchlistCreate, WatchlistCompany,} from "./pages";
+import { BSENewsPage, CompanyDetailPage, HomePage, LoginPage, MyPDFViewerPage ,  WatchlistCreate, WatchlistCompany, ResultCalendar, WatchlistEdit } from "./pages";
 import ErrorPage from "./error-page";
 import { MainLayout } from "./components";
 import './assets/sass/main.scss'
@@ -31,8 +31,16 @@ function App() {
         element: <WatchlistCreate/> ,
         },
         {
+          path: "/watchlist/edit/:watchlist_id",
+          element: <WatchlistEdit /> ,
+        },
+        {
           path: "/watchlist/add-company",
           element: <WatchlistCompany/> ,
+        },
+        {
+          path: "/result-calendar",
+          element: <ResultCalendar/> ,
         },
       ]
     },

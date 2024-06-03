@@ -1,11 +1,13 @@
 export const API_BASE_URL = () => {
   let baseUrl1 = "https://omkaradata.in/api";
+
   if (
     window.location.href.includes("omkaradata.com") ||
     window.location.href.includes("omkaracapital.in")
   ) {
     baseUrl1 = "https://omkaradata.com/api"; // FOR https://vdr.omkaracapital.in/ OR omkaradata.com
   }
+
   if (
     (window.location.host != "omkaradata.in" &&
       window.location.host != "omkaradata.com") ||
@@ -139,4 +141,14 @@ export const getForensicUpdateTitle = (title="", type="") => {
   return res
 
 }
+
+export const DocumentNotes = [
+  { title: 'None', value: '0' },
+  { title: 'Concall Summary', value: 'Concall Summary' },
+  { title: 'Important Source', value: 'Important Source' },
+  { title: 'Management Meeting', value: 'Management Meeting' },
+  { title: 'One Pager', value: 'One Pager' },
+  { title: 'Quarter Update', value: 'Quarter Update' },
+  { title: 'Rough', value: 'Rough' },
+];
 

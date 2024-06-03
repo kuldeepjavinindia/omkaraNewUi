@@ -103,7 +103,6 @@ import PeerComponent from "./peer/PeerComponent";
           {data.map(({ label, value }) => (
             <Tab
                 className={`w-fit text-[13px] font-medium ${ActiveTab === value ? "text-theme font-semibold" : ""}`} key={value} value={value} onClick={() => setActiveTab(value)}
-                
             >
               {label}
             </Tab>

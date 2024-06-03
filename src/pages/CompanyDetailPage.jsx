@@ -1,4 +1,4 @@
-// import React from 'react'
+import { HiOutlineDocumentAdd } from "react-icons/hi";
 import {
   Tabs,
   TabsHeader,
@@ -6,6 +6,7 @@ import {
   Tab,
   TabPanel,
   Spinner,
+  Button,
 } from "@material-tailwind/react";
 import {
   CD_Main,
@@ -16,10 +17,11 @@ import {
   Notes_Main,
   Brief_Main,
   Forensic_Main,
-  MediaRoom_Main
+  MediaRoom_Main,
+  AddNotesModal,
 } from "../components/CompanyDetail";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { companyNotesAPI } from "../store/slice/SingleCompnaySlice";
 import { TrendlyneReq, companyNotesReq } from "../constants/defaultRequest";
 import { useParams } from "react-router-dom";
@@ -27,6 +29,7 @@ import { useState } from "react";
 import { OverviewAPI } from "../store/slice/TrendlyneSlice";
 import moment from "moment";
 import BarChartModal from "../components/CompanyDetail/CustomChart/BarChartModal";
+import { GlobalContext } from "../context/GlobalContext";
 
 function TabsDefault(props) {
   const { TabsData, ActiveTab, setActiveTab } = props;
@@ -74,6 +77,8 @@ const CompanyDetailPage = () => {
 
   const rr_dispatch = useDispatch();
   const rrd_params = useParams();
+
+  const { AddNote, setAddNote } = useContext(GlobalContext);
 
   let cmpId = rrd_params?.company_id;
   if (cmpId) {
@@ -125,6 +130,7 @@ const CompanyDetailPage = () => {
     }
   }, [cmpNotesLoading]);
 
+
   useEffect(() => {
     const format = "HH:mm:ss";
 
@@ -146,6 +152,7 @@ const CompanyDetailPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cmpNotesData.Data?.[0]]);
 
+  
   const TypeTabs = [
     {
       value: "1",
@@ -177,10 +184,11 @@ const CompanyDetailPage = () => {
     {
       value: "3",
       label: "Brief",
-      desc: (<>
-      
-        <Brief_Main />
-      </>),
+      desc: (
+        <>
+          <Brief_Main />
+        </>
+      ),
     },
     {
       value: "4",
@@ -203,7 +211,12 @@ const CompanyDetailPage = () => {
     {
       value: "6",
       label: "Forensic",
-      desc: <> <Forensic_Main/> </>,
+      desc: (
+        <>
+          {" "}
+          <Forensic_Main />{" "}
+        </>
+      ),
     },
     {
       value: "7",
@@ -217,7 +230,12 @@ const CompanyDetailPage = () => {
     {
       value: "8",
       label: "Media Room",
-      desc: <> <MediaRoom_Main/> </>,
+      desc: (
+        <>
+          {" "}
+          <MediaRoom_Main />{" "}
+        </>
+      ),
     },
   ];
 
@@ -227,9 +245,23 @@ const CompanyDetailPage = () => {
 
   return (
     <>
-    
       <BarChartModal />
-      <div className="sc-container">
+      <AddNotesModal />
+      
+      <div className="sc-container relative">
+        <div className=" absolute right-2 top-1 z-[2]">
+          <Button
+            size="sm"
+            variant="outlined"
+            className="p-0 px-2 py-1 border-theme text-theme shadow-none rounded-md text-[10px] flex gap-0.5"
+            onClick={()=>{
+              setAddNote(!AddNote)
+            }}
+          >
+            <HiOutlineDocumentAdd size={13} />
+            Add Note
+          </Button>
+        </div>
         <TabsDefault
           TabsData={TypeTabs}
           ActiveTab={ActiveTab}

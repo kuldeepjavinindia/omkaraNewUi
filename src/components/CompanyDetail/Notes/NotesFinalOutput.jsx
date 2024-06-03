@@ -23,6 +23,8 @@ import { useParams } from "react-router-dom";
 // import { MdEdit } from "react-icons/md";
 import ModalPreview from "./ModalPreview";
 import moment from "moment";
+import { AiFillDelete } from "react-icons/ai";
+import { MdEdit } from "react-icons/md";
 
 const NotesFinalOutput = () => {
   const [AllUploadDocuments, setAllUploadDocuments] = useState([]);
@@ -258,6 +260,9 @@ const NotesFinalOutput = () => {
       };
       rr_dispatch(UploadDocumentAnalysNoteApi([params]));
     }
+  }, []);
+
+  useEffect(() => {
     if (!UploadDocumentAnalysLoading) {
       let fData = UploadDocumentAnalysData?.Data;
       setAllUploadDocuments(fData);
@@ -286,8 +291,6 @@ const NotesFinalOutput = () => {
                   </IconButton>
                 </MenuHandler>
                 <MenuList>
-                  {/* <MenuItem onClick={() => [sortData(listdata, ("Notes" || "Notes")), handleClose(), setSortType('date')]}>Sort by Date</MenuItem> */}
-
                   <MenuItem
                     onClick={() => {
                       sortData(AllUploadDocuments, "date");
@@ -367,10 +370,10 @@ const NotesFinalOutput = () => {
                 return (
                   <li
                     key={i}
-                    className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b  cursor-pointer"
+                    className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b "
                   >
                     <div
-                      className="flex items-center gap-4"
+                      className="flex items-center gap-4 cursor-pointer"
                       onClick={() => {
                         setSelectedItem(item);
                         setOpen(!open);
@@ -388,7 +391,7 @@ const NotesFinalOutput = () => {
                           {item?.Heading}
                         </Typography>
                         <Typography className="text-[10px] text-gray-500">
-                          <span className="font-semibold text-[#4448F5]">
+                          <span className="font-semibold text-theme capitalize">
                             {item?.UserName}
                           </span>
                           <span className="font-semibold text-[#000] mx-1">
@@ -403,6 +406,7 @@ const NotesFinalOutput = () => {
                       </div>
                     </div>
                     <div className="flex gap-1 w-17">
+                      
                       {/* <IconButton onClick={()=> {
                       console.log('aa');
                       setSelectedItem(item);
@@ -410,12 +414,14 @@ const NotesFinalOutput = () => {
                     }} className=" bg-transparent text-theme shadow-none hover:shadow-none" size="sm">
                           <FaEye  size={20} />
                         </IconButton> */}
+
                       {/* <IconButton className=" bg-transparent text-theme shadow-none hover:shadow-none" size="sm">
                           <MdEdit  size={20} />
-                        </IconButton> */}
-                      {/* <IconButton className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none" size="sm">
+                        </IconButton>
+                      <IconButton className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none" size="sm">
                           <AiFillDelete size={20} />
                         </IconButton> */}
+
                     </div>
                   </li>
                 );

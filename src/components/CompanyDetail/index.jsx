@@ -12,6 +12,8 @@ import Brief_Main from "./Brief/Brief_Main";
 import Forensic_Main from "./Forensic/Forensic_Main";
 import MediaRoom_Main from "./Media/MediaRoom_Main";
 import PeerComponent from "./peer/PeerComponent";
+import AddNotesModal from "./Modals/AddNotesModal";
+import DeleteDataModal from "./Modals/DeleteDataModal";
 
 export {
     Financial_Main,
@@ -27,5 +29,7 @@ export {
     Brief_Main,
     Forensic_Main,
     PeerComponent,
+    AddNotesModal,
+    DeleteDataModal,
     MediaRoom_Main
 }

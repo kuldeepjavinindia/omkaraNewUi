@@ -15,6 +15,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  WLBulkUpload: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
 //   wlCompanyBulkUpload: {
 //     loading: true,
 //     data: [],
@@ -55,13 +61,13 @@ export const wlCompanyAPI = createAsyncThunk(
 );
 
 
-let wlCompanyBulkUploadReq = `${slice_base_url}/watchListBulkUploadRequest`;
-export const wlCompanyBulkUploadAPI = createAsyncThunk(
-  "wlCompanyBulkUpload",
+let BulkUploadReq = `${slice_base_url}/BulkInsertInWatchList`;
+export const WLBulkUploadAPI = createAsyncThunk(
+  "BulkUpload",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
     const response = await axios.post(
-      `${wlCompanyBulkUploadReq}`,
+      `${BulkUploadReq}`,
       all_params
     );
     return response?.data;
@@ -108,8 +114,6 @@ const WatchListSlice = createSlice({
       state.wlCompany.msgType = null;
     });
     builder.addCase(wlCompanyAPI.fulfilled, (state, action) => {
-      //   let allData = current(state);
-
       state.wlCompany.data = action.payload;
       state.wlCompany.loading = false;
       state.wlCompany.msg = "success";
@@ -123,6 +127,29 @@ const WatchListSlice = createSlice({
       state.wlCompany.data = action.payload;
     });
     // // END wlCompany DATA
+    
+    
+
+    // // START WLBulkUpload DATA
+    builder.addCase(WLBulkUploadAPI.pending, (state) => {
+      state.WLBulkUpload.loading = true;
+      state.WLBulkUpload.error = false;
+      state.WLBulkUpload.msgType = null;
+    });
+    builder.addCase(WLBulkUploadAPI.fulfilled, (state, action) => {
+      state.WLBulkUpload.data = action.payload?.Data?.[0] || [];
+      state.WLBulkUpload.loading = false;
+      state.WLBulkUpload.msg = "success";
+      state.WLBulkUpload.msgType = "success";
+    });
+    builder.addCase(WLBulkUploadAPI.rejected, (state, action) => {
+      state.WLBulkUpload.loading = false;
+      state.WLBulkUpload.error = true;
+      state.WLBulkUpload.msgType = "error";
+      state.WLBulkUpload.msg = action.payload?.msg;
+      state.WLBulkUpload.data = action.payload;
+    });
+    // // END WLBulkUpload DATA
     
 
   },

@@ -6,7 +6,10 @@ import { BarChartData_Columns_Rows, SCAnnualP_LApi } from '../../../store/slice/
 import { IconButton } from '@material-tailwind/react';
 import { BsFillBarChartFill } from 'react-icons/bs';
 
-const P_L_Statement = () => {
+const P_L_Statement = ({
+  UpdateRightSideTabs,
+  setUpdateRightSideTabs,
+}) => {
     const rrd_params = useParams();
     
     let cmpId = rrd_params?.company_id;
@@ -19,7 +22,7 @@ const P_L_Statement = () => {
     const [TableBody, setTableBody] = useState([]);
     const [ActivePrimaryBtn, setActivePrimaryBtn] = useState(1);
   
-
+    const tab_1 = UpdateRightSideTabs.tab_1;
     
     const {
         SCAnnualP_L:{
@@ -36,18 +39,6 @@ const P_L_Statement = () => {
             ...params,
             CompanyId:cmpId
         }
-        // let pType = 'con';
-        //     setP_Type(pType)
-        // if(QuarterlySegmentType === "Standalone"){
-        //   pType = 'std';
-        //   setP_Type(pType)
-        // }
-        // let params =  {
-        //   "CompanyId":companyId,
-        //   "type":pType
-        // }
-
-
         rr_dispatch(SCAnnualP_LApi(params))
       }
 
@@ -81,13 +72,6 @@ const P_L_Statement = () => {
                 })
                 setTableColumns(cols)
               }
-            //   else{
-            //     if(FirstLoad){
-            //       setFirstLoad(false);
-            //       setActivePrimaryBtn(2);
-            //       setQuarterlySegmentType('Standalone')
-            //     }
-            //   }
               if(SCAnnualP_LData?.Data && SCAnnualP_LData?.Data.length){
                 let dataA = []
                 let a00 = SCAnnualP_LData?.Data;
@@ -113,8 +97,21 @@ const P_L_Statement = () => {
               }
 
 
+              
+        let button_status = SCAnnualP_LData.button_status;
+        let nTab_1 = tab_1;
+        console.log('nTab_1 >> ', nTab_1)
+        nTab_1 = {
+          ...nTab_1,
+          button_status: button_status,
+          activeType: SCAnnualP_LData?.activeType,
+          func: callApi
         }
-      }, [SCAnnualP_Loading])
+        console.log('nTab_1 >> ', nTab_1)
+        setUpdateRightSideTabs(prev=>({...prev, tab_1: nTab_1}));
+
+        }
+      }, [rr_dispatch, SCAnnualP_Loading])
 
 
       const showChart = (row) => {

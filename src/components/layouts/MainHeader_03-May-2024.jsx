@@ -12,17 +12,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import CompanySearch from "../CompanySearch";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const MainHeader = () => {
 
   // const rr_dispatch = useDispatch();
   const [FirstWL, setFirstWL] = useState(null);
-  const rrd_params = useParams();
-
-
-  const itemData = localStorage.getItem("selectedWL") ? JSON.parse(localStorage.getItem("selectedWL")) : null
-  const [SelectedWLItem, setSelectedWLItem] = useState(itemData)
 
 
   const {
@@ -35,14 +30,11 @@ const MainHeader = () => {
   } = useSelector( state=> state.WatchList)
 
 
-
   useEffect(() => {
     let firstWL = localStorage.getItem('selectedWL');
         firstWL = JSON.parse(firstWL);
         setFirstWL(firstWL);
   }, [localStorage.getItem('selectedWL')])
-
-
 
 
 
@@ -66,12 +58,7 @@ const MainHeader = () => {
                 <MenuHandler>
                   <Button  size="sm" variant="outlined" className="flex items-center gap-1 text-theme border-theme rounded" >
                     <BiChevronDown className="w-4"/> 
-                    {/* {FirstWL?.WatchListNAme} */}
-                    {localStorage.getItem('selectedWL') ? <>
-                      {
-                        JSON.parse(localStorage.getItem('selectedWL')).WatchListNAme
-                      }
-                    </> : ""}
+                    {FirstWL?.WatchListNAme}
                   </Button>
                 </MenuHandler>
 
@@ -88,7 +75,6 @@ const MainHeader = () => {
                         <>
                           <MenuItem className="p-0" key={i} onClick={()=>{
                             localStorage.setItem('selectedWL', JSON.stringify(item))
-                            window.location.href = import.meta.env.VITE_BASE_URL+'/bse-news'
                           }}>
                             <label
                               htmlFor="item-1"
@@ -115,9 +101,7 @@ const MainHeader = () => {
                 </Link>         
               </li>
               <li>
-                <Link to = {`/watchlist/edit/${itemData?.ID}`}>
                 <Button size="sm" className="bg-[#e7e8f9] rounded text-[#fff] text-theme shadow-none hover:shadow-none">Edit</Button>
-                </Link>
               </li>
               <li>
                 <Link to= "/watchlist/create">

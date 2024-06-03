@@ -4,7 +4,7 @@ const Notes_Main = () => {
   return (
     <div className=" text-black">
       <div className="grid grid-cols-12 gap-2">
-        <NotesFinalOutput/>
+        <NotesFinalOutput />
       </div>
     </div>
   );

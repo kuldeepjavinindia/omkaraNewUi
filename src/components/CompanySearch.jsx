@@ -23,36 +23,15 @@ const CompanySearch = (props) => {
     }
   } = useSelector( state=> state.Masters)
 
-
-  // const openCompany = (item) => {
-  //   let url = import.meta.env.VITE_BASE_URL + '/company-detail/'+ window.btoa(item?.CompanyID)+'/'
-  //   console.log('url ???? ', url)
-  //   window.open(url, '_self');
-  //   // window.location.href = url
-  // }
-
   const handleSearch = (e) => {
     let val = e.target.value;
     setSearch(val);
-
-    // if(Search != '' && Search.length > 4){
-    //     let params = companyMasterReq;
-    //     params = {
-    //         ...params,
-    //         Search: Search
-    //     }
-    //     rr_dispatch(companyMasterAPI(params))
-    // }
-
   };
   const handelClose = () => {
     setSearch("");
     setSelectedItem(-1)
   };
   const handelKeyDown = e => {
-    // console.log('====================================');
-    // console.log(e.key);
-    // console.log('====================================');
     let crtKey = e.key;
 
     if(crtKey === "ArrowUp" && SelectedItem > 0){
@@ -64,8 +43,6 @@ const CompanySearch = (props) => {
     }
     else
     if(crtKey === "Enter"){
-        // console.log('Enter in function', cmpMstData[SelectedItem])
-        // window.open(cmpMstData[SelectedItem])
         openCompany(cmpMstData[SelectedItem])
     }else{
         setSelectedItem(-1)

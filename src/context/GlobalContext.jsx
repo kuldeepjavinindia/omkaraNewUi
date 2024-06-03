@@ -6,6 +6,7 @@ const GlobalContextProvider = ({ children }) => {
 
   const [DIR_Model, setDIR_Model] = useState(null)
   const [SelectedDIR, setSelectedDIR] = useState(null)
+  const [AddNote, setAddNote] = useState(false)
 
 
   return (
@@ -14,6 +15,8 @@ const GlobalContextProvider = ({ children }) => {
       setDIR_Model,
       SelectedDIR,
       setSelectedDIR,
+      AddNote,
+      setAddNote,
     }}>
       {children}
     </GlobalContext.Provider>

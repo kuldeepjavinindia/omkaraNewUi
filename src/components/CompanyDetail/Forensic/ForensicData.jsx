@@ -602,6 +602,7 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                                           </>
                                         ) : (
                                           <>
+                                          
                                             {column?.id === "column_2" &&
                                             ["DIR", "AH"].includes(typeData) ? (
                                               <>
@@ -654,7 +655,7 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                                                         <Typography
                                                           variant="small"
                                                           color="white"
-                                                          className="font-normal opacity-80"
+                                                          className="font-normal opacity-80 capitalize"
                                                         >
                                                           {filterTooltip(value)}
                                                         </Typography>
