@@ -42,12 +42,13 @@ const Quarterly_P_L_Segment = (props) => {
     console.log(QuarterlySegmentActiveFilter)
   }
 
-  const callApi = () => {
+  const callApi = (type=tab_1?.activeType) => {
     
     let params = SC_Segment_Req;
     params = {
       ...params,
       companyID: cmpId,
+      type: type,
     };
     rr_dispatch(SCQtrSegmentApi(params));
 

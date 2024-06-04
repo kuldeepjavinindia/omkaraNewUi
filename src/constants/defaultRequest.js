@@ -59,7 +59,10 @@ export const UploadDocumentNoteReq = {
   CompanyID: "",
   UserID: "22",
   CommentType: "",
-}; // ADD array
+}; 
+
+
+// ADD array
 // export const UploadDocumentNoteReq = {
 //   CompanyID: "",
 //   UserID: "",

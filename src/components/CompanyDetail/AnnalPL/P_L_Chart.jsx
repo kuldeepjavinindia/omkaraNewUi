@@ -23,18 +23,22 @@ const quarterButton = [
       len:13
     }
   ]
-const P_L_Chart = () => {
+const P_L_Chart = (props) => {
 
-    const rrd_params = useParams();
-    
+
+    const {
+        UpdateRightSideTabs,
+        setUpdateRightSideTabs
+    } = props
+
+
+const rrd_params = useParams();
 let cmpId = rrd_params?.company_id;
 if(cmpId){
   cmpId = window.atob(cmpId);
 }
 
-
 const [QuarterlyAllData, setQuarterlyAllData] = useState(null);
-
 const [QButtonActive, setQButtonActive] = useState(quarterButton[0]);
 const {
     SCAnnualP_LChart:{
@@ -99,11 +103,15 @@ const rr_dispatch = useDispatch();
 
 }
 
-const callApi = () => {
+
+const tab_1 = UpdateRightSideTabs.tab_2;
+
+const callApi = (type=tab_1?.activeType) => {
     let params = SC_SCAnnualP_L_ChartReq;
         params =  {
             ...params,
-            CompanyID: cmpId
+            CompanyID: cmpId,
+            type: type
         }
     rr_dispatch(SCAnnualP_LChartApi(params))
 }
@@ -115,6 +123,20 @@ useEffect(() => {
 useEffect(() => {
   if(!SCP_LLoading){
     quarterlySelect()
+
+
+    let button_status = SCP_LChart.button_status;
+    let nTab_1 = tab_1;
+    // console.log('button_status >> ', button_status)
+    nTab_1 = {
+      ...nTab_1,
+      button_status: button_status,
+      activeType: SCP_LChart?.activeType,
+      func: callApi
+    }
+    setUpdateRightSideTabs(prev=>({...prev, tab_1: nTab_1}));
+
+
   }
 }, [SCP_LLoading])
 

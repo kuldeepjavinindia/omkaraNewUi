@@ -6,8 +6,14 @@ import { useParams } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
 import { BsFillBarChartFill } from 'react-icons/bs';
 
-const Quarterly_P_L_LastQuarter = () => {
+const Quarterly_P_L_LastQuarter = (props) => {
+  const {
+    UpdateRightSideTabs,
+    setUpdateRightSideTabs
+  } = props
 
+
+  const tab_1 = UpdateRightSideTabs.tab_3;
 
   const [TableColumns, setTableColumns] = useState([]);
   const [TableBody, setTableBody] = useState([]);
@@ -28,7 +34,7 @@ const Quarterly_P_L_LastQuarter = () => {
     }
   } = useSelector(state=>state.SingleCompany)
 
-  const callApi = () => {
+  const callApi = (type=tab_1?.activeType) => {
     let params = SC_QResult_Req;
     params = {
       ...params,
@@ -100,7 +106,15 @@ const Quarterly_P_L_LastQuarter = () => {
         setTableBody(dataA)
       }
 
-
+      let button_status = QRData.button_status;
+      let nTab_1 = tab_1;
+      nTab_1 = {
+        ...nTab_1,
+        button_status: button_status,
+        activeType: QRData?.activeType,
+        func: callApi
+      }
+      setUpdateRightSideTabs(prev=>({...prev, tab_3: nTab_1}));
 
     }
 }, [rr_dispatch, QRLoading])

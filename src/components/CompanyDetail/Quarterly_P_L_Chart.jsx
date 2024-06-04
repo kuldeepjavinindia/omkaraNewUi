@@ -25,7 +25,15 @@ const quarterButton = [
     }
   ]
 
-const Quarterly_P_L_Chart = () => {
+const Quarterly_P_L_Chart = (props) => {
+
+    const {
+        UpdateRightSideTabs,
+        setUpdateRightSideTabs
+      } = props
+    
+    
+      const tab_1 = UpdateRightSideTabs.tab_4;
 
 const [QButtonActive, setQButtonActive] = useState(quarterButton[0]);
 const [QuarterlyAllData, setQuarterlyAllData] = useState(null);
@@ -36,6 +44,9 @@ let cmpId = rrd_params?.company_id;
 if(cmpId){
   cmpId = window.atob(cmpId);
 }
+
+
+
 
 
 const quarterlySelect = (quarter=5, data=Year20Data?.Data) => {
@@ -102,15 +113,21 @@ const {
 } = useSelector(state=>state.SingleCompany);
 const rr_dispatch = useDispatch();
 
-
-useEffect(() => {
+const callApi = (type=tab_1?.activeType) => {
 
     let params = SC_Data20_Req;
     params = {
         ...params,
-        CompanyId: cmpId
+        CompanyId: cmpId,
+        type: type
     }
     rr_dispatch(SCData20YearsApi([params]))
+
+}
+
+useEffect(() => {
+
+  callApi()
 
 }, [])
 
@@ -124,6 +141,16 @@ useEffect(() => {
     if(!Year20Loading){
         // console.log('Year20Data >>> ', Year20Data)
         quarterlySelect()
+
+        let button_status = Year20Data.button_status;
+        let nTab_1 = tab_1;
+        nTab_1 = {
+          ...nTab_1,
+          button_status: button_status,
+          activeType: Year20Data?.activeType,
+          func: callApi
+        }
+        setUpdateRightSideTabs(prev=>({...prev, tab_4: nTab_1}));
     }
     
 }, [Year20Loading])

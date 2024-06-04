@@ -33,11 +33,12 @@ const P_L_Statement = ({
 
       const rr_dispatch = useDispatch();
 
-      const callApi = () => {
+      const callApi = (type=tab_1?.activeType) => {
         let params = SC_SCAnnualP_L_Req
         params ={ 
             ...params,
-            CompanyId:cmpId
+            CompanyId:cmpId,
+            type: type
         }
         rr_dispatch(SCAnnualP_LApi(params))
       }
@@ -100,17 +101,17 @@ const P_L_Statement = ({
               
         let button_status = SCAnnualP_LData.button_status;
         let nTab_1 = tab_1;
-        console.log('nTab_1 >> ', nTab_1)
+        console.log('button_status >> ', button_status)
         nTab_1 = {
           ...nTab_1,
           button_status: button_status,
           activeType: SCAnnualP_LData?.activeType,
           func: callApi
         }
-        console.log('nTab_1 >> ', nTab_1)
         setUpdateRightSideTabs(prev=>({...prev, tab_1: nTab_1}));
 
         }
+        // console.log('SCAnnualP_Loading >>> ', SCAnnualP_Loading)
       }, [rr_dispatch, SCAnnualP_Loading])
 
 

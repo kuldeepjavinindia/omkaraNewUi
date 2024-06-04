@@ -1,10 +1,11 @@
 import { Button, ButtonGroup } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Quarterly_P_L_Chart from "./Quarterly_P_L_Chart";
 import Quarterly_P_L_Segment from "./Quarterly_P_L_Segment";
 import Quarterly_P_L_Result from "./Quarterly_P_L_Result";
 import Quarterly_P_L_LastQuarter from "./Quarterly_P_L_LastQuarter";
 import { ConStdArray } from "../../constants/helper";
+import { useSelector } from "react-redux";
 
 const Quarterly_P_L = () => {
 
@@ -44,10 +45,19 @@ const Quarterly_P_L = () => {
     },
   };
 
+
+  const {
+    DateACE:{
+      data: DateACEData,
+      // loading: DateACELoading
+    },
+    SCQtrSegment: { data: SCQtrSegmentData },
+  } = useSelector(state=>state.SingleCompany)
   
   const primaryButton = ConStdArray;
 
   const [PrimaryBtn, setPrimaryBtn] = useState(primaryButton[0]);
+  const [UpdatedOnDate, setUpdatedOnDate] = useState(DateACEData?.intrim_result);
 
   const [UpdateRightSideTabs, setUpdateRightSideTabs] = useState(RightSideTabs);
 
@@ -107,6 +117,17 @@ const Quarterly_P_L = () => {
 
   const [SecondaryBtn, setSecondaryBtn] = useState(secondaryButton[0]);
 
+
+  const updatedOn = () => {
+    let data = "132";
+    if(SecondaryBtn.id === 2){
+      data = "456";
+
+    }
+    return data
+  }
+  
+
   return (
     <>
       <div className="flex justify-between mb-2">
@@ -118,7 +139,7 @@ const Quarterly_P_L = () => {
                 let tabBtnData = UpdateRightSideTabs[keyName];
                 
                 return (
-                  <div className="flex gap-2 mb-4" key={i}>
+                  <div className="flex gap-2 mb-2" key={i}>
                     {primaryButton.map((item, i) => (
                       <>
                         <Button
@@ -154,8 +175,17 @@ const Quarterly_P_L = () => {
           }
           
           <div className="text-black font-medium mb-2 text-[13px]">
-            Quarterly Segment {`"${PrimaryBtn?.label}"`} (showing data from last
-            12 quarters)
+            {
+              SecondaryBtn.id == 2 && (
+                <>
+                  Quarterly Segment {`"${PrimaryBtn?.label}"`} { SCQtrSegmentData._Headers && SCQtrSegmentData._Headers.length > 0 && (
+                    <>
+                      (showing data from last {SCQtrSegmentData._Headers && SCQtrSegmentData._Headers.length-1} quarters)
+                    </>
+                  )}
+                </>
+              )
+            }
           </div>
         </div>
         <div>
@@ -175,6 +205,18 @@ const Quarterly_P_L = () => {
                   }  `}
                   onClick={() => {
                     setSecondaryBtn(item);
+                    // let date = DateACEData?.intrim_result
+                    // if(SecondaryBtn.id == 2){
+                    //   date = DateACEData?.QtrSeg
+                    // }else
+                    // if(SecondaryBtn.id == 3){
+                    //   date = DateACEData?.QtrSeg
+                    // }
+                    // if(SecondaryBtn.id == 4){
+                    //   date = ""
+                    // }
+                    // setUpdatedOnDate(date)
+                    
                   }}
                 >
                   {item.label}
@@ -184,7 +226,30 @@ const Quarterly_P_L = () => {
           </ButtonGroup>
 
           <div className="flex text-[12px] justify-between text-black">
-            <div className=" font-medium">Updated On 25-04-2024 23:55</div>
+            <div className=" font-medium">
+              {
+                (SecondaryBtn.id == 1) && (
+                  <>
+                  Updated On {DateACEData?.intrim_result}
+                  </>
+                )
+              }
+              {
+                (SecondaryBtn.id == 2) && (
+                  <>
+                  Updated On {DateACEData?.QtrSeg}
+                  </>
+                )
+              }
+              {
+                (SecondaryBtn.id == 3) && (
+                  <>
+                  Updated On {DateACEData?.QtrSeg}
+                  </>
+                )
+              }
+              
+              </div>
             <div className=" font-bold">(In Cr.)</div>
           </div>
         </div>

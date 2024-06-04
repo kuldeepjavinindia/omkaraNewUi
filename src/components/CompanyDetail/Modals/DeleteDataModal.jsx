@@ -34,7 +34,7 @@ export default function DeleteDataModal(props) {
       {/* <Button onClick={handleOpen} variant="gradient">
         Open Dialog
       </Button> */}
-      <Dialog size="sm" open={OpenModal?.ID} handler={()=>handleOpen()}>
+      <Dialog size="sm" open={OpenModal?.ID || OpenModal} handler={()=>handleOpen()}>
         <DialogHeader className=" text-red-400 border-b border-gray-300" >{ModalTitle || ""}</DialogHeader>
         <DialogBody>
           {children}    

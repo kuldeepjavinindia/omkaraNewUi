@@ -1,4 +1,4 @@
-import { Typography, Button, Input, TextField } from "@material-tailwind/react";
+import { Typography, Button, Input } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { wlAPI } from "../store/slice/WatchListSlice";
 import { watchListReq } from "../constants/defaultRequest";
@@ -7,7 +7,10 @@ import { useAuthState } from "../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 
 const WatchlistCreate = () => {
-  const [addWatchListName, setAddWatchListName] = useState();
+  const [addWatchListName, setAddWatchListName] = useState(null);
+  
+  const [SaveData, setSaveData] = useState(false);
+
   const rr_dispatch = useDispatch();
   const authState = useAuthState();
   const navigate = useNavigate();
@@ -17,7 +20,7 @@ const WatchlistCreate = () => {
   const itemData = localStorage.getItem("selectedWL")
     ? JSON.parse(localStorage.getItem("selectedWL"))
     : null;
-  const [SelectedWLItem, setSelectedWLItem] = useState(itemData);
+  // const [SelectedWLItem, setSelectedWLItem] = useState(itemData);
   const {
     wl: { loading: wlLoading, data: wldata },
   } = useSelector((state) => state.WatchList);
@@ -36,32 +39,27 @@ const WatchlistCreate = () => {
     };
 
     rr_dispatch(wlAPI(prevData));
-
-    if (!wlLoading) {
-      navigate("/watchlist/add-company");
-    }
-
+    setSaveData(!SaveData)
     // navigate("/login");
   };
 
-  const handleUpdate = () => {
-    let prevData = watchListReq;
-    prevData = {
-      ...prevData,
-      ID: SelectedWLItem.ID,
-      WatchListNAme: addWatchListName,
-      input: 2,
-    };
-    rr_dispatch(wlAPI(prevData));
-    setSelectedWLItem(null);
-  };
+
+  useEffect(() => {
+    if (!wlLoading && SaveData) {
+      
+      let data = wldata?.Data
+      let New_data = data.find(item=>item.WatchListNAme == addWatchListName)
+      localStorage.setItem("selectedWL", JSON.stringify(New_data))
+      navigate("/watchlist/add-company");
+    }
+  }, [rr_dispatch, wlLoading]);
 
   return (
     <>
       <div className="w-full border-[1px] border-[#B8BCF1] rounded py-3 px-3 bg-[#E9EDEF]">
         <div className="rounded-md bg-[#fff] py-7 px-7">
-          <Typography className="text-[15px]  font-semibold mb-8">
-            CREATE NEW WATCH LIST
+          <Typography className="text-[15px]  font-semibold mb-4 uppercase">
+            Create New Watch List
           </Typography>
           <label className="text-[12px] text-[#000] font-medium">Name</label>
           {/* {JSON.stringify(rrd_params)} */}
@@ -75,27 +73,29 @@ const WatchlistCreate = () => {
             }}
             containerProps={{ className: "min-w-[100px]" }}
           />
-          {SelectedWLItem ? (
+
+          <div className="flex gap-2 mt-5 items-center">
             <Button
-              className="mr-5 mt-8 bg-theme text-[#fff] py-2 rounded"
-              onClick={handleUpdate}
-            >
-              {" "}
-              UPDATE
-            </Button>
-          ) : (
-            <Button
-              className="mr-5 mt-8 bg-theme text-[#fff] py-2 rounded"
-              onClick={handleAddWatchList}
+              loading={wlLoading}
+              className="bg-theme text-[#fff] py-2 rounded"
+              onClick={()=>handleAddWatchList()}
             >
               {" "}
               SAVE
             </Button>
-          )}
 
-          <Button className="mr-1 mt-8 bg-[#FAE0E0] text-[#DD2025] py-2 rounded">
-            CANCEL AND GO BACK
-          </Button>
+              <Button
+                disabled={wlLoading}
+                className="bg-[#FAE0E0] text-[#DD2025] py-2 rounded"
+                
+                onClick={()=>{
+                  navigate('/bse-news')
+                }}
+              >
+                CANCEL AND GO BACK
+              </Button>
+
+          </div>
         </div>
         {/* End Card */}
       </div>

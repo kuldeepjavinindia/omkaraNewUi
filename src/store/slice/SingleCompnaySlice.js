@@ -165,6 +165,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  DateACE: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -201,6 +207,8 @@ let VideoLikeDislikeReq = `${slice_base_url}/VDRMediaUserLiskeDislike`;
 let ResultDocumentReq = `${slice_base_url}/ResultDocument_New_ACEAPI`;
 
 let BoardOfDirectorDetailReq = `${slice_base_url}/BoardOfDirectorDetails`;
+
+let DateACE_Req = `${slice_base_url}/DateAPI_ACEAPI`;
 
 export const companyNotesAPI = createAsyncThunk(
   "companyNotes",
@@ -416,6 +424,15 @@ export const BoardOfDirectorDetailApi = createAsyncThunk(
   "BoardOfDirectorDetail",
   async (all_param = {}) => {
     const response = await axios.post(`${BoardOfDirectorDetailReq}`, all_param);
+    return response?.data;
+  }
+);
+
+// DateACE Thunk
+export const DateACEApi = createAsyncThunk(
+  "DateACE",
+  async (all_param = {}) => {
+    const response = await axios.get(`${DateACE_Req}`);
     return response?.data;
   }
 );
@@ -952,6 +969,28 @@ const SingleCompanySlice = createSlice({
       state.BoardOfDirectorDetail.data = action.payload;
     });
     // // END BoardOfDirectorDetail DATA
+
+    // // START  DateACE DATA
+    builder.addCase(DateACEApi.pending, (state) => {
+      state.DateACE.loading = true;
+      state.DateACE.error = false;
+      state.DateACE.msgType = null;
+    });
+    builder.addCase(DateACEApi.fulfilled, (state, action) => {
+      state.DateACE.data = action.payload?.Data?.[0] || {};
+      state.DateACE.loading = false;
+      state.DateACE.msg = "success";
+      state.DateACE.msgType = "success";
+    });
+    builder.addCase(DateACEApi.rejected, (state, action) => {
+      state.DateACE.loading = false;
+      state.DateACE.error = true;
+      state.DateACE.msgType = "error";
+      state.DateACE.msg = action.payload?.msg;
+      state.DateACE.data = action.payload;
+    });
+    // // END DateACE DATA
+
 
   },
 });

@@ -1,5 +1,5 @@
 export const API_BASE_URL = () => {
-  let baseUrl1 = "https://omkaradata.in/api";
+  let baseUrl1 = "https://omkaradata.com/api";
 
   if (
     window.location.href.includes("omkaradata.com") ||

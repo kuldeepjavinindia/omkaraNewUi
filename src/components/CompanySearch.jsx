@@ -9,7 +9,10 @@ import { openCompany } from "../constants/helper";
 const CompanySearch = (props) => {
     const {
         inputProps,
-        iconProps
+        iconProps,
+        type,
+        SelectData,
+        setSelectData,
     } = props
   const [Search, setSearch] = useState("");
 
@@ -23,6 +26,8 @@ const CompanySearch = (props) => {
     }
   } = useSelector( state=> state.Masters)
 
+  
+
   const handleSearch = (e) => {
     let val = e.target.value;
     setSearch(val);
@@ -30,6 +35,7 @@ const CompanySearch = (props) => {
   const handelClose = () => {
     setSearch("");
     setSelectedItem(-1)
+    setSelectData(null)
   };
   const handelKeyDown = e => {
     let crtKey = e.key;
@@ -47,9 +53,22 @@ const CompanySearch = (props) => {
     }else{
         setSelectedItem(-1)
     }
+  };
+
+
+  const onSelectData = (item) => {
+
+    if(type == 'select'){
+        handelClose();
+        setSelectData(item);
+    }else{
+        openCompany(item)
+    }
+
     
 
-  };
+  }
+
   const rr_dispatch  = useDispatch();
 
   useEffect(() => {
@@ -61,7 +80,7 @@ const CompanySearch = (props) => {
         }
         rr_dispatch(companyMasterAPI(params))
     }
-  }, [Search])
+  }, [rr_dispatch, Search])
   
 
   return (
@@ -88,11 +107,11 @@ const CompanySearch = (props) => {
         value={Search}
         onChange={(e) => handleSearch(e)}
         onKeyDown={(e)=>handelKeyDown(e)}
-        // onBlur={(e)=>handelClose(e)}
+        
       />
       {
         Search != "" && (
-            <div className="searchResult absolute top-10 bg-white w-full p-2 rounded-lg border-[1px] border-gray-400 border-t-0">
+            <div className="searchResult absolute top-10 bg-white w-full p-2 rounded-lg border-[1px] border-gray-400 border-t-0 z-[1]">
                 <List className="p-0 max-h-36 overflow-y-auto" >
                     {
                         cmpMstLoading ? (
@@ -109,7 +128,7 @@ const CompanySearch = (props) => {
                         {
                             cmpMstData && cmpMstData.length > 0 && cmpMstData.map((item, i)=>{
                                 return (
-                                    <div  onClick={()=>openCompany(item)} key={i}>
+                                    <div onClick={()=>onSelectData(item)} key={i}>
                                         <ListItem size="sm" className={`${SelectedItem === i ? "bg-blue-gray-50" : ""} text-sm py-1`}>{item?.CompanyName}</ListItem>
                                     </div>
                                 )

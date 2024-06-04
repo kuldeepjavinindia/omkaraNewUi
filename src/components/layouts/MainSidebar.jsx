@@ -180,7 +180,7 @@ const menuItem = [
       {
         id: 1,
         name: "Delivery Data",
-        link: "#0",
+        link: "/delivery-data",
       },
       {
         id: 2,

@@ -8,6 +8,7 @@ import WatchlistEdit from "./WatchlistEdit";
 import WatchlistCompany from "./WatchlistCompany";
 import ResultCalendar from "./data2/ResultCalendar";
 import QuarterlyResult from "./data2/QuarterlyResult";
+import DeliveryData from "./data2/Analysis/DeliveryData";
 
 export {
     HomePage,
@@ -20,4 +21,5 @@ export {
     WatchlistCompany,
     ResultCalendar,
     QuarterlyResult,
+    DeliveryData,
 }

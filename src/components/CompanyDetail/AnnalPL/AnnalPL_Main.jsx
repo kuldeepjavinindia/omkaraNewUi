@@ -3,6 +3,7 @@ import { ButtonGroup, Button } from '@material-tailwind/react';
 import { useParams } from 'react-router-dom';
 import P_L_Statement from './P_L_Statement';
 import P_L_Chart from './P_L_Chart';
+import { useSelector } from 'react-redux';
 
 const AnnalPL_Main = () => {
 
@@ -12,16 +13,16 @@ const AnnalPL_Main = () => {
     tab_1: {
       activeType: "con",
       button_status: {
-        con: true,
-        std: true,
+        con: false,
+        std: false,
       },
       func: () => {}
     },
     tab_2: {
       activeType: "con",
       button_status: {
-        con: true,
-        std: true,
+        con: false,
+        std: false,
       },
       func: () => {}
     }
@@ -77,30 +78,32 @@ const AnnalPL_Main = () => {
         },
       ];
 
+      const {
+        DateACE:{
+          data: DateACEData,
+          // loading: DateACELoading
+        },
+      } = useSelector(state=>state.SingleCompany)
+
       
   const [PrimaryBtn, setPrimaryBtn] = useState(primaryButton[0]);
   const [SecondaryBtn, setSecondaryBtn] = useState(secondaryButton[0]);
 
-      
-      
-
-
 
   return (
     <>
-      
-{/* {JSON.stringify(UpdateRightSideTabs)} */}
+
       <div className="flex justify-between mb-2">
         <div>
           <div className="flex gap-2 mb-4">
+            
             {primaryButton.map((item, i) => {
-                
-              let keyName = `tab_${i+1}`;
-              let tabBtnData = UpdateRightSideTabs[keyName];
 
+              let keyName = `tab_${SecondaryBtn?.id}`;
+              let tabBtnData = UpdateRightSideTabs[keyName];
+              
               return (
                 <>
-                
                   <Button
                     disabled={tabBtnData?.button_status[item?.value] ? false : true}
                     onClick={() => {
@@ -112,7 +115,6 @@ const AnnalPL_Main = () => {
                       }
                       setUpdateRightSideTabs(prev=>({...prev, [keyName]: nTab_1}));
                       tabBtnData.func(item?.value);
-                    
                     }}
                     size="sm"
                     variant={`${PrimaryBtn?.id == item?.id ? "" : "outlined"}`}
@@ -145,6 +147,17 @@ const AnnalPL_Main = () => {
               );
             })}
           </ButtonGroup>
+          
+          <div className="flex text-[12px] justify-between text-black">
+            <div className=" font-medium">
+            <>
+                  Updated On {DateACEData?.PnL}
+                  </>
+              
+              </div>
+            <div className=" font-bold">(In Cr.)</div>
+          </div>
+
         </div>
       </div>
 

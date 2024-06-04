@@ -4,8 +4,9 @@ import { BarChartData_Columns_Rows, SCRatiosApi } from '../../../store/slice/Sin
 import { SC_Ratios_Req } from '../../../constants/defaultRequest';
 import { useParams } from 'react-router-dom';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
-import { IconButton } from '@material-tailwind/react';
+import { Button, IconButton } from '@material-tailwind/react';
 import { BsFillBarChartFill } from 'react-icons/bs';
+import { ConStdArray } from '../../../constants/helper';
 
 const RatioComponent = () => {
 
@@ -17,7 +18,10 @@ const RatioComponent = () => {
     const { SCRatios:{
         data:RatiosData,
         loading:RatiosLoading
-    } } = useSelector((state) => state.SingleCompany);
+    }, DateACE:{
+      data: DateACEData,
+      // loading: DateACELoading
+    }, } = useSelector((state) => state.SingleCompany);
     const rrd_params = useParams();
     const rr_dispatch = useDispatch();
     
@@ -26,6 +30,21 @@ const RatioComponent = () => {
       cmpId = window.atob(cmpId);
     }
     
+    const RightSideTabs = {
+      tab_1: {
+        activeType: "con",
+        button_status: {
+          con: false,
+          std: false,
+        },
+        func: () => {}
+      }
+    };  
+    const [UpdateRightSideTabs, setUpdateRightSideTabs] = useState(RightSideTabs);
+
+    const [PrimaryBtn, setPrimaryBtn] = useState(ConStdArray[0]);
+    const tab_1 = UpdateRightSideTabs.tab_1;
+
 
     
   const showDiv = (e, index) => {
@@ -69,17 +88,27 @@ const showChart = (row, level=1)=>{
     }
 
 
+    const callAPI = (type=tab_1?.activeType) => {
+      let params = SC_Ratios_Req;
+      params = {
+          ...params,
+          CompanyId: cmpId,
+          type: type
+      }
+      rr_dispatch(SCRatiosApi(params))
+    }
+
+
+    useEffect(() => {
+      callAPI()
+    }, [])
+    
 
     useEffect(() => {
 
-      if(RatiosLoading){
-        let params = SC_Ratios_Req;
-        params = {
-            ...params,
-            CompanyId: cmpId
-        }
-        rr_dispatch(SCRatiosApi(params))
-      }
+      // if(RatiosLoading){
+     
+      // }
       if(!RatiosLoading){
 
         if(RatiosData.header && RatiosData.header.length > 0){
@@ -133,6 +162,20 @@ const showChart = (row, level=1)=>{
             setPlusIcons(plusIcon);
             setTableBody(dataA)
           }
+          
+          let button_status = RatiosData.button_status;
+          let nTab_1 = tab_1;
+          
+          nTab_1 = {
+            ...nTab_1,
+            button_status: button_status,
+            activeType: RatiosData?.activeType,
+            func: callAPI
+          }
+          setUpdateRightSideTabs(prev=>({...prev, tab_1: nTab_1}));
+              
+
+
 
 
 
@@ -143,6 +186,58 @@ const showChart = (row, level=1)=>{
     <>
       
     
+    
+<div className="flex justify-between mb-2">
+        <div>
+          <div className="flex gap-2 mb-4">
+            
+            {ConStdArray.map((item, i) => {
+
+              let keyName = `tab_1`;
+              let tabBtnData = UpdateRightSideTabs[keyName];
+              
+              return (
+                <>
+                  <Button
+                    disabled={tabBtnData?.button_status[item?.value] ? false : true}
+                    onClick={() => {
+                      setPrimaryBtn(item)
+                      let nTab_1 = tabBtnData;
+                      nTab_1 = {
+                        ...nTab_1,
+                        activeType: item?.value
+                      }
+                      setUpdateRightSideTabs(prev=>({...prev, [keyName]: nTab_1}));
+                      tabBtnData.func(item?.value);
+                    }}
+                    size="sm"
+                    variant={`${PrimaryBtn?.id == item?.id ? "" : "outlined"}`}
+                    className={`${
+                      PrimaryBtn?.id == item?.id
+                        ? "bg-theme"
+                        : "text-theme border-theme"
+                    }`}
+                    key={i}
+                  >
+                    {item.label}
+                  </Button>
+                </>
+            )})}
+          </div>
+        </div>
+        <div>
+        <div className="flex text-[12px] justify-between text-black">
+            <div className=" font-medium">
+              Updated On {DateACEData?.Ratio}
+            </div>
+            <div className=" font-bold">(In Cr.)</div>
+          </div>
+        </div>
+      </div>
+
+
+
+
 <div className="pl_segment-container">
         <table className="forensicTable w-full min-w-max table-auto text-left">
             <thead>

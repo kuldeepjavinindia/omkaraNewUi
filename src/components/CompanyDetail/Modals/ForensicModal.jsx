@@ -36,7 +36,10 @@ const ForensicModal = (props) => {
                 "DirName": (SelectedDIR?.column_2),
                 "companyId": DIR_Model?.cmpId
             }
-        rr_dispatch(BoardOfDirectorDetailApi(params))
+            if(DIR_Model?.typeData && SelectedDIR?.column_2){
+                console.log('Object.keys(params).length >>> ', Object.keys(params).length, params)
+                rr_dispatch(BoardOfDirectorDetailApi(params))
+            }
       }, [SelectedDIR])
 
       useEffect(() => {

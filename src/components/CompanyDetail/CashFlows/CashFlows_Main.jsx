@@ -4,8 +4,9 @@ import { useParams } from 'react-router-dom';
 import { SC_CF_Req } from '../../../constants/defaultRequest';
 import { BarChartData_Columns_Rows, SCCashFlowApi } from '../../../store/slice/SingleCompnaySlice';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
-import { IconButton } from '@material-tailwind/react';
+import { Button, IconButton } from '@material-tailwind/react';
 import { BsFillBarChartFill } from 'react-icons/bs';
+import { ConStdArray } from '../../../constants/helper';
 
 const CashFlows_Main = () => {
     const rrd_params = useParams();
@@ -14,11 +15,33 @@ const CashFlows_Main = () => {
     const [TableBody, setTableBody] = useState([]);
     const [PlusIcons, setPlusIcons] = useState({});
 
+    
+
+    const RightSideTabs = {
+      tab_1: {
+        activeType: "con",
+        button_status: {
+          con: false,
+          std: false,
+        },
+        func: () => {}
+      }
+    };  
+    const [UpdateRightSideTabs, setUpdateRightSideTabs] = useState(RightSideTabs);
+
+    const [PrimaryBtn, setPrimaryBtn] = useState(ConStdArray[0]);
+    const tab_1 = UpdateRightSideTabs.tab_1;
+
+
     const {
       SCCashFlow:{
             data: CfData,
             loading: CfLoading
-        }
+        },
+        DateACE:{
+          data: DateACEData,
+          // loading: DateACELoading
+        },
     } = useSelector(state=>state.SingleCompany)
     
     let cmpId = rrd_params?.company_id;
@@ -26,12 +49,13 @@ const CashFlows_Main = () => {
       cmpId = window.atob(cmpId);
     }
 
-    const callApi = () => {
+    const callApi = (type=tab_1?.activeType) => {
 
         let params = SC_CF_Req;
         params = {
             ...params,
-            CompanyId: cmpId
+            CompanyId: cmpId,
+            type: type
         }
         rr_dispatch(SCCashFlowApi(params))
         
@@ -40,6 +64,8 @@ const CashFlows_Main = () => {
     useEffect(() => {
         callApi()
     }, [])
+
+
     useEffect(() => {
         if(!CfLoading){
           if(CfData.header && CfData.header.length > 0){
@@ -95,6 +121,20 @@ const CashFlows_Main = () => {
           }
               
 
+
+          let button_status = CfData.button_status;
+          let nTab_1 = tab_1;
+          
+          nTab_1 = {
+            ...nTab_1,
+            button_status: button_status,
+            activeType: CfData?.activeType,
+            func: callApi
+          }
+          setUpdateRightSideTabs(prev=>({...prev, tab_1: nTab_1}));
+              
+
+
         }
     }, [rr_dispatch, CfLoading])
     
@@ -146,6 +186,57 @@ const showChart = (row, level=1)=>{
     <>
 
     
+<div className="flex justify-between mb-2">
+        <div>
+          <div className="flex gap-2 mb-4">
+            
+            {ConStdArray.map((item, i) => {
+
+              let keyName = `tab_1`;
+              let tabBtnData = UpdateRightSideTabs[keyName];
+              
+              return (
+                <>
+                  <Button
+                    disabled={tabBtnData?.button_status[item?.value] ? false : true}
+                    onClick={() => {
+                      setPrimaryBtn(item)
+                      let nTab_1 = tabBtnData;
+                      nTab_1 = {
+                        ...nTab_1,
+                        activeType: item?.value
+                      }
+                      setUpdateRightSideTabs(prev=>({...prev, [keyName]: nTab_1}));
+                      tabBtnData.func(item?.value);
+                    }}
+                    size="sm"
+                    variant={`${PrimaryBtn?.id == item?.id ? "" : "outlined"}`}
+                    className={`${
+                      PrimaryBtn?.id == item?.id
+                        ? "bg-theme"
+                        : "text-theme border-theme"
+                    }`}
+                    key={i}
+                  >
+                    {item.label}
+                  </Button>
+                </>
+            )})}
+          </div>
+        </div>
+        <div>
+        <div className="flex text-[12px] justify-between text-black">
+          <div className=" font-medium">
+            Updated On {DateACEData?.CashFlow}
+          </div>
+          <div className=" font-bold">(In Cr.)</div>
+        </div>
+
+        </div>
+      </div>
+
+
+
 <div className="pl_segment-container">
         <table className="forensicTable w-full min-w-max table-auto text-left">
             <thead>

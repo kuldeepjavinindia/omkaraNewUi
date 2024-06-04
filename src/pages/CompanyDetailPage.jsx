@@ -22,7 +22,7 @@ import {
 } from "../components/CompanyDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect } from "react";
-import { companyNotesAPI } from "../store/slice/SingleCompnaySlice";
+import { DateACEApi, companyNotesAPI } from "../store/slice/SingleCompnaySlice";
 import { TrendlyneReq, companyNotesReq } from "../constants/defaultRequest";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -148,9 +148,14 @@ const CompanyDetailPage = () => {
         }
       }
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cmpNotesData.Data?.[0]]);
+
+
+
+  useEffect(() => {
+      rr_dispatch(DateACEApi())
+  }, [])
+  
 
   
   const TypeTabs = [
