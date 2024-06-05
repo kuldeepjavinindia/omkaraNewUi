@@ -1,11 +1,12 @@
-import { TbArrowsSort } from "react-icons/tb";
-import { Spinner, Typography, Input } from "@material-tailwind/react";
+import { Spinner, Typography, Input, Menu,IconButton,MenuHandler, MenuList, MenuItem } from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AnnouncementsAPI } from "../../../store/slice/TrendlyneSlice";
 import { TrendlyneReq } from "../../../constants/defaultRequest";
 import moment from "moment";
+import { openCompany } from "../../../constants/helper";
+import { BiSortAZ, BiSortZA } from "react-icons/bi";
 
 const ExchangeAnnouncements = () => {
   const {
@@ -14,6 +15,8 @@ const ExchangeAnnouncements = () => {
   
   const [AllApiData, setAllApiData] = useState([]);
   const [FilteredData, setFilteredData] = useState([]);
+
+  const [ToggleData, setToggleData] = useState(false);
 
   // AnnouncementsAPI
   const rr_dispatch = useDispatch();
@@ -34,6 +37,65 @@ const ExchangeAnnouncements = () => {
     setFilteredData(arrNew);
     
   };
+
+
+  
+
+
+
+
+  const sortData = (itemData, type) => {
+    let sData;
+
+    let a0 = AllApiData;
+    // if (isActive?.search_label !== "All") {
+    //   a0 = itemData;
+    // }
+
+    // return false
+    if (type === "name") {
+      if (ToggleData) {
+        sData = a0.slice().sort((a, b) => a.n_title.localeCompare(b.n_title));
+      } else {
+        sData = a0.slice().sort((a, b) => b.n_title.localeCompare(a.n_title));
+      }
+    } else if (type === "date") {
+      if (ToggleData) {
+        console.log('ToggleData >> ', {ToggleData, a0})
+        sData = a0.slice().sort((a, b) => {
+          var a1 = moment(a.pubDate, "DD-MM-YYYY HH:mm:ss").format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //a.pubDate
+          var b1 = moment(b.pubDate, "DD-MM-YYYY HH:mm:ss").format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //b.pubDate
+          var dd = new Date(a1) - new Date(b1);
+          return dd;
+        });
+      } else {
+        sData = a0.slice().sort((a, b) => {
+          var a1 = moment(a.pubDate, "DD-MM-YYYY HH:mm:ss").format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //a.pubDate
+          var b1 = moment(b.pubDate, "DD-MM-YYYY HH:mm:ss").format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //b.pubDate
+          var dd = new Date(b1) - new Date(a1);
+          return dd;
+        });
+      }
+    }
+    setToggleData(!ToggleData);
+    setFilteredData(sData);
+
+  };
+
+
+
+
+
+
+
 
 
   useEffect(() => {
@@ -82,7 +144,38 @@ const ExchangeAnnouncements = () => {
             <Typography className="text-[15px] text-[#000000] font-semibold mb-2">
               Exchange Announcements
             </Typography>
-            <TbArrowsSort className="text-theme" />
+            <div>
+
+              <Menu className=" w-fit">
+                  <MenuHandler>
+                    <IconButton className=" bg-transparent shadow-none hover:shadow-none">
+                      {ToggleData ? (
+                        <BiSortAZ className="text-theme" size={18} />
+                      ) : (
+                        <BiSortZA className="text-theme" size={18} />
+                      )}
+                    </IconButton>
+                  </MenuHandler>
+                  <MenuList>
+                    <MenuItem
+                      onClick={() => {
+                        sortData(AllApiData, "date");
+                      }}
+                    >
+                      Sort by Date
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        sortData(AllApiData, "name");
+                      }}
+                    >
+                      Sort by Name
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+
+
+            </div>
           </div>
 
           <Input
@@ -118,6 +211,9 @@ const ExchangeAnnouncements = () => {
           <ul>
             {
               FilteredData && FilteredData.length > 0 && FilteredData.map((item, i)=>{
+                
+                let fileLink = item?.externalUrl || item?.pdfUrl;
+
                 return (
                   <li key={i} className="flex items-center gap-2 py-3 border-gray-200 border-b border-0 ">
                     <Fragment>
@@ -128,7 +224,9 @@ const ExchangeAnnouncements = () => {
                         alt=""
                       />
                     </Fragment>
-                    <div>
+                    <div className=" cursor-pointer" onClick={()=>{
+                      openCompany(fileLink, 'other')
+                    }}>
                       <Typography className="text-theme-c7 font-semibold text-[14px]">
                         {item?.n_title}
                       </Typography>

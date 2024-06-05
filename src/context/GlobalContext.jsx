@@ -8,9 +8,16 @@ const GlobalContextProvider = ({ children }) => {
   const [SelectedDIR, setSelectedDIR] = useState(null)
   const [AddNote, setAddNote] = useState(false)
 
+  const [UploadDocument, setUploadDocument] = useState(false)
+  const [SendNotification, setSendNotification] = useState(null) //SendNotificationModal
+
 
   return (
     <GlobalContext.Provider value={{ 
+      SendNotification,
+      setSendNotification,
+      UploadDocument,
+      setUploadDocument,
       DIR_Model,
       setDIR_Model,
       SelectedDIR,

@@ -15,6 +15,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  MultipleFileUploader: {
+    loading: false,
+    data: [],
+    msg: null,
+    error: null,
+  },
   RepositoryList: {
     loading: true,
     data: [],
@@ -93,12 +99,12 @@ const initialState = {
     msg: null,
     error: null,
   },
-  SCMediaRoom: {
-    loading: true,
-    data: [],
-    msg: null,
-    error: null,
-  },
+  // SCMediaRoom: {
+  //   loading: true,
+  //   data: [],
+  //   msg: null,
+  //   error: null,
+  // },
   SCValuationData: {
     loading: true,
     data: [],
@@ -147,6 +153,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  MediaComment: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
   VideoLikeDislike: {
     loading: true,
     data: [],
@@ -171,14 +183,23 @@ const initialState = {
     msg: null,
     error: null,
   },
+  UserNotification: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
 };
 
 // eslint-disable-next-line no-unused-vars
 const slice_base_url = API_BASE_URL();
+const capitalUrl = import.meta.env.VITE_MAIN_SITE_BASE_URL;
+
 
 //  USER REQUESTs
 let companyNotesReq = `${slice_base_url}/companynote`;
 let UploadDocumentReq = `${slice_base_url}/UploadDocument`;
+let MultipleFileUploaderReq = `${slice_base_url}/MultipleFileUploader`;
 let RepositoryListReq = `${slice_base_url}/RepositoryListTesting`;
 // let UploadDocumentAnalysNotesReq = `${slice_base_url}/UploadDocumentAnalystNotes`;
 let UploadDocumentAnalysNotesReq = `${slice_base_url}/SingleCompanyComments`;
@@ -195,7 +216,7 @@ let SCCashFlowReq = `${slice_base_url}/SingleCompanyCashFlow_Web`;
 let SCRatiosReq = `${slice_base_url}/SingleCompanyratios_ACEAPI_Web`;
 let SCPeersReq = `${slice_base_url}/SingleCompanypeers_Web`;
 let SCShareHoldingReq = `${slice_base_url}/SingleCompanyShareHolding`;
-let SCMediaRoomReq = `${slice_base_url}/media`;
+// let SCMediaRoomReq = `${slice_base_url}/media`;
 let SCValuationDataReq = `${slice_base_url}/ValuationData_New`; // for Brief_table
 
 let ForensicTabsShowHideReq = `${slice_base_url}/ForensicTabShowHide`;
@@ -203,12 +224,14 @@ let ForensicReq = `${slice_base_url}/forensic`;
 let ForensicCommentReq = `${slice_base_url}/ForensicModelComments`;
 let ForensiTooltipReq = `${slice_base_url}/ForensicTooltip`;
 let MediaRoomReq = `${slice_base_url}/media`;
+let MediaCommentReq = `${slice_base_url}/VDRMediaCommentWithReply`;
 let VideoLikeDislikeReq = `${slice_base_url}/VDRMediaUserLiskeDislike`;
 let ResultDocumentReq = `${slice_base_url}/ResultDocument_New_ACEAPI`;
 
 let BoardOfDirectorDetailReq = `${slice_base_url}/BoardOfDirectorDetails`;
 
 let DateACE_Req = `${slice_base_url}/DateAPI_ACEAPI`;
+let UserNotification_Req = `${capitalUrl}/api/get-subscription-user`;
 
 export const companyNotesAPI = createAsyncThunk(
   "companyNotes",
@@ -219,11 +242,22 @@ export const companyNotesAPI = createAsyncThunk(
   }
 );
 
+
+
 export const UploadDocumentAPI = createAsyncThunk(
   "UploadDocument",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
     const response = await axios.post(`${UploadDocumentReq}`, all_params);
+    return response?.data;
+  }
+);
+
+export const MultipleFileUploaderAPI = createAsyncThunk(
+  "MultipleFileUploader",
+  // eslint-disable-next-line no-unused-vars
+  async (all_params = {}) => {
+    const response = await axios.post(`${MultipleFileUploaderReq}`, all_params);
     return response?.data;
   }
 );
@@ -349,13 +383,13 @@ export const SCShareHoldingApi = createAsyncThunk(
   }
 );
 
-export const SCMediaRoomApi = createAsyncThunk(
-  "SCMediaRoom",
-  async (all_params = {}) => {
-    const response = await axios.post(`${SCMediaRoomReq}`, all_params);
-    return response?.data;
-  }
-);
+// export const SCMediaRoomApi = createAsyncThunk(
+//   "SCMediaRoom",
+//   async (all_params = {}) => {
+//     const response = await axios.post(`${SCMediaRoomReq}`, all_params);
+//     return response?.data;
+//   }
+// );
 
 export const SCValuationDataApi = createAsyncThunk(
   "SCValuationData",
@@ -400,6 +434,14 @@ export const MediaRoomApi = createAsyncThunk(
     return response?.data;
   }
 );
+// MediaCommentWithReply Thunk
+export const MediaCommentApi = createAsyncThunk(
+  "MediaComment",
+  async (all_param = {}) => {
+    const response = await axios.post(`${MediaCommentReq}`, all_param);
+    return response?.data;
+  }
+);
 
 // VideoLikeDislikeApi Thunk
 export const VideoLikeDislikeApi = createAsyncThunk(
@@ -433,6 +475,16 @@ export const DateACEApi = createAsyncThunk(
   "DateACE",
   async (all_param = {}) => {
     const response = await axios.get(`${DateACE_Req}`);
+    return response?.data;
+  }
+);
+
+// UserNotificationApi Thunk
+export const UserNotificationApi = createAsyncThunk(
+  "UserNotificationApi",
+  // eslint-disable-next-line no-unused-vars
+  async (all_param = {}) => {
+    const response = await axios.post(`${UserNotification_Req}`);
     return response?.data;
   }
 );
@@ -505,6 +557,29 @@ const SingleCompanySlice = createSlice({
       state.UploadDocument.data = action.payload;
     });
     // // END UploadDocument DATA
+
+    // // START MultipleFileUploader DATA
+    builder.addCase(MultipleFileUploaderAPI.pending, (state) => {
+      state.MultipleFileUploader.loading = true;
+      state.MultipleFileUploader.error = false;
+      state.MultipleFileUploader.msgType = null;
+    });
+    builder.addCase(MultipleFileUploaderAPI.fulfilled, (state, action) => {
+      //   let allData = current(state);
+
+      state.MultipleFileUploader.data = action.payload?.Data || [];
+      state.MultipleFileUploader.loading = false;
+      state.MultipleFileUploader.msg = "success";
+      state.MultipleFileUploader.msgType = "success";
+    });
+    builder.addCase(MultipleFileUploaderAPI.rejected, (state, action) => {
+      state.MultipleFileUploader.loading = false;
+      state.MultipleFileUploader.error = true;
+      state.MultipleFileUploader.msgType = "error";
+      state.MultipleFileUploader.msg = action.payload?.msg;
+      state.MultipleFileUploader.data = action.payload;
+    });
+    // // END MultipleFileUploader DATA
 
     // // START RepositoryList DATA
     builder.addCase(RepositoryListAPI.pending, (state) => {
@@ -758,24 +833,24 @@ const SingleCompanySlice = createSlice({
     });
     // End SCShareHolding
 
-    // Start SCMediaRoom
-    builder.addCase(SCMediaRoomApi.pending, (state) => {
-      state.SCMediaRoom.loading = true;
-      state.SCMediaRoom.error = false;
-      state.SCMediaRoom.msg = false;
-    });
-    builder.addCase(SCMediaRoomApi.fulfilled, (state, action) => {
-      state.SCMediaRoom.loading = false;
-      state.SCMediaRoom.data = action.payload;
-      state.SCMediaRoom.msg = "success";
-    });
-    builder.addCase(SCMediaRoomApi.rejected, (state, action) => {
-      state.SCMediaRoom.loading = false;
-      state.SCMediaRoom.data = action.payload;
-      state.SCMediaRoom.msg = action.payload?.msg;
-      state.SCMediaRoom.error = true;
-    });
-    // End SCShareHolding
+    // // Start SCMediaRoom
+    // builder.addCase(SCMediaRoomApi.pending, (state) => {
+    //   state.SCMediaRoom.loading = true;
+    //   state.SCMediaRoom.error = false;
+    //   state.SCMediaRoom.msg = false;
+    // });
+    // builder.addCase(SCMediaRoomApi.fulfilled, (state, action) => {
+    //   state.SCMediaRoom.loading = false;
+    //   state.SCMediaRoom.data = action.payload;
+    //   state.SCMediaRoom.msg = "success";
+    // });
+    // builder.addCase(SCMediaRoomApi.rejected, (state, action) => {
+    //   state.SCMediaRoom.loading = false;
+    //   state.SCMediaRoom.data = action.payload;
+    //   state.SCMediaRoom.msg = action.payload?.msg;
+    //   state.SCMediaRoom.error = true;
+    // });
+    // // End SCShareHolding
 
     // Start SCValuationData
     builder.addCase(SCValuationDataApi.pending, (state) => {
@@ -903,6 +978,29 @@ const SingleCompanySlice = createSlice({
     });
     // // END MediaRoom DATA
 
+    // // START MediaComment DATA
+    builder.addCase(MediaCommentApi.pending, (state) => {
+      state.MediaComment.loading = true;
+      state.MediaComment.error = false;
+      state.MediaComment.msgType = null;
+    });
+    builder.addCase(MediaCommentApi.fulfilled, (state, action) => {
+      //   let allData = current(state);
+
+      state.MediaComment.data = action.payload;
+      state.MediaComment.loading = false;
+      state.MediaComment.msg = "success";
+      state.MediaComment.msgType = "success";
+    });
+    builder.addCase(MediaCommentApi.rejected, (state, action) => {
+      state.MediaComment.loading = false;
+      state.MediaComment.error = true;
+      state.MediaComment.msgType = "error";
+      state.MediaComment.msg = action.payload?.msg;
+      state.MediaComment.data = action.payload;
+    });
+    // // END MediaComment DATA
+
     // // START  VideoLikeDislike DATA
     builder.addCase(VideoLikeDislikeApi.pending, (state) => {
       state.VideoLikeDislike.loading = true;
@@ -988,6 +1086,27 @@ const SingleCompanySlice = createSlice({
       state.DateACE.msgType = "error";
       state.DateACE.msg = action.payload?.msg;
       state.DateACE.data = action.payload;
+    });
+    // // END DateACE DATA
+
+    // // START  UserNotification DATA
+    builder.addCase(UserNotificationApi.pending, (state) => {
+      state.UserNotification.loading = true;
+      state.UserNotification.error = false;
+      state.UserNotification.msgType = null;
+    });
+    builder.addCase(UserNotificationApi.fulfilled, (state, action) => {
+      state.UserNotification.data = action.payload?.data || {};
+      state.UserNotification.loading = false;
+      state.UserNotification.msg = "success";
+      state.UserNotification.msgType = "success";
+    });
+    builder.addCase(UserNotificationApi.rejected, (state, action) => {
+      state.UserNotification.loading = false;
+      state.UserNotification.error = true;
+      state.UserNotification.msgType = "error";
+      state.UserNotification.msg = action.payload?.msg;
+      state.UserNotification.data = action.payload;
     });
     // // END DateACE DATA
 

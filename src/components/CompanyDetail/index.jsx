@@ -13,6 +13,8 @@ import Forensic_Main from "./Forensic/Forensic_Main";
 import MediaRoom_Main from "./Media/MediaRoom_Main";
 import PeerComponent from "./peer/PeerComponent";
 import AddNotesModal from "./Modals/AddNotesModal";
+import SendNotificationModal from "./Modals/SendNotificationModal";
+import UploadDocumentModal from "./Modals/UploadDocumentModal";
 import DeleteDataModal from "./Modals/DeleteDataModal";
 
 export {
@@ -30,6 +32,8 @@ export {
     Forensic_Main,
     PeerComponent,
     AddNotesModal,
+    SendNotificationModal,
+    UploadDocumentModal,
     DeleteDataModal,
     MediaRoom_Main
 }

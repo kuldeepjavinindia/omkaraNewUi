@@ -73,19 +73,19 @@ export const UploadDocumentNoteReq = {
 //   FileContent: "",
 // }; // ADD array
 
-export const mediaRoomReq = {
-  CompanyID: "",
-  userid: "",
-  videoCode: "",
-  videoId: "",
-  videoType: "",
-  videoTitle: "",
-  videoDescription: "",
-  DocumentType: "",
-  SectorID: "",
-  IndustryID: [],
-  Type: "SC_Media",
-}; // ADD array
+// export const mediaRoomReq = {
+//   CompanyID: "",
+//   userid: "",
+//   videoCode: "",
+//   videoId: "",
+//   videoType: "",
+//   videoTitle: "",
+//   videoDescription: "",
+//   DocumentType: "",
+//   SectorID: "",
+//   IndustryID: [],
+//   Type: "SC_Media",
+// }; // ADD array
 
 export const companyNotesReq = { CompanyID: "" };
 
@@ -125,6 +125,7 @@ export const SC_BriefTable_Req = {
 export const SC_Segment_Req = { companyID: "", Type: "CON" };
 
 export const SC_Ratios_Req = { CompanyId: "", type: "con" };
+
 export const SC_ShareHolding_Req = { companyID: "", type: "con" };
 
 export const SC_Data20_Req = {
@@ -161,6 +162,7 @@ export const MediaRoomDataReq = {
   IndustryID: [],
   Type: "SC_Media",
 };
+
 // ResultDocument_New_ACEAPI
 export const Result_Document_Req = {
   CompanyID: "",
@@ -169,6 +171,7 @@ export const Result_Document_Req = {
   year: "",
   Type: "con",
 };
+
 export const Forensic_Comments_Req = {
   "type": "1",
   "userid": "1",
@@ -178,8 +181,20 @@ export const Forensic_Comments_Req = {
   "TableType": "",
   "description": ""
 };
+
 export const BoardOfDirectorDetail_Req = {
   "Type": "",
   "DirName": "",
   "companyId": ""
 };
+
+export const MediaComment_Req = {
+  "parentId":0,
+  "videoId":"",
+  "comment":"",
+  "commentId":"",
+  "webUserName": "",
+  "webUserImage": import.meta.env.VITE_BASE_URL + "/images/Ellipse 2.png",//"https://omkaracapital.in/image/default_user.png",
+  "webuserId": "",
+  "inputType":"3" //0:insert 1:edit 2:Delete 3:list
+}

@@ -152,3 +152,25 @@ export const DocumentNotes = [
   { title: 'Rough', value: 'Rough' },
 ];
 
+
+export const DocumentType = [
+  { title: 'None', value: '0' },
+  { title: 'Annual Reports', value: 'Annual Reports' },
+  { title: 'Concall Transcripts', value: 'Concall Transcripts' },
+  // { title: 'Forensic', value: 'Forensic' },
+  { title: 'Initial Coverage', value: 'Initial Coverage' },
+  { title: 'Investor Presentation', value: 'Investor Presentation' },
+  // { title: 'Brief Notes', value: 'Brief Notes' },
+  { title: 'Quarterly Update', value: 'Quarterly Update' },
+  { title: 'Others', value: 'Others' },
+];
+
+
+// export const DocumentType = [
+//   { title: 'None', value: '0' },
+//   { title: 'Research Report', value: 'Research Report' },
+//   { title: 'Sector Report', value: 'Sector Report' },
+//   { title: 'Quarterly Updates', value: 'Quarterly Updates' },
+//   { title: 'Running Notes (WIP)', value: 'Running Notes (WIP)' },
+//   { title: 'Stock Exchange Announcements', value: 'Stock Exchange Announcements' },
+// ];

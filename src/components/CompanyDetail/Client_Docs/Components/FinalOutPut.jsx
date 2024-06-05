@@ -1,22 +1,42 @@
-import { AiFillDelete } from "react-icons/ai"; 
-import { AiOutlineMail } from "react-icons/ai"; 
+import { AiFillDelete } from "react-icons/ai";
+import { AiOutlineMail } from "react-icons/ai";
 import { TbArrowsSort } from "react-icons/tb";
-import { Button, Typography, Input, IconButton, Spinner, Menu, MenuHandler, MenuList, MenuItem } from "@material-tailwind/react";
+import {
+  Button,
+  Typography,
+  Input,
+  IconButton,
+  Spinner,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+} from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UploadDocumentAPI } from "../../../../store/slice/SingleCompnaySlice";
 import { UploadDocumentReq } from "../../../../constants/defaultRequest";
 import { useParams } from "react-router-dom";
-import { MdEdit } from "react-icons/md";
-import { openCompany, openPdfWithWaterMark } from "../../../../constants/helper";
+// import { MdEdit } from "react-icons/md";
+import {
+  // openCompany,
+  openPdfWithWaterMark,
+} from "../../../../constants/helper";
 import moment from "moment";
 import { BiSortAZ, BiSortZA } from "react-icons/bi";
+import UploadDocumentModal from "../../Modals/UploadDocumentModal";
+import DeleteDataModal from "../../Modals/DeleteDataModal";
+import { SendNotificationModal } from "../..";
+import { GlobalContext } from "../../../../context/GlobalContext";
 
 const FinalOutPut = () => {
-
   const [AllUploadDocuments, setAllUploadDocuments] = useState([]);
-  const [FirstFilterUploadDocuments, setFirstFilterUploadDocuments] = useState([]); // filter docs according to tabs
+  const [FirstFilterUploadDocuments, setFirstFilterUploadDocuments] = useState(
+    []
+  ); // filter docs according to tabs3
+
+  const [OpenModal, setOpenModal] = useState(false);
 
   const [ToggleData, setToggleData] = useState(false);
 
@@ -26,28 +46,28 @@ const FinalOutPut = () => {
       label: "All",
       search_label: "All",
       value: "1",
-      isShow:true
+      isShow: true,
     },
     {
       id: 2,
       label: "Initial Coverage",
       search_label: "Initial Coverage",
       value: "2",
-      isShow:true
+      isShow: true,
     },
     {
       id: 3,
       label: "Qtr Update",
       search_label: "Quarterly Update",
       value: "3",
-      isShow:true
+      isShow: true,
     },
     {
       id: 4,
       label: "Others",
       search_label: "Others",
       value: "4",
-      isShow:true
+      isShow: true,
     },
   ];
 
@@ -55,104 +75,102 @@ const FinalOutPut = () => {
   const rr_dispatch = useDispatch();
 
   const rrd_params = useParams();
-    
+
   let cmpId = rrd_params?.company_id;
-  if(cmpId){
+  if (cmpId) {
     cmpId = window.atob(cmpId);
   }
+
   const {
-    UploadDocument:{
+    // SendNotification,
+    setSendNotification
+  } = useContext(GlobalContext);
+  const {
+    UploadDocument: {
       data: UploadDocumentData,
-      loading: UploadDocumentLoading
-    }
-  } = useSelector(state=>state.SingleCompany)
+      loading: UploadDocumentLoading,
+    },
+    MultipleFileUploader: {
+      // data: UploadDocumentData,
+      loading: MultipleFileUploaderLoading,
+    },
+  } = useSelector((state) => state.SingleCompany);
 
-
-
-  const filterData = (e, type="type") => {
-    if(type == "type"){
-      let crtType = finalOutPutBtn.find(itm=>itm.value == e);
+  const filterData = (e, type = "type") => {
+    if (type == "type") {
+      let crtType = finalOutPutBtn.find((itm) => itm.value == e);
       let filteredData = [];
-      if(crtType.value === "1"){
+      if (crtType.value === "1") {
         filteredData = FirstFilterUploadDocuments;
-      }else{
-        filteredData = FirstFilterUploadDocuments.filter(item=>item.DocumentType == crtType?.search_label);
+      } else {
+        filteredData = FirstFilterUploadDocuments.filter(
+          (item) => item.DocumentType == crtType?.search_label
+        );
       }
-      setAllUploadDocuments(filteredData);      
-    }else
-    if(type == "search"){
+      setAllUploadDocuments(filteredData);
+    } else if (type == "search") {
       let val = e.target.value.toLowerCase();
       let filteredData = [];
 
       let itemData = FirstFilterUploadDocuments;
       let crtType = finalOutPutBtn.find((itm) => itm.value == isActive.value);
-      itemData = itemData.filter((item) => item.DocumentType.trim() == crtType?.search_label );
+      if (crtType.search_label != "All") {
+        itemData = itemData.filter(
+          (item) => item.DocumentType.trim() == crtType?.search_label
+        );
+      }
 
-      if(val == ""){
+      if (val == "") {
         filteredData = itemData;
       }
-      
+
       let arrNew = [];
       itemData.forEach(function (a) {
-          var fName = a.fileName.toLowerCase();
-          if (fName.indexOf(val) > -1) {
-                  arrNew.push(a)
-          }
+        var fName = a.fileName.toLowerCase();
+        if (fName.indexOf(val) > -1) {
+          arrNew.push(a);
+        }
       });
       filteredData = arrNew;
-      setAllUploadDocuments(filteredData);    
+      setAllUploadDocuments(filteredData);
     }
-  }
+  };
 
-
-  
   const sortData = (itemData, type) => {
     let sData;
-    
+
     let a0 = FirstFilterUploadDocuments;
-    if(isActive?.search_label !== "All"){
+    if (isActive?.search_label !== "All") {
       a0 = itemData;
     }
 
     // return false
     if (type === "name") {
       if (ToggleData) {
-        sData = a0.slice().sort((a, b) =>
-          a.fileName.localeCompare(b.fileName)
-        );
+        sData = a0.slice().sort((a, b) => a.fileName.localeCompare(b.fileName));
       } else {
-        sData = a0.slice().sort((a, b) =>
-          b.fileName.localeCompare(a.fileName)
-        );
+        sData = a0.slice().sort((a, b) => b.fileName.localeCompare(a.fileName));
       }
     } else if (type === "date") {
       if (ToggleData) {
         sData = a0.slice().sort((a, b) => {
-          var a1 = moment(
-            a.Date,
-            "DD-MM-YYYY HH:mm:ss",
-            true
-          ).format("DD-MMM-YYYY HH:mm:ss"); //a.Date
-          var b1 = moment(
-            b.Date,
-            "DD-MM-YYYY HH:mm:ss",
-            true
-          ).format("DD-MMM-YYYY HH:mm:ss"); //b.Date
+          var a1 = moment(a.Date, "DD-MM-YYYY HH:mm:ss", true).format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //a.Date
+          var b1 = moment(b.Date, "DD-MM-YYYY HH:mm:ss", true).format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //b.Date
           var dd = new Date(a1) - new Date(b1);
           return dd;
         });
       } else {
         sData = a0.slice().sort((a, b) => {
-          var a1 = moment(
-            a.Date,
-            "DD-MM-YYYY HH:mm:ss",
-            true
-          ).format("DD-MMM-YYYY HH:mm:ss"); //a.Date
-          var b1 = moment(
-            b.Date,
-            "DD-MM-YYYY HH:mm:ss",
-            true
-          ).format("DD-MMM-YYYY HH:mm:ss"); //b.Date
+          var a1 = moment(a.Date, "DD-MM-YYYY HH:mm:ss", true).format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //a.Date
+          var b1 = moment(b.Date, "DD-MM-YYYY HH:mm:ss", true).format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //b.Date
           var dd = new Date(b1) - new Date(a1);
           return dd;
         });
@@ -162,42 +180,75 @@ const FinalOutPut = () => {
     setAllUploadDocuments(sData);
   };
 
-
-
+  const handleDelete = (item) => {
+    console.log("item >>> ", item);
+    let params = UploadDocumentReq;
+    params = {
+      ...params,
+      CompanyID: cmpId,
+      FileID: item?.FileID,
+      UserID: item?.UserID,
+    };
+    rr_dispatch(UploadDocumentAPI([params]));
+    setOpenModal(null);
+  };
+  const callAPI = () => {
+    let params = UploadDocumentReq;
+    params = {
+      ...params,
+      CompanyID: cmpId,
+    };
+    rr_dispatch(UploadDocumentAPI([params]));
+  };
+  useEffect(() => {
+    callAPI();
+  }, []);
 
   useEffect(() => {
-      if(UploadDocumentLoading){
-        let params = UploadDocumentReq
-        params = {
-          ...params,
-          CompanyID: cmpId
-        }
-        rr_dispatch(UploadDocumentAPI([params]))
-      }
-      if(!UploadDocumentLoading){
+    if (!MultipleFileUploaderLoading && !UploadDocumentLoading) {
+      callAPI();
+    }
+  }, [MultipleFileUploaderLoading]);
 
-        // let filterArr = finalOutPutBtn.map(item=> item.search_label)
-        let fData = UploadDocumentData.filter( el =>
-          finalOutPutBtn.some( f =>
-                        f.search_label === el.DocumentType 
-                      )
-                    )
-        setAllUploadDocuments(fData)
-        setFirstFilterUploadDocuments(fData)
-      }
-  }, [rr_dispatch, UploadDocumentLoading])
-  
+  useEffect(() => {
+    if (!UploadDocumentLoading) {
+      // let filterArr = finalOutPutBtn.map(item=> item.search_label)
+      let fData = UploadDocumentData.filter((el) =>
+        finalOutPutBtn.some((f) => f.search_label === el.DocumentType)
+      );
+      setAllUploadDocuments(fData);
+      setFirstFilterUploadDocuments(fData);
+    }
+  }, [rr_dispatch, UploadDocumentLoading]);
 
   return (
     <>
       <div className="col-span-5 mt-5 bg-white py-4 rounded-md">
+        <UploadDocumentModal />
+
+        <DeleteDataModal
+          ModalTitle={"Alert!"}
+          OpenModal={OpenModal}
+          setOpenModal={setOpenModal}
+          onClick={() => {
+            // console.log('OpenModal >>> ', OpenModal)
+            handleDelete(OpenModal);
+          }}
+        >
+          <Typography className=" font-medium">
+            are you sure you want to delete?
+          </Typography>
+        </DeleteDataModal>
+
+        <SendNotificationModal />
+
         <div className="pb-2 border-gray-200 border-b border-0 px-4">
           <div className="flex gap-4 items-center justify-between ">
             <Typography className="text-[15px] text-[#000000] font-semibold">
               Final Output
             </Typography>
             <div>
-            <Menu className=" w-fit">
+              <Menu className=" w-fit">
                 <MenuHandler>
                   <IconButton className=" bg-transparent shadow-none hover:shadow-none">
                     {ToggleData ? (
@@ -228,24 +279,26 @@ const FinalOutPut = () => {
           </div>
 
           <ul className="flex items-center gap-2 my-2">
-            {finalOutPutBtn.filter(itm=> itm?.isShow ===true).map((item, index) => (
-              <li key={index}>
-                <Button
-                  size="sm"
-                  className={`rounded-md px-3 py-1.5 shadow-none hover:shadow-none capitalize ${
-                    item?.value == isActive.value
-                      ? "bg-theme border-theme text-white border"
-                      : "text-[#606F7B]  border border-gray-400 bg-white hover:bg-theme-c2 hover:text-theme hover:border-theme "
-                  }`}
-                  onClick={() => {
-                    setIsActive(item);
-                    filterData(item?.value)
-                  }}
-                >
-                  {item.label}
-                </Button>
-              </li>
-            ))}
+            {finalOutPutBtn
+              .filter((itm) => itm?.isShow === true)
+              .map((item, index) => (
+                <li key={index}>
+                  <Button
+                    size="sm"
+                    className={`rounded-md px-3 py-1.5 shadow-none hover:shadow-none capitalize ${
+                      item?.value == isActive.value
+                        ? "bg-theme border-theme text-white border"
+                        : "text-[#606F7B]  border border-gray-400 bg-white hover:bg-theme-c2 hover:text-theme hover:border-theme "
+                    }`}
+                    onClick={() => {
+                      setIsActive(item);
+                      filterData(item?.value);
+                    }}
+                  >
+                    {item.label}
+                  </Button>
+                </li>
+              ))}
           </ul>
           <Input
             type="text"
@@ -255,75 +308,94 @@ const FinalOutPut = () => {
               className: "hidden",
             }}
             containerProps={{ className: "min-w-[100px]" }}
-            onChange={(e)=>filterData(e, 'search')}
+            onChange={(e) => filterData(e, "search")}
             icon={
-              <CgSearch
-                size={19}
-                className=" text-gray-400 top-0 absolute"
-              />
+              <CgSearch size={19} className=" text-gray-400 top-0 absolute" />
             }
           />
         </div>
 
         <div className="clientDocs_horizontalCardsList px-4">
-          {
-            UploadDocumentLoading ? (
-              <Spinner />
-            )
-            :
+          {UploadDocumentLoading ? (
+            <Spinner />
+          ) : (
             <>
-            {
-            AllUploadDocuments && AllUploadDocuments.length === 0 && (
-              <>
-                <Typography className="mt-2">No Data Found In <u>{isActive?.search_label}</u>!</Typography>
-              </>
-            )
-          }
+              {AllUploadDocuments && AllUploadDocuments.length === 0 && (
+                <>
+                  <Typography className="mt-2">
+                    No Data Found In <u>{isActive?.search_label}</u>!
+                  </Typography>
+                </>
+              )}
 
-          <ul>
-            {
-              AllUploadDocuments && AllUploadDocuments.length > 0 && AllUploadDocuments.map((item, i)=>{
-                // console.log('item >>> ', item)
-                return (
-                  <li key={i} className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b ">
-                    <div className="flex items-center gap-4 justify-between w-full">
-                      <div className="flex items-center gap-4 cursor-pointer" onClick={()=>{
-                        openPdfWithWaterMark(item.link, 'Final Output')
-                      }}>
-                        <img
-                          src={
-                            import.meta.env.VITE_BASE_URL + "/images/icons/pdfIcon.svg"
-                          }
-                          alt=""
-                        />
-                        <div>
-                          <Typography className="text-theme-c7 font-semibold text-[14px]">
-                            {item?.fileName}
-                          </Typography>
-                          <Typography className="text-[10px] text-gray-500">
-                            <span className="font-semibold">{item?.UserName}</span>
-                            <span className=" font-medium">•{" "}{item?.Date}</span> <span className="font-medium">•{" "}{item?.DocumentType}</span>
-                          </Typography>
+              <ul>
+                {AllUploadDocuments &&
+                  AllUploadDocuments.length > 0 &&
+                  AllUploadDocuments.map((item, i) => {
+                    // console.log('item >>> ', item)
+                    return (
+                      <li
+                        key={i}
+                        className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b "
+                      >
+                        <div className="flex items-center gap-4 justify-between w-full">
+                          <div
+                            className="flex items-center gap-4 cursor-pointer"
+                            onClick={() => {
+                              openPdfWithWaterMark(item.link, "Final Output");
+                            }}
+                          >
+                            <img
+                              src={
+                                import.meta.env.VITE_BASE_URL +
+                                "/images/icons/pdfIcon.svg"
+                              }
+                              alt=""
+                            />
+                            <div>
+                              <Typography className="text-theme-c7 font-semibold text-[14px]">
+                                {item?.fileName}
+                              </Typography>
+                              <Typography className="text-[10px] text-gray-500">
+                                <span className="font-semibold">
+                                  {item?.UserName}
+                                </span>
+                                <span className=" font-medium">
+                                  • {item?.Date}
+                                </span>{" "}
+                                <span className="font-medium">
+                                  • {item?.DocumentType}
+                                </span>
+                              </Typography>
+                            </div>
+                          </div>
+                          <div>
+                            <IconButton
+                              className=" bg-transparent text-theme shadow-none hover:shadow-none"
+                              size="sm"
+                              onClick={() => {
+                                setSendNotification(item);
+                              }}
+                            >
+                              <AiOutlineMail size={20} />
+                            </IconButton>
+                            <IconButton
+                              className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none"
+                              size="sm"
+                              onClick={() => {
+                                setOpenModal(item);
+                              }}
+                            >
+                              <AiFillDelete size={20} />
+                            </IconButton>
+                          </div>
                         </div>
-                      </div>
-                      <div>
-                        {/* <IconButton className=" bg-transparent text-theme shadow-none hover:shadow-none" size="sm">
-                          <AiOutlineMail size={20} />
-                        </IconButton>
-                        <IconButton className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none" size="sm">
-                          <AiFillDelete size={20} />
-                        </IconButton> */}
-                      </div>
-                    </div>
-                  </li>
-                )
-              })
-            }
-            
-          </ul>
+                      </li>
+                    );
+                  })}
+              </ul>
             </>
-          }
-          
+          )}
         </div>
       </div>
       {/* End Component Final Output */}

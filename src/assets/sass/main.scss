@@ -147,12 +147,12 @@ div:has(.smallInput.two){
 }
 
 // .filterSidebar
-::-webkit-scrollbar {
-  // height: 4px;              
-  width: 4px;    
-  // border: 1px solid #d5d5d5;
-  // background-color: #7D838E;
-}
+// ::-webkit-scrollbar {
+//   // height: 4px;              
+//   width: 4px;    
+//   // border: 1px solid #d5d5d5;
+//   // background-color: #7D838E;
+// }
 
 .filterSidebar::-webkit-scrollbar-track {
   background: #f1f1f1; /* Set the background color of the scrollbar track */

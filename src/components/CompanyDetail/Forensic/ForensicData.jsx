@@ -56,7 +56,11 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
     companyNotes: { loading: cmpNotesLoading, data: cmpNotesData },
     ForensicComment:{
       loading: ForensicCommentLoading
-    }
+    },
+    DateACE:{
+      data: DateACEData,
+      // loading: DateACELoading
+    },
   } = useSelector((state) => state.SingleCompany);
 
   const companyData = cmpNotesData?.Data?.[0] || [];
@@ -159,6 +163,7 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
     <>
       <ForensicModal />
       <div>
+       
         {
           ActiveSHTab.type === "CAP" && (
             <>
@@ -385,6 +390,34 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                     }  `}
                   >
                     <div>
+                      {
+                        ["DIR", "AH"].includes(typeData) && (
+<div className={`flex justify-between items-center ${TableWidth[typeData]}`}>
+                        <div></div>
+                        <div className="flex text-[12px] justify-between text-black">
+                          <div className=" font-medium">
+                            {
+                              (ActiveSHTab.type === "DIR") && (
+                                <>
+                                Updated On {DateACEData?.Board}&nbsp; &nbsp;<small>Rs. in Cr.</small>
+                                </>
+                              )
+                            }
+                            {
+                              (ActiveSHTab.type === "AH") && (
+                                <>
+                                Updated On {DateACEData?.AuditorHistory}
+                                </>
+                              )
+                            } 
+                            </div>
+                            
+                        </div>
+                        
+                      </div>
+                        )
+                      }
+                      
                       <table
                         className={`forensicTable   h-full overflow-scroll border-[1px] border-[#E5E5E5] rounded bg-clip-border
                ${TableWidth[typeData]}

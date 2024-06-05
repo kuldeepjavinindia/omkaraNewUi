@@ -5,6 +5,11 @@ import {
   Spinner,
   Typography,
   Input,
+  Menu,
+  MenuHandler,
+  MenuList,
+  IconButton,
+  MenuItem,
 } from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
 import { Fragment, useEffect, useState } from "react";
@@ -13,6 +18,7 @@ import { RepositoryListAPI } from "../../../store/slice/SingleCompnaySlice";
 import { RepositoryListReq } from "../../../constants/defaultRequest";
 import moment from "moment";
 import { useParams } from "react-router-dom";
+import { BiSortAZ, BiSortZA } from "react-icons/bi";
 
 const ReportsBank = () => {
   const [IsActivePrimary, setIsActivePrimary] = useState(1);
@@ -58,6 +64,7 @@ const ReportsBank = () => {
 
   const rr_dispatch = useDispatch();
   const rrd_params = useParams();
+  const [ToggleData, setToggleData] = useState(false);
     
   let cmpId = rrd_params?.company_id;
   if(cmpId){
@@ -136,6 +143,58 @@ const ReportsBank = () => {
     };
 
 
+    
+
+
+  const sortData = (itemData, type) => {
+    let sData;
+
+    let a0 = RepositoryListData;
+
+    // return false
+    if (type === "name") {
+      if (ToggleData) {
+        sData = a0.slice().sort((a, b) => a.Title.localeCompare(b.Title));
+      } else {
+        sData = a0.slice().sort((a, b) => b.Title.localeCompare(a.Title));
+      }
+    } else if (type === "date") {
+      if (ToggleData) {
+        console.log('ToggleData >> ', {ToggleData, a0})
+        sData = a0.slice().sort((a, b) => {
+          var a1 = moment(a.ReportDate).format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //a.ReportDate
+          var b1 = moment(b.ReportDate).format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //b.ReportDate
+          var dd = new Date(a1) - new Date(b1);
+          return dd;
+        });
+      } else {
+        sData = a0.slice().sort((a, b) => {
+          var a1 = moment(a.ReportDate).format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //a.ReportDate
+          var b1 = moment(b.ReportDate).format(
+            "DD-MMM-YYYY HH:mm:ss"
+          ); //b.ReportDate
+          var dd = new Date(b1) - new Date(a1);
+          return dd;
+        });
+      }
+    }
+    setToggleData(!ToggleData);
+    setAllListData(sData);
+
+  };
+
+
+
+
+
+
+
   useEffect(() => {
     if(RepositoryListLoading){
       callApi(1)
@@ -158,7 +217,38 @@ const ReportsBank = () => {
             <Typography className="text-[15px] text-[#000000] font-semibold mb-2">
               Report Bank
             </Typography>
-            <TbArrowsSort className="text-theme" />
+            <div>
+
+              <Menu className=" w-fit">
+                  <MenuHandler>
+                    <IconButton className=" bg-transparent shadow-none hover:shadow-none">
+                      {ToggleData ? (
+                        <BiSortAZ className="text-theme" size={18} />
+                      ) : (
+                        <BiSortZA className="text-theme" size={18} />
+                      )}
+                    </IconButton>
+                  </MenuHandler>
+                  <MenuList>
+                    <MenuItem
+                      onClick={() => {
+                        sortData(RepositoryListData, "date");
+                      }}
+                    >
+                      Sort by Date
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        sortData(RepositoryListData, "name");
+                      }}
+                    >
+                      Sort by Name
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+
+
+            </div>
           </div>
           <ButtonGroup className=" border-[1px] border-gray-400 rounded-lg mb-3 w-fit">
             {reportPrimaryBtn.map((item, i) => {
