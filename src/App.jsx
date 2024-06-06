@@ -1,6 +1,8 @@
 // import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { BSENewsPage, CompanyDetailPage, HomePage, LoginPage, MyPDFViewerPage ,  WatchlistCreate, WatchlistCompany, ResultCalendar, WatchlistEdit, DeliveryData } from "./pages";
+import { BSENewsPage, CompanyDetailPage, HomePage, LoginPage, MyPDFViewerPage ,  WatchlistCreate, WatchlistCompany, ResultCalendar, WatchlistEdit, DeliveryData,
+  PriceAction, InsiderTrading, BulkBlock, QuarterlyResult
+} from "./pages";
 import ErrorPage from "./error-page";
 import { MainLayout } from "./components";
 import './assets/sass/main.scss'
@@ -39,12 +41,28 @@ function App() {
           element: <WatchlistCompany/> ,
         },
         {
+          path: "/quterly-result",
+          element: <QuarterlyResult/> ,
+        },
+        {
           path: "/result-calendar",
           element: <ResultCalendar/> ,
         },
         {
           path: "/delivery-data",
           element: <DeliveryData/> ,
+        },
+        {
+          path: "/bulk-block",
+          element: <BulkBlock/> ,
+        },
+        {
+          path: "/insider-trading",
+          element: <InsiderTrading/> ,
+        },
+        {
+          path: "/price-action",
+          element: <PriceAction/> ,
         },
       ]
     },

@@ -146,13 +146,37 @@ div:has(.smallInput.two){
   min-width: 50px;
 }
 
+.colorIconSelect-theme {
+  svg {
+    fill: #4448F5;
+  }
+}
+
+.smallInput > div > div {
+  min-width: 106px;
+}
+
+
+.inputs-custom {
+  .smallInput > div {
+    min-width: 100px;
+  }
+}
+div:has(.smallInput){
+  min-width: 106px;
+}
+
+div:has(.smallInput.two){
+  min-width: 100px;
+}
+
 // .filterSidebar
-// ::-webkit-scrollbar {
-//   // height: 4px;              
-//   width: 4px;    
-//   // border: 1px solid #d5d5d5;
-//   // background-color: #7D838E;
-// }
+::-webkit-scrollbar {
+  // height: 4px;              
+    width: 0px;    
+  // border: 1px solid #d5d5d5;
+  // background-color: #7D838E;
+}
 
 .filterSidebar::-webkit-scrollbar-track {
   background: #f1f1f1; /* Set the background color of the scrollbar track */
@@ -194,4 +218,3 @@ div:has(.smallInput.two){
     margin-right: 3px;
   }
 }
-// 04-May-2024

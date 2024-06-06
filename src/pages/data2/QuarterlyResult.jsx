@@ -12,6 +12,8 @@ import {AbsResult, Results} from '../../components/QuarterlyResult/Index'
 
 import { useEffect } from "react";
 import { useState } from "react";
+import FilterQuarterlyResult from "../../components/data2/FilterQuarterlyResult";
+
 
 
 function TabsDefault(props) {
@@ -37,7 +39,7 @@ function TabsDefault(props) {
             >
               {label}
             </Tab>
-          ))}
+        ))}
         </TabsHeader>
         <TabsBody>
           {TabsData.map(({ value, desc }) => (
@@ -64,7 +66,7 @@ const QuarterlyResult = () => {
       label: "ABS RESULTS",
       desc: (
         <>
-         <AbsResult/>
+        <AbsResult/>
         </>
       ),
     },
@@ -83,13 +85,25 @@ const QuarterlyResult = () => {
   return (
     <>
     
-      <div className="sc-container">
+      {/* <div className="sc-container">
+        <TabsDefault
+          TabsData={TypeTabs}
+          ActiveTab={ActiveTab}
+          setActiveTab={setActiveTab}
+        />
+      </div> */}
+          <div className="grid grid-cols-12 gap-1 pt-2">
+          <FilterQuarterlyResult/>
+     
+     <div className="sc-container col-span-9  ">
         <TabsDefault
           TabsData={TypeTabs}
           ActiveTab={ActiveTab}
           setActiveTab={setActiveTab}
         />
       </div>
+
+    </div>
     </>
   );
 };

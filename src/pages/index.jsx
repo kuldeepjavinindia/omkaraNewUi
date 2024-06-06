@@ -8,7 +8,12 @@ import WatchlistEdit from "./WatchlistEdit";
 import WatchlistCompany from "./WatchlistCompany";
 import ResultCalendar from "./data2/ResultCalendar";
 import QuarterlyResult from "./data2/QuarterlyResult";
-import DeliveryData from "./data2/Analysis/DeliveryData";
+import DeliveryData from "./data2/DeliveryData";
+import PriceAction from "./data2/PriceAction";
+import InsiderTrading from "./data2/InsiderTrading";
+import BulkBlock from "./data2/BulkBlock";
+
+
 
 export {
     HomePage,
@@ -22,4 +27,8 @@ export {
     ResultCalendar,
     QuarterlyResult,
     DeliveryData,
+    PriceAction,
+    InsiderTrading,
+    BulkBlock,
+  
 }

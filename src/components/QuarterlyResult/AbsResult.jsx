@@ -1,70 +1,192 @@
-import { Typography, Input, Select, Option,  } from "@material-tailwind/react";
+import { Typography, Input, Select, Option, Checkbox, Button } from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
+// import FilterQuarterlyResult from "../data2/filter/FilterQuarterlyResult";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 
 const AbsResult= ()=> {
     return (
         <>
-        <div className="flex items-center justify-between ">
 
-        <div className="flex gap-2 w-[68%] inputs-custom">
-          <div>
-            <Typography className="text-[12px] font-medium text-[#000]">SHOWING <span className="text-theme">1 to 10 of 10</span>  ENTRIES</Typography>
-          </div>
-        
-          <Input
-            type="text"
-            placeholder="Search Company"
-            className="mt-1 !border !border-gray-200 !h-8 !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-            icon={
-              <CgSearch
-                size={19}
-                className=" text-gray-400 top-0 absolute"
-              />
-            }
-          />
-<div className="smallInput">
-<Select className="bg-[#fff] !h-8">
-        <Option>Option 1</Option>
-      </Select>
-</div>
+  <div >
+      {/* ========= Start Header Page =========== */}
+      <div className="flex justify-between items-center">
+  <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
+    <div>
+      <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
+        SHOWING <span className="text-theme">1 to 10 of 10</span> ENTRIES
+      </Typography>
+    </div>
+    <div className="flex-grow">
+      <Input
+        type="text"
+        placeholder="Search Company"
+        className="!border !border-gray-200 !h-8 !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+        icon={<CgSearch size={19} className="text-gray-400 top-[-2px] absolute" />}
+      />
+    </div>
+  </div>
 
+  <div className="flex-grow-0 flex justify-center mx-[14px]">
+    <Select className="smallInput bg-[#fff] mt-0 !h-8 rounded border-none" label="Show 15">
+      <Option>Option 1</Option>
+    </Select>
+  </div>
 
-        </div>
+  <div className="flex-grow-1 ">
 
-        <div className="w-[30%]">
-          pagination
-       </div>
-
-        </div>
-        {/* End Header */}
-
-
-        {/*Start  Table  */}
-<div className="mt-8">
- <table className=" w-full ">
- <thead >
- <tr className="!bg-[#22242F]">
-    <th className="!text-white p-2 text-[13px] font-semibold !bg-[#22242F] !text-left">Company name</th>
-    <th className="!text-white p-2 text-[13px] font-semibold !bg-[#22242F] !text-left">Sector</th>
-    <th className="!text-white p-2 text-[13px] font-semibold !bg-[#22242F] !text-left">MCap (Cr )</th>
+    <div className="flex gap-1">
+    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+      <IoIosArrowBack size={16} />
+    </Button>
+    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+      <IoIosArrowBack size={16} />
+      <IoIosArrowBack size={16} />
+    </Button>
+    <div className="w-[100px]">
+      <Input
+        type="text"
+        defaultValue="1"
+        size="md"
+        className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+      />
+    </div>
+    <Button className="w-[48px] !h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+      <IoIosArrowForward />
+    </Button>
+    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+      <IoIosArrowForward />
+      <IoIosArrowForward />
+    </Button>
+    </div>
     
-  </tr>
- </thead>
-
- <tbody>
-  <tr className="odd:bg-[#E8F0F4] even:bg-[#fff] h-10">
-    <td> Bharat Dynamics Ltd.</td>
-    <td className=""> Agri</td>
-    <td className=""> 10204</td>
-  </tr>
-
- </tbody>
-
- </table>
+  </div>
 </div>
-{/*Start  Table  */}
-        
+{/* ========= End Header Page =========== */}
 
+
+
+
+
+
+<div className="">
+  {/* Start Table */}
+  <div className="mt-8 data2Tabels relative overflow-x-auto">
+  <table className="forensicTable w-full border border-collapse border-[#B3B3B3] h-full">
+    <thead className="bg-[#1E233A]">
+      <tr className="!bg-[#1E233A]">
+        <th className=""></th>
+        <th className=""></th>
+        <th className="border-r border-[#B3B3B3]"></th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] !text-center border-r border-[#B3B3B3]" colSpan="5">
+          Sales (Cr) <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked />
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] !text-center" colSpan="5">
+          Gross Profit (Cr) <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked />
+        </th>
+      </tr>
+      <tr className="!bg-[#1E233A] ">
+        <th className="sticky left-0 !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10">COMPANY NAME</th>
+        <th className="sticky sticky left-[133px] !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10">SECTOR</th>
+        <th className="sticky  left-[192px] border-r border-[#B3B3B3]  !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10">MCap (Cr)</th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 4Q
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 3Q
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] ">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 2Q
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 1Q
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] border-r border-[#B3B3B3]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 4Q
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 4Q
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 3Q
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 2Q
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 1Q
+        </th>
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 4Q
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr className="odd:bg-[#E8F0F4] even:bg-[#fff] h-10">
+        <td className="sticky left-0 bg-[#E8F0F4] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">Bharat Dynamics Ltd.</td>
+        <td className="sticky sticky left-[133px] bg-[#E8F0F4] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">Agri</td>
+        <td className="sticky  left-[192px] border-r border-[#B3B3B3]  bg-[#E8F0F4] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right border-r border-[#B3B3B3]">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+      </tr>
+      <tr className="odd:bg-[#E8F0F4] even:bg-[#fff] h-10">
+        <td className="sticky left-0 bg-[#fff] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">Bharat Dynamics Ltd.</td>
+        <td className="sticky sticky left-[133px] bg-[#fff] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">Agri</td>
+        <td className="sticky  left-[192px] border-r border-[#B3B3B3]  bg-[#fff] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right border-r border-[#B3B3B3]">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr className="bg-[#1E233A] ">
+        <td className="sticky left-0 text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">Company Name</td>
+        <td className="sticky sticky left-[133px] text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">Sector</td>
+        <td className="sticky  left-[192px] border-r border-[#B3B3B3]  text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">MCap (Cr)</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">3Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">2Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">1Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left border-r border-[#B3B3B3]">4Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">3Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">2Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">1Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
+      </tr>
+      <tr className="bg-[#1E233A]  "> 
+        <td className="sticky left-0 text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-center pb-3"></td>
+        <td className="sticky sticky left-[133px] text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-center pb-3"></td>
+        <td className="sticky  left-[192px] border-r border-[#B3B3B3]  text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-center pb-3"></td>
+        <td colSpan="5" className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-center border-r border-[#B3B3B3] pb-3">Sales (Cr)</td>
+        <td colSpan="5" className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-center pb-3">Gross Profit (Cr)</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+  {/* End Table */}
+</div>
+
+
+
+
+  </div>
+  {/* End Content Bar */}
 
 
         </>

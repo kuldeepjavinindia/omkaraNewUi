@@ -2,28 +2,24 @@ import { Typography, Input, Select, Option , Checkbox, Button} from "@material-t
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
-import { IoMdInformationCircleOutline } from "react-icons/io";
-import QuarterlyResultModal from "../CompanyDetail/ModalComment/QuarterlyResultModal";
-import { useState } from "react";
+import { SiMicrosoftexcel } from "react-icons/si";
 
 
-
-
-const Results= ()=> {
-
-   const [open, setOpen] =  useState(false)
-
- const handleOpen = ()=> {
-   setOpen(!open)
- }
-
+const PriceActionTable = ()=> {
     return (
         <>
+        <div className="flex justify-between pb-2">
+      <Typography className="text-[15px] text-[#000] font-semibold">
+      Price Action
+      </Typography>
+      <span className="bg-[#D4E4E5] rounded p-2 cursor-pointer">
+      <SiMicrosoftexcel size={15} fill="#2E7A80"/>
+      </span>
+     </div>
 
-         <QuarterlyResultModal  open={open} setOpen={setOpen} />
-
-  {/* ========= Start Header Page =========== */}
-  <div className="flex justify-between items-center">
+      <div className="border-[1px] border-theme-c6 bg-theme-c5 p-4 rounded">
+        {/* ========= Start Header Page =========== */}
+<div className="flex justify-between items-center">
   <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
     <div>
       <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
@@ -78,8 +74,6 @@ const Results= ()=> {
 {/* ========= End Header Page =========== */}
 
 
-
-
 <div className="">
   {/* Start Table */}
   <div className="mt-8 data2Tabels relative overflow-x-auto">
@@ -89,7 +83,12 @@ const Results= ()=> {
       <tr className="!bg-[#1E233A] ">
         <th className="sticky left-0 !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10  ">COMPANY NAME</th>
         <th className="sticky  left-[133px] !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10 ">SECTOR</th>
-        <th className="sticky  left-[190px]  border-r border-[#B3B3B3] !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10 ">MCap (Cr)</th>
+        <th className="sticky  left-[190px]  border-r border-[#B3B3B3] !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10 ">INDUSTRY</th>
+
+        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff] ]" defaultChecked /> Index
+        </th>
+
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
           <Checkbox color="#1E233A" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> LTP
         </th>
@@ -114,12 +113,8 @@ const Results= ()=> {
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
           <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> D/E
         </th>
-        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> ROCE
-        </th>
-        <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> Info
-        </th>
+       
+      
       </tr>
     </thead>
     <tbody>
@@ -136,9 +131,7 @@ const Results= ()=> {
         <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
         <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
         <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
-        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold flex justify-end">
-        <span onClick={handleOpen} className="cursor-pointer" ><IoMdInformationCircleOutline size={22}  color="#34A853"/></span>
-        </td>
+        
       </tr>
       <tr className="odd:bg-[#E8F0F4] even:bg-[#fff] h-10">
         <td className="sticky left-0 bg-[#fff] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">Bharat Dynamics Ltd.</td>
@@ -153,36 +146,17 @@ const Results= ()=> {
         <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
         <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
         <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
-        <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold flex justify-end">
-        <span onClick={handleOpen} className="cursor-pointer"><IoMdInformationCircleOutline size={22}  color="#34A853"/></span>
-        </td>
+       
       </tr>
     </tbody>
-    <tfoot>
-      <tr className="bg-[#1E233A] h-[63px]">
-        <td className="sticky left-0 text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">Company Name</td>
-        <td className="sticky  left-[133px] text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">Sector</td>
-        <td className="sticky  left-[190px]  border-r border-[#B3B3B3] text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">MCap (Cr)</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">3Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">2Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">1Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">3Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">2Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">1Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
-      </tr>
-    
-    </tfoot>
+
   </table>
 </div>
   {/* End Table */}
 </div>
-
+      </div>
         </>
     )
 }
 
-export default Results;
+export default PriceActionTable

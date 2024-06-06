@@ -147,7 +147,7 @@ const menuItem = [
       {
         id: 2,
         name: "Result Calendar (New)",
-        link: "#0",
+        link: "/result-calendar",
       },
       // {
       //   id: 3,
@@ -185,17 +185,17 @@ const menuItem = [
       {
         id: 2,
         name: "Price Action",
-        link: "#0",
+        link: "/price-action",
       },
       {
         id: 3,
         name: "Insider Trading",
-        link: "#0",
+        link: "/insider-trading",
       },
       {
         id: 4,
         name: "Bulk-Block Deal",
-        link: "#0",
+        link: "bulk-block",
       },
       {
         id: 6,

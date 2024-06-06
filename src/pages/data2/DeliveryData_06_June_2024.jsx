@@ -1,5 +1,5 @@
-import DeliveryDataTable from "../../../components/data2/filter/DeliveryData/DeliveryDataTable"
-import FilterSidebarDeliveryData from "../../../components/data2/filter/DeliveryData/FilterSidebarDeliveryData"
+import DeliveryDataTable from "../../components/data2/filter/DeliveryData/DeliveryDataTable"
+import FilterSidebarDeliveryData from "../../components/data2/filter/DeliveryData/FilterSidebarDeliveryData"
 
 const DeliveryData = ()=> {
     return (
