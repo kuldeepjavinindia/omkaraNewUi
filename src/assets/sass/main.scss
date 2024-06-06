@@ -218,3 +218,25 @@ div:has(.smallInput.two){
     margin-right: 3px;
   }
 }
+
+// start 06-June-2024
+.filterSidebar .sticky {
+  padding-block: 0.5rem;
+}
+.screen-height{
+  height: calc(100vh - 5.2rem);
+}
+.screen-height-Content{
+  height: calc(100vh - 9.2rem);
+}
+.FilterSidebar-Content-Layout {
+  display: flex;
+  gap: 5px;
+  >div:nth-child(1){
+    flex: 0 0 20%;
+  }
+  >div:nth-child(2){
+    flex: 0 0 80%;
+  }
+}
+// End 06-June-2024

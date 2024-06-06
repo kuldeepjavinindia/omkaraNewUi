@@ -20,6 +20,7 @@ import { UploadDocumentNoteReq } from "../../../constants/defaultRequest";
 import { useParams } from "react-router-dom";
 import { UploadDocumentAnalysNoteApi } from "../../../store/slice/SingleCompnaySlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useAuthState } from "../../../context/AuthContext";
 
 const modules = {
   toolbar: [
@@ -56,6 +57,8 @@ const formats = [
 const AddNotesModal = (props) => {
   const { modalTitle, cancelButton, updateButton } = props;
   const [commentInput, setCommentInput] = useState("");
+
+  const authState = useAuthState();
 
   // const handleAddComment = () => {
   //   if (commentInput.trim()) {
@@ -97,13 +100,22 @@ const AddNotesModal = (props) => {
     params = {
       ...params,
       CompanyID: cmpId,
-      UserID: "2",
+      UserID: authState?.user?.UserID,
       description: commentInput,
       CommentType: NoteType,
       Type: "SC_Comments",
       Heading: Inputs?.title
     };
 
+    if(AddNote?.CommentID){
+      params = {
+        ...params,
+        CommentID: AddNote?.CommentID,
+        DateTime: AddNote?.DateTime,
+        UserName: AddNote?.UserName
+      };
+    }
+    // console.log('params >>> ', {params, AddNote})
     rr_dispatch(UploadDocumentAnalysNoteApi([params]));
 
 
@@ -127,6 +139,19 @@ const AddNotesModal = (props) => {
     setInputs({})
     setCommentInput("")
     setNoteType("")
+
+    let data = Inputs;
+        data = {
+          ...data,
+          title: AddNote?.Heading,
+          CommentType: AddNote?.CommentType,
+          Discription: AddNote?.Discription,
+        };
+        setNoteType(AddNote?.CommentType)
+        setCommentInput(AddNote?.Discription)
+    
+    setInputs(data)
+
   }, [props])
 
 
@@ -146,17 +171,19 @@ const AddNotesModal = (props) => {
           size="xxl"
         >
           <DialogHeader className="w-[50%] mx-auto justify-center text-[15px] pb-0">
-            {modalTitle || `Upload Note in "Tata Chemicals Ltd."`}
+            
+            { AddNote?.CommentType ? `Update Note` : "Add Note" }
+
           </DialogHeader>
 
           <DialogBody className="w-[50%] mx-auto pt-0">
+            
             {
               UploadDocumentAnalysLoading ? 
               <>
-              <div className=" flex gap-1">
-                  <Spinner />
-                  Please wait...
-              </div>
+                <div className=" flex gap-1">
+                    <Spinner /> Please wait...
+                </div>
               </>
               :
               <>

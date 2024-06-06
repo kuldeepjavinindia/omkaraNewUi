@@ -174,3 +174,6 @@ export const DocumentType = [
 //   { title: 'Running Notes (WIP)', value: 'Running Notes (WIP)' },
 //   { title: 'Stock Exchange Announcements', value: 'Stock Exchange Announcements' },
 // ];
+
+
+export const NotesActionButtons = [1];

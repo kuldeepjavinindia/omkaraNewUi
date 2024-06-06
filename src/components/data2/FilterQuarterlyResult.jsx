@@ -102,10 +102,7 @@ const FilterQuarterlyResult = ()=> {
     return (
         
         <>
-        <div className="filterSidebar w-full rounded py-2 px-2 bg-[#E9EDEF] col-span-3 overflow-y-scroll relative"
-    
-    style={{ height: `calc(100vh - 5rem)` }}
-         
+        <div className="filterSidebar  rounded py-2 px-2 bg-[#E9EDEF]  overflow-y-scroll relative screen-height"       
          >
         <div className="flex items-center justify-between pl-2 sticky top-[-9px] z-10  bg-[#E9EDEF]">
                     <Typography className="text-[15px] text-[#000] font-semibold">Filter</Typography>
@@ -128,6 +125,9 @@ const FilterQuarterlyResult = ()=> {
             type="date"
             name="FromDate"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
           />
          
@@ -136,6 +136,9 @@ const FilterQuarterlyResult = ()=> {
             type="date"
             name="To"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
           />
         </AccordionBody>
@@ -212,21 +215,28 @@ const FilterQuarterlyResult = ()=> {
         <AccordionBody>
         <label className="text-[12px] text-[#000] font-medium">Market Cap </label>
         <div className="flex gap-2">
+        <div className="min-w[48%] w-[48%]">
         <Input
             type="text"
             name="marketcap100"
-            className="smallInput  !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             // onChange={handleChangeInput}
             placeholder=">100"
           />
+        </div>
 
- <Input
+<div className="min-w[48%] w-[48%]">
+<Input
             type="text"
             name="marketcap5000"
-            className=" smallInput !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder="<5000"
           />
+</div>
         </div>
 
         <label className="text-[12px] text-[#000] font-medium">LTP </label>
@@ -234,6 +244,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="ltp"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">10"
           />
@@ -244,6 +257,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="TTM"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">15"
           />
@@ -254,6 +270,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="rice"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">15"
           />
@@ -264,6 +283,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="TTM Sale"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">15"
           />
@@ -274,6 +296,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="TTM Pat Abs"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">50"
           />
@@ -300,6 +325,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="sale yoy"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">10"
           />
@@ -310,6 +338,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="sale QOQ"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">10"
           />
@@ -320,6 +351,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="gross profit yoy"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">10"
           />
@@ -330,6 +364,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="gross profit qoq"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">10"
           />
@@ -340,6 +377,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="ebdita yoy"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">10"
           />
@@ -350,6 +390,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="ebdita QOQ"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">10"
           />
@@ -359,6 +402,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="pat yoy"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">10"
           />
@@ -369,6 +415,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="pat QOQ"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">10"
           />
@@ -393,6 +442,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="ebidta margin"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
           />
 
@@ -402,6 +454,9 @@ const FilterQuarterlyResult = ()=> {
             type="text"
             name="sale QOQ"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
           />
  </AccordionBody>
@@ -417,62 +472,53 @@ const FilterQuarterlyResult = ()=> {
         </AccordionHeader>
         <AccordionBody>
 
-<div className="flex flex-col ">
+<div className="flex flex-col">
+  <Radio
+    name="selection"
+    defaultChecked
+    label={
+      <div>
+        <Typography color="" className="text-[13px]">
+          All
+        </Typography>
+      </div>
+    }
+  />
 
-<Radio
-        name="all"
-        defaultChecked
-        label={
-          <div>
-            <Typography color="" className="text-[13px]">
-            All
-            </Typography>
-          </div>
-        }
-       
-      />
+  <Radio
+    name="selection"
+    label={
+      <div>
+        <Typography color="" className="text-[13px]">
+          Sales Up 10% (YoY & QoQ), Gross And EBIDTA Margins[YoY/QoQ] Improving.
+        </Typography>
+      </div>
+    }
+  />
 
+  <Radio
+    name="selection"
+    label={
+      <div>
+        <Typography color="" className="text-[13px]">
+          Sales Up 20% (YoY & QoQ).
+        </Typography>
+      </div>
+    }
+  />
 
-<Radio
-        name="sale 10% yoy & qoq"
-        label={
-          <div>
-            <Typography color="" className="text-[13px]">
-            Sales Up 10% (YoY & QoQ), Gross And EBIDTA Margins[YoY/QoQ] Improving.
-            </Typography>
-          </div>
-        }
-       
-      />
-
-
-<Radio
-        name="sale 20% yoy & qoq"
-        label={
-          <div>
-            <Typography color="" className="text-[13px]">
-            Sales Up 20% (YoY & QoQ).
-            </Typography>
-          </div>
-        }
-       
-      />
-
-
-<Radio
-        name="sale down 20% yoy & qoq"
-        label={
-          <div>
-            <Typography color="" className="text-[13px]">
-            Sales Down 10% (YoY & QoQ), Gross And EBIDTA Margins[YoY/QoQ] Declining.
-            </Typography>
-          </div>
-        }
-       
-      />
-
-
+  <Radio
+    name="selection"
+    label={
+      <div>
+        <Typography color="" className="text-[13px]">
+          Sales Down 10% (YoY & QoQ), Gross And EBIDTA Margins[YoY/QoQ] Declining.
+        </Typography>
+      </div>
+    }
+  />
 </div>
+
 
  </AccordionBody>
       </Accordion>

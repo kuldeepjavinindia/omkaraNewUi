@@ -15,7 +15,7 @@ import {
   MenuItem,
 } from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UploadDocumentAnalysNoteApi } from "../../../store/slice/SingleCompnaySlice";
 import { UploadDocumentNoteReq } from "../../../constants/defaultRequest";
@@ -25,6 +25,10 @@ import ModalPreview from "./ModalPreview";
 import moment from "moment";
 import { AiFillDelete } from "react-icons/ai";
 import { MdEdit } from "react-icons/md";
+import { GlobalContext } from "../../../context/GlobalContext";
+import DeleteDataModal from "../Modals/DeleteDataModal";
+import { NotesActionButtons } from "../../../constants/helper";
+import { useAuthState } from "../../../context/AuthContext";
 
 const NotesFinalOutput = () => {
   const [AllUploadDocuments, setAllUploadDocuments] = useState([]);
@@ -32,10 +36,14 @@ const NotesFinalOutput = () => {
     []
   ); // filter docs according to tabs
 
+  const [OpenModal, setOpenModal] = useState(false);
+  const { AddNote, setAddNote } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
-
   const [ToggleData, setToggleData] = useState(false);
+  const [BtnDelete, setBtnDelete] = useState(false);
+
+  const authState = useAuthState()
 
   const finalOutPutBtn = [
     {
@@ -120,14 +128,22 @@ const NotesFinalOutput = () => {
       setAllUploadDocuments(filteredData);
     } else if (type == "search") {
       let itemData = FirstFilterUploadDocuments;
-      
+
       let crtType = finalOutPutBtn.find((itm) => itm.value == isActive.value);
+
+
+
+      if (crtType?.search_label !== "All") {
+        itemData = itemData.filter(
+          (item) =>
+            item._CommentDetails.CommentType.trim() == crtType?.search_label
+        );
+      }
       
-      itemData = itemData.filter((item) => item._CommentDetails.CommentType.trim() == crtType?.search_label );
       let val = e.target.value.toLowerCase();
       let filteredData = [];
       if (val == "") {
-        filteredData = itemData;
+        filteredData = itemData; 
       }
 
       let arrNew = [];
@@ -142,24 +158,43 @@ const NotesFinalOutput = () => {
     }
   };
 
+  const handleDelete = (item) => {
+    
+    setBtnDelete(true)
+
+    let prams = UploadDocumentNoteReq
+        prams = {...prams, CommentID: item?.CommentID}
+        prams = {...prams, UserID: item?.UserID}
+        prams = {...prams, CompanyID: item?.CompanyID}
+
+    // console.log('prams >>> ', prams)
+
+    rr_dispatch(UploadDocumentAnalysNoteApi([prams]));
+
+  }
+
   const sortData = (itemData, type) => {
     let sData;
-    console.log('aaaaa <>>>>> ', FirstFilterUploadDocuments);
+    console.log("aaaaa <>>>>> ", FirstFilterUploadDocuments);
     let a0 = FirstFilterUploadDocuments;
-    if(isActive?.search_label !== "All"){
+    if (isActive?.search_label !== "All") {
       a0 = itemData;
     }
 
     // return false
     if (type === "name") {
       if (ToggleData) {
-        sData = a0.slice().sort((a, b) =>
-          a._CommentDetails.Heading.localeCompare(b._CommentDetails.Heading)
-        );
+        sData = a0
+          .slice()
+          .sort((a, b) =>
+            a._CommentDetails.Heading.localeCompare(b._CommentDetails.Heading)
+          );
       } else {
-        sData = a0.slice().sort((a, b) =>
-          b._CommentDetails.Heading.localeCompare(a._CommentDetails.Heading)
-        );
+        sData = a0
+          .slice()
+          .sort((a, b) =>
+            b._CommentDetails.Heading.localeCompare(a._CommentDetails.Heading)
+          );
       }
     } else if (type === "date") {
       if (ToggleData) {
@@ -195,58 +230,6 @@ const NotesFinalOutput = () => {
       }
     }
 
-    // if (SortType === 'name') {
-    //     if (ActiveBtn) {
-    //         if (ToggleData) {
-    //             sData = FirstFilterUploadDocuments.sort((a, b) => a._CommentDetails.Heading.localeCompare(b._CommentDetails.Heading));
-    //         } else {
-    //             sData = FirstFilterUploadDocuments.sort((a, b) => b._CommentDetails.Heading.localeCompare(a._CommentDetails.Heading));
-    //         }
-    //     } else {
-    //         if (ToggleData) {
-    //             sData = itemData.sort((a, b) => a._CommentDetails.Heading.localeCompare(b._CommentDetails.Heading));
-    //         } else {
-    //             sData = itemData.sort((a, b) => b._CommentDetails.Heading.localeCompare(a._CommentDetails.Heading));
-    //         }
-    //     }
-    // } else {
-    //     if (ActiveBtn) {
-    //         if (ToggleData) {
-    //             sData = FirstFilterUploadDocuments.sort((a, b) => {
-    //                 var a1 = moment(a._CommentDetails.DateTime, 'DD-MM-YYYY HH:mm:ss', true).format('DD-MMM-YYYY HH:mm:ss'); //a.Date
-    //                 var b1 = moment(b._CommentDetails.DateTime, 'DD-MM-YYYY HH:mm:ss', true).format('DD-MMM-YYYY HH:mm:ss'); //b.Date
-    //                 var dd = new Date(a1) - new Date(b1);
-    //                 return dd;
-    //             });
-    //         } else {
-    //             sData = FirstFilterUploadDocuments.sort((a, b) => {
-    //                 var a1 = moment(a._CommentDetails.DateTime, 'DD-MM-YYYY HH:mm:ss', true).format('DD-MMM-YYYY HH:mm:ss'); //a.Date
-    //                 var b1 = moment(b._CommentDetails.DateTime, 'DD-MM-YYYY HH:mm:ss', true).format('DD-MMM-YYYY HH:mm:ss'); //b.Date
-    //                 var dd = new Date(b1) - new Date(a1);
-    //                 return dd;
-    //             });
-    //         }
-
-    //     } else {
-    //         if (ToggleData) {
-    //             sData = itemData.sort((a, b) => {
-    //                 var a1 = moment(a._CommentDetails.DateTime, 'DD-MM-YYYY HH:mm:ss', true).format('DD-MMM-YYYY HH:mm:ss'); //a.Date
-    //                 var b1 = moment(b._CommentDetails.DateTime, 'DD-MM-YYYY HH:mm:ss', true).format('DD-MMM-YYYY HH:mm:ss'); //b.Date
-    //                 var dd = new Date(a1) - new Date(b1);
-    //                 return dd;
-    //             });
-    //         } else {
-    //             sData = itemData.sort((a, b) => {
-    //                 var a1 = moment(a._CommentDetails.DateTime, 'DD-MM-YYYY HH:mm:ss', true).format('DD-MMM-YYYY HH:mm:ss'); //a.Date
-    //                 var b1 = moment(b._CommentDetails.DateTime, 'DD-MM-YYYY HH:mm:ss', true).format('DD-MMM-YYYY HH:mm:ss'); //b.Date
-    //                 var dd = new Date(b1) - new Date(a1);
-    //                 return dd;
-    //             });
-    //         }
-    //     }
-
-    // }
-
     setToggleData(!ToggleData);
     setAllUploadDocuments(sData);
   };
@@ -270,9 +253,35 @@ const NotesFinalOutput = () => {
     }
   }, [UploadDocumentAnalysLoading]);
 
+  useEffect(() => {
+    if (!UploadDocumentAnalysLoading && BtnDelete) {
+      setOpenModal(null);
+    }
+  }, [UploadDocumentAnalysLoading]);
+
   return (
     <>
-      <ModalPreview open={open} setOpen={setOpen} selectedItem={selectedItem} />
+
+      <ModalPreview open={open} setOpen={setOpen} selectedItem={selectedItem} />       
+      <DeleteDataModal
+        ModalTitle={'Alert!'}
+        OpenModal={OpenModal}
+        setOpenModal={setOpenModal}
+        onClick={()=>{
+          handleDelete(OpenModal)
+        }}
+      > 
+        
+        <Typography className=" font-medium">
+          Are you sure want to delete this note?
+        </Typography>
+
+      </DeleteDataModal>
+
+
+
+
+
       <div className="col-span-12 mt-5 bg-white py-4 rounded-md">
         <div className="pb-2 border-gray-200 border-b border-0 px-4">
           <div className="flex gap-4 items-center justify-between ">
@@ -348,89 +357,101 @@ const NotesFinalOutput = () => {
         </div>
 
         <div className="clientDocs_horizontalCardsList px-4">
-          {UploadDocumentAnalysLoading ? <Spinner />
-        
-            :
-
-<>
-{AllUploadDocuments && AllUploadDocuments.length === 0 && (
+          {UploadDocumentAnalysLoading ? (
+            <Spinner />
+          ) : (
             <>
-              <Typography className="mt-2">
-                No Data Found In <u>{isActive?.search_label}</u>!
-              </Typography>
+              {AllUploadDocuments && AllUploadDocuments.length === 0 && (
+                <>
+                  <Typography className="mt-2">
+                    No Data Found In <u>{isActive?.search_label}</u>!
+                  </Typography>
+                </>
+              )}
+
+              <ul>
+                {AllUploadDocuments &&
+                  AllUploadDocuments.length > 0 &&
+                  AllUploadDocuments.map((c_item, i) => {
+                    let item = c_item?._CommentDetails;
+                    // console.log('item > ', item)
+                    return (
+                      <li
+                        key={i}
+                        className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b "
+                      >
+                        <div
+                          className="flex items-center gap-4 cursor-pointer"
+                          onClick={() => {
+                            setSelectedItem(item);
+                            setOpen(!open);
+                          }}
+                        >
+                          <img
+                            src={
+                              import.meta.env.VITE_BASE_URL +
+                              "/images/icons/pdfIcon.svg"
+                            }
+                            alt=""
+                          />
+                          <div>
+                            <Typography className="text-[#162E4C] font-semibold text-[14px]">
+                              {item?.Heading}
+                            </Typography>
+                            <Typography className="text-[10px] text-gray-500">
+                              <span className="font-semibold text-theme capitalize">
+                                {item?.UserName}
+                              </span>
+                              <span className="font-semibold text-[#000] mx-1">
+                                {" "}
+                                {item?.CommentType}
+                              </span>
+                              <span className=" font-medium text-[#909090]">
+                                {" "}
+                                {item?.DateTime}
+                              </span>
+                            </Typography>
+                          </div>
+                        </div>
+                        <div className="flex gap-1 w-17">
+{
+  
+  (NotesActionButtons.includes(authState?.user?.UserID) || authState?.user?.UserID == item?.UserID) && (
+
+    <>
+    
+    <IconButton
+                            className=" bg-transparent text-theme shadow-none hover:shadow-none"
+                            size="sm"
+                            onClick={()=>{
+                              setAddNote(item)
+                            }}
+                          >
+                            <MdEdit size={20} />
+                          </IconButton>
+
+                          <IconButton
+                            className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none"
+                            size="sm"
+                            onClick={()=>{
+                              setOpenModal(item)
+                            }}
+                          >
+                            <AiFillDelete size={20} />
+                          </IconButton>
+    
+    </>
+  )
+}
+
+
+                        </div>
+                      </li>
+                    );
+                  })}
+              </ul>
             </>
           )}
-
-          <ul>
-            {AllUploadDocuments &&
-              AllUploadDocuments.length > 0 &&
-              AllUploadDocuments.map((c_item, i) => {
-                let item = c_item?._CommentDetails;
-                // console.log('item > ', item)
-                return (
-                  <li
-                    key={i}
-                    className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b "
-                  >
-                    <div
-                      className="flex items-center gap-4 cursor-pointer"
-                      onClick={() => {
-                        setSelectedItem(item);
-                        setOpen(!open);
-                      }}
-                    >
-                      <img
-                        src={
-                          import.meta.env.VITE_BASE_URL +
-                          "/images/icons/pdfIcon.svg"
-                        }
-                        alt=""
-                      />
-                      <div>
-                        <Typography className="text-[#162E4C] font-semibold text-[14px]">
-                          {item?.Heading}
-                        </Typography>
-                        <Typography className="text-[10px] text-gray-500">
-                          <span className="font-semibold text-theme capitalize">
-                            {item?.UserName}
-                          </span>
-                          <span className="font-semibold text-[#000] mx-1">
-                            {" "}
-                            {item?.CommentType}
-                          </span>
-                          <span className=" font-medium text-[#909090]">
-                            {" "}
-                            {item?.DateTime}
-                          </span>
-                        </Typography>
-                      </div>
-                    </div>
-                    <div className="flex gap-1 w-17">
-                      
-                      {/* <IconButton onClick={()=> {
-                      console.log('aa');
-                      setSelectedItem(item);
-                      setOpen(!open)
-                    }} className=" bg-transparent text-theme shadow-none hover:shadow-none" size="sm">
-                          <FaEye  size={20} />
-                        </IconButton> */}
-
-                      {/* <IconButton className=" bg-transparent text-theme shadow-none hover:shadow-none" size="sm">
-                          <MdEdit  size={20} />
-                        </IconButton>
-                      <IconButton className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none" size="sm">
-                          <AiFillDelete size={20} />
-                        </IconButton> */}
-
-                    </div>
-                  </li>
-                );
-              })}
-          </ul>
-
-</>
-        }
-          
         </div>
       </div>
       {/* End Component Final Output */}

@@ -93,7 +93,11 @@ const handleOpen = ()=> {
 
   <div>
   <label className="text-[12px]  text-[#000] font-medium">Sectors </label>
-  <Select className="bg-[#fff] "  >
+  <Select className="bg-[#fff] border-none " value="" 
+    labelProps={{
+      className: "hidden",
+    }}
+  >
         <Option>Option 1</Option>
       </Select>
   </div>
@@ -104,6 +108,9 @@ const handleOpen = ()=> {
             type="date"
             name="FromDate"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             onChange={handleChangeInput}
           />
   </div>
@@ -114,6 +121,9 @@ const handleOpen = ()=> {
             type="date"
             name="ToDate"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             onChange={handleChangeInput}
           />
   </div>
@@ -126,6 +136,9 @@ const handleOpen = ()=> {
             type="text"
             name="MarketCapFrom"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             onChange={handleChangeInput}
             placeholder=">1"
           />
@@ -134,6 +147,9 @@ const handleOpen = ()=> {
             type="text"
             name="MarketCapTo"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100 "
+            labelProps={{
+              className: "hidden",
+            }}
             onChange={handleChangeInput}
             placeholder="<100"
           />
@@ -142,7 +158,6 @@ const handleOpen = ()=> {
   </div>
 
  
-
   </div>
     {/* End Header Result Calender Left Side*/}
 

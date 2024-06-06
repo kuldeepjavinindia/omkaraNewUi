@@ -254,6 +254,34 @@ const Quarterly_P_L = () => {
           </div>
         </div>
       </div>
+      {
+        (
+          (UpdateRightSideTabs.tab_1.button_status.con === false && UpdateRightSideTabs.tab_1.button_status.std === false && SecondaryBtn.id == 1)
+        ) && (
+          <div className="text-lg font-semibold text-black">N.A.</div>
+        )
+      }
+      {
+        (
+          (UpdateRightSideTabs.tab_2.button_status.con === false && UpdateRightSideTabs.tab_2.button_status.std === false && SecondaryBtn.id == 2)
+        ) && (
+          <div className="text-lg font-semibold text-black">N.A.</div>
+        )
+      }
+      {
+        (
+          (UpdateRightSideTabs.tab_3.button_status.con === false && UpdateRightSideTabs.tab_3.button_status.std === false && SecondaryBtn.id == 3)
+        ) && (
+          <div className="text-lg font-semibold text-black">N.A.</div>
+        )
+      }
+      {
+        (
+          (UpdateRightSideTabs.tab_4.button_status.con === false && UpdateRightSideTabs.tab_4.button_status.std === false && SecondaryBtn.id == 4)
+        ) && (
+          <div className="text-lg font-semibold text-black">N.A.</div>
+        )
+      }
       <div>{SecondaryBtn.component}</div>
     </>
   );

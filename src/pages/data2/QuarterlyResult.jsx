@@ -84,18 +84,11 @@ const QuarterlyResult = () => {
 
   return (
     <>
-    
-      {/* <div className="sc-container">
-        <TabsDefault
-          TabsData={TypeTabs}
-          ActiveTab={ActiveTab}
-          setActiveTab={setActiveTab}
-        />
-      </div> */}
-          <div className="grid grid-cols-12 gap-1 pt-2">
+   
+          <div className=" pt-2 FilterSidebar-Content-Layout" >
           <FilterQuarterlyResult/>
-     
-     <div className="sc-container col-span-9  ">
+
+     <div className="sc-container ">
         <TabsDefault
           TabsData={TypeTabs}
           ActiveTab={ActiveTab}

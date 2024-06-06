@@ -5,10 +5,10 @@ import DeliveryDataTable from "./../../components/data2/DeliveryData/DeliveryDat
 const DeliveryData = ()=> {
     return (
         <>
-        <div className="grid grid-cols-12 gap-1 pt-2">
+        <div className="pt-2 FilterSidebar-Content-Layout">
           <FilterSidebarDeliveryData />
 
-            <div className="sc-container col-span-9">
+            <div className="sc-container ">
             <DeliveryDataTable />
             </div>
 

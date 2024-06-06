@@ -4,10 +4,10 @@ import InsidertTradingTable from "./../../components/data2/Insider/InsidertTradi
 const InsiderTrading = () => {
   return (
     <>
-      <div className="grid grid-cols-12 gap-1 pt-2">
+      <div className=" pt-2 FilterSidebar-Content-Layout">
         <FilterSidebarInsideTrading />
 
-        <div className="sc-container col-span-9">
+        <div className="sc-container ">
           <InsidertTradingTable />
         </div>
       </div>

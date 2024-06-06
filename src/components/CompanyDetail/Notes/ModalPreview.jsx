@@ -38,7 +38,7 @@ useEffect(() => {
         // }}
       >
         <DialogHeader className='pb-2 border-b border-gray-300'>{selectedItem?.Heading} </DialogHeader>
-        <DialogBody className="h-[42rem] overflow-auto">
+        <DialogBody className="max-h-[42rem] overflow-auto">
         <div dangerouslySetInnerHTML={{ __html: selectedItem?.Discription }}></div>
         {/* {
                     IsChart ? (

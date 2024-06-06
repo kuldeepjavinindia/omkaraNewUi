@@ -30,39 +30,39 @@ function App() {
         },
         {
           path: "/watchlist/create",
-        element: <WatchlistCreate/> ,
+        element: <WatchlistCreate />,
         },
         {
           path: "/watchlist/edit/:watchlist_id",
-          element: <WatchlistEdit /> ,
+          element: <WatchlistEdit />,
         },
         {
           path: "/watchlist/add-company",
-          element: <WatchlistCompany/> ,
+          element: <WatchlistCompany />,
         },
         {
           path: "/quterly-result",
-          element: <QuarterlyResult/> ,
+          element: <QuarterlyResult />,
         },
         {
           path: "/result-calendar",
-          element: <ResultCalendar/> ,
+          element: <ResultCalendar />,
         },
         {
           path: "/delivery-data",
-          element: <DeliveryData/> ,
+          element: <DeliveryData />,
         },
         {
           path: "/bulk-block",
-          element: <BulkBlock/> ,
+          element: <BulkBlock />,
         },
         {
           path: "/insider-trading",
-          element: <InsiderTrading/> ,
+          element: <InsiderTrading />,
         },
         {
           path: "/price-action",
-          element: <PriceAction/> ,
+          element: <PriceAction />,
         },
       ]
     },

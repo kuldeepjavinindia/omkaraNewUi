@@ -378,7 +378,7 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                   <Typography className="text-[15px] mt-4 text-black font-semibold ">
                     {details.title}
                   </Typography>
-                  <Typography className="text-[15px] mb-4 w-[50%]">
+                  <Typography className="text-[15px] mb-4 ">
                     {details.description}
                   </Typography>
 
@@ -419,7 +419,7 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                       }
                       
                       <table
-                        className={`forensicTable   h-full overflow-scroll border-[1px] border-[#E5E5E5] rounded bg-clip-border
+                        className={`  h-full overflow-scroll border-[1px] border-[#E5E5E5] rounded bg-clip-border
                ${TableWidth[typeData]}
                
                

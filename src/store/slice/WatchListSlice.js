@@ -11,7 +11,9 @@ const initialState = {
   },
   wlCompany: {
     loading: true,
-    data: [],
+    data: {
+      Data: [],
+    },
     msg: null,
     error: null,
   },

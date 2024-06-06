@@ -78,7 +78,7 @@ const CompanyDetailPage = () => {
   const rr_dispatch = useDispatch();
   const rrd_params = useParams();
 
-  const { AddNote, setAddNote } = useContext(GlobalContext);
+  const { setAddNote } = useContext(GlobalContext);
 
   let cmpId = rrd_params?.company_id;
   if (cmpId) {
@@ -169,15 +169,6 @@ const CompanyDetailPage = () => {
       ),
     },
     {
-      value: "9",
-      label: "Financial",
-      desc: (
-        <>
-          <Financial_Main />
-        </>
-      ),
-    },
-    {
       value: "2",
       label: "Chart",
       desc: (
@@ -192,6 +183,15 @@ const CompanyDetailPage = () => {
       desc: (
         <>
           <Brief_Main />
+        </>
+      ),
+    },
+    {
+      value: "9",
+      label: "Financial",
+      desc: (
+        <>
+          <Financial_Main />
         </>
       ),
     },
@@ -234,7 +234,7 @@ const CompanyDetailPage = () => {
     },
     {
       value: "8",
-      label: "Media Room",
+      label: "Media",
       desc: (
         <>
           {" "}
@@ -260,7 +260,7 @@ const CompanyDetailPage = () => {
             variant="outlined"
             className="p-0 px-2 py-1 border-theme text-theme shadow-none rounded-md text-[10px] flex gap-0.5"
             onClick={()=>{
-              setAddNote(!AddNote)
+              setAddNote(true)
             }}
           >
             <HiOutlineDocumentAdd size={13} />

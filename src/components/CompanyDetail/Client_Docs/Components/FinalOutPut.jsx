@@ -20,6 +20,7 @@ import { UploadDocumentReq } from "../../../../constants/defaultRequest";
 import { useParams } from "react-router-dom";
 // import { MdEdit } from "react-icons/md";
 import {
+  NotesActionButtons,
   // openCompany,
   openPdfWithWaterMark,
 } from "../../../../constants/helper";
@@ -29,8 +30,11 @@ import UploadDocumentModal from "../../Modals/UploadDocumentModal";
 import DeleteDataModal from "../../Modals/DeleteDataModal";
 import { SendNotificationModal } from "../..";
 import { GlobalContext } from "../../../../context/GlobalContext";
+import { useAuthState } from "../../../../context/AuthContext";
 
 const FinalOutPut = () => {
+
+  const authState = useAuthState();
   const [AllUploadDocuments, setAllUploadDocuments] = useState([]);
   const [FirstFilterUploadDocuments, setFirstFilterUploadDocuments] = useState(
     []
@@ -370,24 +374,34 @@ const FinalOutPut = () => {
                             </div>
                           </div>
                           <div>
-                            <IconButton
-                              className=" bg-transparent text-theme shadow-none hover:shadow-none"
-                              size="sm"
-                              onClick={() => {
-                                setSendNotification(item);
-                              }}
-                            >
-                              <AiOutlineMail size={20} />
-                            </IconButton>
-                            <IconButton
-                              className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none"
-                              size="sm"
-                              onClick={() => {
-                                setOpenModal(item);
-                              }}
-                            >
-                              <AiFillDelete size={20} />
-                            </IconButton>
+                            {
+
+(NotesActionButtons.includes(authState?.user?.UserID) || authState?.user?.UserID == item?.UserID) && (
+
+  <>
+  <IconButton
+    className=" bg-transparent text-theme shadow-none hover:shadow-none"
+    size="sm"
+    onClick={() => {
+      setSendNotification(item);
+    }}
+  >
+    <AiOutlineMail size={20} />
+  </IconButton>
+  <IconButton
+    className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none"
+    size="sm"
+    onClick={() => {
+      setOpenModal(item);
+    }}
+  >
+    <AiFillDelete size={20} />
+  </IconButton>
+  
+  </>
+)
+                            }
+                            
                           </div>
                         </div>
                       </li>

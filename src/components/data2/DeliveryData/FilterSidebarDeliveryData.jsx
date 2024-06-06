@@ -97,10 +97,7 @@ const options = [
 return (
     
     <>
-    <div className="filterSidebar w-full rounded py-2 px-2 bg-[#E9EDEF] col-span-3 overflow-y-scroll relative"
-    
-    style={{ height: `calc(100vh - 5rem)` }}
-    >
+    <div className="filterSidebar  rounded py-2 px-2 bg-[#E9EDEF]  overflow-y-scroll relative screen-height">
     <div className="flex items-center justify-between pl-2 sticky top-[-9px] z-10  bg-[#E9EDEF]">
                 <Typography className="text-[15px] text-[#000] font-semibold">Filter price</Typography>
                 <div>
@@ -109,8 +106,6 @@ return (
                 </div>
             </div>
         <div className=""> 
-
-
 
    {/* Start Card Form */}
    <Accordion open={ActiveAccordion.accordion_1} className="mt-2 rounded bg-[#fff] px-2 py-3 mt-2" icon={<Icon id={1} open={ActiveAccordion.accordion_1} />}>
@@ -197,7 +192,7 @@ return (
     </AccordionHeader>
     <AccordionBody>
 
-    <div className="flex gap-8">
+    <div className="flex ">
   <div className="flex flex-col gap-2">
     <Radio name="type" label="Weekly" />
     <Radio name="type" label="Monthly" />
@@ -226,21 +221,31 @@ return (
         <AccordionBody>
         <label className="text-[12px] text-[#000] font-medium">Market Cap </label>
         <div className="flex gap-2">
+        <div className="min-w[48%] w-[48%]">
         <Input
             type="text"
             name="marketcap100"
-            className="smallInput  !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
-            placeholder=">500"
+            placeholder=">100"
           />
+        </div>
 
- <Input
+<div className="min-w[48%] w-[48%]">
+<Input
             type="text"
             name="marketcap5000"
-            className=" smallInput !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
-            placeholder="<50000"
+            placeholder="<5000"
           />
+</div>
         </div>
 
         <label className="text-[12px] text-[#000] font-medium">LTP vs 200DMA (%) </label>
@@ -248,6 +253,9 @@ return (
             type="text"
             name="ltp"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder="2"
           />
@@ -259,6 +267,9 @@ return (
             type="text"
             name="TTM"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">100"
           />
@@ -270,6 +281,9 @@ return (
             type="text"
             name="rice"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">0.5"
           />
@@ -281,6 +295,9 @@ return (
             type="text"
             name="TTM Sale"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">100"
           />

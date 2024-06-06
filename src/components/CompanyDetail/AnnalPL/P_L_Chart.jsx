@@ -150,7 +150,21 @@ useEffect(() => {
                     QuarterlyAllData && Object.keys(QuarterlyAllData).map((item, i)=>{
                         let obj = QuarterlyAllData[item];
                         return (
-                            <div key={i} className={`${QButtonActive.len== 5 && "h-[270px]"} ${QButtonActive.len == 10 && "h-[390px]"} ${QButtonActive.len== 13 && "h-[460px]"}`}>
+                            <div key={i} className={`${QButtonActive.len== 5 && "h-[150px]"} ${QButtonActive.len == 10 && "h-[300px]"} ${QButtonActive.len== 13 && "h-[420px]"}`}>
+                                
+                            <div className="h-14">
+                                <div className="text-center">
+                                    <h4 className=" font-semibold text-[15px] text-black">
+                                    {obj?.title}
+                                    </h4>
+                                    <p className="text-[12px]" dangerouslySetInnerHTML={{ 
+                                    __html: `${obj.YoYQoQ.YoY ? "YOY: "+obj.YoYQoQ.YoY+" <br />" : ""} ${obj.YoYQoQ.QoQ ? "QOQ: " + obj.YoYQoQ.QoQ : ""}`
+                                    }}>
+                                    
+                                    </p>
+                                </div>
+                            </div>
+
                                 <CustomChart detail={{
                                     title: obj.title,
                                     yoy:obj.YoYQoQ?.YoY,

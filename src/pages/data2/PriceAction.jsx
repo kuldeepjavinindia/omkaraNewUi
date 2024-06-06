@@ -4,10 +4,10 @@ import PriceActionTable from "./../../components/data2/PriceAction/PriceActionTa
 const PriceAction = ()=> {
     return (
         <>
-        <div className="grid grid-cols-12 gap-1 pt-2">
+        <div className="pt-2 FilterSidebar-Content-Layout">
           <FilterSidebarPriceAction/>
 
-            <div className="sc-container col-span-9">
+            <div className="sc-container ">
             <PriceActionTable/>
             </div>
 

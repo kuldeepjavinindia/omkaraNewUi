@@ -5,10 +5,10 @@ import FilterSidebarBulkBlock from "./../../components/data2/BulkBlock/FilterSid
 const BulkBlock = ()=> {
     return (
         <>
-        <div className="grid grid-cols-12 gap-1 pt-2">
+        <div className="FilterSidebar-Content-Layout pt-2">
        <FilterSidebarBulkBlock/>
        
-            <div className="sc-container col-span-9">
+            <div className="sc-container ">
           <BulkBlockTable/>
             </div>
 

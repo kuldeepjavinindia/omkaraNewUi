@@ -27,10 +27,7 @@ const handleOpen = (value) => {
 return (
     
     <>
-    <div className="filterSidebar w-full rounded py-2 px-2 bg-[#E9EDEF] col-span-3 overflow-y-scroll relative"
-    
-    style={{ height: `calc(100vh - 5rem)` }}
-    >
+    <div className="filterSidebar  rounded py-2 px-2 bg-[#E9EDEF]  overflow-y-scroll relative screen-height">
     <div className="flex items-center justify-between pl-2 sticky top-[-9px] z-10  bg-[#E9EDEF]">
                 <Typography className="text-[15px] text-[#000] font-semibold">Filter price</Typography>
                 <div>
@@ -51,7 +48,7 @@ return (
     
        <div className="pb-2">
        <label className="text-[12px] text-[#000] font-medium">Company (23) </label>
-    <Select >
+    <Select  >
         <Option>Cyient LTD.</Option>
         <Option>3 M India  Ltd.</Option>
       </Select>
@@ -69,6 +66,10 @@ return (
             type="date"
             name="formDate"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100 "
+            labelProps={{
+              className: "hidden",
+            }}
+            
             // onChange={handleChangeInput}
           />
 </div>
@@ -79,50 +80,75 @@ return (
             type="date"
             name="tpDate"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100 "
+            labelProps={{
+              className: "hidden",
+            }}
+    sss        
             // onChange={handleChangeInput}
           />
      </div>
 
 <div className="mb-2">
 <label className="text-[12px] text-[#000] font-medium ">Market Cap </label>
-        <div className="flex gap-2">
+      
+<div className="flex gap-2">
+        <div className="min-w[48%] w-[48%]">
         <Input
             type="text"
             name="marketcap100"
-            className="smallInput  !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
-            placeholder=">1"
+            placeholder=">100"
           />
+        </div>
 
- <Input
+<div className="min-w[48%] w-[48%]">
+<Input
             type="text"
             name="marketcap5000"
-            className=" smallInput !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
-            placeholder="<50000"
+            placeholder="<5000"
           />
+</div>
         </div>
 </div>
 
 
 <div className="mb-2">
 <label className="text-[12px] text-[#000] font-medium ">Net Value (in Cr.) </label>
-        <div className="flex gap-2">
+<div className="flex gap-2">
+        <div className="min-w[48%] w-[48%]">
         <Input
             type="text"
             name="marketcap100"
-            className="smallInput  !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
-            placeholder=">1"
+            placeholder=">100"
           />
+        </div>
 
- <Input
+<div className="min-w[48%] w-[48%]">
+<Input
             type="text"
             name="marketcap5000"
-            className=" smallInput !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
-            placeholder="<50000"
+            placeholder="<5000"
           />
+</div>
         </div>
 </div>
 
