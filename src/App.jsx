@@ -25,6 +25,7 @@ import { MainLayout } from "./components";
 import "./assets/sass/main.scss";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AutoSuggestion from "./pages/AutoSuggestion";
 
 
 
@@ -112,6 +113,10 @@ function App() {
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "/AutoSuggestion",
+        element: <AutoSuggestion />,
       },
     ],
     {

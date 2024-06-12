@@ -275,3 +275,71 @@ span.react-select__indicator-separator {
 
 
 // End 10-June-2024
+
+// START 12-June-2024
+.td_W_svg{
+  svg{
+    fill: #fff;
+  }
+}
+
+
+
+$color_1: red;
+$color_2: #077d3f;
+$color_3: #073d92;
+$color_4: #d55331;
+$color_5: #fff;
+$background-color_1: #ff6271;
+$background-color_3: $color_2;
+$background-color_2: $color_3;
+$background-color_4: $color_4;
+$border-color_1: $color_2;
+$border-color_2: $color_3;
+$border-color_3: $color_4;
+
+.pdfBtn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	gap: 4px;
+	width: fit-content;
+	padding: 0.2rem 1rem;
+	border-radius: 50px;
+	border: 1px solid #dc3545;
+	color: $color_1;
+	text-transform: uppercase;
+	&:hover {
+		background-color: $background-color_1;
+		color: $color_5 !important;
+		svg {
+			fill: $color_5 !important;
+		}
+	}
+}
+.excelBtn {
+	border-color: $border-color_1;
+	color: $color_2;
+	&:hover {
+		background-color: $background-color_3;
+	}
+}
+.docBtn {
+	border-color: $border-color_2;
+	color: $color_3;
+	&:hover {
+		background-color: $background-color_2;
+	}
+}
+.pptBtn {
+	border-color: $border-color_3;
+	color: $color_4;
+	&:hover {
+		background-color: $background-color_4;
+	}
+}
+
+
+
+// End 12-June-2024

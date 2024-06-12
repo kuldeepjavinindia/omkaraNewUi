@@ -124,7 +124,7 @@ const ReportsBank = () => {
     callApi(item?.value, item.id)
   }
 
-  const itemSearch = (event, itemData = RepositoryListData) => {
+  const itemSearch = (event, itemData = RepositoryListData.Data) => {
     var nVal = event.target.value
     // console.log(itemData);
       let arrNew = [];
@@ -149,7 +149,7 @@ const ReportsBank = () => {
   const sortData = (itemData, type) => {
     let sData;
 
-    let a0 = RepositoryListData;
+    let a0 = RepositoryListData?.Data;
 
     // return false
     if (type === "name") {
@@ -203,7 +203,7 @@ const ReportsBank = () => {
 
   useEffect(() => {
     if(!RepositoryListLoading){
-      setAllListData(RepositoryListData)
+      setAllListData(RepositoryListData?.Data)
     }
   }, [ rr_dispatch, RepositoryListLoading ])
 
@@ -232,14 +232,14 @@ const ReportsBank = () => {
                   <MenuList>
                     <MenuItem
                       onClick={() => {
-                        sortData(RepositoryListData, "date");
+                        sortData(RepositoryListData?.Data, "date");
                       }}
                     >
                       Sort by Date
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        sortData(RepositoryListData, "name");
+                        sortData(RepositoryListData?.Data, "name");
                       }}
                     >
                       Sort by Name

@@ -21,6 +21,7 @@ import AddVideosModal from "../Modals/AddVideosModal";
 import { GlobalContext } from "../../../context/GlobalContext";
 import { IconButton } from "@mui/material";
 import DeleteDataModal from "../Modals/DeleteDataModal";
+import { getVidFullUrl } from "../../../constants/helper";
 
 export const MediaRoom_Main = () => {
   const rrd_params = useParams();
@@ -57,14 +58,6 @@ export const MediaRoom_Main = () => {
 
   const [ActiveVideoItem, setActiveVideoItem] = useState(null);
 
-  const getVidFullUrl = (videoCode, videoType) => {
-    let url = `https://vimeo.com/${videoCode}`;
-    if (videoType === "youtube") {
-      url = `https://www.youtube.com/watch?v=${videoCode}`;
-    }
-    return url;
-  };
-
   useEffect(() => {
     if (MediaRoomLoading) {
       let param = MediaRoomDataReq;
@@ -73,7 +66,6 @@ export const MediaRoom_Main = () => {
         CompanyID: company_id,
         userid: user_id,
       };
-
       rr_dispatch(MediaRoomApi([param]));
     }
 

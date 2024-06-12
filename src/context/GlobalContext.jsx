@@ -10,11 +10,14 @@ const GlobalContextProvider = ({ children }) => {
   const [SendNotification, setSendNotification] = useState(null); //SendNotificationModal
   const [AddVideo, setAddVideo] = useState(null); //SendNotificationModal
   const [ThemeDrawer, setThemeDrawer] = useState(null); //SendNotificationModal
+  const [ReportBankDrawer, setReportBankDrawer] = useState(null); //SendNotificationModal
   const [PeersModal, setPeersModal] = useState(null); //SendNotificationModal
 
   return (
     <GlobalContext.Provider
       value={{
+        ReportBankDrawer,
+        setReportBankDrawer,
         PeersModal,
         setPeersModal,
         ThemeDrawer,

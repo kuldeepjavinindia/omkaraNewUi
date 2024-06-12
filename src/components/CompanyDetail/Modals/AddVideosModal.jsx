@@ -15,7 +15,7 @@ import "react-quill/dist/quill.snow.css";
 import { useContext, useEffect, useState } from "react";
 // import CustomSearchableSelect from "../../CustomSearchableSelect";
 import { GlobalContext } from "../../../context/GlobalContext";
-import { DocumentNotes, vimeo_parser, youtube_parser } from "../../../constants/helper";
+import { DocumentNotes, vimeo_parser, youtube_parser, selectSitesArr, selectVideoArr } from "../../../constants/helper";
 import { MediaRoomDataReq, UploadDocumentNoteReq } from "../../../constants/defaultRequest";
 import { useParams } from "react-router-dom";
 import { MediaRoomApi, UploadDocumentAnalysNoteApi } from "../../../store/slice/SingleCompnaySlice";
@@ -52,18 +52,6 @@ const formats = [
   "link",
   "image",
   "video",
-];
-
-const selectSitesArr = [
-  { title: "Select Site Type", value: 0 },
-  { title: "Youtube", value: "youtube" },
-  { title: "Vimeo", value: "vimeo" },
-];
-
-const selectVideoArr = [
-  { title: "Select Site Type", value: 0 },
-  { title: "Single Company", value: "SINGLE VIDEO" },
-  { title: "Sector Video", value: "Sector Video" },
 ];
 
 const AddVideosModal = (props) => {
@@ -230,7 +218,6 @@ const AddVideosModal = (props) => {
                   </label>
                   <Select
                     value={Inputs.videoType}
-                    
                     onChange={(val) => {
                       setInputs(prev=> { return { ...prev, videoType: val } })
                     }}

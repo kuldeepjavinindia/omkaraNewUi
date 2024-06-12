@@ -29,6 +29,9 @@ export const SignInReq = {
 export const companyMasterReq = {
   Search: "",
   Type: "",
+  "sector_id":[],
+  "industry_id":[],
+  "company_id":[]
 };
 
 export const UploadDocumentReq = {
@@ -41,26 +44,25 @@ export const UploadDocumentReq = {
   FileContent: "",
 }; // ADD array
 
-export const RepositoryListReq = {
-  Date: [],
-  sectorId: "",
-  IndustryId: "",
-  CompanyId: [],
-  BrokerId: "",
-  ReportType: "",
-  page: 1,
-  order: "asc",
-  order_column: "CompanyName",
-  numPerPage: 1000,
-  search: "",
-};
+// export const RepositoryListReq = {
+//   Date: [],
+//   sectorId: "",
+//   IndustryId: "",
+//   CompanyId: [],
+//   BrokerId: "",
+//   ReportType: "",
+//   page: 1,
+//   order: "asc",
+//   order_column: "CompanyName",
+//   numPerPage: 1000,
+//   search: "",
+// };
 
 export const UploadDocumentNoteReq = {
   CompanyID: "",
   UserID: "22",
   CommentType: "",
-}; 
-
+};
 
 // ADD array
 // export const UploadDocumentNoteReq = {
@@ -173,49 +175,56 @@ export const Result_Document_Req = {
 };
 
 export const Forensic_Comments_Req = {
-  "type": "1",
-  "userid": "1",
-  "CompanyID": "",
-  "SectorID": "",
-  "IndustryID": "",
-  "TableType": "",
-  "description": ""
+  type: "1",
+  userid: "1",
+  CompanyID: "",
+  SectorID: "",
+  IndustryID: "",
+  TableType: "",
+  description: "",
 };
 
 export const BoardOfDirectorDetail_Req = {
-  "Type": "",
-  "DirName": "",
-  "companyId": ""
+  Type: "",
+  DirName: "",
+  companyId: "",
 };
 
 export const videoLikeDiskLike_Req = {
-  "type":"",
-  "webuserId": "",
-  "inputType" : "0"
+  type: "",
+  webuserId: "",
+  inputType: "0",
 };
 
 export const MediaComment_Req = {
-  "parentId":0,
-  "videoId":"",
-  "comment":"",
-  "commentId":"",
-  "webUserName": "",
-  "webUserImage": import.meta.env.VITE_BASE_URL + "/images/Ellipse 2.png",//"https://omkaracapital.in/image/default_user.png",
-  "webuserId": "",
-  "inputType":"3" //0:insert 1:edit 2:Delete 3:list
-}
-
-
-
-
-
-
-
-
-
-
+  parentId: 0,
+  videoId: "",
+  comment: "",
+  commentId: "",
+  webUserName: "",
+  webUserImage: import.meta.env.VITE_BASE_URL + "/images/Ellipse 2.png", //"https://omkaracapital.in/image/default_user.png",
+  webuserId: "",
+  inputType: "3", //0:insert 1:edit 2:Delete 3:list
+};
 
 // START DATA 2 Requests
+
+export const RepositoryListReq = {
+  Date: ["", ""],
+  sectorId: "",
+  WatchListID: "0",
+  IndustryId: "",
+  CompanyId: "",
+  BrokerId: "",
+  ReportType: "",
+  page: 1,
+  order: "asc",
+  order_column: "CompanyName",
+  numPerPage: "1000",
+  search: "",
+};
+
+
 
 
 // END DATA 2 Requests

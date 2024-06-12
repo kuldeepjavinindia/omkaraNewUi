@@ -638,7 +638,7 @@ const SingleCompanySlice = createSlice({
     builder.addCase(RepositoryListAPI.fulfilled, (state, action) => {
       //   let allData = current(state);
 
-      state.RepositoryList.data = action.payload?.Data || [];
+      state.RepositoryList.data = action.payload || [];
       state.RepositoryList.loading = false;
       state.RepositoryList.msg = "success";
       state.RepositoryList.msgType = "success";

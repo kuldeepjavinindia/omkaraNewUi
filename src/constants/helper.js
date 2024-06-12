@@ -175,8 +175,10 @@ export const DocumentType = [
 //   { title: 'Stock Exchange Announcements', value: 'Stock Exchange Announcements' },
 // ];
 
-
+// PERMISSION USER IDS
 export const NotesActionButtons = [1];
+export const RepoListingButtons = ["1", "3", "4"];
+// PERMISSION USER IDS
 
 
 
@@ -208,4 +210,26 @@ export const youtube_parser = (url) => {
   return (match && match[7].length == 11) ? match[7] : null;
 }
 
+
+export const getVidFullUrl = (videoCode, videoType) => {
+  let url = `https://vimeo.com/${videoCode}`;
+  if (videoType === "youtube") {
+    url = `https://www.youtube.com/watch?v=${videoCode}`;
+  }
+  return url;
+};
+
+
+
+export const selectSitesArr = [
+  { title: "Select Site Type", value: 0 },
+  { title: "Youtube", value: "youtube" },
+  { title: "Vimeo", value: "vimeo" },
+];
+
+export const selectVideoArr = [
+  { title: "Select Site Type", value: 0 },
+  { title: "Single Company", value: "SINGLE VIDEO" },
+  { title: "Sector Video", value: "Sector Video" },
+];
 

@@ -11,7 +11,6 @@ import { GlobalContext } from '../../../context/GlobalContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { allCompanyMasterAPI } from '../../../store/slice/MasterSlice';
 import { Autocomplete, Box, Checkbox, Chip, Container, Divider, List, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
-import CompanySearchSelectbox from "../../CompanySearchSelectbox";
 
 // PeersModal, setPeersModal
 
@@ -73,7 +72,7 @@ const PeerDrawer = () => {
 
 
         var data1 = [];
-          allCmpData.map((item) => {
+        allCmpData.map((item) => {
             // var d1 = { label: item.CompanyName, title: item.CompanyName, name: item.CompanyName, value: item.CompanyID };
             var d1 = {title:item.CompanyName,name:item.CompanyName,value:item.CompanyID};
             data1.push(d1);
@@ -237,9 +236,38 @@ useEffect(()=>{
 
                }}>Choose Company</Typography>
 
-      {/*Start Search and Select box component */}
-<CompanySearchSelectbox/>
-{/*End Search and Select box component */}
+    <Autocomplete
+          id="free-solo-2-demo0"
+          disableClearable
+          size="small"
+          options={ItemList}
+          multiple={true}
+          disableCloseOnSelect
+          defaultValue={SelectedCompanies}
+          getOptionDisabled={(options) => {
+              if (Companies.length >= 5) {
+                  if (!Companies.includes(options?.value)) {
+                      return true
+                  }
+              }
+          }}
+          onChange={(evt, newVal) => {
+              var val1 = [];
+              for (var a = 0; a < newVal.length; a++) {
+                  val1.push(newVal[a]?.value);
+              }
+              setSelectedCompanies(newVal);
+              setCompanies(val1);
+          }}
+          sx={{ width: '100%', borderColor: "#000" }}
+          getOptionLabel={(option) => option.title}
+          // renderOption={(props, option) => <li {...props}>{option.title}</li>}
+          renderInput={(params) => (
+          <>
+              <TextField size="small" {...params} placeholder="Select..." className='aaaaaa' sx={{ borderColor: "#000" }} />
+          </>
+          )}
+      />
 
 
 
