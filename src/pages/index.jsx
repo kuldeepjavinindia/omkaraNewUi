@@ -12,6 +12,12 @@ import DeliveryData from "./data2/DeliveryData";
 import PriceAction from "./data2/PriceAction";
 import InsiderTrading from "./data2/InsiderTrading";
 import BulkBlock from "./data2/BulkBlock";
+import ReportBankUpload from "./data2/ReportBankUpload";
+import ReportBankSearch from "./data2/ResultBankSearch";
+import Valuation from "./data2/Valuation";
+import FiiSector from "./data2/FiiSector";
+
+
 
 
 
@@ -30,5 +36,11 @@ export {
     PriceAction,
     InsiderTrading,
     BulkBlock,
+    
+    ReportBankUpload,
+    ReportBankSearch,
+
+    FiiSector,
+    Valuation,
   
 }

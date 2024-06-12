@@ -13,7 +13,7 @@ const Cilent_Docs = () => {
   return (
     <div className=" text-black">
       <div className="flex items-center justify-between">
-        <Typography className="text-xl font-semibold">Client Docs</Typography>
+        <Typography className="text-xl font-semibold">Documents</Typography>
         <Button className="bg-theme text-white py-2 rounded" onClick={()=>{
           setUploadDocument(true)
         }}>

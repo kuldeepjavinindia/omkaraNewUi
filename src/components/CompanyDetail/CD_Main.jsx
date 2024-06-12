@@ -15,12 +15,13 @@ import {
   Checkbox,
 } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import moment from "moment";
 import { useParams } from "react-router-dom";
 import { useAuthState } from "../../context/AuthContext";
 import { watchListCompanyReq, watchListReq } from "../../constants/defaultRequest";
 import { wlAPI, wlCompanyAPI } from "../../store/slice/WatchListSlice";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const SideWLButton = () => {
   const rrd_params = useParams();
@@ -71,7 +72,7 @@ const SideWLButton = () => {
     if(wcData && wcData.length > 0){
       Filtered_wcData = wcData.filter(item=>item.AccordCode == cmpId)
     }
-    // Filtered_wcData = wcData.find(item=>item.AccordCode == cmpId)
+    
     params = {
         ...params,
         AccordCode: cmpId, // Company ID
@@ -220,6 +221,13 @@ const CD_Main = () => {
     window.open(link, value);
   };
 
+  
+  const {
+    // ThemeDrawer,
+    setThemeDrawer
+} = useContext(GlobalContext)
+
+
   const {
     companyNotes: { loading: cmpNotesLoading, data: cmpNotesData },
   } = useSelector((state) => state.SingleCompany);
@@ -338,6 +346,9 @@ const CD_Main = () => {
               <Button
                 size="sm"
                 className="!h-9 bg-[#F9FAFA] text-[#000000] text-[12px]  flex items-center gap-1 shadow-none rounded leading-0"
+                onClick={()=>{
+                  setThemeDrawer(true)
+                }}
               >
                 <img
                   src={

@@ -1,3 +1,4 @@
+import { BiTrashAlt } from "react-icons/bi"; 
 import { AiFillStar } from "react-icons/ai";
 import { AiOutlineStar } from "react-icons/ai";
 import { CgSearch } from "react-icons/cg";
@@ -6,24 +7,31 @@ import {
   MediaRoomApi,
   VideoLikeDislikeApi,
 } from "../../../store/slice/SingleCompnaySlice";
-import { MediaRoomDataReq } from "../../../constants/defaultRequest";
+import { MediaRoomDataReq, videoLikeDiskLike_Req } from "../../../constants/defaultRequest";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuthState } from "../../../context/AuthContext";
 import { FaHeart } from "react-icons/fa";
 import AddComment from "./AddComment";
 import ReactPlayer from "react-player";
 import moment from "moment";
 import RightComponent from "./RightComponent";
+import AddVideosModal from "../Modals/AddVideosModal";
+import { GlobalContext } from "../../../context/GlobalContext";
+import { IconButton } from "@mui/material";
+import DeleteDataModal from "../Modals/DeleteDataModal";
 
 export const MediaRoom_Main = () => {
   const rrd_params = useParams();
   const rr_dispatch = useDispatch();
   const authState = useAuthState();
 
+  const [VidSortStatus, setVidSortStatus] = useState(false);
   const [videoUrl, setVideoUrl] = useState();
   const [likeDislike, setLikeDislike] = useState();
+  const { setAddVideo } = useContext(GlobalContext);
+  const [OpenModal, setOpenModal] = useState(false);
 
   let user_id = authState?.user?.UserID;
   let cmpId = rrd_params?.company_id;
@@ -80,27 +88,36 @@ export const MediaRoom_Main = () => {
       let firstVid = MediaRoomData.Data?.[0];
       const videoCode = firstVid.videoCode;
       const videoType = firstVid.videoType;
-      const videoLikeDiskLike = firstVid;
+      // const videoLikeDiskLike = firstVid;
       const videoId = firstVid.videoId;
 
       setActiveVideoItem(firstVid);
 
-      let param = { ...videoLikeDiskLike, video_id: videoId };
+      let param = { 
+        ...videoLikeDiskLike_Req,
+        video_id: videoId,
+        inputType: "1",
+        webuserId:user_id
+      };
+          
 
       if (VideoLikeDislikeLoading) {
         rr_dispatch(VideoLikeDislikeApi(param));
-      }
-
-      if (!VideoLikeDislikeLoading) {
-        let totalLike = VideoLikeDislikeData?.Data[0].total_video_like;
-        setLikeDislike(totalLike);
       }
 
       let n_getVidFullUrl = getVidFullUrl(videoCode, videoType);
 
       setVideoUrl(n_getVidFullUrl);
     }
-  }, [MediaRoomData, VideoLikeDislikeLoading]);
+  }, [MediaRoomData]);
+
+  
+  useEffect(() => {
+    if (!VideoLikeDislikeLoading) {
+      let totalLike = VideoLikeDislikeData?.Data[0].total_video_like;
+      setLikeDislike(totalLike);
+    }
+  }, [VideoLikeDislikeLoading]);
 
   const handleVideoSet = (mediaData) => {
     let url = `https://vimeo.com/${mediaData?.videoCode}`;
@@ -164,8 +181,43 @@ export const MediaRoom_Main = () => {
 
   // console.log(allMediaData.forEach((item)=> console.log(item.videoCode)), ">>>>>>>");
 
+
+  const deleteVideo = (item)=> {
+    
+       let params = MediaRoomDataReq
+       params = {
+        ...params,
+        "CompanyID": item.CompanyID,
+        "userid": item.UserID,
+        "videoId": item.videoId,
+    }
+
+    console.log('item >>> ', params, item);
+    rr_dispatch(MediaRoomApi([params]));
+    setOpenModal(null)
+
+  }
+
   return (
     <>
+      <DeleteDataModal 
+        ModalTitle={'Alert!'}
+        OpenModal={OpenModal}
+        setOpenModal={setOpenModal}
+        onClick={()=>{
+          // console.log('OpenModal >>> ', OpenModal)
+          deleteVideo(OpenModal)
+        }}
+      > 
+        <Typography className=" font-medium">
+            are you sure you want to delete <span className=" font-semibold text-theme uppercase">{`"${OpenModal?.videoTitle}"`}</span> video?
+        </Typography>
+      </DeleteDataModal>
+
+
+
+
+      <AddVideosModal />
       <div className="w-full  rounded bg-[#fff] px-6 py-4">
         {/* ==========Start Top Search and Add Button Section ========*/}
         <div className="flex items-center justify-between mb-6">
@@ -178,7 +230,7 @@ export const MediaRoom_Main = () => {
                 onChange={(e) => handleSearch(e)}
                 type="text"
                 placeholder="Search Video"
-                className="w-[400px]  !border !border-gray-200  !bg-[#E9EDEF] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                className="w-[450px]  !border !border-gray-200  !bg-[#E9EDEF] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                 labelProps={{
                   className: "hidden",
                 }}
@@ -193,6 +245,7 @@ export const MediaRoom_Main = () => {
             <Button
               className="bg-theme text-white rounded w-100 whitespace-nowrap h-10"
               size="sm"
+              onClick={() => setAddVideo(true)}
             >
               ADD VIDEO
             </Button>
@@ -200,71 +253,127 @@ export const MediaRoom_Main = () => {
         </div>
         {/* ========== Start Top Search and Add Button Section =======*/}
 
-        <div className="grid grid-cols-2 gap-2">
-          {/* =========== Start Media List Left Side Section ========= */}
-          <div className="bg-[#E9EDEF] px-9 py-9 rounded">
-            {filterMediaData &&
-              filterMediaData.length > 0 &&
-              filterMediaData.map((item, index) => (
-                <div key={index} className="MediaList w-full mb-3 ">
-                  <div className=" flex items-center gap-3">
-                    <div className="pb-3">
-                      <div
-                        onClick={() => handleToggle()}
-                        className=" cursor-pointer"
-                      >
-                        {checked ? (
-                          <AiFillStar size={20} className="text-theme" />
-                        ) : (
-                          <AiOutlineStar size={20} className="text-theme" />
-                        )}
-                      </div>
-                    </div>
-                    <div
-                      className="flex justify-between border-[#B9C6E7] border-b cursor-pointer w-full pb-3 "
-                      onClick={() => handleVideoSet(item)}
-                    >
-                      <div className="flex items-center">
-                        <span className="mr-2 ">
-                          <img
-                            src={
-                              import.meta.env.VITE_BASE_URL +
-                              "/images/icons/play.svg"
-                            }
-                            alt=""
-                            className="w-[22px]"
-                          />
-                        </span>
-                        <Typography className=" text-[16px] text-lg-[18px] text-[#000] font-medium">
-                          {item.videoTitle}
-                        </Typography>
-                      </div>
-                      <div>
-                        <Typography className="text-[13px] font-normal">
-                          {item.dateTime
-                            ? moment(item.dateTime).format("DD MMM, YYYY")
-                            : ""}
-                        </Typography>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            {/*End media item list */}
-          </div>
-          {/* =========== Start Media List Left Side Section ========= */}
+        {filterMediaData && filterMediaData.length == 0 ? (
+          <>
+            <div className="grid grid-cols-2 gap-2">
+              <Typography className=" text-lg  font-semibold">
+                Data not found!
+              </Typography>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 gap-2">
+              {/* =========== Start Media List Left Side Section ========= */}
+              <div className="bg-[#E9EDEF] px-9 py-9 rounded">
 
-          {/* =========== Start Media Video Right Side Section ========= */}
-          <RightComponent
-            setActiveVideoItem={setActiveVideoItem}
-            ActiveVideoItem={ActiveVideoItem}
-            videoUrl={videoUrl}
-            setVideoUrl={setVideoUrl}
-            likeDislike={likeDislike}
-            setLikeDislike={setLikeDislike}
-          />
-          {/* =========== Start Media Video Right Side Section ========= */}
-        </div>
+              {/* <div
+        style={{
+          width: "100%",
+          textAlign: "right",
+        }}
+      >
+        
+        {VidSortStatus ? (
+          <IconButton
+            onClick={() => {
+              sortVideosTypeFun(true, true);
+            }}
+          >
+            <FaSortAmountUp style={{ 
+              fontSize: '1rem'
+              }} />
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => {
+              sortVideosTypeFun(true, true);
+            }}
+          >
+            <FaSortAmountDown style={{ 
+              fontSize: '1rem'
+              }} />
+          </IconButton>
+        )}
+      </div> */}
+
+
+
+                {filterMediaData &&
+                  filterMediaData.length > 0 &&
+                  filterMediaData.map((item, index) => (
+                    <div key={index} className="MediaList w-full mb-3 ">
+                      <div className=" flex items-center gap-1">
+
+                        <div className="pb-3 basis-1/12" >
+                          <div
+                            onClick={() => handleToggle()}
+                            className=" cursor-pointer"
+                          >
+                            {checked ? (
+                              <AiFillStar size={20} className="text-theme" />
+                            ) : (
+                              <AiOutlineStar size={20} className="text-theme" />
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between border-[#B9C6E7] border-b cursor-pointer w-full pb-3 basis-10/12 "
+                          onClick={() => handleVideoSet(item)}>
+
+                          <div className="flex items-center  basis-9/12" >
+                            <span className="mr-2 basis-1/12">
+                              <img
+                                src={
+                                  import.meta.env.VITE_BASE_URL +
+                                  "/images/icons/play.svg"
+                                }
+                                alt=""
+                                className="w-[22px]"
+                              />
+                            </span>
+                            <Typography className=" basis-11/12 text-[16px] text-lg-[18px] text-[#000] font-medium">
+                              {item.videoTitle}
+                            </Typography>
+                          </div>
+
+                          <div className="basis-3/12">
+                         
+                            <Typography className="text-[13px] font-normal">
+                              {item.dateTime
+                                ? moment(item.dateTime).format("DD MMM, YYYY")
+                                : ""}
+                            </Typography>
+                           
+                          </div>
+
+                        </div>
+
+
+                        <div className="basis-1/12 pb-3">
+                        <IconButton className="!p-0 " onClick={()=> setOpenModal(item)}><BiTrashAlt  color="red"  size={20}/></IconButton>
+                        </div>
+
+                      </div>
+                    </div>
+                  ))}
+                {/*End media item list */}
+              </div>
+              {/* =========== Start Media List Left Side Section ========= */}
+
+              {/* =========== Start Media Video Right Side Section ========= */}
+              <RightComponent
+                setActiveVideoItem={setActiveVideoItem}
+                ActiveVideoItem={ActiveVideoItem}
+                videoUrl={videoUrl}
+                setVideoUrl={setVideoUrl}
+                likeDislike={likeDislike}
+                setLikeDislike={setLikeDislike}
+              />
+              {/* =========== Start Media Video Right Side Section ========= */}
+            </div>
+          </>
+        )}
       </div>
     </>
   );

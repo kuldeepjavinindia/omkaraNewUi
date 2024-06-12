@@ -169,7 +169,7 @@ const WatchlistCompany = () => {
         <div className="rounded-md bg-[#fff] py-7 px-7">
           <Typography className="text-[15px]  font-semibold mb-5 text-[#000]  uppercase">
             ADD COMPANIES TO {" "}
-            {/* {JSON.stringify(SelectedWLItem)} */}
+            
             <span className="text-[#4448F5]">{SelectedWLItem?.WatchListNAme}</span>{" "}
              WATCHLIST (SELECT UPTO 100 COMPANIES)
           </Typography>

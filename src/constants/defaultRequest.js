@@ -188,6 +188,12 @@ export const BoardOfDirectorDetail_Req = {
   "companyId": ""
 };
 
+export const videoLikeDiskLike_Req = {
+  "type":"",
+  "webuserId": "",
+  "inputType" : "0"
+};
+
 export const MediaComment_Req = {
   "parentId":0,
   "videoId":"",
@@ -198,3 +204,18 @@ export const MediaComment_Req = {
   "webuserId": "",
   "inputType":"3" //0:insert 1:edit 2:Delete 3:list
 }
+
+
+
+
+
+
+
+
+
+
+
+// START DATA 2 Requests
+
+
+// END DATA 2 Requests

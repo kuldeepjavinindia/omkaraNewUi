@@ -132,7 +132,7 @@ const AnnalPL_Main = () => {
           </div>
         </div>
         <div>
-          <ButtonGroup ripple={false} size="sm" className=" border-[1px] rounded-lg mb-4 shadow-none">
+          <ButtonGroup ripple={false} size="sm" className=" border-[1px] rounded-lg mb-4 shadow-none justify-end">
             {secondaryButton.map((item, i) => {
               return (
                 <Button
@@ -148,11 +148,11 @@ const AnnalPL_Main = () => {
             })}
           </ButtonGroup>
           
-          <div className="flex text-[12px] justify-between text-black">
+          <div className="flex text-[12px] justify-between text-black gap-3">
             <div className=" font-medium">
             <>
                   Updated On {DateACEData?.PnL}
-                  </>
+            </>
               
               </div>
             <div className=" font-bold">(In Cr.)</div>

@@ -139,7 +139,7 @@ const PriceActionTable = ()=> {
     </thead>
     <tbody>
       <tr className="odd:bg-[#E8F0F4] even:bg-[#fff] h-10">
-        <td className="sticky left-0 bg-[#E8F0F4] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">Bharat Dynamics Ltd.</td>
+        <td className="sticky left-0 bg-[#E8F0F4] text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">Bharat Dynamics Ltd.</td>
         <td className="sticky  left-[133px] bg-[#E8F0F4] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">Agri</td>
         <td className="sticky  left-[190px]  border-r border-[#B3B3B3] bg-[#E8F0F4] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
         <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
@@ -154,7 +154,7 @@ const PriceActionTable = ()=> {
         
       </tr>
       <tr className="odd:bg-[#E8F0F4] even:bg-[#fff] h-10">
-        <td className="sticky left-0 bg-[#fff] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">Bharat Dynamics Ltd.</td>
+        <td className="sticky left-0 bg-[#fff] text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">Bharat Dynamics Ltd.</td>
         <td className="sticky  left-[133px] bg-[#fff] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">Agri</td>
         <td className="sticky  left-[190px]  border-r border-[#B3B3B3] bg-[#fff] text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>
         <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-right">10204</td>

@@ -64,7 +64,7 @@ const MainHeader = () => {
                 }}
               >
                 <MenuHandler>
-                  <Button  size="sm" variant="outlined" className="flex items-center gap-1 text-theme border-theme rounded" >
+                  <Button  size="sm" variant="outlined" className="flex items-center gap-1 text-theme border-theme rounded px-2 pl-1" >
                     <BiChevronDown className="w-4"/> 
                     {/* {FirstWL?.WatchListNAme} */}
                     {localStorage.getItem('selectedWL') ? <>

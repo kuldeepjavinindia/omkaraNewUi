@@ -1,82 +1,125 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { PeerAnalysisApi } from "../../../store/slice/SingleCompnaySlice";
+import CustomChart from "../CustomChart";
+import PeerToPeerTrendChooseField from "./PeerToPeerTrendChooseField";
 
 const PeerAnalysis = () => {
-  const [TableColumns, setTableColumns] = useState([]);
-  const [TableBody, setTableBody] = useState([]);
-  const [PlusIcons, setPlusIcons] = useState({});
+  const [PeerToPeerDataChartType, setPeerToPeerDataChartType] = useState(null);
+  const [PeerToPeerData, setPeerToPeerData] = useState(null);
 
   const rr_dispatch = useDispatch();
+  const rrd_params = useParams();
   const {
-    SCPeers:{
-      data: PeersData,
-      loading: PeersLoading,
-    }
-  } = useSelector(state=>state.SingleCompany)
+    PeerAnalysis: { data: PeerAnalysisData, loading: PeerAnalysisLoading },
+  } = useSelector((state) => state.SingleCompany);
+
+  const {
+    RatioMaster: { data: RMData, loading: RMLoading },
+  } = useSelector((state) => state.Masters);
+
+  let cmpId = rrd_params?.company_id;
+  if (cmpId) {
+    cmpId = window.atob(cmpId);
+  }
+
+  const applyAction = (chartType, companies) => {
+    let companies1 = companies;
+    // var companies0 = companies1.unshift(cmpId);
+    rr_dispatch(
+      PeerAnalysisApi({
+        CompanyId: cmpId,
+        userid: 1,
+        param: [chartType],
+        CompanyParam: companies1,
+      })
+    );
+    let pData = RMData.find((itm) => itm.ID === chartType);
+    setPeerToPeerDataChartType(pData);
+  };
+
+
+
 
   
-useEffect(() => {
-  if(!PeersLoading){
-    let col_id = 'column_'
-    if(PeersData.header && PeersData.header.length > 0){
-      let cols = []
-      let firstObj = PeersData.header[0];
-      let a0 = firstObj.row;
-      
-      // let TThead = [];
-      
-      a0.map((item, i)=>{
-          let dd = {
-              "id": col_id+i,
-              "width": "",
-              "align": "",
-              "bg_color": firstObj?.bg_color,
-              "isItalic": firstObj?.isItalic,
-              "isBold": firstObj?.isBold,
-              "text_color": firstObj?.text_color,
-              "label": item?.col
-            }
-          cols.push(dd);
-      })
-      setTableColumns(cols)
+  useEffect(() => {
+    if (!PeerAnalysisLoading) {
+        let qData = PeerAnalysisData.Data;
+        let demo0 = [];
+        let title = null;
+        if (qData && qData.length > 0) {
+            qData = qData[0];
+            Object.keys(qData).map((item, i) => {
+                var demo1 = { cat: [], value: [], title: title, typeFor: 20 };
+                if (item !== '$id' && item !== '_MainHeader') {
+                    var itemQData = qData[item];
+                    // var a = 0;
+                    Object.keys(itemQData).map((subItem) => {
+
+                        if (subItem !== '$id') {
+                            if (subItem === '_chartName') {
+                                demo1.title = title = itemQData[subItem]?.Name;
+                            } else {
+                                    demo1.cat = [...demo1.cat, itemQData[subItem]?.Name]
+                                    var value1 = itemQData[subItem]?.Value?parseFloat(itemQData[subItem]?.Value):null;
+                                    demo1.value = [...demo1.value, value1]
+                            }
+                        }
+                    });
+                    demo0[item] = demo1;
+                }
+            })
+            setPeerToPeerData(demo0)
+        }
     }
-    
-    
-    if(PeersData.Data && PeersData.Data.length){
-      let dataA = []
-      let plusIcon = {};
-      let a00 = PeersData.Data;
-      a00.map((item)=>{
-        let cData = item?.row;
-        let childObj = {}
-        cData.map((item0, i0)=>{
-          let data = {
-                "label":item0?.col,
-                "bg_color":item['bg_color'],
-                "isItalic":item['isItalic'],
-                "isBold":item['isBold'],
-                "text_color":item['text_color']
-            }
-            
-            childObj = {...childObj, [`${col_id}${i0}`]: data} 
-      })
-        dataA.push(childObj)
-      })
-      setPlusIcons(plusIcon);
-      setTableBody(dataA)
-    }
-  }
-}, [rr_dispatch, PeersLoading])
+}, [rr_dispatch, PeerAnalysisLoading])
 
 
 
-  return (
-    <>
 
-    
 
-    </>
-  )
-}
+  return <>
+  
 
-export default PeerAnalysis
+<PeerToPeerTrendChooseField
+// setTypeActivePrimaryBtn={setTypeActivePrimaryBtn} TypeActivePrimaryBtn={TypeActivePrimaryBtn} 
+  applyAction={applyAction}
+/>
+
+
+  <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+                
+                {
+                    PeerToPeerData && Object.keys(PeerToPeerData).map((item, i)=>{
+                        let obj = PeerToPeerData[item];
+                        return (
+                            <div key={i} className={`h-[330px]`}>
+                                
+                            <div className="h-8">
+                                <div className="text-center">
+                                    <h4 className=" font-semibold text-[15px] text-black">
+                                    {obj?.title}
+                                    </h4>
+                                </div>
+                            </div>
+
+                                <CustomChart detail={{
+                                    title: obj.title,
+                                    yoy:obj.YoYQoQ?.YoY,
+                                    qoq:obj.YoYQoQ?.QoQ,
+                                }} values={obj.value} categories={obj.cat}/>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+
+
+  
+  
+  
+  </>;
+};
+
+export default PeerAnalysis;

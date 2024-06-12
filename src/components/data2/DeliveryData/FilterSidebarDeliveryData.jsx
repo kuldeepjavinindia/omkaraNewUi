@@ -47,6 +47,14 @@ const handleOpen = (value) => {
   }));
 };
 
+const handleReset = (value)=> {
+  let key = `accordion_${value}`;
+  setActiveAccordion(prev => ({
+      ...prev,
+      [key]: false
+  }));
+}
+
 
 console.log('prev >>> ', ActiveAccordion);
 
@@ -111,14 +119,14 @@ return (
    <Accordion open={ActiveAccordion.accordion_1} className="mt-2 rounded bg-[#fff] px-2 py-3 mt-2" icon={<Icon id={1} open={ActiveAccordion.accordion_1} />}>
     <AccordionHeader onClick={() => handleOpen(1)} className="flex border-none py-0 pt-0">
     <Typography className="text-[15px] text-[#000] font-semibold w-[90%]">Classification</Typography>
-        <Typography className="text-[13px] text-[#FF2026] font-semibold">RESET</Typography>
+        <Typography className="text-[13px] text-[#FF2026] font-semibold bg-[#fff] " onClick={()=> handleReset(1)}>RESET</Typography>
     </AccordionHeader>
     <AccordionBody>
     <div className="flex justify-between">
 
 
     <label className="text-[12px] text-[#000] font-medium">Sectors (58)  </label>
-    <Typography className="text-[#7B70FF] text-[12px] font-semibold">Refresh</Typography>
+    <Typography className="text-[#7B70FF] text-[12px] font-semibold cursor-pointer">Refresh</Typography>
     </div>
     <Select
       components={animatedComponents}
@@ -161,10 +169,14 @@ return (
       classNamePrefix="react-select"
     />
 
-<div className="flex gap-10">
-      <Radio name="type" label="Portfolio" />
-      <Radio name="type" label="F&O" defaultChecked />
-    </div>
+
+  <div className="ml-[-11px]">
+        <Radio name="type" label="Portfolio"  className="w-[18px] h-[18px] custom-radio left-custome checked:border-[#4448F5]" />
+        <Radio name="type" label="F&O"  className=" custom-radio  checked:border-[#4448F5]" defaultChecked />
+
+  </div>
+    
+    
 
     </AccordionBody>
   </Accordion>
@@ -172,13 +184,18 @@ return (
 
      {/* Start Card Form */}
      <Accordion open={ActiveAccordion.accordion_2}  className="rounded bg-[#fff] px-2 py-3 mt-2" icon={<Icon id={2} open={ActiveAccordion.accordion_2} />}>
-    <AccordionHeader onClick={() => handleOpen(2)} className="flex border-none py-0 pt-0">
+    <AccordionHeader onClick={() => handleOpen(2)} className="flex border-none py-0 pt-0 ">
     <Typography className="text-[15px] text-[#000] font-semibold w-[90%]">Daily Moving Average</Typography>
     
     </AccordionHeader>
-    <AccordionBody>
-    <Checkbox id="ripple-on"      label="50 DMA"  />
-      <Checkbox id="ripple-off"   label="200 DMA"  />
+    <AccordionBody> 
+      <div className="ml-[0]">
+      <Checkbox label="50 DMA"  
+      className="w-[18px] h-[18px] custom-checkbox checked:border-[#4448F5] checked:bg-[#4448F5] rounded"
+      />
+      <Checkbox label="200 DMA"  className="w-[18px] h-[18px] custom-checkbox checked:border-[#4448F5] checked:bg-[#4448F5] rounded"/>
+      </div>
+       
  
     </AccordionBody>  
   </Accordion>
@@ -192,17 +209,17 @@ return (
     </AccordionHeader>
     <AccordionBody>
 
-    <div className="flex ">
+    <div className="flex ml-[-11px]">
   <div className="flex flex-col gap-2">
-    <Radio name="type" label="Weekly" />
-    <Radio name="type" label="Monthly" />
-    <Radio name="type" label="Half Yearly" />
+    <Radio name="type" label="Weekly"      className=" custom-radio  checked:border-[#4448F5]"/>
+    <Radio name="type" label="Monthly"   className=" custom-radio  checked:border-[#4448F5]"/>
+    <Radio name="type" label="Half Yearly"   className=" custom-radio  checked:border-[#4448F5]"/>
   </div>
 
   <div className="flex flex-col gap-2">
-    <Radio name="type" label="15 Days" />
-    <Radio name="type" label="Quarterly" />
-    <Radio name="type" label="Yearly" />
+    <Radio name="type" label="15 Days"   className=" custom-radio  checked:border-[#4448F5]" />
+    <Radio name="type" label="Quarterly"  className=" custom-radio  checked:border-[#4448F5]" />
+    <Radio name="type" label="Yearly"   className=" custom-radio  checked:border-[#4448F5]"/>
   </div>
 </div>
 
@@ -225,7 +242,7 @@ return (
         <Input
             type="text"
             name="marketcap100"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
@@ -238,7 +255,7 @@ return (
 <Input
             type="text"
             name="marketcap5000"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}

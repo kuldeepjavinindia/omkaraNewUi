@@ -250,7 +250,11 @@ const Quarterly_P_L = () => {
               }
               
               </div>
-            <div className=" font-bold">(In Cr.)</div>
+              {
+                (SecondaryBtn.id != 4) && (
+                  <div className=" font-bold">(In Cr.)</div>
+                )
+              }
           </div>
         </div>
       </div>

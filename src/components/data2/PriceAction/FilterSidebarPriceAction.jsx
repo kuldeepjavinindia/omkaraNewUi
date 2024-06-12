@@ -50,16 +50,8 @@ const handleOpen = (value) => {
 console.log('prev >>> ', ActiveAccordion);
 
 const options = [
-    { value: 'Oliver Hansen', label: 'Oliver Hansen' },
-    { value: 'Van Henry', label: 'Van Henry' },
-    { value: 'April Tucker', label: 'April Tucker' },
-    { value: 'Ralph Hubbard', label: 'Ralph Hubbard' },
-    { value: 'Omar Alexander', label: 'Omar Alexander' },
-    { value: 'Carlos Abbott', label: 'Carlos Abbott' },
-    { value: 'Miriam Wagner', label: 'Miriam Wagner' },
-    { value: 'Bradley Wilkerson', label: 'Bradley Wilkerson' },
-    { value: 'Virginia Andrews', label: 'Virginia Andrews' },
-    { value: 'Kelly Snyder', label: 'Kelly Snyder' },
+    { value: 'Option 1', label: 'Option 1' },
+    { value: 'Option 2', label: 'Option 2' },
   ];
 
 
@@ -126,7 +118,7 @@ return (
 
 
     <label className="text-[12px] text-[#000] font-medium">Sectors (58)  </label>
-    <Typography className="text-[#7B70FF] text-[12px] font-semibold">Refresh</Typography>
+    <Typography className="text-[#7B70FF] text-[12px] font-semibold cursor-pointer">Refresh</Typography>
     </div>
     <Select
       components={animatedComponents}
@@ -169,7 +161,9 @@ return (
       classNamePrefix="react-select"
     />
 
-<Checkbox label="Portfolio" onChange={handleChangeChecked}  />
+<div className="ml-[-11px]">
+<Checkbox label="Portfolio" onChange={handleChangeChecked}  className="w-[18px] h-[18px] custom-checkbox checked:border-[#4448F5] checked:bg-[#4448F5] rounded" />
+</div>
 
     </AccordionBody>
   </Accordion>
@@ -189,7 +183,7 @@ return (
         <Input
             type="text"
             name="marketcap100"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
@@ -202,7 +196,7 @@ return (
 <Input
             type="text"
             name="marketcap5000"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}

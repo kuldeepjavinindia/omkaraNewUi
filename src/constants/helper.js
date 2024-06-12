@@ -177,3 +177,35 @@ export const DocumentType = [
 
 
 export const NotesActionButtons = [1];
+
+
+
+// vimeo_parser
+// youtube_parser
+
+export const vimeo_parser = (url) => {
+  // var url = "http://www.vimeo.com/7058755"; //Or any other Vimeo url format
+  var regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/;
+  let unlisted_code = "";
+  var match = url.match(regExp);
+  var ddArr = url.split('/');
+  if(ddArr.length == 5){
+      unlisted_code = '/'+ddArr[ddArr.length-1]
+
+  }
+  // console.table(match);
+  if (match) {
+      return match[5]+unlisted_code;
+  } else {
+      // alert("not a vimeo url");
+      return null;
+  }
+}
+
+export const youtube_parser = (url) => {
+  var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  var match = url.match(regExp);
+  return (match && match[7].length == 11) ? match[7] : null;
+}
+
+

@@ -1,9 +1,29 @@
 import { Button } from "@material-tailwind/react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PeerRatiosNdCmp from "./PeerRatiosNdCmp";
 import PeerAnalysis from "./PeerAnalysis";
+import { useDispatch } from "react-redux";
+import { RatioMasterAPI } from "../../../store/slice/MasterSlice";
+import { GlobalContext } from "../../../context/GlobalContext";
 
 const PeerComponent = () => {
+
+  const rr_dispatch = useDispatch();
+
+
+  useEffect(() => {
+    rr_dispatch(RatioMasterAPI())
+  }, [rr_dispatch])
+  
+
+  const {
+    PeersModal,
+    setPeersModal
+  } = useContext(GlobalContext)
+
+
+
+
   const primaryButton = [
     {
       id: "1",
@@ -39,6 +59,9 @@ const PeerComponent = () => {
                 //   disabled={tabBtnData?.button_status[item?.value] ? false : true}
                 onClick={() => {
                   setPrimaryBtn(item);
+                  if(i == 0){
+                    setPeersModal(true)
+                  }
                 }}
                 size="sm"
                 variant={`${PrimaryBtn.value == item?.value ? "" : "outlined"}`}
@@ -54,6 +77,9 @@ const PeerComponent = () => {
             </>
           ))}
         </div>
+      </div>
+      <div>
+        {PrimaryBtn.component}
       </div>
     </>
   );

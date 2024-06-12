@@ -62,7 +62,7 @@ const WatchlistCreate = () => {
             Create New Watch List
           </Typography>
           <label className="text-[12px] text-[#000] font-medium">Name</label>
-          {/* {JSON.stringify(rrd_params)} */}
+      
           <Input
             onChange={(e) => handleWachlistName(e)}
             type="text"

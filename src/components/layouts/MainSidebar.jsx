@@ -142,7 +142,7 @@ const menuItem = [
         id: 1,
         // name: "Result Data",
         name: "Quarterly Results",
-        link: "#0",
+        link: "/quarterly-result",
       },
       {
         id: 2,
@@ -168,7 +168,18 @@ const menuItem = [
     name: "Report Bank",
     link: "#0",
     imgPath: import.meta.env.VITE_BASE_URL + "/images/icons/reports.svg",
-    childItem: [],
+    childItem: [
+      {
+        id: 1,
+        name: "Search",
+        link: "/report-search",
+      },
+      {
+        id: 2,
+        name: "Upload",
+        link: "/report-upload",
+      },
+    ],
   },
   
   {
@@ -200,13 +211,13 @@ const menuItem = [
       {
         id: 6,
         name: "Valuations",
-        link: "#0",
+        link: "/valuation",
       },
 
       {
         id: 7,
         name: "FII Sectors",
-        link: "#0",
+        link: "/fii-sector",
       },
     ],
   },

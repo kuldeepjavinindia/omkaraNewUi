@@ -15,7 +15,7 @@ export default withMT({
     },
     extend: {
       colors: {
-        theme:"#4448F5", // main theme color
+        theme:"var(--theme-color)", // main theme color
         // theme:"#0F4AE1", // main theme color
         "theme-c2":"#D9DDF0", // button color 2
         "theme-c3":"#7D838E", // sidebar color

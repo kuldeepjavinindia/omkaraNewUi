@@ -1,0 +1,15 @@
+@use 'variables' as *;
+
+@mixin respond-to($breakpoint) {
+    // Get the size associated with the breakpoint from the $break-points map
+    $size: map-get($break-points, $breakpoint);
+  
+    // If the size exists, apply the media query with min-width
+    @if $size {
+      @media (min-width: $size) { @content; }
+    }
+    // If the breakpoint does not exist in the map, log a warning
+    @else {
+      @warn "Breakpoint '#{$breakpoint}' not found in \$break-points map.";
+    }
+  }

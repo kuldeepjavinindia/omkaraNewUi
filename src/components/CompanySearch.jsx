@@ -49,7 +49,15 @@ const CompanySearch = (props) => {
     }
     else
     if(crtKey === "Enter"){
-        openCompany(cmpMstData[SelectedItem])
+        let item = cmpMstData[SelectedItem];
+
+        if(type == 'select'){
+            handelClose();
+            setSelectData(item);
+        }else{
+            openCompany(item)
+        }
+        
     }else{
         setSelectedItem(-1)
     }

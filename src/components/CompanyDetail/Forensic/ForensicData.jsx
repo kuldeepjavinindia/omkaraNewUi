@@ -363,9 +363,7 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                     ? "bg-transparent px-0 !py-0 mt-0"
                     : "bg-[#fff]"
                 } 
-                  ${
-                    !checked && i == 2 && typeData == "CF" ? "hidden " : "block"
-                  }  
+                   
                   ${
                     typeData == "CF"
                       ? "bg-transparent px-0 !py-0 mt-0"
@@ -375,12 +373,27 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                 `}
                 >
                   
-                  <Typography className="text-[15px] mt-4 text-black font-semibold ">
-                    {details.title}
-                  </Typography>
-                  <Typography className="text-[15px] mb-4 ">
-                    {details.description}
-                  </Typography>
+                  <div className={` ${
+                    !checked && i == 2 && typeData == "CF" ? "hidden " : "block"
+                  }  `}>
+
+                    {
+                      details.title && (
+                        <Typography className={`text-[15px] text-black font-semibold`}>
+                          {details.title}
+                        </Typography>
+                      )
+                    }
+                    
+                    {
+                      details?.description && (
+                        <Typography className={`text-[15px] mt-4 mb-4 `}>
+                          {details.description}
+                        </Typography>
+                      )
+                    }
+                  </div>
+                  
 
                   <div
                     className={`${
@@ -389,9 +402,11 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                         : "grid grid-cols-1 gap-0"
                     }  `}
                   >
-                    <div>
+                    <div className={` ${
+                    !checked && i == 2 && typeData == "CF" ? "hidden " : "block"
+                  }  `}>
                       {
-                        ["DIR", "AH"].includes(typeData) && (
+                        ["DIR", "AH", 'CAP', 'CF'].includes(typeData) && (
 <div className={`flex justify-between items-center ${TableWidth[typeData]}`}>
                         <div></div>
                         <div className="flex text-[12px] justify-between text-black">
@@ -400,6 +415,14 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                               (ActiveSHTab.type === "DIR") && (
                                 <>
                                 Updated On {DateACEData?.Board}&nbsp; &nbsp;<small>Rs. in Cr.</small>
+                                </>
+                              )
+                            }
+                            
+                            {
+                              (typeData === "CAP" || typeData === "CF" && i != 1) && (
+                                <>
+                                  <small>Rs. in Cr.</small>
                                 </>
                               )
                             }
@@ -758,65 +781,68 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                     </div>
 
                     {/* ---- Start PL Box ----- */}
-                    <div className="grid grid-cols-8 gap-2 mt-5">
-                      {highlights &&
-                        highlights.length > 0 &&
-                        highlights.map((highlight, i00) => {
-                          {
-                            /* console.log('highlight >> ', highlight) */
-                          }
-                          return (
-                            <div
-                              key={i00}
-                              className="bg-[#E8F0F4] text-center rounded-md pt-3"
-                            >
-                              <div>
-                                <Typography className="text-[15px] text-[#000] font-bold">
-                                  {highlight?.title}
-                                </Typography>
-                                <Typography className="text-[15px] text-[#000] font-bold mb-2">
-                                  {highlight?.subtitle}
-                                </Typography>
-                              </div>
+                    <div >
+                      <div className={`flex gap-2 mt-5 justify-center flex-wrap`}>
+                        {highlights &&
+                          highlights.length > 0 &&
+                          highlights.map((highlight, i00) => {
+                            {
+                              /* console.log('highlight >> ', highlight) */
+                            }
+                            return (
                               <div
-                                className="flex  p-4 items-center justify-center text-[#000] font-bold rounded-b border border-[#DAE9F7]"
-                                style={{
-                                  backgroundColor:
-                                    typeData == "BS"
-                                      ? "#fff"
-                                      : highlight?.arrow == "Up" &&
-                                        highlight?.value > 50
-                                      ? "#3ED179"
-                                      : highlight?.arrow == ""
-                                      ? "#F43F3F"
-                                      : "#F43F3F",
-                                }}
+                                key={i00}
+                                className="bg-[#E8F0F4] text-center rounded-md pt-3 w-56"
                               >
-                                <Typography
-                                  className="text-[#000] font-bold text-[15px]"
-                                  sx={{ marginTop: 0.5 }}
-                                  variant="subtitle2"
-                                  fontWeight="bold"
+                                <div>
+                                  <Typography className="text-[15px] text-[#000] font-bold">
+                                    {highlight?.title}
+                                  </Typography>
+                                  <Typography className="text-[15px] text-[#000] font-bold mb-2">
+                                    {highlight?.subtitle}
+                                  </Typography>
+                                </div>
+                                <div
+                                  className="flex  p-4 items-center justify-center text-[#000] font-bold rounded-b border border-[#DAE9F7]"
+                                  style={{
+                                    backgroundColor:
+                                      typeData == "BS"
+                                        ? "#fff"
+                                        : highlight?.arrow == "Up" &&
+                                          highlight?.value > 50
+                                        ? "#3ED179"
+                                        : highlight?.arrow == ""
+                                        ? "#F43F3F"
+                                        : "#F43F3F",
+                                  }}
                                 >
-                                  {highlight?.value}
-                                </Typography>
-                                {highlight?.arrow == "Up" &&
-                                highlight?.value > 50 ? (
-                                  <FaLongArrowAltUp className="text-[#000]" />
-                                ) : (
-                                  <>
-                                    {highlight?.arrow == "" ? (
-                                      <></>
-                                    ) : (
-                                      <FaLongArrowAltDown className="text-[#000]" />
-                                    )}
-                                  </>
-                                )}
+                                  <Typography
+                                    className="text-[#000] font-bold text-[15px]"
+                                    sx={{ marginTop: 0.5 }}
+                                    variant="subtitle2"
+                                    fontWeight="bold"
+                                  >
+                                    {highlight?.value}
+                                  </Typography>
+                                  {highlight?.arrow == "Up" &&
+                                  highlight?.value > 50 ? (
+                                    <FaLongArrowAltUp className="text-[#000]" />
+                                  ) : (
+                                    <>
+                                      {highlight?.arrow == "" ? (
+                                        <></>
+                                      ) : (
+                                        <FaLongArrowAltDown className="text-[#000]" />
+                                      )}
+                                    </>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
+                      </div>
                     </div>
+                    
                     {/* ---- End PL Box ----- */}
 
              
@@ -825,9 +851,11 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                               <>  
                                {/* ========== Start Comment Box============ */}
                                   <div></div>
-                                  <div className="bg-[#fff] pt-4 pl-4 pb-7 pr-4 mt-3 rounded border border-[#DAE9F7]">
+                                  <div className="bg-[#fff] pt-1.5 px-4 pb-4 mt-3 rounded border border-[#DAE9F7]">
                                     <div className="flex justify-between ">
-                                      <Typography className="text-[#000] text-[16px] font-bold">
+                                      <Typography className="text-black text-[16px] font-bold" style={{ 
+                                        lineHeight: 1
+                                       }}>
                                         Comment
                                       </Typography>
                                       <Button
@@ -838,7 +866,7 @@ const ForensicData = ({ ActiveSHTab, TableWidth, setTableWidth }) => {
                                       </Button>
                                     </div>
                                     <div
-                                      className="text-[#606F7B] text-[15px] font-bold"
+                                      className="text-black text-[13px] font-normal"
                                       dangerouslySetInnerHTML={{
                                         __html: res.Comment[0] ? res.Comment[0].description : "",
                                       }}

@@ -6,6 +6,7 @@ import TrendlyneSlice from './slice/TrendlyneSlice';
 import SingleCompnaySlice from './slice/SingleCompnaySlice';
 import MasterSlice from './slice/MasterSlice';
 import WatchListSlice from './slice/WatchListSlice';
+import ThemeColorSlice from './slice/ThemeColorSlice';
 
 const store = configureStore({
     reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
         SingleCompany: SingleCompnaySlice,
         Trendlyne: TrendlyneSlice,
         WatchList: WatchListSlice,
+        ThemeColor: ThemeColorSlice,
     },
 });
 

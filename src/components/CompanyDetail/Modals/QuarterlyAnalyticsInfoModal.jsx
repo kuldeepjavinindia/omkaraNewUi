@@ -228,7 +228,6 @@ const QuarterlyAnalyticsInfoModal = (props) => {
                         NewData?.Segment.length > 0 && (
                           <>
                             <div className="text-black text-xl mb-6">
-                              {NewData?.Segment.length}
                               <strong>Segmental Performance:-</strong>
                             </div>
                           </>

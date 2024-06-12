@@ -93,6 +93,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  PeerAnalysis: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
   SCShareHolding: {
     loading: true,
     data: [],
@@ -165,6 +171,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  MediaCommentLikeDislike: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
   ResultDocument: {
     loading: true,
     data: [],
@@ -184,6 +196,12 @@ const initialState = {
     error: null,
   },
   UserNotification: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
+  SentNotification: {
     loading: true,
     data: [],
     msg: null,
@@ -215,6 +233,7 @@ let SCBalanceSheetReq = `${slice_base_url}/SingleCompanyBalanceSheet_ACEAPI_Web`
 let SCCashFlowReq = `${slice_base_url}/SingleCompanyCashFlow_Web`;
 let SCRatiosReq = `${slice_base_url}/SingleCompanyratios_ACEAPI_Web`;
 let SCPeersReq = `${slice_base_url}/SingleCompanypeers_Web`;
+let PeerAnalysisReq = `${slice_base_url}/PeerToPeer_New`;
 let SCShareHoldingReq = `${slice_base_url}/SingleCompanyShareHolding`;
 // let SCMediaRoomReq = `${slice_base_url}/media`;
 let SCValuationDataReq = `${slice_base_url}/ValuationData_New`; // for Brief_table
@@ -226,12 +245,14 @@ let ForensiTooltipReq = `${slice_base_url}/ForensicTooltip`;
 let MediaRoomReq = `${slice_base_url}/media`;
 let MediaCommentReq = `${slice_base_url}/VDRMediaCommentWithReply`;
 let VideoLikeDislikeReq = `${slice_base_url}/VDRMediaUserLiskeDislike`;
+let MediaCommentLikeDislikeReq = `${slice_base_url}/VDRCommentUserLiskeDislike`;
 let ResultDocumentReq = `${slice_base_url}/ResultDocument_New_ACEAPI`;
 
 let BoardOfDirectorDetailReq = `${slice_base_url}/BoardOfDirectorDetails`;
 
 let DateACE_Req = `${slice_base_url}/DateAPI_ACEAPI`;
 let UserNotification_Req = `${capitalUrl}/api/get-subscription-user`;
+let SentNotification_Req = `${capitalUrl}/api/sent_notification`;
 
 export const companyNotesAPI = createAsyncThunk(
   "companyNotes",
@@ -375,6 +396,14 @@ export const SCPeersApi = createAsyncThunk(
   }
 );
 
+export const PeerAnalysisApi = createAsyncThunk(
+  "PeerAnalysis",
+  async (all_params = {}) => {
+    const response = await axios.post(`${PeerAnalysisReq}`, all_params);
+    return response?.data;
+  }
+);
+
 export const SCShareHoldingApi = createAsyncThunk(
   "SCShareHolding",
   async (all_params = {}) => {
@@ -452,6 +481,15 @@ export const VideoLikeDislikeApi = createAsyncThunk(
   }
 );
 
+// MediaCommentLikeDislike Thunk
+export const MediaCommentLikeDislikeApi = createAsyncThunk(
+  "MediaCommentLikeDislike",
+  async (all_param = {}) => {
+    const response = await axios.post(`${MediaCommentLikeDislikeReq}`, all_param);
+    return response?.data;
+  }
+);
+
 // ResultDocumentApi Thunk
 export const ResultDocumentApi = createAsyncThunk(
   "ResultDocument",
@@ -485,6 +523,16 @@ export const UserNotificationApi = createAsyncThunk(
   // eslint-disable-next-line no-unused-vars
   async (all_param = {}) => {
     const response = await axios.post(`${UserNotification_Req}`);
+    return response?.data;
+  }
+);
+
+// SentNotification_Req Thunk
+export const SentNotificationApi = createAsyncThunk(
+  "SentNotification",
+  // eslint-disable-next-line no-unused-vars
+  async (all_param = {}) => {
+    const response = await axios.post(`${SentNotification_Req}`, all_param);
     return response?.data;
   }
 );
@@ -814,6 +862,25 @@ const SingleCompanySlice = createSlice({
     });
     // End SCPeers
 
+    // Start Peer Analysis
+    builder.addCase(PeerAnalysisApi.pending, (state) => {
+      state.PeerAnalysis.loading = true;
+      state.PeerAnalysis.error = false;
+      state.PeerAnalysis.msg = false;
+    });
+    builder.addCase(PeerAnalysisApi.fulfilled, (state, action) => {
+      state.PeerAnalysis.loading = false;
+      state.PeerAnalysis.data = action.payload;
+      state.PeerAnalysis.msg = "success";
+    });
+    builder.addCase(PeerAnalysisApi.rejected, (state, action) => {
+      state.PeerAnalysis.loading = false;
+      state.PeerAnalysis.data = action.payload;
+      state.PeerAnalysis.msg = action.payload?.msg;
+      state.PeerAnalysis.error = true;
+    });
+    // End Peer Analysis
+
     // Start SCShareHolding
     builder.addCase(SCShareHoldingApi.pending, (state) => {
       state.SCShareHolding.loading = true;
@@ -1024,6 +1091,29 @@ const SingleCompanySlice = createSlice({
     });
     // // END VideoLikeDislike DATA
 
+    // // START  MediaCommentLikeDislike DATA
+    builder.addCase(MediaCommentLikeDislikeApi.pending, (state) => {
+      state.MediaCommentLikeDislike.loading = true;
+      state.MediaCommentLikeDislike.error = false;
+      state.MediaCommentLikeDislike.msgType = null;
+    });
+    builder.addCase(MediaCommentLikeDislikeApi.fulfilled, (state, action) => {
+      //   let allData = current(state);
+
+      state.MediaCommentLikeDislike.data = action.payload.Data?.[0] || {};
+      state.MediaCommentLikeDislike.loading = false;
+      state.MediaCommentLikeDislike.msg = "success";
+      state.MediaCommentLikeDislike.msgType = "success";
+    });
+    builder.addCase(MediaCommentLikeDislikeApi.rejected, (state, action) => {
+      state.MediaCommentLikeDislike.loading = false;
+      state.MediaCommentLikeDislike.error = true;
+      state.MediaCommentLikeDislike.msgType = "error";
+      state.MediaCommentLikeDislike.msg = action.payload?.msg;
+      state.MediaCommentLikeDislike.data = action.payload;
+    });
+    // // END MediaCommentLikeDislike DATA
+
     // // START  ResultDocument DATA
     builder.addCase(ResultDocumentApi.pending, (state) => {
       state.ResultDocument.loading = true;
@@ -1108,7 +1198,28 @@ const SingleCompanySlice = createSlice({
       state.UserNotification.msg = action.payload?.msg;
       state.UserNotification.data = action.payload;
     });
-    // // END DateACE DATA
+    // // END UserNotification
+
+    // // START  SentNotification DATA
+    builder.addCase(SentNotificationApi.pending, (state) => {
+      state.SentNotification.loading = true;
+      state.SentNotification.error = false;
+      state.SentNotification.msgType = null;
+    });
+    builder.addCase(SentNotificationApi.fulfilled, (state, action) => {
+      state.SentNotification.data = action.payload?.data || {};
+      state.SentNotification.loading = false;
+      state.SentNotification.msg = "success";
+      state.SentNotification.msgType = "success";
+    });
+    builder.addCase(SentNotificationApi.rejected, (state, action) => {
+      state.SentNotification.loading = false;
+      state.SentNotification.error = true;
+      state.SentNotification.msgType = "error";
+      state.SentNotification.msg = action.payload?.msg;
+      state.SentNotification.data = action.payload;
+    });
+    // // END SentNotification
 
 
   },

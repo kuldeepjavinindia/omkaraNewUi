@@ -30,6 +30,8 @@ import { OverviewAPI } from "../store/slice/TrendlyneSlice";
 import moment from "moment";
 import BarChartModal from "../components/CompanyDetail/CustomChart/BarChartModal";
 import { GlobalContext } from "../context/GlobalContext";
+import { CustomizeThemeDrawer } from "../components/Drawer";
+import PeerDrawer from "../components/CompanyDetail/peer/PeerDrawer";
 
 function TabsDefault(props) {
   const { TabsData, ActiveTab, setActiveTab } = props;
@@ -78,7 +80,7 @@ const CompanyDetailPage = () => {
   const rr_dispatch = useDispatch();
   const rrd_params = useParams();
 
-  const { setAddNote } = useContext(GlobalContext);
+  const { setAddNote, PeersModal } = useContext(GlobalContext);
 
   let cmpId = rrd_params?.company_id;
   if (cmpId) {
@@ -218,8 +220,7 @@ const CompanyDetailPage = () => {
       label: "Forensic",
       desc: (
         <>
-          {" "}
-          <Forensic_Main />{" "}
+          <Forensic_Main />
         </>
       ),
     },
@@ -237,8 +238,7 @@ const CompanyDetailPage = () => {
       label: "Media",
       desc: (
         <>
-          {" "}
-          <MediaRoom_Main />{" "}
+          <MediaRoom_Main />
         </>
       ),
     },
@@ -248,11 +248,26 @@ const CompanyDetailPage = () => {
     return <Spinner className="w-12 h-12" />;
   }
 
+  
+  // const {
+  //   PeersModal,
+  //   // setPeersModal
+  // } = useContext(GlobalContexT)
+
+
+
   return (
     <>
       <BarChartModal />
       <AddNotesModal />
       
+      <CustomizeThemeDrawer />
+      
+      {
+        PeersModal && (
+          <PeerDrawer />
+        )
+      }
       <div className="sc-container relative">
         <div className=" absolute right-2 top-1 z-[2]">
           <Button

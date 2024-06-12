@@ -54,6 +54,9 @@ const initialState = {
   RatioMaster: {
     loading: true,
     data: [],
+    other_companies: [],
+    selected_companies: [],
+    isSelected: [],
     msg: null,
     error: null,
   },
@@ -212,7 +215,17 @@ export const DefaultMastersAPI = createAsyncThunk(
 const TrendlyneSlice = createSlice({
   name: "Trendlyne",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    ratioMaterSelectedCompanies: (state, action) => {
+      let other_companies = action.payload.map((item) => item?.value);
+      state.RatioMaster.selected_companies = action.payload;
+      state.RatioMaster.other_companies = other_companies;
+    },
+    ratioMaterSelected: (state, action) => {
+      state.RatioMaster.isSelected = action.payload;
+    }
+
+  },
   // eslint-disable-next-line no-unused-vars
   extraReducers: (builder) => {
     // // START sectorMaster DATA
@@ -399,7 +412,16 @@ const TrendlyneSlice = createSlice({
       state.RatioMaster.msgType = null;
     });
     builder.addCase(RatioMasterAPI.fulfilled, (state, action) => {
+      let a0 = action.payload;
+      // let isSelected = a0.filter(item=>item.is_selected === true);
+      let isSelected = a0.filter((item) => item.is_selected === true);
+      let isSelectedIds = isSelected.map((item) => item.ID);
+
+
+
       state.RatioMaster.data = action.payload;
+      state.RatioMaster.isSelected = isSelectedIds,
+      
       state.RatioMaster.loading = false;
       state.RatioMaster.msg = "success";
       state.RatioMaster.msgType = "success";

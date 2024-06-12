@@ -88,17 +88,31 @@ const Brief_Chart = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 pb-4">
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 pb-10">
         {QuarterlyAllData &&
           Object.keys(QuarterlyAllData).map((item, i) => {
             let obj = QuarterlyAllData[item];
             return (
-              <div key={i} className={`h-[550px]`}>
+              <div key={i} className={`h-[500px]`}>
+                
+                <div className="h-14">
+                    <div className="text-center">
+                        <h4 className=" font-semibold text-[15px] text-black">
+                        {obj?.title}
+                        </h4>
+                        <p className="text-[12px]" dangerouslySetInnerHTML={{ 
+                        __html: `${obj?.YoYQoQ?.YoY ? "YOY: "+obj?.YoYQoQ?.YoY+" <br />" : ""} ${obj?.YoYQoQ?.QoQ ? "QOQ: " + obj?.YoYQoQ?.QoQ : ""}`
+                        }}>
+                        
+                        </p>
+                    </div>
+                </div>
+
                 <CustomChart
                   detail={{
                     title: obj.title,
-                    yoy: obj.YoYQoQ?.YoY,
-                    qoq: obj.YoYQoQ?.QoQ,
+                    yoy: obj?.YoYQoQ?.YoY,
+                    qoq: obj?.YoYQoQ?.QoQ,
                   }}
                   values={obj.value}
                   categories={obj.cat}

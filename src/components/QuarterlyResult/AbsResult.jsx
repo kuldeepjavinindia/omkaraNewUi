@@ -10,7 +10,8 @@ const AbsResult= ()=> {
 
   <div >
       {/* ========= Start Header Page =========== */}
-      <div className="flex justify-between items-center">
+        {/* ========= Start Header Page =========== */}
+<div className="flex justify-between items-center">
   <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
     <div>
       <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
@@ -22,13 +23,19 @@ const AbsResult= ()=> {
         type="text"
         placeholder="Search Company"
         className="!border !border-gray-200 !h-8 !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+        labelProps={{
+          className: "hidden",
+        }}
         icon={<CgSearch size={19} className="text-gray-400 top-[-2px] absolute" />}
       />
     </div>
   </div>
 
-  <div className="flex-grow-0 flex justify-center mx-[14px]">
-    <Select className="smallInput bg-[#fff] mt-0 !h-8 rounded border-none" label="Show 15">
+  <div className="flex-grow-0 flex justify-center mx-[14px] mt-[-4px]">
+    <Select className="smallInput bg-[#fff] mt-0 !h-8 rounded border-none"
+     labelProps={{
+          className: "hidden",
+        }} value="Show 15">
       <Option>Option 1</Option>
     </Select>
   </div>
@@ -49,6 +56,9 @@ const AbsResult= ()=> {
         defaultValue="1"
         size="md"
         className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+        labelProps={{
+          className: "hidden",
+        }}
       />
     </div>
     <Button className="w-[48px] !h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
@@ -62,6 +72,7 @@ const AbsResult= ()=> {
     
   </div>
 </div>
+{/* ========= End Header Page =========== */}
 {/* ========= End Header Page =========== */}
 
 
@@ -79,10 +90,12 @@ const AbsResult= ()=> {
         <th className=""></th>
         <th className="border-r border-[#B3B3B3]"></th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] !text-center border-r border-[#B3B3B3]" colSpan="5">
-          Sales (Cr) <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked />
+          Sales (Cr)  <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  />
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] !text-center" colSpan="5">
-          Gross Profit (Cr) <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked />
+          Gross Profit (Cr)  <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  />
         </th>
       </tr>
       <tr className="!bg-[#1E233A] ">
@@ -90,34 +103,44 @@ const AbsResult= ()=> {
         <th className="sticky sticky left-[133px] !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10">SECTOR</th>
         <th className="sticky  left-[192px] border-r border-[#B3B3B3]  !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10">MCap (Cr)</th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 4Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 4Q
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 3Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 3Q
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] ">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 2Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 2Q
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 1Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 1Q
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] border-r border-[#B3B3B3]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 4Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 4Q
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 4Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 4Q
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 3Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 3Q
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 2Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 2Q
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 1Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 1Q
         </th>
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-          <Checkbox color="blue" className="h-4 w-4 rounded bg-transparent border border-[#fff]" defaultChecked /> 4Q
+           <Checkbox  className="border !border-[#fff]
+           !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff]"  /> 4Q
         </th>
       </tr>
     </thead>
@@ -155,19 +178,19 @@ const AbsResult= ()=> {
     </tbody>
     <tfoot>
       <tr className="bg-[#1E233A] ">
-        <td className="sticky left-0 text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">Company Name</td>
-        <td className="sticky sticky left-[133px] text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">Sector</td>
-        <td className="sticky  left-[192px] border-r border-[#B3B3B3]  text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">MCap (Cr)</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">3Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">2Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">1Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left border-r border-[#B3B3B3]">4Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">3Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">2Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">1Q</td>
-        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-left">4Q</td>
+        <td className="sticky left-0 text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">Company Name</td>
+        <td className="sticky sticky left-[133px] text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">Sector</td>
+        <td className="sticky  left-[192px] border-r border-[#B3B3B3]  text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">MCap (Cr)</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">4Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">3Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">2Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">1Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right border-r border-[#B3B3B3]">4Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">4Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">3Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">2Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">1Q</td>
+        <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right">4Q</td>
       </tr>
       <tr className="bg-[#1E233A]  "> 
         <td className="sticky left-0 text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-center pb-3"></td>

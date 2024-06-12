@@ -239,7 +239,7 @@ const showChart = (row, level=1)=>{
 
 
 <div className="pl_segment-container">
-        <table className="forensicTable w-full min-w-max table-auto text-left">
+        <table className="forensicTable w-full table-auto text-left">
             <thead>
             <tr  className={`!bg-[#22242F]`}>
                 {

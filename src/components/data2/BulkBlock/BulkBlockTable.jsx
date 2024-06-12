@@ -69,7 +69,6 @@ const BulkBlockTable= ()=> {
      labelProps={{
       className: "hidden",
     }}
-    
     >
       <Option>Option 1</Option>
     </Select>

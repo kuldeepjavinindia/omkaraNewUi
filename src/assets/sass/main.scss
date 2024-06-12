@@ -1,15 +1,16 @@
+@use "variables";
+@use "mixins";
+
 $themeColor: var(--theme-color);
 $themeColor3: var(--theme-themeC3);
 $f_f: "Plus Jakarta Sans", sans-serif;
 // @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 @import "https://code.highcharts.com/css/stocktools/gui.css";
 @import "https://code.highcharts.com/css/annotations/popup.css";
 
-
-
 * {
-  font-family: $f_f!important;
+  font-family: $f_f !important;
 }
 p {
   font-family: $f_f !important;
@@ -26,7 +27,7 @@ aside {
     top: 0.5rem;
     max-width: 70px;
   }
-} 
+}
 .home-section {
   height: calc(100vh - 74px);
   // margin-top: .5rem;
@@ -39,8 +40,8 @@ aside {
 .m-item {
   font-size: 10px !important;
   text-align: center;
-  a{
-    gap: .25rem;
+  a {
+    gap: 0.25rem;
     line-height: 1;
   }
   img {
@@ -61,28 +62,30 @@ aside {
     }
   }
 }
-.bse-new-container{
-  padding: .5rem;
-  &>div{
+.bse-new-container {
+  padding: 0.5rem;
+  & > div {
     min-height: calc(100vh - 90px);
-  };
+  }
 
-  .wishlistBody-list{
+  .wishlistBody-list {
     &ul {
-      &>li {
-          // background: #f0f4fb;
-          // border-radius: 8px;
-          // margin-bottom: .5rem;
-          // padding: .25rem .5rem;
+      & > li {
+        // background: #f0f4fb;
+        // border-radius: 8px;
+        // margin-bottom: .5rem;
+        // padding: .25rem .5rem;
       }
     }
   }
-  
 }
 
 .addcooment-Media {
-  .ql-editor.ql-blank {
-  height: 85px;
+  .ql-editor {
+    min-height: 3rem;
+    max-height: 9rem;
+    overflow: auto;
+    margin-bottom: 3rem;
   }
 }
 
@@ -98,57 +101,53 @@ aside {
 }
 
 .EditorComment .ql-editor strong {
-  font-weight: 900; 
+  font-weight: 900;
 }
-.EditorComment .ql-container.ql-snow{
-background-color: #E9EDEF;
+.EditorComment .ql-container.ql-snow {
+  background-color: #e9edef;
 }
 
-
-table.forensicTable  {
+table.forensicTable {
   thead tr {
-    th{
-      text-align: right ;
+    th {
+      text-align: right;
     }
-    th:nth-child(1){
+    th:nth-child(1) {
       text-align: left;
     }
   }
   tbody tr {
-    td div{
+    td div {
       justify-content: end;
     }
 
-    td:nth-child(1) div{
+    td:nth-child(1) div {
       justify-content: start;
     }
-      
   }
 }
-
 
 // 04-May-2024
 .smallInput > div > div {
   min-width: 106px;
 }
 
-
 .inputs-custom {
   .smallInput > div {
     min-width: 100px;
   }
 }
-div:has(.smallInput){
+div:has(.smallInput) {
   min-width: 106px;
 }
 
-div:has(.smallInput.two){
+div:has(.smallInput.two) {
   min-width: 50px;
 }
 
 .colorIconSelect-theme {
   svg {
-    fill: #4448F5;
+    fill: #4448f5;
   }
 }
 
@@ -156,61 +155,59 @@ div:has(.smallInput.two){
   min-width: 106px;
 }
 
-
 .inputs-custom {
   .smallInput > div {
     min-width: 100px;
   }
 }
-div:has(.smallInput){
+div:has(.smallInput) {
   min-width: 106px;
 }
 
-div:has(.smallInput.two){
+div:has(.smallInput.two) {
   min-width: 100px;
 }
 
 // .filterSidebar
 ::-webkit-scrollbar {
-  // height: 4px;              
-    width: 0px;    
+  height: 2px;              
+    width: 4px;    
   // border: 1px solid #d5d5d5;
-  // background-color: #7D838E;
+  background-color: #7D838E;
 }
 
-.filterSidebar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #f1f1f1; /* Set the background color of the scrollbar track */
 }
 
-.filterSidebar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #888; /* Set the color of the scrollbar thumb */
 }
 
-.data2Tabels  {
+.data2Tabels {
   overflow-x: scroll;
   table {
     tr {
-      th  label {
+      th label {
         padding: 2px;
       }
-     td{
+      td {
         padding: 5px 5px;
         white-space: nowrap;
       }
     }
-    tfoot tr td{
+    tfoot tr td {
       white-space: wrap;
     }
   }
-
 }
 
 .react-select__multi-value {
   border-radius: 25px;
   align-items: center;
   justify-content: space-between;
-  .react-select__multi-value__remove{
-    background: #7D838E;
+  .react-select__multi-value__remove {
+    background: #7d838e;
     width: 15px;
     height: 16px;
     color: #fff;
@@ -223,20 +220,58 @@ div:has(.smallInput.two){
 .filterSidebar .sticky {
   padding-block: 0.5rem;
 }
-.screen-height{
+.screen-height {
   height: calc(100vh - 5.2rem);
 }
-.screen-height-Content{
+.screen-height-Content {
   height: calc(100vh - 9.2rem);
 }
+
 .FilterSidebar-Content-Layout {
   display: flex;
   gap: 5px;
-  >div:nth-child(1){
-    flex: 0 0 20%;
+  // Apply styles for screens greater than 1023px
+  @include mixins.respond-to(small-desktop) {
+    > div:nth-child(1) {
+      flex: 0 0 20%;
+    }
+
+    > div:nth-child(2) {
+      flex: 0 0 80%;
+    }
   }
-  >div:nth-child(2){
-    flex: 0 0 80%;
+
+  // Apply styles for screens greater than 1440px
+  @include mixins.respond-to(large-desktop) {
+    > div:nth-child(1) {
+      flex: 0 0 15%;
+    }
+
+    > div:nth-child(2) {
+      flex: 0 0 85%;
+    }
   }
 }
+
 // End 06-June-2024
+// End 10-June-2024
+
+.custom-radio  + span svg{
+  fill: #4448F5;
+  height: 11px;
+}
+.wordBreakThead thead tr th{
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+span.react-select__indicator-separator {
+  background: none;
+}
+
+
+.main-body {
+  width: calc(100% - 78px);
+}
+
+
+// End 10-June-2024

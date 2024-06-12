@@ -15,19 +15,16 @@ const BarChartModal = () => {
         }
     } = useSelector((state) => state.SingleCompany);
 
+    const ThemeColorData = useSelector((state) => state.ThemeColor);
     const [open, setOpen] = useState(false);
     const [Option, setOption] = useState(null);
     const [IsChart, setIsChart] = useState(false);
 
     const rr_dispatch = useDispatch();
 
+    let ThemeColor = ThemeColorData?.chartColor ||  '#7B70FF';
+
     const handleClose = () => {
-        // rr_dispatch({
-        //   type:"Columns_Rows_close",
-        //   payload:{}
-        // })
-        // BarChartData_Columns_Rows
-        // BarChartData_Open
         rr_dispatch(BarChartData_Columns_Rows_close({}));
         setOpen(false);
       };
@@ -145,7 +142,7 @@ const BarChartModal = () => {
               series: [
                   {
                       // name: 'Browsers',
-                      color: '#7B70FF',//ThemeColorData?.chartColor,
+                      color: ThemeColor,//ThemeColorData?.chartColor,
                       data: data0
                   }
               ]

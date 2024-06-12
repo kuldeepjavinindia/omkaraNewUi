@@ -18,6 +18,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { useSelector } from "react-redux";
 
 
 
@@ -114,6 +115,9 @@ const CustomChart = (props) => {
   const [Option, setOption] = useState(null);
   const [IsChart, setIsChart] = useState(false);
 
+  
+  const ThemeColorData = useSelector((state) => state.ThemeColor);
+
   const {
     detail,
     values,
@@ -121,99 +125,10 @@ const CustomChart = (props) => {
   } = props
 
   
-
-  // useEffect(()=>{
-  //   // console.log('====================================');
-  //   // console.log('props >>> ', props);
-  //   // console.log('====================================');
-  
-  //     let chartTitle = detail?.title
-        
-  //       let options = {
-  //         chart: {
-  //             backgroundColor: 'transparent',
-  //             type: 'bar'
-  //         },
-  //         title: {
-  //             text: chartTitle,
-  //             align: 'center',
-  //             style:{
-  //               fontSize:'15px',
-  //               fontWeight: 700,
-  //               color: '#000'
-  //             }
-  //         },
-  //         subtitle: {
-  //             text: `${detail.yoy ? "YOY: "+detail.yoy+" <br />" : ""} ${detail.qoq ? "QOQ: " + detail.qoq : ""}`,
-  //             align: 'center',
-  //             style:{
-  //               fontSize:'12px'
-  //             }
-  //         },
-  //         accessibility: {
-  //             point: {
-  //                 valueDescriptionFormat: '{index}. Age {xDescription}, {value}%.'
-  //             }
-  //         },
-  //         legend:{
-  //           enabled: false
-  //         },
-  //         xAxis: [{
-
-  //             categories: categories,
-  //             reversed: false,
-  //             labels: {
-  //                 step: 1
-  //             },
-  //             accessibility: {
-  //                 // description: 'Age (male)'
-  //             }
-  //         }],
-  //         yAxis: [{
-  //           labels: {
-  //                 enabled:false,
-  //                 step: 1
-  //             },
-            
-  //         }],
-      
-  //         plotOptions: {
-  //             // series: {
-  //             //     // stacking: 'normal',
-  //             //     // borderRadius: '50%'
-                 
-  //             // }
-  //             bar: {
-  //               borderRadius: '20%',
-  //               dataLabels: {
-  //                   enabled: true
-  //               },
-  //               groupPadding: 0.1
-  //           }
-  //         },
-      
-  //         tooltip: {
-  //             // format: '<b>{series.name}, age {point.category}</b><br/>' + 'Population: {(abs point.y):.1f}%'
-  //             format: '<b>{point.category}</b> '
-  //         },
-      
-  //         series: [{
-  //             name: '',
-  //             color: '#7B70FF',
-  //             data: values
-  //         }]
-  //     }
-      
-  //     setOption(options)
-  //     setIsChart(true);
-
-  // }, [props])
-
-
   const labels = categories;
-  const CAGR = detail?.CAGR;
+  // const CAGR = detail?.CAGR;
   
-  const themeColor = '#7B70FF';
+  const themeColor = ThemeColorData?.chartColor ||  '#7B70FF';
 
 
   

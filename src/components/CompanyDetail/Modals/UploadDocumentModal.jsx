@@ -27,13 +27,6 @@ const UploadDocumentModal = (props) => {
   const { modalTitle, cancelButton, updateButton } = props;
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // const handleAddComment = () => {
-  //   if (commentInput.trim()) {
-  //     // setComments([...comments, commentInput]);
-  //     // setCommentInput("");
-  //   }
-  // };
-
   const { UploadDocument, setUploadDocument } = useContext(GlobalContext);
   const authState = useAuthState();
 
@@ -90,6 +83,8 @@ const UploadDocumentModal = (props) => {
   }
 
   
+  let singleCompanyData = cmpNotesData.Data[0];
+
   const submitForm = async () => {
 
     // var File = event.target;
@@ -112,7 +107,6 @@ const UploadDocumentModal = (props) => {
 
 
     // let params =  Inputs;
-    let singleCompanyData = cmpNotesData.Data[0];
     let params = UploadDocumentReq;
     params = {
       ...params,
@@ -141,8 +135,7 @@ rr_dispatch(MultipleFileUploaderAPI([params]));
       setUploadDocument(!UploadDocument);
     }
   }, [MultipleFileUploaderLoading]);
-
-  // console.log('UploadDocument >>> ', UploadDocument)
+  
   
   return (
     <>
@@ -153,7 +146,7 @@ rr_dispatch(MultipleFileUploaderAPI([params]));
           size="xxl"
         >
           <DialogHeader className="w-[50%] mx-auto justify-center text-[15px] pb-0">
-            {modalTitle || `Upload Note in "Tata Chemicals Ltd."`}
+            {modalTitle || `Upload New Document in "${singleCompanyData.CompanyName}"`}
           </DialogHeader>
 
           <DialogBody className="w-[50%] mx-auto pt-0">

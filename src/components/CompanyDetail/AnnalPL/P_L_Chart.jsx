@@ -111,7 +111,7 @@ const callApi = (type=tab_1?.activeType) => {
         params =  {
             ...params,
             CompanyID: cmpId,
-            type: type
+            ChartType: type
         }
     rr_dispatch(SCAnnualP_LChartApi(params))
 }
@@ -122,7 +122,8 @@ useEffect(() => {
 
 useEffect(() => {
   if(!SCP_LLoading){
-    quarterlySelect()
+    setQButtonActive(quarterButton[0])
+    quarterlySelect(5)
 
 
     let button_status = SCP_LChart.button_status;
@@ -134,7 +135,7 @@ useEffect(() => {
       activeType: SCP_LChart?.activeType,
       func: callApi
     }
-    setUpdateRightSideTabs(prev=>({...prev, tab_1: nTab_1}));
+    setUpdateRightSideTabs(prev=>({...prev, tab_2: nTab_1}));
 
 
   }
@@ -150,7 +151,7 @@ useEffect(() => {
                     QuarterlyAllData && Object.keys(QuarterlyAllData).map((item, i)=>{
                         let obj = QuarterlyAllData[item];
                         return (
-                            <div key={i} className={`${QButtonActive.len== 5 && "h-[150px]"} ${QButtonActive.len == 10 && "h-[300px]"} ${QButtonActive.len== 13 && "h-[420px]"}`}>
+                            <div key={i} className={`${QButtonActive.len== 5 && "h-[150px]"} ${QButtonActive.len == 10 && "h-[250px]"} ${QButtonActive.len== 13 && "h-[330px]"}`}>
                                 
                             <div className="h-14">
                                 <div className="text-center">
@@ -177,7 +178,7 @@ useEffect(() => {
             </div>
             
     
-            <div className="flex gap-2 mt-4 items-center w-full justify-center">
+            <div className="flex gap-2 mt-16 items-center w-full justify-center">
                 {
                     quarterButton.map((item, i)=>{
                         return (

@@ -45,10 +45,10 @@ const CommentList = (props) => {
 
     useEffect(() => {
         if(!VideoCommentLoading){
-            console.log('VideoCommentData >>> ', VideoCommentData)
-            // console.log('====================================');
+            console.log('====================================');
+            // console.log('VideoCommentData >>> ', VideoCommentData)
             // console.log();
-            // console.log('====================================');
+            console.log('====================================');
         }
     }, [rr_dispatch, VideoCommentLoading])
 
@@ -60,10 +60,7 @@ const CommentList = (props) => {
 
   return (
     <>
-    {/* {"$id":"1","response_code":200,"status":1,"msg":"success","UserNAme":"Demo","UserID":"22","name":"Demo","email":"kuldeep.javainindia@gmail.com","wp_mobile":"7678310524","mobile":"7678310524","profile_photo":"https://omkaradata.com//ProfilePhoto/22_3460_22.png","notification":true} */}
-    {/* {JSON.stringify(authState?.user?.UserID)} */}
 
-{/* { JSON.stringify(rootComments) } */}
 
     {
         rootComments && rootComments.length > 0 && rootComments.map((item, i)=>{

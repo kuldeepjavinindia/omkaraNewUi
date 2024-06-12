@@ -42,9 +42,6 @@ const handleOpen = ()=> {
     const name = event.target.name;
     const value = event.target.value;
     console.log(name, value);
-    // setInputs(values => ({ ...values, [name]: value }))
-    // cols = inputs;
-    // console.log('inputs >> '+JSON.stringify(inputs));
   }
 
 

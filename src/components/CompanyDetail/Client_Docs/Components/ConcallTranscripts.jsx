@@ -14,7 +14,6 @@ const ConcallTranscripts = () => {
 
   const {
     companyNotes: {
-      // loading: cmpNotesLoading,
       data: cmpNotesData,
     },
   } = useSelector((state) => state.SingleCompany);
@@ -22,6 +21,7 @@ const ConcallTranscripts = () => {
   const rr_dispatch = useDispatch();
 
   const [ListData, setListData] = useState([]);
+  const [AllListData, setAllListData] = useState([]);
 
   const mergeFun = () => {
     // let present = InvestorPresentationData;
@@ -132,6 +132,8 @@ const ConcallTranscripts = () => {
       l_pdf.map((item, i0) => {
         let obj = {
           date: date,
+          // date: date,
+          date_show: moment(date).format('MMM YYYY'),
           pdf1: pdf1[i0] || "",
           pdf2: pdf2[i0] || "",
           video: video[i0] || "",
@@ -149,24 +151,54 @@ const ConcallTranscripts = () => {
     });
     // console.log('forthArray >>> ', forthArray)
     setListData(forthArray);
+    setAllListData(forthArray);
   };
 
 
-  useEffect(() => {
-    if (EarningsCallLoading) {
-      let compSlug = cmpNotesData.Data?.[0]?.BSEcode;
+
+
+
+  const handleChange = (e) => {
+    let nVal = e.target.value.toLowerCase();
+    let arrNew = [];
+    AllListData.forEach(function (a) {
+      var fName = a.date_show.toLowerCase();
+      // var nVal = val.toLowerCase();
+      // console.log(fName, "<=>", nVal);
+      if (fName.indexOf(nVal) > -1) {
+        arrNew.push(a);
+      }
+    });
+
+    setListData(arrNew);
+
+    // console.log('val >> ', val, ListData)
+  }
+
+  const callApi = () => {
+
+    let compSlug = cmpNotesData.Data?.[0]?.BSEcode;
       let param = TrendlyneReq;
       param = {
         ...param,
         compSlug,
       };
       rr_dispatch(EarningsCallAPI(param));
+
+
+  }
+
+  useEffect(() => {
+    if (EarningsCallLoading) {
+      callApi()
     }
     if (!EarningsCallLoading) {
-      // let newArr = EarningsCallData;
       mergeFun();
     }
   }, [EarningsCallLoading]);
+
+
+
 
   return (
     <>
@@ -219,7 +251,8 @@ const ConcallTranscripts = () => {
                 <Fragment key={i}>
                 <li className="flex items-center justify-between gap-2 py-3 border-gray-200 border-b border-0 ">
                   <Typography className="text-theme-c7 font-semibold text-[14px]">
-                    {moment(value?.date).format('MMM YYYY')}
+                    {/* {moment(value?.date).format('MMM YYYY')} */}
+                    {value?.date_show}
                   </Typography>
                   <div className="flex gap-2 items-stretch">
                     <Button

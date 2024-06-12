@@ -60,7 +60,7 @@ return (
 
 
 
-<div className= "mb-2">
+    <div className= "mb-2">
       <label className="text-[12px] text-[#000] font-medium ">From </label>
         <Input
             type="date"
@@ -91,12 +91,12 @@ return (
 <div className="mb-2">
 <label className="text-[12px] text-[#000] font-medium ">Market Cap </label>
       
-<div className="flex gap-2">
+        <div className="flex gap-2">
         <div className="min-w[48%] w-[48%]">
         <Input
             type="text"
             name="marketcap100"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
@@ -109,7 +109,7 @@ return (
 <Input
             type="text"
             name="marketcap5000"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
@@ -128,7 +128,7 @@ return (
         <Input
             type="text"
             name="marketcap100"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
@@ -141,7 +141,7 @@ return (
 <Input
             type="text"
             name="marketcap5000"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}

@@ -165,10 +165,6 @@ const BSENewsPage = () => {
     if(compId.length === 0){
       return ;
     }
-    // for (let a0 = 0; a0 < compId.length; a0++) {
-    //   a0 += `${compId[a0]}`
-    // }
-    
 
     let pagNum = pageNumber;
     if(type=="loadmore")
@@ -240,6 +236,41 @@ const BSENewsPage = () => {
   }
 
 
+
+
+  
+  const filterData = (e) => {
+    let searchedVal = e.target.value;
+    let a000 = {} 
+    for (const p_key in All_Wishlist) {
+      // console.log(key)
+      if (All_Wishlist.hasOwnProperty.call(All_Wishlist, p_key)) {
+        const element = All_Wishlist[p_key];
+        let AllTableRowData = element;
+        const filteredRows = AllTableRowData.filter((row, r0) => {
+          if(row){
+            return Object.keys(row).some((key) => {
+              if(key == "title" || key == "postType" || key == "description"){
+                if(key){
+                  return row[key] ? String(row[key]).toLowerCase().includes(searchedVal.toLowerCase()) :  false;
+                }
+              }
+            });
+          }
+        });
+        a000 = {...a000, [p_key]: filteredRows}
+      }
+    }
+    setAllWishlist(a000);
+    // console.log(' a000 >>> ', a000)
+  }
+
+
+
+
+
+
+
   useEffect(() => {
     if(!wlCompanyLoading){
       if(AllCmpData.length === 0){
@@ -272,12 +303,14 @@ const BSENewsPage = () => {
         <div className="rounded-md bg-[#fff] pt-2 px-1">
         <div className="px-4 py-2">
           <RedirectingDialog  open={open} setOpen={setOpen} />
-          <Input label="Search Company From List" className="!bg-[#E9EDEF] border-transparent !border-0 focus:!border-[2px]" size="md" icon={<CgSearch className="text-[19px]" />} />
+          <Input onChange={(e)=>{
+            filterData(e)
+          }} label="Search Company From List" className="!bg-[#E9EDEF] border-transparent !border-0 focus:!border-[2px]" size="md" icon={<CgSearch className="text-[19px]" />} />
         </div>
         <div className="px-4 py-2">
-            {/* {
-              JSON.stringify(AllWishlist["2024-01-22"])
-            } */}
+          
+
+          
           <ul className="wishlistBody-list">
 
             {
@@ -301,7 +334,6 @@ const BSENewsPage = () => {
                                 //  let companyData = companyMaster.find(f_item=>f_item.BSECode == c_itm.BSEcode)
 
                                  let gotoLink = `/company-detail/`
-
                                  let title_1 = c_itm?.title;
                                  let title_1Arr = title_1.split(' - ')
                                  title_1Arr = title_1Arr.slice(2, title_1Arr.length)
@@ -355,6 +387,13 @@ const BSENewsPage = () => {
             
             
           </ul>
+        </div>
+
+        <div className="px-4 pb-4">
+        { Object.keys(AllWishlist).length > 0 && (
+              <Button onClick={() => callFunction("loadmore")} className="bg-theme" size="sm" >Load More</Button>
+          )
+        }
         </div>
           
         </div>

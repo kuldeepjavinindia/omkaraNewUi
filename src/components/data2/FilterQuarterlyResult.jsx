@@ -51,6 +51,15 @@ const FilterQuarterlyResult = ()=> {
       }));
   };
 
+  const handleReset = (value)=> {
+    let key = `accordion_${value}`;
+    setActiveAccordion(prev => ({
+        ...prev,
+        [key]:  true ? false : false 
+    }));
+  }
+  
+
   
     console.log('prev >>> ', ActiveAccordion);
 
@@ -117,7 +126,7 @@ const FilterQuarterlyResult = ()=> {
       <Accordion open={ActiveAccordion.accordion_1}  className="rounded bg-[#fff] px-2 py-3 mt-2" icon={<Icon id={1} open={ActiveAccordion.accordion_1} />}>
         <AccordionHeader onClick={() => handleOpen(1)  } className="flex border-none py-0 pt-0">
         <Typography className="text-[15px] text-[#000] font-semibold w-[90%]">Data Range</Typography>
-            <Typography className="text-[13px] text-[#FF2026] font-semibold">RESET</Typography>
+            <Typography className="text-[13px] text-[#FF2026] font-semibold" onClick={()=> handleReset(1)}>RESET</Typography>
         </AccordionHeader>
         <AccordionBody>
         <label className="text-[12px] text-[#000] font-medium">From </label>
@@ -149,14 +158,14 @@ const FilterQuarterlyResult = ()=> {
        <Accordion open={ActiveAccordion.accordion_2} className="mt-2 rounded bg-[#fff] px-2 py-3 mt-2" icon={<Icon id={2} open={ActiveAccordion.accordion_2} />}>
         <AccordionHeader onClick={() => handleOpen(2)} className="flex border-none py-0 pt-0">
         <Typography className="text-[15px] text-[#000] font-semibold w-[90%]">Classification</Typography>
-            <Typography className="text-[13px] text-[#FF2026] font-semibold">RESET</Typography>
+            <Typography className="text-[13px] text-[#FF2026] font-semibold" onClick={()=> handleReset(2)}>RESET</Typography>
         </AccordionHeader>
         <AccordionBody>
         <div className="flex justify-between">
 
 
         <label className="text-[12px] text-[#000] font-medium">Sectors (58)  </label>
-        <Typography className="text-[#7B70FF] text-[12px] font-semibold">Refresh</Typography>
+        <Typography className="text-[#7B70FF] text-[12px] font-semibold cursor-pointer">Refresh</Typography>
         </div>
         <Select
           components={animatedComponents}
@@ -198,8 +207,10 @@ const FilterQuarterlyResult = ()=> {
           className="react-select-container"
           classNamePrefix="react-select"
         />
-
-    <Checkbox label="Portfolio" onChange={handleChangeChecked}  />
+<div className="ml-[-11px]">
+<Checkbox label="Portfolio" onChange={handleChangeChecked}  className="w-[18px] h-[18px] custom-checkbox checked:border-[#4448F5] checked:bg-[#4448F5] rounded" />
+</div>
+  
 
         </AccordionBody>
       </Accordion>
@@ -214,12 +225,16 @@ const FilterQuarterlyResult = ()=> {
         </AccordionHeader>
         <AccordionBody>
         <label className="text-[12px] text-[#000] font-medium">Market Cap </label>
+        
         <div className="flex gap-2">
         <div className="min-w[48%] w-[48%]">
         <Input
             type="text"
             name="marketcap100"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
             // onChange={handleChangeInput}
             placeholder=">100"
           />
@@ -229,7 +244,7 @@ const FilterQuarterlyResult = ()=> {
 <Input
             type="text"
             name="marketcap5000"
-            className="  w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
@@ -475,6 +490,7 @@ const FilterQuarterlyResult = ()=> {
 <div className="flex flex-col">
   <Radio
     name="selection"
+     className=" custom-radio  checked:border-[#4448F5]"
     defaultChecked
     label={
       <div>
@@ -487,6 +503,7 @@ const FilterQuarterlyResult = ()=> {
 
   <Radio
     name="selection"
+     className=" custom-radio  checked:border-[#4448F5]"
     label={
       <div>
         <Typography color="" className="text-[13px]">
@@ -498,6 +515,7 @@ const FilterQuarterlyResult = ()=> {
 
   <Radio
     name="selection"
+     className=" custom-radio  checked:border-[#4448F5]"
     label={
       <div>
         <Typography color="" className="text-[13px]">
@@ -509,6 +527,7 @@ const FilterQuarterlyResult = ()=> {
 
   <Radio
     name="selection"
+ className=" custom-radio  checked:border-[#4448F5]"
     label={
       <div>
         <Typography color="" className="text-[13px]">
@@ -518,6 +537,7 @@ const FilterQuarterlyResult = ()=> {
     }
   />
 </div>
+
 
 
  </AccordionBody>

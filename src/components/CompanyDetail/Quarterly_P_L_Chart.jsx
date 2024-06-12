@@ -140,7 +140,8 @@ useEffect(() => {
 
     if(!Year20Loading){
         // console.log('Year20Data >>> ', Year20Data)
-        quarterlySelect()
+        setQButtonActive(quarterButton[0])
+        quarterlySelect(5)
 
         let button_status = Year20Data.button_status;
         let nTab_1 = tab_1;
@@ -168,7 +169,7 @@ if(Year20Loading){
                 QuarterlyAllData && Object.keys(QuarterlyAllData).map((item, i)=>{
                     let obj = QuarterlyAllData[item];
                     return (
-                        <div key={i} className={`${QButtonActive.len== 5 && "h-[150px]"} ${QButtonActive.len == 10 && "h-[300px]"} ${QButtonActive.len== 13 && "h-[420px]"}`}>
+                        <div key={i} className={`${QButtonActive.len== 5 && "h-[150px]"} ${QButtonActive.len == 10 && "h-[250px]"} ${QButtonActive.len== 13 && "h-[330px]"}`}>
 
                             <div className="h-14">
                             <div className="text-center">
@@ -196,7 +197,7 @@ if(Year20Loading){
         </div>
         
 
-        <div className="flex gap-2 mt-20 items-center w-full justify-center">
+        <div className="flex gap-2 mt-16 items-center w-full justify-center">
             {
                 quarterButton.map((item, i)=>{
                     return (
