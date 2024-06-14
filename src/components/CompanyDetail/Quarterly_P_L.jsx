@@ -189,43 +189,8 @@ const Quarterly_P_L = () => {
           </div>
         </div>
         <div>
-          <ButtonGroup
-            ripple={false}
-            size="sm"
-            className=" border-[1px] rounded-lg mb-4 shadow-none"
-          >
-            {secondaryButton.map((item, i) => {
-              return (
-                <Button
-                  key={i}
-                  className={`border-none  shadow-none hover:shadow-none ${
-                    SecondaryBtn.id == item.id
-                      ? "bg-[#22242F] text-white"
-                      : "bg-white text-[#606F7B]"
-                  }  `}
-                  onClick={() => {
-                    setSecondaryBtn(item);
-                    // let date = DateACEData?.intrim_result
-                    // if(SecondaryBtn.id == 2){
-                    //   date = DateACEData?.QtrSeg
-                    // }else
-                    // if(SecondaryBtn.id == 3){
-                    //   date = DateACEData?.QtrSeg
-                    // }
-                    // if(SecondaryBtn.id == 4){
-                    //   date = ""
-                    // }
-                    // setUpdatedOnDate(date)
-                    
-                  }}
-                >
-                  {item.label}
-                </Button>
-              );
-            })}
-          </ButtonGroup>
-
-          <div className="flex text-[12px] justify-between text-black">
+          
+        <div className="flex text-[12px] justify-between text-black">
             <div className=" font-medium">
               {
                 (SecondaryBtn.id == 1) && (
@@ -256,6 +221,32 @@ const Quarterly_P_L = () => {
                 )
               }
           </div>
+
+          <ButtonGroup
+            ripple={false}
+            size="sm"
+            className=" border-[1px] rounded-lg mb-4 shadow-none"
+          >
+            {secondaryButton.map((item, i) => {
+              return (
+                <Button
+                  key={i}
+                  className={`border-none  shadow-none hover:shadow-none ${
+                    SecondaryBtn.id == item.id
+                      ? "bg-[#22242F] text-white"
+                      : "bg-white text-[#606F7B]"
+                  }  `}
+                  onClick={() => {
+                    setSecondaryBtn(item);
+                    
+                  }}
+                >
+                  {item.label}
+                </Button>
+              );
+            })}
+          </ButtonGroup>
+
         </div>
       </div>
       {

@@ -9,13 +9,17 @@ import {
   } from "@material-tailwind/react";
 import { GlobalContext } from '../../../context/GlobalContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { allCompanyMasterAPI } from '../../../store/slice/MasterSlice';
-import { Autocomplete, Box, Checkbox, Chip, Container, Divider, List, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
+import { allCompanyMasterAPI, ratioMaterSelected, ratioMaterSelectedCompanies } from '../../../store/slice/MasterSlice';
+import { Box, Checkbox, Chip, Container, Divider, List, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import CompanySearchSelectbox from "../../CompanySearchSelectbox";
+import { SCPeersApi } from '../../../store/slice/SingleCompnaySlice';
+import { useParams } from 'react-router-dom';
 
 // PeersModal, setPeersModal
 
-const PeerDrawer = () => {
+const PeerDrawer = ({
+  Companies, setCompanies
+}) => {
 
     
   const {
@@ -24,17 +28,23 @@ const PeerDrawer = () => {
         data: allCmpData,
         loading: allCmpLoading
     },
-    RatioMaster: { data: RMData, loading: RMLoading,  selected_companies, other_companies },
+    RatioMaster: { data: RMData, loading: RMLoading,  selected_companies, isSelected: rmIsSelected },
   } = useSelector((state) => state.Masters);
 
   const [ChipData, setChipData] = useState(RMData);
   const [checked, setChecked] = useState([]);
   const [ItemList, setItemList] = useState([]);
   const [SelectedCompanies, setSelectedCompanies] = useState([]);
-  const [Companies, setCompanies] = useState([]);
+  const [Disabled, setDisabled] = useState(false);
   const [RatiosCategory, setRatiosCategory] = useState([]);
   const [CheckBoxDisable, setCheckBoxDisable] = useState(false);
 
+  const rrd_params = useParams(); 
+  
+  let cmpId = rrd_params?.company_id;
+  if (cmpId) {
+    cmpId = window.atob(cmpId);
+  }
 
 
   const {
@@ -104,7 +114,7 @@ useEffect(()=>{
     if(!RMLoading){
       // console.log('selected_companies ???? >', selected_companies)
       setSelectedCompanies(selected_companies)
-      setCompanies(other_companies)
+      // setCompanies(other_companies)
       const uniquePeerRatioData = [...new Set(RMData.map(item => item?.category))];
       // console.log('uniqueRMData >> ', uniqueRMData)
       setRatiosCategory(uniquePeerRatioData)
@@ -114,18 +124,48 @@ useEffect(()=>{
     }
   },[RMLoading])
 
+
+  const convertCmpData = (data) => {
+    let uData = [];
+    data.map(item=>{
+        let it = {
+          title: item.CompanyName,
+          value: item.CompanyID,
+        }
+        uData.push(it)
+    })
+    return uData;
+
+  }
+
+
+  const closeDrawer = () => setPeersModal(false);
+
   
   const FilterPeers = () => {
-    // dispatch({
-    //   type:'PEER_RATIOS_SELECTED',
-    //   payload: ChipData.map(item=>item.ID)
-    // })
-    // dispatch({
-    //   type:'PEER_RATIOS_SELECTED_COMPANY',
-    //   payload: SelectedCompanies
-    // })
-    // toggleDrawer('bottom', false)(e)
+    closeDrawer();
+    let isSelected = ChipData.map(item=>item.ID);
+    rr_dispatch(ratioMaterSelected(isSelected))
+    let updatedCmp = convertCmpData(Companies)
+    rr_dispatch(ratioMaterSelectedCompanies(updatedCmp))
+    let other_companies = updatedCmp.map((item) => item?.value);
+
+    let pType = 'con';
+    let params =  {
+      "CompanyId": cmpId,
+      "type": pType,
+      "ratios": isSelected,
+      "other_companies": other_companies,
+    }
+    
+    rr_dispatch(SCPeersApi(params))
+
+
   }
+
+  
+  
+
   const handleToggle = (item) => () => {
 
     
@@ -133,7 +173,6 @@ useEffect(()=>{
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
-    
     if (currentIndex === -1) {
       let a00 = ChipData;
           a00.push(item);
@@ -155,13 +194,14 @@ useEffect(()=>{
   };
 
 
-
-
-
-
-
-  const closeDrawer = () => setPeersModal(false);
-
+  useEffect(() => {
+    if(Companies.length > 4){
+      setDisabled(true)
+    }else{
+      setDisabled(false)
+    }
+  }, [Companies])
+  
 
   
 
@@ -173,8 +213,8 @@ useEffect(()=>{
       {/* <Button onClick={openDrawer}>Open Drawer</Button> */}
       <Drawer open={PeersModal} onClose={closeDrawer} className="p-4" size={"85%"} placement='bottom'>
 
-
-
+{/* 
+{JSON.stringify(selected_companies)} */}
 {/* {JSON.stringify(ItemList)} */}
 
 
@@ -237,9 +277,9 @@ useEffect(()=>{
 
                }}>Choose Company</Typography>
 
-      {/*Start Search and Select box component */}
-<CompanySearchSelectbox/>
-{/*End Search and Select box component */}
+              {/*Start Search and Select box component */}
+                <CompanySearchSelectbox Companies={Companies} setCompanies={setCompanies} Disabled={Disabled} setDisabled={setDisabled} />
+              {/*End Search and Select box component */}
 
 
 

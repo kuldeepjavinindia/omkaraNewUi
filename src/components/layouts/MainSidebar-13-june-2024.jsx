@@ -10,28 +10,16 @@ import {
   Avatar,
   Typography,
 } from "@material-tailwind/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthDispatch, useAuthState } from "../../context/AuthContext";
-import { ResourcesMenuApi } from "../../store/slice/ExtraApiSlice";
-import { useDispatch ,useSelector } from "react-redux";
 
 export function ProfileMenu() {
-  
-  const [resourcesMenu, setResourcesMenu] = useState()
 
   const dispatch = useAuthDispatch();
   const navigate = useNavigate();
   const authState = useAuthState();
 
-  const rr_dispatch = useDispatch();
-
-  const {
-    ResourcesMenu: {
-      data: resourcesMenuData,
-      loading : resourcesMenuLoading
-    }
-  }= useSelector((state)=> state.ExtraApi)
 
 
     const handleLogout = () => {
@@ -39,45 +27,6 @@ export function ProfileMenu() {
         dispatch({ type: 'LOGOUT' });
         navigate('/login')
     };
-
-
-
-
-
-
-     useEffect(()=> {
-          if(resourcesMenuLoading) {
-            rr_dispatch(ResourcesMenuApi())
-          }
-          
-          if(!resourcesMenuLoading) {
-            setResourcesMenu(resourcesMenuData)
-          }
-          
-          }, [resourcesMenuLoading])
-
-
-    
-        //   const resourcesMenuCreate = menuItem.map((item)=> {
-        //    if(item.name == "Resources") {
-
-        //     let resourceMenuName = [];
-        //     resourcesMenu.map((item)=> {
-        //       resourceMenuName.push(item.name)
-        //     })
-        //      console.log(resourceMenuName);
-        //       return resourceMenuName
-        //    }
-        //  })
-
-          
-          // console.log("resources Menu", menuItem);
-
-          // console.log("resources Menu", resourcesMenu);
-
-
-
-          
 
   return (
     <Menu placement="right">
@@ -128,14 +77,11 @@ export function ProfileMenu() {
 function SubMenuItem({ data }) {
   const [openMenu, setOpenMenu] = useState(false);
 
-
-  // console.log('data >> ', data)
-
   return (
     <Menu open={openMenu} handler={setOpenMenu} allowHover placement="right">
       <MenuHandler>
         
-        <Typography as="li" variant="small" className="m-item"  data-popover-nested={true}>
+        <Typography as="li" variant="small" className="m-item">
           <Link to={data?.link} className="text-white  flex justify-center flex-col items-center hover:bg-[#585D67] focus:bg-[#585D67] active:bg-[#585D67] p-2 rounded-md">
             <img src={data?.imgPath} />
             {/* {item.name} */}
@@ -148,12 +94,9 @@ function SubMenuItem({ data }) {
           data?.childItem.map((item, i) => {
             return (
               <>
-                <MenuItem key={i} className="flex items-center gap-2 active:bg-inherit hover:bg-[#585D67]  focus:bg-inherit">
-                  <Link to={item?.link || item?.path} target={`${item?.path ? "_blank" : "_self"}`} className=" font-normal text-white w-full  block">
-                    <Typography variant="small" className="w-full flex items-center gap-1">
-                      {item?.logo && (
-                        <img src={item?.logo} className="w-4 h-4 "/>
-                      )}
+                <MenuItem key={i} className="flex items-center gap-2 active:bg-inherit hover:bg-[#585D67] hover hover:focusg-[#585D67]:activeg-[#585D67]">
+                  <Link to={item?.link} className=" font-normal text-white">
+                    <Typography variant="small">
                       {item?.name}
                     </Typography>
                   </Link>
@@ -171,8 +114,6 @@ function SubMenuItem({ data }) {
 }
 
 
-
-
 // HOME
 // BSE NEWS
 // REPORTS BANK
@@ -181,7 +122,6 @@ function SubMenuItem({ data }) {
 // VALUATIONS
 // FII SECTOR FLOWS
 // RESOURCES
-
 
 
 const menuItem = [
@@ -282,6 +222,7 @@ const menuItem = [
     ],
   },
  
+  
   {
     id: 8,
     name: "Resources",
@@ -292,36 +233,6 @@ const menuItem = [
 ];
 
 const MainSidebar = () => {
-
-const [MenuItem, setMenuItem] = useState(menuItem)
-  
-
-
-const {
-  ResourcesMenu: {
-    data: resourcesMenuData,
-    loading : resourcesMenuLoading
-  }
-}= useSelector((state)=> state.ExtraApi)
-
-useEffect(() => {
-  let lastIndex = MenuItem.length-1;
-
-  let lastOption = MenuItem[lastIndex] 
-  lastOption = {
-    ...lastOption,
-    childItem: resourcesMenuData
-  }
-  let a0 = MenuItem;
-  a0[lastIndex] = lastOption
-
-  console.log('lastOption >> ', a0)
-  // resourcesMenuData
-  setMenuItem(a0)
-  
-}, [resourcesMenuLoading])
-
-
   const navList = (
     <ul className="flex flex-col gap-0">
       {menuItem.map((item, i) => {

@@ -133,7 +133,7 @@ const ShareholdingComponent = () => {
       <div className="flex justify-between mb-2">
         <div></div>
         <div>
-          <div className="flex text-[12px] justify-between text-black">
+          <div className="flex text-[12px] justify-between text-black gap-3">
             <div className=" font-medium">Updated On {DateACEData?.SHPSummery}</div>
             <div className=" font-bold">(In Cr.)</div>
           </div>

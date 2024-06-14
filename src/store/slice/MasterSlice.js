@@ -66,80 +66,97 @@ const initialState = {
     msg: null,
     error: null,
   },
+
+  RR_CompanyReport: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
+
+  RR_OtherReports: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
+
+  RR_Brokerage: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
 };
 
 // eslint-disable-next-line no-unused-vars
 const slice_base_url = API_BASE_URL();
-const MAIN_SITE_BASE_URL = import.meta.env.MAIN_SITE_BASE_URL+'/api';
+const MAIN_SITE_BASE_URL = import.meta.env.MAIN_SITE_BASE_URL + "/api";
 
 //  VDR REQUESTs
 let vdrLevelReq = `${slice_base_url}/VDRlevelmaster`;
 let EmployeeMasterReq = `${slice_base_url}/EmployeeMaster`;
 let RatioMasterReq = `${slice_base_url}/RatioMaster`;
 
-
 //  USER REQUESTs
 let sectorMasterReq = `${slice_base_url}/sectormaster`;
 let industryMasterReq = `${slice_base_url}/industrymaster`;
-let companyMasterReq = `${slice_base_url}/SymbolMaster_New`; //POST and { "search": "" }   //SymbolMaster added search key for filter data by server 
+let companyMasterReq = `${slice_base_url}/SymbolMaster_New`; //POST and { "search": "" }   //SymbolMaster added search key for filter data by server
 
+let allCompanyMasterReq = `${slice_base_url}/SymbolMaster`; //GET
 
-let allCompanyMasterReq = `${slice_base_url}/SymbolMaster`; //POST 
-
+let RR_CompanyReportReq = `${slice_base_url}/RR_CompanyReport`; //GET
+let RR_OtherReportsReq = `${slice_base_url}/RR_OtherReports`; //GET
+let RR_BrokerageReq = `${slice_base_url}/RR_Brokerage`; //GET
 
 let turnAroundMasterReq = `${slice_base_url}/turnaroundfilter`;
 let FIISDateMasterReq = `${slice_base_url}/FIISDateMaster`;
 
-
-
 // OMKARA CAPITAL API
 let DefaultMastersReq = `${MAIN_SITE_BASE_URL}/default-masters`;
+
+
+
+
+
+
+
+
+
 
 
 export const sectorMasterAPI = createAsyncThunk(
   "sectorMaster",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.get(
-      `${sectorMasterReq}`
-    );
+    const response = await axios.get(`${sectorMasterReq}`);
     return response?.data;
   }
 );
-
 
 export const industryMasterAPI = createAsyncThunk(
   "industryMaster",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.get(
-      `${industryMasterReq}`
-    );
+    const response = await axios.get(`${industryMasterReq}`);
     return response?.data;
   }
 );
-
 
 export const companyMasterAPI = createAsyncThunk(
   "companyMaster",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.post(
-      `${companyMasterReq}`,
-      all_params
-    );
+    const response = await axios.post(`${companyMasterReq}`, all_params);
     return response?.data;
   }
 );
-
 
 export const allCompanyMasterAPI = createAsyncThunk(
   "allCompanyMaster",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.get(
-      `${allCompanyMasterReq}`
-    );
+    const response = await axios.get(`${allCompanyMasterReq}`);
     return response?.data;
   }
 );
@@ -148,9 +165,7 @@ export const turnAroundMasterAPI = createAsyncThunk(
   "turnAroundMaster",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.get(
-      `${turnAroundMasterReq}`
-    );
+    const response = await axios.get(`${turnAroundMasterReq}`);
     return response?.data;
   }
 );
@@ -159,9 +174,7 @@ export const FIISDateMasterAPI = createAsyncThunk(
   "FIISDateMaster",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.get(
-      `${FIISDateMasterReq}`
-    );
+    const response = await axios.get(`${FIISDateMasterReq}`);
     return response?.data;
   }
 );
@@ -170,9 +183,7 @@ export const vdrLevelAPI = createAsyncThunk(
   "vdrLevel",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.post(
-      `${vdrLevelReq}`
-    );
+    const response = await axios.post(`${vdrLevelReq}`);
     return response?.data;
   }
 );
@@ -181,9 +192,7 @@ export const EmployeeMasterAPI = createAsyncThunk(
   "EmployeeMaster",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.post(
-      `${EmployeeMasterReq}`
-    );
+    const response = await axios.post(`${EmployeeMasterReq}`);
     return response?.data;
   }
 );
@@ -192,9 +201,7 @@ export const RatioMasterAPI = createAsyncThunk(
   "RatioMaster",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.post(
-      `${RatioMasterReq}`
-    );
+    const response = await axios.post(`${RatioMasterReq}`);
     return response?.data;
   }
 );
@@ -203,12 +210,48 @@ export const DefaultMastersAPI = createAsyncThunk(
   "DefaultMasters",
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
-    const response = await axios.get(
-      `${DefaultMastersReq}`
-    );
+    const response = await axios.get(`${DefaultMastersReq}`);
     return response?.data;
   }
 );
+
+
+
+
+
+
+
+
+export const RR_CompanyReportAPI = createAsyncThunk(
+  "RR_CompanyReport",
+  // eslint-disable-next-line no-unused-vars
+  async (all_params = {}) => {
+    const response = await axios.get(`${RR_CompanyReportReq}`);
+    return response?.data;
+  }
+);
+
+
+export const RR_OtherReportsAPI = createAsyncThunk(
+  "RR_OtherReports",
+  // eslint-disable-next-line no-unused-vars
+  async (all_params = {}) => {
+    const response = await axios.get(`${RR_OtherReportsReq}`);
+    return response?.data;
+  }
+);
+
+export const RR_BrokerageAPI = createAsyncThunk(
+  "RR_Brokerage",
+  // eslint-disable-next-line no-unused-vars
+  async (all_params = {}) => {
+    const response = await axios.get(`${RR_BrokerageReq}`);
+    return response?.data;
+  }
+);
+
+
+
 
 
 
@@ -223,8 +266,7 @@ const TrendlyneSlice = createSlice({
     },
     ratioMaterSelected: (state, action) => {
       state.RatioMaster.isSelected = action.payload;
-    }
-
+    },
   },
   // eslint-disable-next-line no-unused-vars
   extraReducers: (builder) => {
@@ -250,7 +292,6 @@ const TrendlyneSlice = createSlice({
       state.sectorMaster.data = action.payload;
     });
     // // END sectorMaster DATA
-    
 
     // // START industryMaster DATA
     builder.addCase(industryMasterAPI.pending, (state) => {
@@ -273,7 +314,6 @@ const TrendlyneSlice = createSlice({
     });
     // // END industryMaster DATA
 
-
     // // START companyMaster DATA
     builder.addCase(companyMasterAPI.pending, (state) => {
       state.companyMaster.loading = true;
@@ -294,7 +334,6 @@ const TrendlyneSlice = createSlice({
       state.companyMaster.data = action.payload;
     });
     // // END companyMaster DATA
-
 
     // // START allCompanyMaster DATA
     builder.addCase(allCompanyMasterAPI.pending, (state) => {
@@ -338,7 +377,6 @@ const TrendlyneSlice = createSlice({
     });
     // // END turnAroundMaster DATA
 
-
     // // START FIISDateMaster DATA
     builder.addCase(FIISDateMasterAPI.pending, (state) => {
       state.FIISDateMaster.loading = true;
@@ -359,7 +397,6 @@ const TrendlyneSlice = createSlice({
       state.FIISDateMaster.data = action.payload;
     });
     // // END FIISDateMaster DATA
-
 
     // // START vdrLevel DATA
     builder.addCase(vdrLevelAPI.pending, (state) => {
@@ -382,7 +419,6 @@ const TrendlyneSlice = createSlice({
     });
     // // END vdrLevel DATA
 
-
     // // START EmployeeMaster DATA
     builder.addCase(EmployeeMasterAPI.pending, (state) => {
       state.EmployeeMaster.loading = true;
@@ -404,7 +440,6 @@ const TrendlyneSlice = createSlice({
     });
     // // END EmployeeMaster DATA
 
-
     // // START RatioMaster DATA
     builder.addCase(RatioMasterAPI.pending, (state) => {
       state.RatioMaster.loading = true;
@@ -417,12 +452,9 @@ const TrendlyneSlice = createSlice({
       let isSelected = a0.filter((item) => item.is_selected === true);
       let isSelectedIds = isSelected.map((item) => item.ID);
 
-
-
       state.RatioMaster.data = action.payload;
-      state.RatioMaster.isSelected = isSelectedIds,
-      
-      state.RatioMaster.loading = false;
+      (state.RatioMaster.isSelected = isSelectedIds),
+        (state.RatioMaster.loading = false);
       state.RatioMaster.msg = "success";
       state.RatioMaster.msgType = "success";
     });
@@ -434,7 +466,6 @@ const TrendlyneSlice = createSlice({
       state.RatioMaster.data = action.payload;
     });
     // // END RatioMaster DATA
-
 
     // // START DefaultMasters DATA
     builder.addCase(DefaultMastersAPI.pending, (state) => {
@@ -457,11 +488,75 @@ const TrendlyneSlice = createSlice({
     });
     // // END DefaultMasters DATA
 
+    // // START RR_CompanyReport DATA
+    builder.addCase(RR_CompanyReportAPI.pending, (state) => {
+      state.RR_CompanyReport.loading = true;
+      state.RR_CompanyReport.error = false;
+      state.RR_CompanyReport.msgType = null;
+    });
+    builder.addCase(RR_CompanyReportAPI.fulfilled, (state, action) => {
+      state.RR_CompanyReport.data = action.payload;
+      state.RR_CompanyReport.loading = false;
+      state.RR_CompanyReport.msg = "success";
+      state.RR_CompanyReport.msgType = "success";
+    });
+    builder.addCase(RR_CompanyReportAPI.rejected, (state, action) => {
+      state.RR_CompanyReport.loading = false;
+      state.RR_CompanyReport.error = true;
+      state.RR_CompanyReport.msgType = "error";
+      state.RR_CompanyReport.msg = action.payload?.msg;
+      state.RR_CompanyReport.data = action.payload;
+    });
+    // // END RR_CompanyReport DATA
 
+    // // START RR_OtherReports DATA
+    builder.addCase(RR_OtherReportsAPI.pending, (state) => {
+      state.RR_OtherReports.loading = true;
+      state.RR_OtherReports.error = false;
+      state.RR_OtherReports.msgType = null;
+    });
+    builder.addCase(RR_OtherReportsAPI.fulfilled, (state, action) => {
+      state.RR_OtherReports.data = action.payload;
+      state.RR_OtherReports.loading = false;
+      state.RR_OtherReports.msg = "success";
+      state.RR_OtherReports.msgType = "success";
+    });
+    builder.addCase(RR_OtherReportsAPI.rejected, (state, action) => {
+      state.RR_OtherReports.loading = false;
+      state.RR_OtherReports.error = true;
+      state.RR_OtherReports.msgType = "error";
+      state.RR_OtherReports.msg = action.payload?.msg;
+      state.RR_OtherReports.data = action.payload;
+    });
+    // // END RR_OtherReports DATA
+
+    // // START RR_Brokerage DATA
+    builder.addCase(RR_BrokerageAPI.pending, (state) => {
+      state.RR_Brokerage.loading = true;
+      state.RR_Brokerage.error = false;
+      state.RR_Brokerage.msgType = null;
+    });
+    builder.addCase(RR_BrokerageAPI.fulfilled, (state, action) => {
+      state.RR_Brokerage.data = action.payload;
+      state.RR_Brokerage.loading = false;
+      state.RR_Brokerage.msg = "success";
+      state.RR_Brokerage.msgType = "success";
+    });
+    builder.addCase(RR_BrokerageAPI.rejected, (state, action) => {
+      state.RR_Brokerage.loading = false;
+      state.RR_Brokerage.error = true;
+      state.RR_Brokerage.msgType = "error";
+      state.RR_Brokerage.msg = action.payload?.msg;
+      state.RR_Brokerage.data = action.payload;
+    });
+    // // END RR_Brokerage DATA
+
+    
   },
 });
 
 // eslint-disable-next-line no-empty-pattern
-export const {} = TrendlyneSlice.actions;
+export const { ratioMaterSelectedCompanies, ratioMaterSelected } =
+  TrendlyneSlice.actions;
 
 export default TrendlyneSlice.reducer;

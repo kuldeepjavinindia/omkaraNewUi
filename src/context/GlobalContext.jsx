@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useRef, useState } from "react";
 export const GlobalContext = createContext();
 
 const GlobalContextProvider = ({ children }) => {
@@ -13,11 +13,17 @@ const GlobalContextProvider = ({ children }) => {
   const [ReportBankDrawer, setReportBankDrawer] = useState(null); //SendNotificationModal
   const [PeersModal, setPeersModal] = useState(null); //SendNotificationModal
 
+  const PeersBtnRef1 = useRef(null); //SendNotificationModal
+  const PeersBtnRef2 = useRef(null); //SendNotificationModal
+
   return (
     <GlobalContext.Provider
       value={{
         ReportBankDrawer,
         setReportBankDrawer,
+        PeersBtnRef1,
+        PeersBtnRef2,
+        // setPeersAnalyticsCancel,
         PeersModal,
         setPeersModal,
         ThemeDrawer,

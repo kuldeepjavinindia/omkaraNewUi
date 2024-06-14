@@ -241,7 +241,7 @@ const showChart = (row, level=1)=>{
           </ButtonGroup> */}
 
           
-          <div className="flex text-[12px] justify-between text-black">
+          <div className="flex text-[12px] justify-between text-black gap-3">
             <div className=" font-medium">
               Updated On {DateACEData?.BalanceSheet}
             </div>

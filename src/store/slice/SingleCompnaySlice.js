@@ -391,6 +391,7 @@ export const SCRatiosApi = createAsyncThunk(
 export const SCPeersApi = createAsyncThunk(
   "SCPeers",
   async (all_params = {}) => {
+    // console.log('all_params >>>>> ', all_params)
     const response = await axios.post(`${SCPeersReq}`, all_params);
     return response?.data;
   }

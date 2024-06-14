@@ -38,7 +38,7 @@ import PeerComponent from "./peer/PeerComponent";
         ),
       },
       {
-        label: "Annual P&L",
+        label: "ANNUAL P&L",
         value: "2",
         desc: (
           <>
@@ -47,7 +47,7 @@ import PeerComponent from "./peer/PeerComponent";
         ),
       },
       {
-        label: "Balance Sheet",
+        label: "BALANCE SHEET",
         value: "3",
         desc: (
           <>

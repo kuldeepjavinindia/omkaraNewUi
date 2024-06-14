@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const watchListReq = {
   ID: "",
   UserID: "",
@@ -29,9 +31,9 @@ export const SignInReq = {
 export const companyMasterReq = {
   Search: "",
   Type: "",
-  "sector_id":[],
-  "industry_id":[],
-  "company_id":[]
+  sector_id: [],
+  industry_id: [],
+  company_id: [],
 };
 
 export const UploadDocumentReq = {
@@ -224,7 +226,26 @@ export const RepositoryListReq = {
   search: "",
 };
 
+export const Insider_Req = {
+  date: [moment().add('-1', 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
+  mcap: ["", ""],
+  watchlistid: "0",
+  netvalue: ["", ""],
+  Sector: "",
+  Industry: "",
+  CompanyName: "",
+  portfolio: false,
+};
 
-
+export const BulkDeal_Req = {
+  date: ["2024-06-13", "2024-06-14"],
+  mcap: ["", ""],
+  netvalue: ["", ""],
+  Exchange: "",
+  watchlistid: "0",
+  Sector: [],
+  Industry: [],
+  CompanyName: [null],
+};
 
 // END DATA 2 Requests

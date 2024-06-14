@@ -8,6 +8,13 @@ import PeerToPeerTrendChooseField from "./PeerToPeerTrendChooseField";
 const PeerAnalysis = () => {
   const [PeerToPeerDataChartType, setPeerToPeerDataChartType] = useState(null);
   const [PeerToPeerData, setPeerToPeerData] = useState(null);
+  const [selectedValue, setSelectedValue] = useState(null);
+
+  const [RatioObj, setRatioObj] = useState(null);
+  const [ShowRatioObj, setShowRatioObj] = useState(null);
+
+
+
 
   const rr_dispatch = useDispatch();
   const rrd_params = useParams();
@@ -19,6 +26,9 @@ const PeerAnalysis = () => {
     RatioMaster: { data: RMData, loading: RMLoading },
   } = useSelector((state) => state.Masters);
 
+
+    
+
   let cmpId = rrd_params?.company_id;
   if (cmpId) {
     cmpId = window.atob(cmpId);
@@ -26,6 +36,7 @@ const PeerAnalysis = () => {
 
   const applyAction = (chartType, companies) => {
     let companies1 = companies;
+    setShowRatioObj(RatioObj)
     // var companies0 = companies1.unshift(cmpId);
     rr_dispatch(
       PeerAnalysisApi({
@@ -84,10 +95,25 @@ const PeerAnalysis = () => {
 
 <PeerToPeerTrendChooseField
 // setTypeActivePrimaryBtn={setTypeActivePrimaryBtn} TypeActivePrimaryBtn={TypeActivePrimaryBtn} 
+  selectedValue={selectedValue}
+  setSelectedValue={setSelectedValue}
+  RatioObj={RatioObj}
+  setRatioObj={setRatioObj}
   applyAction={applyAction}
 />
 
-
+{/* 
+  {
+    JSON.stringify(selectedValue)
+  }
+*/}
+{
+  ShowRatioObj && (
+    <div className="text-center mt-4 mb-2 text-[1.2rem] text-black">
+        <h3 className=" font-medium">Selected Chart Type: <span className=" font-bold"><b>{ShowRatioObj?.Name}</b></span></h3>
+    </div>
+  )
+}
   <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
                 
                 {

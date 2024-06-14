@@ -222,7 +222,7 @@ export const MediaRoom_Main = () => {
                 onChange={(e) => handleSearch(e)}
                 type="text"
                 placeholder="Search Video"
-                className="w-[450px]  !border !border-gray-200  !bg-[#E9EDEF] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                className="!w-[450px] !border !border-gray-200  !bg-[#E9EDEF] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                 labelProps={{
                   className: "hidden",
                 }}
@@ -297,7 +297,7 @@ export const MediaRoom_Main = () => {
                     <div key={index} className="MediaList w-full mb-3 ">
                       <div className=" flex items-center gap-1">
 
-                        <div className="pb-3 basis-1/12" >
+                        <div className="pb-3  w-[1.75rem]" >
                           <div
                             onClick={() => handleToggle()}
                             className=" cursor-pointer"
@@ -310,30 +310,32 @@ export const MediaRoom_Main = () => {
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between border-[#B9C6E7] border-b cursor-pointer w-full pb-3 basis-10/12 "
+                        <div className="flex items-center justify-between border-[#B9C6E7] border-b cursor-pointer w-[calc(100%-1.75rem)] pb-3  "
                           onClick={() => handleVideoSet(item)}>
 
-                          <div className="flex items-center  basis-9/12" >
-                            <span className="mr-2 basis-1/12">
+                          <div className="flex items-center " >
+                            <span className="w-[1.85rem]">
                               <img
                                 src={
                                   import.meta.env.VITE_BASE_URL +
                                   "/images/icons/play.svg"
                                 }
                                 alt=""
-                                className="w-[22px]"
+                                className="w-6"
                               />
                             </span>
-                            <Typography className=" basis-11/12 text-[16px] text-lg-[18px] text-[#000] font-medium">
+                            <Typography className=" w-[calc(100%-1.85rem)] text-[16px] text-lg-[18px] text-[#000] font-medium">
                               {item.videoTitle}
                             </Typography>
                           </div>
 
-                          <div className="basis-3/12">
-                         
+                          <div className=" text-right pr-1 grow-2">
                             <Typography className="text-[13px] font-normal">
                               {item.dateTime
-                                ? moment(item.dateTime).format("DD MMM, YYYY")
+                                ? moment(item.dateTime).format("DD MMM YYYY")
+                                : ""} <br />
+                              {item.dateTime
+                                ? moment(item.dateTime).format("hh:mm:ss A")
                                 : ""}
                             </Typography>
                            
@@ -342,7 +344,7 @@ export const MediaRoom_Main = () => {
                         </div>
 
 
-                        <div className="basis-1/12 pb-3">
+                        <div className=" pb-3 w-[5%]">
                         <IconButton className="!p-0 " onClick={()=> setOpenModal(item)}><BiTrashAlt  color="red"  size={20}/></IconButton>
                         </div>
 

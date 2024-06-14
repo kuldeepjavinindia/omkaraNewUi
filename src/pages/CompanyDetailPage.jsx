@@ -82,6 +82,7 @@ const CompanyDetailPage = () => {
 
   const { setAddNote, PeersModal } = useContext(GlobalContext);
 
+  const [Companies, setCompanies] = useState([]);
   let cmpId = rrd_params?.company_id;
   if (cmpId) {
     cmpId = window.atob(cmpId);
@@ -265,7 +266,7 @@ const CompanyDetailPage = () => {
       
       {
         PeersModal && (
-          <PeerDrawer />
+          <PeerDrawer Companies={Companies} setCompanies={setCompanies} />
         )
       }
       <div className="sc-container relative">

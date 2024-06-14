@@ -1,5 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import PeerRatiosNdCmp from "./PeerRatiosNdCmp";
 import PeerAnalysis from "./PeerAnalysis";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,10 @@ const PeerComponent = () => {
 
   const rr_dispatch = useDispatch();
 
+  const [ShowRatioObj, setShowRatioObj] = useState(null);
+
+  const ref1 = useRef()
+  const ref2 = useRef()
 
   useEffect(() => {
     rr_dispatch(RatioMasterAPI())
@@ -17,7 +21,9 @@ const PeerComponent = () => {
   
 
   const {
-    PeersModal,
+    // PeersAnalyticsCancelRef,
+    PeersBtnRef1,
+    PeersBtnRef2,
     setPeersModal
   } = useContext(GlobalContext)
 
@@ -29,6 +35,7 @@ const PeerComponent = () => {
       id: "1",
       label: "Manage Ratios & Companies",
       value: "ratios_cmp",
+      ref_d:PeersBtnRef1,
       component: (
         <>
           <PeerRatiosNdCmp />
@@ -39,9 +46,10 @@ const PeerComponent = () => {
       id: "2",
       label: "Peer Analysis",
       value: "peer",
+      ref_d:PeersBtnRef2,
       component: (
         <>
-          <PeerAnalysis />
+          <PeerAnalysis ShowRatioObj={ShowRatioObj} setShowRatioObj={setShowRatioObj} />
         </>
       ),
     },
@@ -57,6 +65,7 @@ const PeerComponent = () => {
             <>
               <Button
                 //   disabled={tabBtnData?.button_status[item?.value] ? false : true}
+                ref={item?.ref_d}
                 onClick={() => {
                   setPrimaryBtn(item);
                   if(i == 0){

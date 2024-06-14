@@ -1,183 +1,169 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
-import {  List, ListItem, Spinner } from "@material-tailwind/react";
-import { companyMasterAPI } from '../store/slice/MasterSlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { MdOutlineCancel } from "react-icons/md";
-import { companyMasterReq } from '../constants/defaultRequest';
+import { useState, useCallback, useEffect } from "react";
+import axios from "axios";
 import lodash from "lodash";
+import { List, ListItem, Spinner } from "@material-tailwind/react";
+import { MdOutlineCancel } from "react-icons/md";
 
+const CompanySearchSelectBox = (props) => {
+  const { Disabled, setDisabled, Companies, setCompanies, multiple } = props;
 
-const DEBOUBCE_DELAY = 500;
+  const DEBOUBCE_DELAY = 500;
+  const ITEMS_API_URL =
+    "https://vasudeep.com:8084/https://omkaradata.com/api/SymbolMaster_New";
 
-
-const CompanySearchSelectbox = () => {
-  const [options, setOptions] = useState([]);
-  const [search, setSearch] = useState("");
+  const [userInput, setInput] = useState("");
+  const [result, setResult] = useState([]);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(-1);
-  const [companyNames, setCompanyNames] = useState([]);
-  const [openCompanies, setOpenCompanies] = useState(false);
-  const dropdownRef = useRef(null);
-  const [disable, setDisable] = useState(false);
 
-  const dispatch = useDispatch();
-  const {
-    companyMaster: { data: allCmpData, loading: allCmpLoading }
-  } = useSelector((state) => state.Masters);
+  // const [Companies, setCompanies] = useState([]);
 
-
-  const callApi = (val) => {
-    let params = companyMasterReq;
-    params = {
-        ...params,
-        Search: val
-    }
-
-    dispatch(companyMasterAPI(params));
-  }
-
-  const handler = useCallback(lodash.debounce(callApi, DEBOUBCE_DELAY), []);
-
-
-
-  const handleSearch = (e) => {
-    let value = e.target.value;
-    setSearch(value);
-    setOpenCompanies(true); // Keep the dropdown open while typing
-    handler(value)
+  const handleOnInputChange = (userInput) => {
+    setIsLoading(true);
+    let params = {
+      Search: userInput,
+      Type: "",
+      sector_id: [],
+      industry_id: [],
+      company_id: [],
+    };
+    axios
+      .post(`${ITEMS_API_URL}`, params)
+      .then((response) => {
+        setResult(response.data);
+        setError("");
+        setIsLoading(false);
+        console.log("response.data", response.data);
+      })
+      .catch(() => {
+        setError("An error occured. Please try again.");
+        setIsLoading(false);
+      });
   };
 
+  const handler = useCallback(
+    lodash.debounce(handleOnInputChange, DEBOUBCE_DELAY),
+    []
+  );
 
-
-
-  // useEffect(() => {
-  //   if (search) {
-  //     handler()
-  //   } else {
-  //     selectCompany();
-  //   }
-  // }, [dispatch, search]);
-
-  const selectCompany = () => {
-    const allCompaniesData = allCmpData && allCmpData.map((item) => ({
-      compnayTitle: item.CompanyName,
-      compnayName: item.CompanyName,
-      companyID: item.CompanyID
-    }));
-
-    allCompaniesData.sort((a, b) => a.compnayTitle.localeCompare(b.compnayTitle));
-    setOptions(allCompaniesData);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "ArrowUp" && selectedItem > 0) {
-      setSelectedItem(prev => prev - 1);
-    } else if (e.key === "ArrowDown" && selectedItem < filteredOptions.length - 1) {
-      setSelectedItem(prev => prev + 1);
-    } else if (e.key === "Enter" && selectedItem >= 0) {
-      onSelectData(filteredOptions[selectedItem]);
+  const onChange = (event) => {
+    setInput(event.target.value);
+    if (userInput) {
+      handler(userInput);
     }
   };
 
-  const onSelectData = (item) => {
-    // Avoid adding the same item twice
-    if (!companyNames.find(cn => cn.companyID === item.companyID)) {
-      setCompanyNames((prev) => [...prev, item]);
-    }
-    setSearch(""); // Clear the search input after selection
-    setOpenCompanies(true); // Keep the dropdown open for further selection
+  const onItemSelection = (event) => {
+    setInput(event.target.innerText);
+    setResult([]);
   };
 
   const removeSelectedItem = (item) => {
-    setCompanyNames(companyNames.filter(cn => cn.companyID !== item.companyID));
+    setCompanies(Companies.filter((cn) => cn.CompanyID !== item.CompanyID));
   };
 
-  useEffect(() => {
-    if (companyNames.length === 5) {
-      setDisable(true);
-    } else {
-      setDisable(false);
+  const onSelectData = (item) => {
+    let checkData = Companies.find((cn) => cn.CompanyID === item.CompanyID);
+    console.log({ item, Companies });
+    if (!Companies.find((cn) => cn.CompanyID === item.CompanyID)) {
+      setCompanies((prev) => [...prev, item]);
     }
-  }, [companyNames]);
-
-  const handleOutsideClick = (e) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-      setOpenCompanies(false);
-    }
+    setInput("");
+    setResult([]);
   };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
-
-  const filteredOptions = options.filter(option =>
-    option.compnayTitle.toLowerCase().includes(search.toLowerCase()) &&
-    !companyNames.some(cn => cn.companyID === option.companyID) // Exclude already selected options
-  );
+  useEffect(() => {}, [Disabled]);
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <div className="flex flex-wrap items-center gap-2 p-1 border border-gray-400 rounded-md">
-        {companyNames.map((item) => (
-          <div
-            key={item.companyID}
-            className="flex items-center bg-blue-100 rounded px-2 py-1 mr-2 mb-1"
-          >
-            <span className="text-sm text-blue-800">{item.compnayTitle}</span>
-            <MdOutlineCancel
-              className="w-4 h-4 ml-1 text-blue-800 cursor-pointer"
-              onClick={() => removeSelectedItem(item)}
-            />
-          </div>
-        ))}
-        <input
-          type="text"
-          className="flex-1 focus:outline-none p-2"
-          value={search}
-          onChange={handleSearch}
-          onKeyDown={handleKeyDown}
-          disabled={disable}
-          placeholder="Search and select companies"
-        />
-          {/* <span className="cursor-pointer" >
-           <IoIosArrowUp size={15} />
-          </span> */}
+    <>
+      <div className=" flex wrapper flex-wrap">
+
+        
+      <div className="flex items-center">
+          {Companies.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-center bg-blue-100 rounded px-2 py-1 mr-2 mb-1 w-fit"
+            >
+              <span className="text-sm text-blue-800">{item.CompanyName}</span>
+              <MdOutlineCancel
+                className="w-4 h-4 ml-1 text-blue-800 cursor-pointer"
+                onClick={() => removeSelectedItem(item)}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="  relative w-full">
+
+        <div className="control grow  ">
+          <input
+            type="text"
+            className="flex-1 focus:outline-none p-2 border rounded w-full"
+            value={userInput}
+            onChange={onChange}
+            //  onKeyDown={handleKeyDown}
+            disabled={Disabled}
+            placeholder="Search and select companies"
+          />
+        </div>
+          
+        {userInput && (
+          <>
+            <div className="">
+              <div className="searchResult absolute top-12 bg-white w-full p-2 rounded-lg border-[1px] border-gray-400 border-t-0 z-[2]">
+                <List className="p-0 max-h-36 overflow-y-auto">
+                  {isLoading ? (
+                    <ListItem disabled size="sm" className="text-sm py-1">
+                      Loading...
+                    </ListItem>
+                  ) : (
+                    <>
+                      <>
+                        {result.length === 0 && !isLoading ? (
+                          <>
+                            <ListItem
+                              disabled
+                              size="sm"
+                              className="text-sm py-1"
+                            >
+                              Data not found
+                            </ListItem>
+                          </>
+                        ) : (
+                          result.map((item, i) => (
+                            <div onClick={() => onSelectData(item)} key={i}>
+                              <ListItem
+                                size="sm"
+                                className={`${
+                                  selectedItem === i ? "bg-blue-gray-50" : ""
+                                } text-sm py-1 cursor-pointer`}
+                              >
+                                {item?.CompanyName}
+                              </ListItem>
+                            </div>
+                          ))
+                        )}
+                      </>
+                    </>
+                  )}
+                </List>
+              </div>
+            </div>
+          </>
+        )}
+
+
+        
+        </div>
+
+        {/* {error && <p>{error}</p>} */}
+
 
       </div>
-      
-      {search !== ""  && (
-        <div className="searchResult absolute top-12 bg-white w-full p-2 rounded-lg border-[1px] border-gray-400 border-t-0 z-[1]">
-          <List className="p-0 max-h-36 overflow-y-auto">
-            {allCmpLoading ? (
-              <ListItem disabled size="sm" className="text-sm py-1">
-                <Spinner />
-              </ListItem>
-            ) : (
-              <>
-                {allCmpData.length === 0 ? (
-                  <ListItem disabled size="sm" className="text-sm py-1">Data not found</ListItem>
-                ) : (
-                  allCmpData.map((item, i) => (
-                    <div onClick={() => onSelectData(item)} key={i}>
-                      <ListItem
-                        size="sm"
-                        className={`${selectedItem === i ? "bg-blue-gray-50" : ""} text-sm py-1 cursor-pointer`}
-                      >
-                        {item?.CompanyName}
-                      </ListItem>
-                    </div>
-                  ))
-                )}
-              </>
-            )}
-          </List>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
-export default CompanySearchSelectbox;
+export default CompanySearchSelectBox;

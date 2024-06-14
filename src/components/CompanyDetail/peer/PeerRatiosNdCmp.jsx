@@ -1,13 +1,17 @@
 import { Spinner } from '@material-tailwind/react';
-import { useEffect, useState } from 'react'
+import {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { SCPeersApi } from '../../../store/slice/SingleCompnaySlice';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
+// import { GlobalContext } from '../../../context/GlobalContext';
 
 const PeerRatiosNdCmp = () => {
   const rrd_params = useParams();
   const rr_dispatch = useDispatch();
+
+
+
 
   const {
     SCPeers: { data: SCPeersData, loading: SCPeersLoading },
@@ -136,8 +140,20 @@ useEffect(() => {
                         fontWeight:item?.isBold ? "500" : "",
                         color:item?.text_color,
                       }
+
+                      
+
+
                   return (
-                    <td className={`!text-white p-2 text-[13px] font-semibold !bg-[#22242F]"`}  style={cStyle} key={i}>{item.label}</td>
+                    <td className={`!text-white p-2 text-[13px] font-semibold !bg-[#22242F]"`}  style={cStyle} key={i}>
+                      <div style={{
+                        display:'flex',
+                        justifyContent: i !==0 ? 'end' : "start",
+                        paddingRight: (i == (TableColumns.length-1)) ? '.5rem' : "0"
+                      }}>
+                      {item.label}
+                      </div>
+                    </td>
                   )
                 })
               }
@@ -179,8 +195,10 @@ useEffect(() => {
                                 display:'flex',
                                 alignItems:'center',
                                 justifyContent: i !==0 ? 'end' : "start",
-                                columnGap:'.5rem'
+                                columnGap:'.5rem',
+                                paddingRight: (i == (TableColumns.length-1)) ? '.5rem' : "0"
                               }}>
+                                {/* {TableColumns.length} */}
                                 <div>{value || ""}</div>
                                 {
                                   i===0 && row?.childTable && row?.childTable.length > 0 && (
