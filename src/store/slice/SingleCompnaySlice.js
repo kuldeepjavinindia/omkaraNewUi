@@ -207,6 +207,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  addToImportant: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -216,11 +222,11 @@ const capitalUrl = import.meta.env.VITE_MAIN_SITE_BASE_URL;
 
 //  USER REQUESTs
 let companyNotesReq = `${slice_base_url}/companynote`;
-let UploadDocumentReq = `${slice_base_url}/UploadDocument`;
+let UploadDocumentReq = `${slice_base_url}/UploadDocument_Web`;
 let MultipleFileUploaderReq = `${slice_base_url}/MultipleFileUploader`;
 let RepositoryListReq = `${slice_base_url}/RepositoryListTesting`;
 // let UploadDocumentAnalysNotesReq = `${slice_base_url}/UploadDocumentAnalystNotes`;
-let UploadDocumentAnalysNotesReq = `${slice_base_url}/SingleCompanyComments`;
+let UploadDocumentAnalysNotesReq = `${slice_base_url}/SingleCompanyComments_Web`;
 
 // let QuarterlyResultReq = `${slice_base_url}/QuarterlyResultsConsolidated_ACEAPI`;
 let QuarterlyResultReq = `${slice_base_url}/QuarterlyResultsConsolidated_ACEAPI_Web`;
@@ -242,7 +248,7 @@ let ForensicTabsShowHideReq = `${slice_base_url}/ForensicTabShowHide`;
 let ForensicReq = `${slice_base_url}/forensic`;
 let ForensicCommentReq = `${slice_base_url}/ForensicModelComments`;
 let ForensiTooltipReq = `${slice_base_url}/ForensicTooltip`;
-let MediaRoomReq = `${slice_base_url}/media`;
+let MediaRoomReq = `${slice_base_url}/media_Web`;
 let MediaCommentReq = `${slice_base_url}/VDRMediaCommentWithReply`;
 let VideoLikeDislikeReq = `${slice_base_url}/VDRMediaUserLiskeDislike`;
 let MediaCommentLikeDislikeReq = `${slice_base_url}/VDRCommentUserLiskeDislike`;
@@ -253,6 +259,10 @@ let BoardOfDirectorDetailReq = `${slice_base_url}/BoardOfDirectorDetails`;
 let DateACE_Req = `${slice_base_url}/DateAPI_ACEAPI`;
 let UserNotification_Req = `${capitalUrl}/api/get-subscription-user`;
 let SentNotification_Req = `${capitalUrl}/api/sent_notification`;
+let addToImportant_Req = `${slice_base_url}/add_to_important`;
+
+
+
 
 export const companyNotesAPI = createAsyncThunk(
   "companyNotes",
@@ -534,6 +544,16 @@ export const SentNotificationApi = createAsyncThunk(
   // eslint-disable-next-line no-unused-vars
   async (all_param = {}) => {
     const response = await axios.post(`${SentNotification_Req}`, all_param);
+    return response?.data;
+  }
+);
+
+
+// addToImportantApi Thunk
+export const addToImportantApi = createAsyncThunk(
+  "addToImportant",
+  async (all_param = {}) => {
+    const response = await axios.post(`${addToImportant_Req}`, all_param);
     return response?.data;
   }
 );
@@ -1221,6 +1241,29 @@ const SingleCompanySlice = createSlice({
       state.SentNotification.data = action.payload;
     });
     // // END SentNotification
+
+        // // START  addToImportant
+        builder.addCase(addToImportantApi.pending, (state) => {
+          state.addToImportant.loading = true;
+          state.addToImportant.error = false;
+          state.addToImportant.msgType = null;
+        });
+        builder.addCase(addToImportantApi.fulfilled, (state, action) => {
+          //   let allData = current(state);
+    
+          state.addToImportant.data = action.payload;
+          state.addToImportant.loading = false;
+          state.addToImportant.msg = "success";
+          state.addToImportant.msgType = "success";
+        });
+        builder.addCase(addToImportantApi.rejected, (state, action) => {
+          state.addToImportant.loading = false;
+          state.addToImportant.error = true;
+          state.addToImportant.msgType = "error";
+          state.addToImportant.msg = action.payload?.msg;
+          state.addToImportant.data = action.payload;
+        });
+        // // END addToImportant
 
 
   },

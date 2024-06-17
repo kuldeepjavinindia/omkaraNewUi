@@ -7,29 +7,9 @@ import moment from "moment";
 import { useEffect } from "react";
 
 const ReportBankSearch = () => {
-  const rr_dispatch = useDispatch();
+  // const rr_dispatch = useDispatch();
 
-  const callApi = (duration, sector = "") => {
-    let params = RepositoryListReq;
-    duration = parseInt(duration);
-    let FromDate = moment().subtract(duration, "d").format("YYYY-MM-DD");
-    let ToDate = moment().format("YYYY-MM-DD");
-    params = {
-      ...params,
-      Date: [FromDate, ToDate],
-      numPerPage: "100",
-    };
 
-    params = {
-      ...params,
-    };
-
-    rr_dispatch(RepositoryListAPI(params));
-  };
-
-  useEffect(() => {
-    callApi(1);
-  }, []);
 
   return (
     <>

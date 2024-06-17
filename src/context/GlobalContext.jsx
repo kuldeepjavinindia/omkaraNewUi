@@ -12,6 +12,17 @@ const GlobalContextProvider = ({ children }) => {
   const [ThemeDrawer, setThemeDrawer] = useState(null); //SendNotificationModal
   const [ReportBankDrawer, setReportBankDrawer] = useState(null); //SendNotificationModal
   const [PeersModal, setPeersModal] = useState(null); //SendNotificationModal
+  const [BulkDealInsiderModalBtn, setBulkDealInsiderModalBtn] = useState(null); //SendNotificationModal
+  const [RepoListParams, setRepoListParams] = useState({
+    "page": 1,
+    "order": "asc",
+    "order_column": "CompanyName",
+    "search": "",
+    "numPerPage": "100"
+  }); 
+
+
+  
 
   const PeersBtnRef1 = useRef(null); //SendNotificationModal
   const PeersBtnRef2 = useRef(null); //SendNotificationModal
@@ -19,6 +30,8 @@ const GlobalContextProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
+        RepoListParams, setRepoListParams,
+        BulkDealInsiderModalBtn, setBulkDealInsiderModalBtn,
         ReportBankDrawer,
         setReportBankDrawer,
         PeersBtnRef1,

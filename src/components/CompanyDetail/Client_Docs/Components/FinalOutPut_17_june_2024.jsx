@@ -1,7 +1,6 @@
 import { AiFillDelete } from "react-icons/ai";
 import { AiOutlineMail } from "react-icons/ai";
 import { TbArrowsSort } from "react-icons/tb";
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import {
   Button,
   Typography,
@@ -16,8 +15,8 @@ import {
 import { CgSearch } from "react-icons/cg";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { UploadDocumentAPI, addToImportantApi } from "../../../../store/slice/SingleCompnaySlice";
-import { UploadDocumentReq, add_to_importantReq } from "../../../../constants/defaultRequest";
+import { UploadDocumentAPI } from "../../../../store/slice/SingleCompnaySlice";
+import { UploadDocumentReq } from "../../../../constants/defaultRequest";
 import { useParams } from "react-router-dom";
 // import { MdEdit } from "react-icons/md";
 import {
@@ -32,85 +31,6 @@ import DeleteDataModal from "../../Modals/DeleteDataModal";
 import { SendNotificationModal } from "../..";
 import { GlobalContext } from "../../../../context/GlobalContext";
 import { useAuthState } from "../../../../context/AuthContext";
-
-
-
-
-
-const StarImpComponent = (props) => {
-
-
-  const rr_dispatch = useDispatch();
-  const authState = useAuthState()
-  const userId = authState.user.UserID
-
-
-  const {
-    setOpenModal,
-    item
-
-  } = props
-
-  const [checked, setChecked] = useState(item.isImp);
-
-
-  const handleDocToggle = (checked, item_id) => {
-    // console.log(">>>>>>>", item);
-    // setChecked(!item)
-
-    let nC = !checked;
-    let actionVal = 0;
-
-    if (nC) {
-      actionVal = "0"
-    } else {
-      actionVal = "1"
-    }
-
-
-
-    let params = add_to_importantReq;
-    params = {
-      ...params,
-      "item_id": item_id,
-      "user_id": userId,
-      "item_type": "final_reports",
-      "action": actionVal
-    }
-
-
-    rr_dispatch(addToImportantApi(params))
-
-    setChecked(nC);
-
-  }
-
-
-
-  return (
-    <>
-      <div onClick={() => handleDocToggle(checked, item?.FileID)}
-        className=" cursor-pointer"
-      >
-        {checked ? (
-          <AiFillStar size={20} className="text-theme" />
-        ) : (
-          <AiOutlineStar size={20} className="text-theme" />
-        )}
-      </div>
-
-
-    </>
-  )
-}
-
-
-
-
-
-
-
-
 
 const FinalOutPut = () => {
 
@@ -305,16 +225,6 @@ const FinalOutPut = () => {
     }
   }, [rr_dispatch, UploadDocumentLoading]);
 
-
-
-  // const [checked, setChecked] = useState(false);
-
-
-
-  // console.log(checked, ">>>>>>>>>>>>>");
-
-
-
   return (
     <>
       <div className="col-span-5 mt-5 bg-white py-4 rounded-md">
@@ -379,10 +289,11 @@ const FinalOutPut = () => {
                 <li key={index}>
                   <Button
                     size="sm"
-                    className={`rounded-md px-3 py-1.5 shadow-none hover:shadow-none capitalize ${item?.value == isActive.value
-                      ? "bg-theme border-theme text-white border"
-                      : "text-[#606F7B]  border border-gray-400 bg-white hover:bg-theme-c2 hover:text-theme hover:border-theme "
-                      }`}
+                    className={`rounded-md px-3 py-1.5 shadow-none hover:shadow-none capitalize ${
+                      item?.value == isActive.value
+                        ? "bg-theme border-theme text-white border"
+                        : "text-[#606F7B]  border border-gray-400 bg-white hover:bg-theme-c2 hover:text-theme hover:border-theme "
+                    }`}
                     onClick={() => {
                       setIsActive(item);
                       filterData(item?.value);
@@ -429,29 +340,15 @@ const FinalOutPut = () => {
                     return (
                       <li
                         key={i}
-                        className="flex items-center justify-between gap-2 py-3 border-gray-200 border-b "
+                        className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b "
                       >
-                             
-                          <div className="" >
-                            <StarImpComponent
-                              item={item}
-                            />
-                            
-                      
-                          </div>
                         <div className="flex items-center gap-4 justify-between w-full">
-
-
-
-                            <div
+                          <div
                             className="flex items-center gap-4 cursor-pointer"
-                              onClick={() => {
+                            onClick={() => {
                               openPdfWithWaterMark(item.link, "Final Output");
                             }}
                           >
-
-                       
-                          
                             <img
                               src={
                                 import.meta.env.VITE_BASE_URL +
@@ -476,38 +373,36 @@ const FinalOutPut = () => {
                               </Typography>
                             </div>
                           </div>
-
                           <div>
                             {
 
-                              (NotesActionButtons.includes(authState?.user?.UserID) || authState?.user?.UserID == item?.UserID) && (
+(NotesActionButtons.includes(authState?.user?.UserID) || authState?.user?.UserID == item?.UserID) && (
 
-                                <>
-                                  <IconButton
-                                    className=" bg-transparent text-theme shadow-none hover:shadow-none"
-                                    size="sm"
-                                    onClick={() => {
-                                      setSendNotification(item);
-                                    }}
-                                  >
-                                    <AiOutlineMail size={20} />
-                                  </IconButton>
-                                  <IconButton
-                                    className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none"
-                                    size="sm"
-                                    onClick={() => {
-                                      setOpenModal(item);
-                                    }}
-                                  >
-                                    <AiFillDelete size={20} />
-                                  </IconButton>
-
-                                </>
-                              )
+  <>
+  <IconButton
+    className=" bg-transparent text-theme shadow-none hover:shadow-none"
+    size="sm"
+    onClick={() => {
+      setSendNotification(item);
+    }}
+  >
+    <AiOutlineMail size={20} />
+  </IconButton>
+  <IconButton
+    className=" bg-transparent text-[#DD2025] shadow-none hover:shadow-none"
+    size="sm"
+    onClick={() => {
+      setOpenModal(item);
+    }}
+  >
+    <AiFillDelete size={20} />
+  </IconButton>
+  
+  </>
+)
                             }
-
+                            
                           </div>
-                          
                         </div>
                       </li>
                     );

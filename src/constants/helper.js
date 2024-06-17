@@ -1,3 +1,4 @@
+import moment from "moment";
 export const API_BASE_URL = () => {
   let baseUrl1 = "https://omkaradata.com/api";
 
@@ -232,4 +233,219 @@ export const selectVideoArr = [
   { title: "Single Company", value: "SINGLE VIDEO" },
   { title: "Sector Video", value: "Sector Video" },
 ];
+
+
+
+// Quterlty Result Input data
+export const FilterInputs = 
+  {
+    Market_Cap: {
+      label: "Market Cap",
+      value1: "",
+      value2: ""
+    },
+    Date: {
+      label: "Date Range",
+      value1: moment().add('-1', 'days').format('MM/DD/YYYY'),
+      value2: moment().format('MM/DD/YYYY') 
+    },
+    LTP: "",
+    TTM_P_B : "",
+     TTM_P_E : "",
+     ROCE: "",
+     TTM_Sales_Abs: "",
+     TTM_PAT_Abs: "",
+     Sales_YOY : "",
+    Sales_QOQ: "",
+    EBDITA_YOY: "",
+    EBDITA_QOQ: "",
+    PAT_YOY: "",
+    PAT_QOQ:"",
+    GROSS_PROFIT_YOY: "",
+    GROSS_PROFIT_QOQ: "",
+    EBDITA_TO: "",
+     PAT_TO: "",
+    ColorCode : {
+      label: "Color Code",
+      value1: "",
+      value2: ""
+    },
+    sectors: {
+      label: "Sector",
+      value1: "",
+      value2: ""
+    },
+    industry : {
+      label: "Industry",
+      value1: "",
+      value2: ""
+    },
+     company: {
+      label: "Company",
+      value1: "",
+      value2: ""
+    },
+    portfolio : {
+      label: "Portfolio",
+      value1: "",
+      value2: ""
+    }
+  }
+
+
+export const QuterltyResultFinalReq = (data) => {
+  return [
+    {
+        $id: "",
+        type: "Share Price (TTM)",
+        sub_type: [
+            {
+                Market_Cap: [
+                  data?.Market_Cap?.value1 || "",
+                  data?.Market_Cap?.value2 || ""
+                ],
+                LTP: data?.LTP?.value1 || "",
+                TTM_P_B: data?.TTM_P_B?.value1 || "",
+                TTM_P_E: data?.TTM_P_E?.value1 || "",
+                ROCE: data?.data?.ROCE?.value1 ||  "",
+                TTMSalesAbs: data?.TTMSalesAbs?.value1 || "" ,
+                TTMPATAbs: data?.TTMPATAbs?.value1 || "" ,
+            }
+        ]
+    },
+    {
+        type: "Result Data",
+        sub_type: [
+            {
+                Sales_YOY: data?.Sales_YOY?.value1 || "",
+                Sales_QOQ: data?.Sales_QOQ?.value1 || "",
+                EBDITA_YOY: data?.EBDITA_YOY?.value1 || "",
+                EBDITA_QOQ: data?.EBDITA_QOQ?.value1 || "",
+                PAT_YOY: data?.PAT_YOY?.value1 || "",
+                PAT_QOQ: data?.PAT_QOQ?.value1 || "",
+                GP_YOY: data?.GP_YOY?.value1 || "",
+                GP_QOQ: data?.GP_QOQ?.value1 || "",
+            }
+            
+        ]
+    },
+    {
+        type: "Turn Around",
+        sub_type: [
+            {
+                EBDITA_TO: [],
+                PAT_TO: [],
+                Gross_Margin: data?.Gross_Margin?.value1 || "",
+                Gross_Profit: data?.Gross_Profit?.value1 || ""
+            }
+        ]
+    },
+    {
+        type : "More Filters",
+        sub_type: [
+            {
+                Sector: [data?.Sector] || [],
+                Industry: [data?.Industry] || [],
+                Company: [data?.Company] || []
+            }
+        ]
+    },
+    {
+        type: "Date",
+        sub_type: [
+            {
+                FromDate:  data?.Date?.FromDate   ||  moment().add('-1', 'days').format('MM/DD/YYYY'),
+                ToDate:  data?.Date?.ToDate || moment().format('MM/DD/YYYY') 
+            }
+        ]
+    },
+    {
+        type: "Color",
+        sub_type: [
+            {
+                ColorCode: ""
+            }
+        ]
+    }
+  ];
+}
+
+
+
+export const add_to_importantReq = {
+  "item_id":"",
+  "user_id":"",
+  "item_type":"",
+  "action":0
+};
+
+
+
+export const selectSectors = (sectorMasterData, setSectorMasterArr) => {
+
+  if (sectorMasterData.length > 0) {
+    var data1 = [];
+    sectorMasterData.map((item) => {
+      var d1 = { title: item.Sector, value: item.sectorID };
+      data1.push(d1);
+    })
+    setSectorMasterArr(data1);
+  }
+  
+}
+
+export const industryMasterFun = (industryMasterData, setIndustryMasterArr) => {
+
+  if (industryMasterData.length > 0) {
+    var data1 = [];
+    industryMasterData.map((item) => {
+      var d1 = { title: item.Sector, value: item.sectorID };
+      data1.push(d1);
+    })
+    setIndustryMasterArr(data1);
+  }
+  
+}
+
+
+export const selectCompany = (allCompanyData, setCompanyMasterArr) => {
+  if (allCompanyData.length > 0) {
+    var data1 = [];
+    allCompanyData.map((item) => {
+      var d1 = { title: item.CompanyName, value: item.CompanyID };
+      data1.push(d1);
+    })
+    data1.sort(function(a, b){
+      if ( a.title < b.title ){
+        return -1;
+      }
+      if ( a.title > b.title ){
+        return 1;
+      }
+      return 0;
+    })
+    setCompanyMasterArr(data1);
+  }
+}
+
+
+
+
+
+export const filterSelectIndustryBySector = (sectors, industryMaster, setIndustryMasterArr) => {
+  let industryMasterFilter = [];
+  for (var i = 0; i < sectors.length; i++) {
+   let sectors_val =sectors[i].value;
+    var industryMasterFilter1 = industryMaster.filter(industry => (sectors_val == industry.sectorID));
+    Array.prototype.push.apply(industryMasterFilter, industryMasterFilter1);
+  }
+  var data1 = [];
+  if (industryMasterFilter.length > 0) {
+    industryMasterFilter.map((item) => {
+      var d1 = { title: item.Industry, value: item.IndustryID };
+      data1.push(d1);
+    })
+  }
+  setIndustryMasterArr(data1);
+}
 

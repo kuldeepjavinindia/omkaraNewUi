@@ -4,6 +4,11 @@ import InsidertTradingTable from "./../../components/data2/Insider/InsidertTradi
 const InsiderTrading = () => {
   return (
     <>
+
+submitForm
+
+
+
       <div className=" pt-2 FilterSidebar-Content-Layout">
         <FilterSidebarInsideTrading />
 

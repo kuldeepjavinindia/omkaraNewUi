@@ -21,7 +21,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import ResultBankModal from "../../CompanyDetail/Modals/ResultBankModal";
 import { CgPlayButtonR } from "react-icons/cg";
 import { PiTagBold } from "react-icons/pi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RepoListingButtons } from "../../../constants/helper";
 import { Box, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Tooltip } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
@@ -36,6 +36,7 @@ import moment from "moment";
 import { useAuthState } from "../../../context/AuthContext";
 import ReportBackVideos from "./ReportBackVideos";
 import { GlobalContext } from "../../../context/GlobalContext";
+import { RepositoryListAPI } from "../../../store/slice/SingleCompnaySlice";
 
 
 
@@ -103,6 +104,8 @@ const ReportBankSearchTable = () => {
   
 
   const {
+    RepoListParams,
+    setRepoListParams,
     ReportBankDrawer,
     setReportBankDrawer
   } = useContext(GlobalContext)
@@ -126,24 +129,14 @@ const ReportBankSearchTable = () => {
 
 
 
+const [rowsPerPage, setRowsPerPage] = useState(RepoListParams?.numPerPage);
+const [OrderType, setOrderType] = useState(RepoListParams?.order);
+const [Order_Column, setOrder_Column] = useState(RepoListParams?.order_column);
+const [CrtPage, setCrtPage] = useState(RepoListParams?.page);
+const [NumPerPage, setNumPerPage] = useState(RepoListParams?.numPerPage);
+const [SearchInp, setSearchInp] = useState(RepoListParams?.search);
 
-  const filterParams = {
-    "page": 1,
-    "order": "asc",
-    "order_column": "CompanyName",
-    "search": "",
-    "numPerPage": "100"
-  }
-
-
-const [rowsPerPage, setRowsPerPage] = useState(filterParams?.numPerPage);
-const [OrderType, setOrderType] = useState(filterParams?.order);
-const [Order_Column, setOrder_Column] = useState(filterParams?.order_column);
-const [CrtPage, setCrtPage] = useState(filterParams?.page);
-const [NumPerPage, setNumPerPage] = useState(filterParams?.numPerPage);
-const [SearchInp, setSearchInp] = useState(filterParams?.search);
-
-
+const rr_dispatch = useDispatch();
 
   
 
@@ -169,6 +162,7 @@ const [SearchInp, setSearchInp] = useState(filterParams?.search);
   };
 
   const handleChange00 = (event, FileID) => {
+
     let vale0 = event.target.checked ? "1" : "0";
     let a0 = {...checked, [FileID]: vale0}
     setChecked(a0)
@@ -176,11 +170,7 @@ const [SearchInp, setSearchInp] = useState(filterParams?.search);
       "Flag":vale0,
       "FileId":FileID
     }
-    // RepositoryFlagUpdateRequest
-    // RepositoryFlagUpdateRequest(params).then(res=>{
-    //   // console.log(res)
-    // }).catch(err=>console.log(err))
-    
+
   };
 
 
@@ -451,112 +441,112 @@ const buttonType = (type) => {
   }
   return arr;
 }
-const PrevFun = (e, type) => {
 
-  // let CrtPage0 = Number(CrtPage)-1;
-
-  // if(CrtPage0 < 1){
-  //   return false;
-  // }
-  // setCrtPage(CrtPage0);
-  // let topLabels = resultFilterInputData0;
-  // let pOptionData = paramsData;
-  //     pOptionData = {
-  //       ...pOptionData,
-  //       order: OrderType,
-  //       order_column: Order_Column,
-  //       page: CrtPage0,
-  //       numPerPage: NumPerPage
-  //     }
+// const resetSearchCall = (e) => {
+//   setCrtPage(1);
+//   setSearchInp("");
+//   // let topLabels = resultFilterInputData0;
+//   let pOptionData = RepoListParams;
+//       pOptionData = {
+//         ...pOptionData,
+//         order: OrderType,
+//         order_column: Order_Column,
+//         page: 1,
+//         search: "",
+//         numPerPage: NumPerPage
+//       }
+//   //     // console.log(pOptionData);
       
-  // topLabels = { ...topLabels, paramsData:pOptionData }
-  // let filterArray = repositoryTestListFilters(topLabels);
-
-  // dispatch(RepoListParamOptionAction(pOptionData));
-
-  // dispatch(resultFilterInputAction(topLabels));
-  // dispatch(RepositoryListAction(filterArray, 'test'));
-
-}
-const resetSearchCall = (e) => {
-  // setCrtPage(1);
-  // setSearchInp("");
-  // let topLabels = resultFilterInputData0;
-  // let pOptionData = paramsData;
-  //     pOptionData = {
-  //       ...pOptionData,
-  //       order: OrderType,
-  //       order_column: Order_Column,
-  //       page: 1,
-  //       search: "",
-  //       numPerPage: NumPerPage
-  //     }
-  //     // console.log(pOptionData);
-      
-  // topLabels = { ...topLabels, paramsData:pOptionData }
-  // let filterArray = repositoryTestListFilters(topLabels);
+//   // topLabels = { ...topLabels, paramsData:pOptionData }
+//   // let filterArray = repositoryTestListFilters(topLabels);
   
-  // dispatch(RepoListParamOptionAction(pOptionData));
+//   // dispatch(RepoListParamOptionAction(pOptionData));
 
-  // dispatch(resultFilterInputAction(topLabels));
-  // dispatch(RepositoryListAction(filterArray, 'test'));
+//   // dispatch(resultFilterInputAction(topLabels));
+//   // dispatch(RepositoryListAction(filterArray, 'test'));
 
-}
-const searchCall = (e) => {
+// }
+const searchCall = (type='submit') => {
   // SearchInp
   // setSearchInp
-  // setCrtPage(1);
-  // let topLabels = resultFilterInputData0;
-  // let pOptionData = paramsData;
-  //     pOptionData = {
-  //       ...pOptionData,
-  //       order: OrderType,
-  //       order_column: Order_Column,
-  //       page: 1,
-  //       search: SearchInp,
-  //       numPerPage: NumPerPage
-  //     }
-  //     // console.log(pOptionData);
-      
+
+  setCrtPage(1);
+  let pOptionData = RepoListParams;
+  if(type == "reset"){
+    setSearchInp("");
+    pOptionData = {
+      ...pOptionData,
+      order: OrderType,
+      order_column: Order_Column,
+      page: 1,
+      search: "",
+      numPerPage: NumPerPage
+    }
+  }else{
+    pOptionData = {
+      ...pOptionData,
+      order: OrderType,
+      order_column: Order_Column,
+      page: 1,
+      search: SearchInp,
+      numPerPage: NumPerPage
+    }
+  }
+      setRepoListParams(pOptionData)
+      rr_dispatch(RepositoryListAPI(pOptionData));
+
+  // console.log(pOptionData);
   // topLabels = { ...topLabels, paramsData:pOptionData }
   // let filterArray = repositoryTestListFilters(topLabels);
-  
   // dispatch(RepoListParamOptionAction(pOptionData));
-
   // dispatch(resultFilterInputAction(topLabels));
   // dispatch(RepositoryListAction(filterArray, 'test'));
-
 
 }
-const NextFun = (e, type) => {
- 
-  // let CrtPage0 = Number(CrtPage)+1;
 
-  // if(CrtPage0 < 1){
-  //   return false;
-  // }
-  
-  // setCrtPage(CrtPage0);
+
+const PrevFun = (e, type) => {
+
+  let CrtPage0 = Number(CrtPage)-1;
+
+  if(CrtPage0 < 1){
+    return false;
+  }
+  setCrtPage(CrtPage0);
   // let topLabels = resultFilterInputData0;
-  // let pOptionData = paramsData;
-  //     pOptionData = {
-  //       ...pOptionData,
-  //       order: OrderType,
-  //       order_column: Order_Column,
-  //       page: CrtPage0,
-  //       numPerPage: NumPerPage
-  //     }
-  //     // console.log(pOptionData);
-      
-  // topLabels = { ...topLabels, paramsData:pOptionData }
-  // let filterArray = repositoryTestListFilters(topLabels);
+  let pOptionData = RepoListParams;
+      pOptionData = {
+        ...pOptionData,
+        order: OrderType,
+        order_column: Order_Column,
+        page: CrtPage0,
+        numPerPage: NumPerPage
+      }
+      setRepoListParams(pOptionData)
+      rr_dispatch(RepositoryListAPI(pOptionData));
+
+}
+
+const NextFun = () => {
+ 
+  let CrtPage0 = Number(CrtPage)+1;
+
+  if(CrtPage0 < 1){
+    return false;
+  }
   
-  // dispatch(RepoListParamOptionAction(pOptionData));
-
-  // dispatch(resultFilterInputAction(topLabels));
-  // dispatch(RepositoryListAction(filterArray, 'test'));
-
-
+  setCrtPage(CrtPage0);
+  
+  let pOptionData = RepoListParams;
+      pOptionData = {
+        ...pOptionData,
+        order: OrderType,
+        order_column: Order_Column,
+        page: CrtPage0,
+        numPerPage: NumPerPage
+      }
+    setRepoListParams(pOptionData)
+    rr_dispatch(RepositoryListAPI(pOptionData));
 
 }
 
@@ -571,7 +561,6 @@ const NextFun = (e, type) => {
   useEffect(() => {
 
     if(!RepositoryListLoading){
-      // console.log('RepositoryListLoading >>> ', RepositoryListLoading)
       let tableHeadArr = [];
       let tableRowsArr = [];
       
@@ -817,7 +806,8 @@ const NextFun = (e, type) => {
 
                   </Typography>
                 </div>
-                <div className="flex-grow">
+
+                <div className="flex-grow flex items-center gap-1">
                   <Input
                     type="text"
                     placeholder="Search Company"
@@ -825,23 +815,26 @@ const NextFun = (e, type) => {
                     labelProps={{
                       className: "hidden",
                     }}
-                    icon={
-                      <CgSearch
-                        size={19}
-                        className="text-gray-400 top-[-2px] absolute"
-                      />
-                    }
-                  />
-                  {/* {
-                  paramsData?.search ?
-                    <Button variant="contained" color='error' onClick={()=>resetSearchCall()}>Reset</Button>
-                  :
-                    <Button className='btn-cst-primary' ref={searchBtnRef} variant="contained" color='primary' onClick={()=>searchCall()}>Search</Button>
-                    
-                    } */}
+                    value={SearchInp}
+                    disabled={RepoListParams?.search ? true : false}
 
+                    onChange={(e) => setSearchInp(e.target.value)}
 
-                  <Button className='bg-theme' ref={searchBtnRef} variant="contained" size="small" onClick={()=>searchCall()}>Search</Button>
+                    // icon={
+                    //   <CgSearch
+                    //     size={19}
+                    //     className="text-gray-400 top-[-2px] absolute"
+                    //   />
+                    // }
+
+                  />  
+
+                  {
+                    RepoListParams?.search ? 
+                    <Button size="sm" className='px-3 py-1.5 w-20 mb-2' color="red" onClick={()=>searchCall('reset')}>Reset</Button>
+                    :
+                    <Button size="sm" className='bg-theme px-3 py-1.5 w-20 mb-2' onClick={()=>searchCall()}>Search</Button>
+                  }
 
 
 
@@ -876,7 +869,7 @@ const NextFun = (e, type) => {
 
               <div className="flex-grow-1 ">
                 <div className="flex gap-1">
-                  <Button className="w-[48px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+                  <Button onClick={()=>PrevFun()} disabled={CrtPage === 1 ? true : false} className="w-[48px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
                     <IoIosArrowBack size={16} />
                   </Button>
                   {/* <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
@@ -889,13 +882,14 @@ const NextFun = (e, type) => {
                       defaultValue="1"
                       size="md"
                       readOnly
+                      value={CrtPage}
                       className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
                         className: "hidden",
                       }}
                     />
                   </div>
-                  <Button disabled={ RepositoryListData?.total_rows < CrtPage*NumPerPage ? true : false } className="w-[48px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+                  <Button onClick={()=>NextFun()} disabled={ RepositoryListData?.total_rows < CrtPage*NumPerPage ? true : false } className="w-[48px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
                     <IoIosArrowForward />
                   </Button>
                   {/* <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
@@ -916,120 +910,7 @@ const NextFun = (e, type) => {
             <div className="">
               {/* Start Table */}
               <div className="mt-8 data2Tabels relative overflow-x-auto">
-                {/* <table className="forensicTable w-full border border-collapse border-[#B3B3B3] h-full">
-                  <thead className="bg-[#1E233A]">
-                    <tr className="!bg-[#1E233A] ">
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        <Switch
-                          id="custom-switch-component"
-                          ripple={false}
-                          className="h-full w-full bg-gray-500 checked:bg-theme"
-                          containerProps={{
-                            className: "w-9 h-5 ",
-                          }}
-                          circleProps={{
-                            className: "before:hidden left-0.5 border-none w-4 h-4",
-                          }}
-                        />
-                      </th>
-
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        REPORT DATE
-                      </th>
-
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        PERIOD
-                      </th>
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        COMPANY NAME
-                      </th>
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        SECTOR
-                      </th>
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        REPORT TYPE
-                      </th>
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        BROKER NAME
-                      </th>
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        AUTHOR
-                      </th>
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        TITLE
-                      </th>
-
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        REPORT
-                      </th>
-
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        VIDEOS/TAGS
-                      </th>
-
-                      <th className=" !text-left !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-                        ACTION
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="odd:bg-[#E8F0F4] even:bg-[#fff] h-12">
-                      <td className="text-[12px] xl:text-[13px] text-[#333333] font-semibold text-left">
-                        <span className="cursor-pointer">
-                          <FaStar fill="#4448F5" size={14} />
-                        </span>
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#333333] font-semibold text-left">
-                      04-Jun-2024
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#333333] font-semibold text-left">
-                        2023
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">
-                        Trent Ltd.
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">
-                        Retailing
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">
-                        Annual Report
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">
-                        IIFL Securities
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">
-                        asha
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">
-                        A near perfect year
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">
-                        <img
-                          src={
-                            import.meta.env.VITE_BASE_URL +
-                            "/images/icons/pdfIcon.svg"
-                          }
-                          alt=""
-                        />
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">
-                        <Button
-                          size="sm"
-                          className={` text-[#1E1E1E] py-1 px-2 border-gray-900 border-2 bg-white rounded`}
-                          onClick={openDrawer}
-                        >
-                          <CgPlayButtonR fill="#000" size={12} />
-                        </Button>
-                      </td>
-                      <td className="text-[12px] xl:text-[13px] text-[#000] font-semibold text-left">
-                        <div className="flex justify-start">
-                          <BiEdit fill="#2E7A80" size={20} />
-                          <MdOutlineDelete fill="#DD2025" size={20} />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table> */}
+                
 
 
 
@@ -1103,10 +984,6 @@ const NextFun = (e, type) => {
                         if(column.id === "column_1"){
                           cStyle.cursor = 'pointer';
                         }
-
-                        // if(ItemData && ItemData?.FileId && row.FileId){
-                        //   cStyle.backgroundColor = ( '#ffff00');
-                        // }
                         
                         if(column.id === 'FileName'){
                           let extension = row.FileName;
@@ -1253,8 +1130,8 @@ const NextFun = (e, type) => {
 }
 
 
-{/* {
-                                  row?.tags && row?.tags.length > 0 && ( */}
+{
+                                  row?.tags && row?.tags.length > 0 && (
                                           <Button onClick={(e)=>{
                                                   // setTagDrawerState(true);
                                                   // setItemData(row);
@@ -1270,8 +1147,8 @@ const NextFun = (e, type) => {
                                                     // marginRight:5,
                                                     }} />
                                             </Button>
-                                  {/* )
-                                } */}
+                                   )
+                                } 
 
 
                               </div>

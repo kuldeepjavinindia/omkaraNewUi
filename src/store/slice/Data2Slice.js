@@ -30,6 +30,24 @@ const initialState = {
         msg: null,
         error: null,
     },
+    BulkDeal : {
+        loading: true,
+        data: [],
+        msg: null,
+        error: null,
+    },
+    InsiderDetail : {
+        loading: true,
+        data: [],
+        msg: null,
+        error: null,
+    },
+    Bulk_BlockDetail : {
+        loading: true,
+        data: [],
+        msg: null,
+        error: null,
+    },
     // START REPORT_BANK
 
     
@@ -45,6 +63,10 @@ const ResultDataReq = (`${slice_base_url}/resultdata`);
 const ResultDataSheet2Req = (`${slice_base_url}/resultdatasheet2`);
 
 const InsiderReq = (`${slice_base_url}/Insider`);
+const BulkDealReq = (`${slice_base_url}/BulkDeal`);
+
+const InsiderDetailReq = (`${slice_base_url}/InsiderDetail`);
+const Bulk_BlockDetailReq = (`${slice_base_url}/Bulk_BlockDetail`);
 
 // ResultDataApi Thunk
 export const ResultDataApi = createAsyncThunk(
@@ -69,6 +91,33 @@ export const InsiderApi = createAsyncThunk(
     "Insider",
     async(all_params) => {
         const response = await axios.post(`${InsiderReq}`, all_params)
+        return response?.data
+    }
+)
+
+//BulkDealApi
+export const BulkDealApi = createAsyncThunk(
+    "BulkDeal",
+    async(all_params) => {
+        const response = await axios.post(`${BulkDealReq}`, all_params)
+        return response?.data
+    }
+)
+
+//InsiderDetailReqAPI
+export const InsiderDetailApi = createAsyncThunk(
+    "InsiderDetail",
+    async(all_params) => {
+        const response = await axios.post(`${InsiderDetailReq}`, all_params)
+        return response?.data
+    }
+)
+
+//Bulk_BlockDetailReqAPI
+export const Bulk_BlockDetailApi = createAsyncThunk(
+    "Bulk_BlockDetail",
+    async(all_params) => {
+        const response = await axios.post(`${Bulk_BlockDetailReq}`, all_params)
         return response?.data
     }
 )
@@ -143,6 +192,74 @@ const Data2slice = createSlice({
             state.Insider.error = true;
          });
          //End Insider Reducers
+
+         
+         
+         
+        //START BulkDeal Reducers
+         
+        builder.addCase(BulkDealApi.pending, (state)=> {
+            state.BulkDeal.loading = true;
+            state.BulkDeal.error = false;
+            state.BulkDeal.msg = null
+        });
+        builder.addCase(BulkDealApi.fulfilled, (state, action)=> {
+            state.BulkDeal.loading = false;
+            state.BulkDeal.data = action.payload
+            state.BulkDeal.msg = "success"
+        });
+         builder.addCase(BulkDealApi.rejected, (state, action)=> {
+            state.BulkDeal.loading = false;
+            state.BulkDeal.data = action.payload;
+            state.BulkDeal.msg = action.payload?.msg;
+            state.BulkDeal.error = true;
+         });
+         //End Insider Reducers
+
+
+         
+         
+        //START InsiderDetail Reducers
+         
+        builder.addCase(InsiderDetailApi.pending, (state)=> {
+            state.InsiderDetail.loading = true;
+            state.InsiderDetail.error = false;
+            state.InsiderDetail.msg = null
+        });
+        builder.addCase(InsiderDetailApi.fulfilled, (state, action)=> {
+            state.InsiderDetail.loading = false;
+            state.InsiderDetail.data = action.payload
+            state.InsiderDetail.msg = "success"
+        });
+         builder.addCase(InsiderDetailApi.rejected, (state, action)=> {
+            state.InsiderDetail.loading = false;
+            state.InsiderDetail.data = action.payload;
+            state.InsiderDetail.msg = action.payload?.msg;
+            state.InsiderDetail.error = true;
+         });
+         //End InsiderDetail
+
+         
+         
+        //START Bulk_BlockDetail Reducers
+         
+        builder.addCase(Bulk_BlockDetailApi.pending, (state)=> {
+            state.Bulk_BlockDetail.loading = true;
+            state.Bulk_BlockDetail.error = false;
+            state.Bulk_BlockDetail.msg = null
+        });
+        builder.addCase(Bulk_BlockDetailApi.fulfilled, (state, action)=> {
+            state.Bulk_BlockDetail.loading = false;
+            state.Bulk_BlockDetail.data = action.payload
+            state.Bulk_BlockDetail.msg = "success"
+        });
+         builder.addCase(Bulk_BlockDetailApi.rejected, (state, action)=> {
+            state.Bulk_BlockDetail.loading = false;
+            state.Bulk_BlockDetail.data = action.payload;
+            state.Bulk_BlockDetail.msg = action.payload?.msg;
+            state.Bulk_BlockDetail.error = true;
+         });
+         //End Bulk_BlockDetail
 
 
 

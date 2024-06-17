@@ -87,6 +87,13 @@ const initialState = {
     msg: null,
     error: null,
   },
+  RR_BrokerMaster: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
+  
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -108,6 +115,8 @@ let allCompanyMasterReq = `${slice_base_url}/SymbolMaster`; //GET
 let RR_CompanyReportReq = `${slice_base_url}/RR_CompanyReport`; //GET
 let RR_OtherReportsReq = `${slice_base_url}/RR_OtherReports`; //GET
 let RR_BrokerageReq = `${slice_base_url}/RR_Brokerage`; //GET
+
+let RR_BrokerMasterReq = `${slice_base_url}/brokermaster`; //GET
 
 let turnAroundMasterReq = `${slice_base_url}/turnaroundfilter`;
 let FIISDateMasterReq = `${slice_base_url}/FIISDateMaster`;
@@ -246,6 +255,15 @@ export const RR_BrokerageAPI = createAsyncThunk(
   // eslint-disable-next-line no-unused-vars
   async (all_params = {}) => {
     const response = await axios.get(`${RR_BrokerageReq}`);
+    return response?.data;
+  }
+);
+
+export const RR_BrokerMasterAPI = createAsyncThunk(
+  "RR_BrokerMaster",
+  // eslint-disable-next-line no-unused-vars
+  async (all_params = {}) => {
+    const response = await axios.get(`${RR_BrokerMasterReq}`);
     return response?.data;
   }
 );
@@ -550,6 +568,27 @@ const TrendlyneSlice = createSlice({
       state.RR_Brokerage.data = action.payload;
     });
     // // END RR_Brokerage DATA
+
+    // // START RR_BrokerMaster DATA
+    builder.addCase(RR_BrokerMasterAPI.pending, (state) => {
+      state.RR_BrokerMaster.loading = true;
+      state.RR_BrokerMaster.error = false;
+      state.RR_BrokerMaster.msgType = null;
+    });
+    builder.addCase(RR_BrokerMasterAPI.fulfilled, (state, action) => {
+      state.RR_BrokerMaster.data = action.payload;
+      state.RR_BrokerMaster.loading = false;
+      state.RR_BrokerMaster.msg = "success";
+      state.RR_BrokerMaster.msgType = "success";
+    });
+    builder.addCase(RR_BrokerMasterAPI.rejected, (state, action) => {
+      state.RR_BrokerMaster.loading = false;
+      state.RR_BrokerMaster.error = true;
+      state.RR_BrokerMaster.msgType = "error";
+      state.RR_BrokerMaster.msg = action.payload?.msg;
+      state.RR_BrokerMaster.data = action.payload;
+    });
+    // // END RR_BrokerMaster DATA
 
     
   },

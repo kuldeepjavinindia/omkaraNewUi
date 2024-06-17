@@ -12,10 +12,13 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { RR_BrokerageAPI, RR_CompanyReportAPI, RR_OtherReportsAPI, allCompanyMasterAPI, sectorMasterAPI } from "../../../store/slice/MasterSlice";
+import { RR_BrokerMasterAPI, RR_BrokerageAPI, RR_CompanyReportAPI, RR_OtherReportsAPI, allCompanyMasterAPI, sectorMasterAPI } from "../../../store/slice/MasterSlice";
+import { RepositoryListAPI } from "../../../store/slice/SingleCompnaySlice";
+import { RepositoryListReq } from "../../../constants/defaultRequest";
+import { GlobalContext } from "../../../context/GlobalContext";
 
 const DateF = [
   {
@@ -47,6 +50,7 @@ const DateF = [
 
 const RadioUISec = (props) => {
   const {
+    checked,
     onClick,
     Inputs, // FOR VALUE,
     value, // 
@@ -62,10 +66,10 @@ const RadioUISec = (props) => {
           size="small"
           value={value}
           name="date_range"
-          checked={Inputs?.reportType?.value == value}
+          checked={checked}
+          id={label}
           onClick={onClick}
           sx={{
-            // color: pink[800],
             padding:"0",
             paddingRight:".25rem",
             "&.Mui-checked": {
@@ -73,12 +77,14 @@ const RadioUISec = (props) => {
             },
           }}
         />
-        <div>{label}</div>
+        <label htmlFor={label} className=" cursor-pointer">{label}</label>
       </div>
     
     </>
   )
 }
+
+
 
 
 
@@ -96,6 +102,11 @@ const sortSelectArr = (ArrayData) => {
 
 
 const FilterReportBankSearch = () => {
+
+  const {
+    // RepoListParams,
+    setRepoListParams
+  } = useContext(GlobalContext)
   const [Inputs, setInputs] = useState({
     dateRangeRadio: DateF[DateF.length - 1],
   });
@@ -103,6 +114,15 @@ const FilterReportBankSearch = () => {
   const [SectorMasterArr, setSectorMasterArr] = useState([]);
   const [CompanyMasterArr, setCompanyMasterArr,] = useState([]);
   const [BrokerMasterArr, setBrokerMasterArr] = useState([]);
+
+
+  
+
+  const [Sectors, setSectors] = useState([]);
+  const [BrokerMaster, setBrokerMaster] = useState([]);
+  // const [Industry, setIndustry] = useState([]);
+  const [Company, setCompany] = useState([]);
+
 
 
   const selectDateRadio = (item) => {
@@ -123,16 +143,20 @@ const FilterReportBankSearch = () => {
 
 const {
 RR_CompanyReport:{
-  loading:RR_CompanyReportLoading,
+  // loading:RR_CompanyReportLoading,
   data:RR_CompanyReportData,
 },
 RR_OtherReports:{
-  loading:RR_OtherReportsLoading,
+  // loading:RR_OtherReportsLoading,
   data:RR_OtherReportsData,
 },
 RR_Brokerage:{
   loading:RR_BrokerageLoading,
   data:RR_BrokerageData,
+},
+RR_BrokerMaster:{
+  loading:RR_BrokerMasterLoading,
+  data:RR_BrokerMasterData,
 },
 sectorMaster:{
   loading: sectorMasterLoading,
@@ -158,11 +182,11 @@ const selectSectors = () => {
   
 }
 const selectBrokerMaster = () => {
-  if (RR_BrokerageData.length > 0) {
+  if (RR_BrokerMasterData.length > 0) {
     var data1 = [];
 
-    RR_BrokerageData.map((item) => {
-      var d1 = { title: item?.Brokerage, value: item?.ID };
+    RR_BrokerMasterData.map((item) => {
+      var d1 = { title: item?.BrokerName, value: item?.ID };
       data1.push(d1);
     })
     setBrokerMasterArr(sortSelectArr(data1));
@@ -176,7 +200,7 @@ const selectCompany = () => {
       var d1 = { title: item.CompanyName, value: item.CompanyID };
       data1.push(d1);
     })
-    let a0 = data1.sort(function(a, b){
+    data1.sort(function(a, b){
       if ( a.title < b.title ){
         return -1;
       }
@@ -185,7 +209,6 @@ const selectCompany = () => {
       }
       return 0;
     })
-    // console.log(a0);
     setCompanyMasterArr(data1);
   }
 }
@@ -197,6 +220,7 @@ const selectCompany = () => {
     rr_dispatch(RR_CompanyReportAPI());
     rr_dispatch(RR_OtherReportsAPI());
     rr_dispatch(RR_BrokerageAPI());
+    rr_dispatch(RR_BrokerMasterAPI());
     rr_dispatch(sectorMasterAPI());
     rr_dispatch(allCompanyMasterAPI());
   }, [])
@@ -207,11 +231,6 @@ const selectCompany = () => {
     }
   }, [sectorMasterLoading])
 
-  useEffect(() => {
-    if(!sectorMasterLoading){
-      selectSectors()
-    }
-  }, [sectorMasterLoading])
 
 
   useEffect(() => {
@@ -221,15 +240,104 @@ const selectCompany = () => {
   }, [allCompanyLoading])
 
   useEffect(() => {
-    if(!RR_BrokerageLoading){
-      console.log('BrokerMasterArr >>> ', BrokerMasterArr)
+    if(!RR_BrokerMasterLoading){
       selectBrokerMaster()
     }
-  }, [RR_BrokerageLoading])
+  }, [RR_BrokerMasterLoading])
 
-  // useEffect(() => {
-  //     console.log('SectorMasterArr >>> ', SectorMasterArr)
-  // }, [SectorMasterArr])
+
+
+  const [ReportType, setReportType] = useState({});
+  const handleChangeReportType = (event, type, id) => {
+    let d1 = {value:event.target.value, type, id}
+    setReportType(d1);
+  };
+
+
+
+  const applyFun = () => {
+    let params = RepositoryListReq;
+    params = {
+      ...params,
+      Date: [Inputs.formDate, Inputs.toDate],
+      sectorId: Inputs.sectorId,
+      CompanyId: Inputs.CompanyId,
+      BrokerId: Inputs.BrokerId,
+      ReportType: [(ReportType?.type || ""), (ReportType?.id || "")],
+      numPerPage: "100",
+    };
+    params = {
+      ...params,
+    };
+
+
+    setRepoListParams(params)
+    rr_dispatch(RepositoryListAPI(params));
+  }
+
+
+  
+  const filterSelectCompany = (type = 'sector') => {
+
+    let companyMasterFilter = [];
+    if (type == 'sector') {
+      let companyMasterFilter1= [];
+      if(Sectors.length === 0){
+        companyMasterFilter1 = allCompanyData
+      }else{
+        for (var i = 0; i < Sectors.length; i++) {
+          companyMasterFilter1 = allCompanyData.filter(company => (Sectors[i].value == company.sectorID));
+          Array.prototype.push.apply(companyMasterFilter, companyMasterFilter1);
+        }
+      }
+    }
+    
+    var data1 = [];
+    if (companyMasterFilter.length > 0) {
+      companyMasterFilter.map((item) => {
+        var d1 = { title: item.CompanyName, value: item.CompanyID };
+        data1.push(d1);
+      })
+    }
+    setCompanyMasterArr(data1);
+
+  }
+
+
+
+  const callApi = (duration, sector = "") => {
+    let params = RepositoryListReq;
+    duration = parseInt(duration);
+    let FromDate = moment().subtract(duration, "d").format("YYYY-MM-DD");
+    let ToDate = moment().format("YYYY-MM-DD");
+
+    setInputs({ ...Inputs, formDate: FromDate, toDate: ToDate });
+    params = {
+      ...params,
+      Date: [FromDate, ToDate],
+      numPerPage: "100",
+    };
+    params = {
+      ...params,
+    };
+    setRepoListParams(params);
+    rr_dispatch(RepositoryListAPI(params));
+  };
+
+
+
+  useEffect(() => {
+    if(!sectorMasterLoading){
+      filterSelectCompany()
+    }
+  }, [Sectors]);
+
+  useEffect(() => {
+    callApi(1);
+  }, []);
+
+
+  
   
   
 
@@ -241,7 +349,7 @@ const selectCompany = () => {
             Filter price
           </Typography>
           <div>
-            <Button className="mr-1 bg-theme text-[#fff] py-2 px-2 rounded shadow-none">
+            <Button className="mr-1 bg-theme text-[#fff] py-2 px-2 rounded shadow-none" onClick={()=>applyFun()}>
               APPLY
             </Button>
             <Button className="mr-1 bg-[#FAE0E0] text-[#DD2025] py-2 px-2 rounded shadow-none">
@@ -263,19 +371,6 @@ const selectCompany = () => {
               Data Range
             </AccordionSummary>
             <AccordionDetails>
-              {/* 
-        <FormControl>
-            <FormLabel id="demo-form-control-label-placement">Date Range</FormLabel>
-            <RadioGroup
-              className='date-range'
-              row
-              onChange={(e)=>selectDateRadio(e)}
-              aria-labelledby="demo-form-control-label-placement"
-              name="position"
-              defaultValue="custom"
-            >
-            </RadioGroup>
-          </FormControl> */}
 
               <div className=" grid grid-cols-2">
                 {DateF.map((item, i) => {
@@ -284,6 +379,7 @@ const selectCompany = () => {
                       <Radio
                         size="small"
                         value={item.value}
+                        id={`date_range${i}`}
                         name="date_range"
                         checked={Inputs?.dateRangeRadio.value == item.value}
                         onClick={() => selectDateRadio(item)}
@@ -296,12 +392,16 @@ const selectCompany = () => {
                           },
                         }}
                       />
-                      <div>{item?.label}</div>
+                      <label className="cursor-pointer" htmlFor={`date_range${i}`}>{item?.label}</label>
                     </div>
                   );
                 })}
               </div>
-
+                {/* {JSON.stringify(Inputs?.dateRangeRadio.value)} */}
+                {
+                  Inputs?.dateRangeRadio.value == "custom" && (
+                    <>
+                    
               <div className=" grid grid-cols-1">
                 <label className="text-[12px] text-[#000] font-medium ">
                   From
@@ -330,6 +430,12 @@ const selectCompany = () => {
                   }}
                 />
               </div>
+                    </>
+                  )
+                }
+                
+
+
             </AccordionDetails>
           </Accordion>
           <Accordion className="my-2  shadow-none">
@@ -343,69 +449,30 @@ const selectCompany = () => {
             <AccordionDetails>
               <div className=" grid grid-cols-2 gap-1">
                 {RR_CompanyReportData.map((item, i) => {
+                  let type = 'companyreport';
+
                   return (
                     <>
-                       <RadioUISec onClick={()=>{
-
-}} Inputs={Inputs} value={item?.ID} label={item?.CompanyReportName}/>
-                    {/* // <div key={i} className="flex text-[13px] items-center mb-1">
-                    //   <Radio
-                    //     size="small"
-                    //     value={item?.value}
-                    //     name="date_range"
-                    //     checked={Inputs?.reportType?.value == item?.value}
-                    //     // onClick={() => selectDateRadio(item)}
-                    //     sx={{
-                    //       // color: pink[800],
-                    //       padding:"0",
-                    //       paddingRight:".25rem",
-                    //       "&.Mui-checked": {
-                    //         color: "var(--theme-color)",
-                    //       },
-                    //     }}
-                    //   />
-                    //   <div>{item?.CompanyReportName}</div>
-                    // </div> */}
+                       <RadioUISec checked={(type == ReportType.type && ReportType.id == item?.ID) ? true : false} onClick={(e)=>handleChangeReportType(e, type, item?.ID)} Inputs={Inputs} value={item?.ID} label={item?.CompanyReportName} />
                     </>
                   );
                 })}
                 {RR_OtherReportsData.map((item, i) => {
+                  let type = 'othersReports';
+
                   return (
                     <>
-                    
-                    <RadioUISec onClick={()=>{
-
-}} Inputs={Inputs} value={item?.ID} label={item?.OthersReports}/>
-                    {/* <div key={i} className="flex text-[13px] items-center mb-1">
-                      <Radio
-                        size="small"
-                        value={item?.ID}
-                        name="date_range"
-                        checked={Inputs?.reportType?.ID == item?.ID}
-                        // onClick={() => selectDateRadio(item)}
-                        sx={{
-                          // color: pink[800],
-                          padding:"0",
-                          paddingRight:".25rem",
-                          "&.Mui-checked": {
-                            color: "var(--theme-color)",
-                          },
-                        }}
-                      />
-                      <div>{item?.OthersReports}</div>
-                    </div> */}
+                      <RadioUISec checked={(type == ReportType.type && ReportType.id == item?.ID) ? true : false} onClick={(e)=>handleChangeReportType(e, type, item?.ID)} Inputs={Inputs} value={item?.ID} label={item?.OthersReports} />
                     </>
                   );
                 })}
                 
                 {RR_BrokerageData.map((item, i) => {
+                  let type = 'brokerage';
+
                   return (
                     <>
-
-                      <RadioUISec onClick={()=>{
-
-                      }} Inputs={Inputs} value={item?.ID} label={item?.Brokerage}/>
-                      
+                      <RadioUISec checked={(type == ReportType.type && ReportType.id == item?.ID) ? true : false} onClick={(e)=>handleChangeReportType(e, type, item?.ID)} Inputs={Inputs} value={item?.ID} label={item?.Brokerage} />
                     </>
                   );
                 })}
@@ -431,13 +498,25 @@ const selectCompany = () => {
                 disablePortal
                 id="combo-box-demo"
                 options={SectorMasterArr}
+                values={Sectors}
                 multiple
                 getOptionLabel={(option) => option.title}
-                renderOption={(props, option, { selected }) => (
-                  <li {...props}>
+                onChange={(event, newInputValue) => {
+                  var val1 = [];
+                  for (var a = 0; a < newInputValue.length; a++) {
+                    val1.push(newInputValue[a].value);
+                  }
+                  setInputs({ ...Inputs, ['sectorId']: val1 });
+                  setSectors(newInputValue);
+                }}
+
+                renderOption={(props, option ) => (
+                  <li {...props} className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer ">
                     {option.title}
                   </li>
                 )}
+
+                
                 // sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="" placeholder="Select" size="small" className="" />}
               />
@@ -451,14 +530,25 @@ const selectCompany = () => {
                 disablePortal
                 id="combo-box-demo"
                 options={CompanyMasterArr}
+                values={Company}
                 multiple
                 getOptionLabel={(option) => option.title}
-                renderOption={(props, option, { selected }) => (
-                  <li {...props}>
+                renderOption={(props, option ) => (
+                  <li {...props} className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer ">
                     {option.title}
                   </li>
                 )}
-                // sx={{ width: 300 }}
+
+                onChange={(event, newInputValue) => {
+                  var val1 = [];
+                  for (var a = 0; a < newInputValue.length; a++) {
+                    val1.push(newInputValue[a].value);
+                  }
+                  setInputs({ ...Inputs, ['CompanyId']: val1 });
+                  setCompany(newInputValue)
+                  // console.log('Company >> ',company)
+                }}
+
                 renderInput={(params) => <TextField {...params} label="" placeholder={allCompanyLoading ? "Loading..." : "Select"} size="small" className="" />}
               />
               </div>
@@ -471,10 +561,19 @@ const selectCompany = () => {
                 disablePortal
                 id="combo-box-demo"
                 options={BrokerMasterArr}
+                onChange={(event, newInputValue) => {
+                  var val1 = [];
+                  for (var a = 0; a < newInputValue.length; a++) {
+                    val1.push(newInputValue[a].value);
+                  }
+                  setInputs({ ...Inputs, ['BrokerId']: val1 });
+                  setBrokerMaster(newInputValue);
+                }}
+                values={BrokerMaster}
                 multiple
                 getOptionLabel={(option) => option.title}
-                renderOption={(props, option, { selected }) => (
-                  <li {...props}>
+                renderOption={(props, option ) => (
+                  <li {...props} className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer ">
                     {option.title}
                   </li>
                 )}

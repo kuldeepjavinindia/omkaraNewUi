@@ -1,8 +1,59 @@
+import { useDispatch, useSelector } from "react-redux";
+import { Bulk_BlockDetail_Req } from "../../../constants/defaultRequest";
+import { useContext, useEffect } from "react";
+import { Bulk_BlockDetailApi } from "../../../store/slice/Data2Slice";
+import { GlobalContext } from "../../../context/GlobalContext";
 
 const BulkDealTableModal = () => {
+  
+  const {
+    Bulk_BlockDetail:{
+      data: Bulk_BlockDetailData,
+      loading: Bulk_BlockDetailLoading,
+    }
+  } = useSelector(state=> state.Data2)
+  const rr_dispatch = useDispatch();
+
+
+
+  
+  const {
+    BulkDealInsiderModalBtn,
+    // setBulkDealInsiderModalBtn
+  } = useContext(GlobalContext)
+
+
+
+
+  const callAPi = () => {
+      let params = Bulk_BlockDetail_Req
+      params = {
+        ...params,
+        SymbolID: BulkDealInsiderModalBtn?.companyId
+      }
+      rr_dispatch(Bulk_BlockDetailApi(params))
+  }
+
+  useEffect(() => {
+    if(Bulk_BlockDetailLoading){
+      callAPi();
+    }
+  }, [])
+
+  useEffect(() => {
+      if(!Bulk_BlockDetailLoading){
+        console.log('Bulk_BlockDetailData >>> ', Bulk_BlockDetailData)
+      }
+  }, [rr_dispatch, Bulk_BlockDetailLoading])
+
+
+
     return (
         <>
-    <table className="forensicTable w-full  h-full">
+
+
+        
+    {/* <table className="forensicTable w-full  h-full">
     <thead>
       <tr className="!bg-[#1E233A]">
         <th className="!text-white p-2 text-[12px] xl:text-[13px] font-semibold "> COMPANY NAME </th>
@@ -39,7 +90,7 @@ const BulkDealTableModal = () => {
      
     </tbody>
    
-     </table>
+     </table> */}
         </>
     )
 }

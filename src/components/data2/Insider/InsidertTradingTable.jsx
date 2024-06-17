@@ -6,18 +6,20 @@ import {
   // Checkbox,
   Button,
 } from "@material-tailwind/react";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 // import { IoMdInformationCircleOutline } from "react-icons/io";
 import { SiMicrosoftexcel } from "react-icons/si";
-import BulkDealInsiderModal from "./../../CompanyDetail/ModalComment/BulkDealInsiderModal";
+// import BulkDealInsiderModal from "./../../CompanyDetail/ModalComment/BulkDealInsiderModal";
 // import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { InsiderApi } from "../../../store/slice/Data2Slice";
 import { Insider_Req } from "../../../constants/defaultRequest";
 import CommonMUITable from "../MUITable/CommonMUITable";
+import BulkDealInsiderModal from "../../CompanyDetail/Modals/BulkDealInsiderModal";
+import { GlobalContext } from "../../../context/GlobalContext";
 
 const InsiderTradingTable = () => {
   const [open, setOpen] = useState(false);
@@ -43,6 +45,10 @@ const InsiderTradingTable = () => {
     rr_dispatch(InsiderApi(params))
   }
 
+
+  const {
+    BulkDealInsiderModalBtn
+  } = useContext(GlobalContext)
 
 
   
@@ -112,9 +118,16 @@ const InsiderTradingTable = () => {
 
   return (
     <>
-      {/* ============ Start Modal =========== */}
-      <BulkDealInsiderModal open={open} setOpen={setOpen} />
-      {/* ============ End Modal =========== */}
+    
+    {
+      BulkDealInsiderModalBtn != null && (
+        <>
+          {/* ============ Start Modal =========== */}
+          <BulkDealInsiderModal />
+          {/* ============ End Modal =========== */}
+        </>
+      )
+    }
 
       <div className="flex justify-between pb-2">
         <Typography className="text-[15px] text-[#000] font-semibold">

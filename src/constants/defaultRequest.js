@@ -227,7 +227,11 @@ export const RepositoryListReq = {
 };
 
 export const Insider_Req = {
-  date: [moment().add('-1', 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
+  // date: [
+  //   moment().add("-1", "days").format("YYYY-MM-DD"),
+  //   moment().format("YYYY-MM-DD"),
+  // ],
+  date: ["2024-06-13", "2024-06-17"],
   mcap: ["", ""],
   watchlistid: "0",
   netvalue: ["", ""],
@@ -238,7 +242,10 @@ export const Insider_Req = {
 };
 
 export const BulkDeal_Req = {
-  date: ["2024-06-13", "2024-06-14"],
+  date: [
+    moment().add("-2", "days").format("YYYY-MM-DD"),
+    moment().format("YYYY-MM-DD"),
+  ],
   mcap: ["", ""],
   netvalue: ["", ""],
   Exchange: "",
@@ -248,4 +255,118 @@ export const BulkDeal_Req = {
   CompanyName: [null],
 };
 
+export const InsiderDetail_Req = {
+  SymbolID: "",
+  type: "Insider",
+  date: [
+    moment().add("-2", "days").format("YYYY-MM-DD"),
+    moment().format("YYYY-MM-DD"),
+  ],
+  mcap: ["", ""],
+};
+
+export const Bulk_BlockDetail_Req = {
+  SymbolID: "",
+  type: "BULK_deal",
+  date: [
+    moment().add("-2", "days").format("YYYY-MM-DD"),
+    moment().format("YYYY-MM-DD"),
+  ],
+  mcap: ["", ""],
+};
+
+
+
+export const ResultDataReq = [
+  {
+      $id: "",
+      type: "Share Price (TTM)",
+      sub_type: [
+          {
+              Market_Cap: [
+                  "",
+                  ""
+              ],
+              LTP: "",
+              TTM_P_B: "",
+              TTM_P_E: "",
+              ROCE: "",
+              TTMSalesAbs: "",
+              TTMPATAbs: ""
+          }
+      ]
+  },
+  {
+      type: "Result Data",
+      sub_type: [
+          {
+               $id: "5",
+              Sales_YOY: "",
+              Sales_QOQ: "",
+              EBDITA_YOY: "",
+              EBDITA_QOQ: "",
+              PAT_YOY: "",
+              PAT_QOQ: "",
+              GP_YOY: "",
+              GP_QOQ: ""
+          }
+      ]
+  },
+  {
+      type: "Turn Around",
+      sub_type: [
+          {
+              EBDITA_TO: "",
+              PAT_TO: "",
+              Gross_Margin: "",
+              Gross_Profit: ""
+          }
+      ]
+  },
+  {
+      type : "More Filters",
+      sub_type: [
+          {
+              Sector: [
+
+              ],
+              Industry: [
+
+              ],
+              Company: [
+
+              ]
+          }
+      ]
+  },
+  {
+      type: "Date",
+      sub_type: [
+          {
+              FromDate: moment().add('-1', 'days').format('MM/DD/YYYY'),
+              ToDate: moment().format('MM/DD/YYYY') 
+          }
+      ]
+  },
+  {
+      type: "Color",
+      sub_type: [
+          {
+              ColorCode: ""
+          }
+      ]
+  }
+];
+
+
+
+
+
 // END DATA 2 Requests
+
+export const add_to_importantReq = {
+  "item_id":"",
+  "user_id":"",
+  "item_type":"",
+  "action":0
+};

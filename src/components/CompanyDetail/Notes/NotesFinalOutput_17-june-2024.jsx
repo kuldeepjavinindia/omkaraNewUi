@@ -17,91 +17,18 @@ import {
 import { CgSearch } from "react-icons/cg";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { UploadDocumentAnalysNoteApi, addToImportantApi } from "../../../store/slice/SingleCompnaySlice";
-import { UploadDocumentNoteReq, add_to_importantReq } from "../../../constants/defaultRequest";
+import { UploadDocumentAnalysNoteApi } from "../../../store/slice/SingleCompnaySlice";
+import { UploadDocumentNoteReq } from "../../../constants/defaultRequest";
 import { useParams } from "react-router-dom";
 // import { MdEdit } from "react-icons/md";
 import ModalPreview from "./ModalPreview";
 import moment from "moment";
-import { AiFillDelete, AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { AiFillDelete } from "react-icons/ai";
 import { MdEdit } from "react-icons/md";
 import { GlobalContext } from "../../../context/GlobalContext";
 import DeleteDataModal from "../Modals/DeleteDataModal";
 import { NotesActionButtons } from "../../../constants/helper";
 import { useAuthState } from "../../../context/AuthContext";
-
-
-
-
-
-
-const StarImpComponent = (props) => {
-
-
-  const rr_dispatch = useDispatch();
-  const authState = useAuthState()
-  const userId = authState.user.UserID
-
-
-  const {
-    setOpenModal,
-    item
-
-  } = props
-
-  const [checked, setChecked] = useState(item.isImp);
-
-
-  const handleDocToggle = (checked, item_id) => {
-    // console.log(">>>>>>>", item);
-    // setChecked(!item)
-
-    let nC = !checked;
-    let actionVal = 0;
-
-    if (nC) {
-      actionVal = "0"
-    } else {
-      actionVal = "1"
-    }
-
-
-    let params = add_to_importantReq;
-    params = {
-      ...params,
-      "item_id": item_id,
-      "user_id": userId,
-      "item_type": "notes",
-      "action": actionVal
-    }
-
-
-    rr_dispatch(addToImportantApi(params))
-
-    setChecked(nC);
-
-  }
-
-
-
-  return (
-    <>
-      <div onClick={() => handleDocToggle(checked, item?.CommentID)} className=" cursor-pointer"
-      >
-        {checked ? (
-          <AiFillStar size={20} className="text-theme" />
-        ) : (
-          <AiOutlineStar size={20} className="text-theme" />
-        )}
-      </div>
-
-
-    </>
-  )
-}
-
-
-
 
 const NotesFinalOutput = () => {
   const [AllUploadDocuments, setAllUploadDocuments] = useState([]);
@@ -453,24 +380,13 @@ const NotesFinalOutput = () => {
                         key={i}
                         className="flex items-center justify-between gap-4 py-3 border-gray-200 border-b "
                       >
-
-                        <div className="flex items-center gap-3 ">
-
-                      
-                       <StarImpComponent item={item} />
-                      
-
-
-                       <div
+                        <div
                           className="flex items-center gap-4 cursor-pointer"
                           onClick={() => {
                             setSelectedItem(item);
                             setOpen(!open);
                           }}
                         >
-
-                     
-
                           <img
                             src={
                               import.meta.env.VITE_BASE_URL +
@@ -497,15 +413,6 @@ const NotesFinalOutput = () => {
                             </Typography>
                           </div>
                         </div>
-
-                        </div>
-
-                      
-                           
-                            
-
-
-                       
                         <div className="flex gap-1 w-17">
 {
   

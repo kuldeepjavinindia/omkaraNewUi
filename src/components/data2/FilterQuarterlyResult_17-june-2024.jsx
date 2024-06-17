@@ -1,14 +1,9 @@
 
-import { Typography, Button,  Accordion, AccordionHeader, AccordionBody,Input, Checkbox , Radio} from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Typography, Button,  Accordion, AccordionHeader, AccordionBody,Input, Checkbox , Radio   } from "@material-tailwind/react";
+import { useState } from "react";
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
-import { ResultDataApi, ResultDataSheet2Api } from "../../store/slice/Data2Slice";
-import { industryMasterAPI, sectorMasterAPI, allCompanyMasterAPI } from "../../store/slice/MasterSlice";
-import { ResultDataReq } from "../../constants/defaultRequest";
-import Moment from 'moment';
-import { FilterInputs, QuterltyResultFinalReq } from "../../constants/helper";
+
 
 
 function Icon({ id, open }) {
@@ -32,54 +27,7 @@ function Icon({ id, open }) {
 
 const FilterQuarterlyResult = ()=> {
 
-  const [sectorData, setSectorData] = useState();
-  const [industryData, setIndustryData] = useState();
-  const [allCompanyData, setAllCompanyData] = useState();
-  const[eBDITA_TO, setEBDITA_TO] = useState();
-  const[PAT_TO, setPAT_TO] = useState();
-
-
-
-  const [inputValue, setInputValue] = useState({});
-   name="EBDITA_TO"
- const[finalUserInputs, setFinalUserInputs] = useState()
-
-  const rr_dispatch = useDispatch()
-  // const [open, setOpen] = useState(1);
-
-  const  {
-    ResultData : {
-      data: ResultDataTable,
-      loading: ResultDataLoading
-    }
-  }= useSelector((state)=> state.Data2)
-
-
-
-   const {
-    industryMaster : {
-      data: IndustryMasterData,
-      loading : IndustryMasterLoading
-    },
-    sectorMaster : {
-      data: sectorMasterData,
-      loading : sectorMasterLoading
-    },
-    allCompanyMaster : {
-      data: allCompanyMasterMasterData,
-      loading : allCompanyMasterMasterLoading
-    }
-
-   }= useSelector((state)=> state.Masters)
-   
-            //    callApi = (params=userInputStore) => {
-    //   rr_dispatch(ResultDataApi(params))
-    //   // rr_dispatch(ResultDataSheet2Api(ResultDataReq));
-    //  } 
-
-
-// Start Calling ResultDataApi and Update with Input change
-
+    // const [open, setOpen] = useState(1);
 
     const [ActiveAccordion, setActiveAccordion] = useState({
         accordion_1: true,
@@ -91,7 +39,9 @@ const FilterQuarterlyResult = ()=> {
     });
 
 
-   
+    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [selectedIndustry, setSelectedIndustry] = useState([]);
+    const [selectedIndustryTwo, setSelectedIndustryTwo] = useState([]);
 
     const handleOpen = (value) => {
       let key = `accordion_${value}`;
@@ -108,212 +58,56 @@ const FilterQuarterlyResult = ()=> {
         [key]:  true ? false : false 
     }));
   }
-
-  const handleRefreshClassification= ()=> {
-    setSectorData(null);
-    setIndustryData(null);
-    setAllCompanyData(null)
-  }
   
- 
-    const industry = [];
-    IndustryMasterData.map((item, index)=> {
-       let createIndustryOptions = {
-        value: item.IndustryID,
-        label: item.Industry
-       }
-       industry.push(createIndustryOptions)
-    })
+
+  
+    console.log('prev >>> ', ActiveAccordion);
+
+    const options = [
+        { value: 'Option 1', label: 'Option 1' },
+        { value: 'Option 2', label: 'Option 2' },
+
+      ];
 
 
-    const sector = [];
-    sectorMasterData.map((item, index)=> {
-       let createIndustryOptions = {
-        value: item.sectorID,
-        label: item.Sector
-       }
-       sector.push(createIndustryOptions)
-    })
+      const IndustryOptionsTwo = [
+        { value: 'Option 11', label: 'Option 11' },
+        { value: 'Option 22', label: 'Option 22' },
+      ];
 
-    const companies = [];
-    allCompanyMasterMasterData.map((item, index)=> {
-       let createIndustryOptions = {
-        value: item.CompanyID,
-        label: item.CompanyName
-       }
-       companies.push(createIndustryOptions)
-    })
-
-   
+      const IndustryOptions = [
+        { value: 'Option 1', label: 'Option 1' },
+        { value: 'Option 2', label: 'Option 2' },
+      ];
     
       const handleChange = (selected) => {
-        // selected
-        let prevPrams = inputValue
-        prevPrams = {
-          ...prevPrams,
-          Sector: selected.map(item=>item.value)
-        }
-        setInputValue(prevPrams)
-        setSectorData(selected);
-        // console.log( "Sector Data", selected);
+      console.log(selected, ">>>>>>>>>>");
+
+        setSelectedOptions(selected);
+
+        
+        
       };
       
       const handleChangeTwo = (selected)=> {
-        let prevPrams = inputValue
-        prevPrams = {
-          ...prevPrams,
-          Industry: selected.map(item=>item.value)
-        }
-        setInputValue(prevPrams)
-
-        setIndustryData(selected)
-        // console.log( "Industry Data", selected);
+        setSelectedIndustryTwo(selected)
+        
       }
 
       
       const handleChangeThree = (selected)=> {
-        let prevPrams = inputValue
-        prevPrams = {
-          ...prevPrams,
-          Company: selected.map(item=>item.value)
-        }
-        setInputValue(prevPrams)
-
-        setAllCompanyData(selected)
-        // console.log( "Company  Data", selected);
-      }
-
-      const Options_EBDITA_TO = [
-          {label: "QoQ", value: "QoQ"},
-          {label: "YoY", value: "YoY"},
-      ]
+        setSelectedIndustry(selected)
       
-      const handleChangeFour = (selected)=> {
-        setEBDITA_TO(selected)
+        
       }
-
-
-      
-
-      const Options_PAT_TO = [
-        {label: "QoQ", value: "QoQ"},
-        {label: "YoY", value: "YoY"},
-    ]
-    
-    const handleChangeFive = (selected)=> {
-         setPAT_TO(selected)
-    }
     
       const handleChangeChecked = (event) => {
         let val = event.target.checked;
         let name = event.target.name;
-        console.log(name, val);
+       
       };
 
 
-      const handleChangeInput = (e) => {
-        let value = e.target.value;
-        let name = e.target.name; 
-
-        console.log(name, value);
-
-        if(name == 'FromDate' || name == 'ToDate'){
-          var FromDate = inputValue.FromDate;
-            if (name == 'ToDate') {
-              FromDate = Moment(inputValue.FromDate).format('YYYY-MM-DD')
-              if (FromDate > value) {
-                alert('"To date" should be greater than "From date"');
-                event.target.value = Moment(inputValue.ToDate).format('YYYY-MM-DD')//inputs.ToDate
-                event.preventDefault();
-                event.stopPropagation();
-                return false;
-              }
-            }
-            if (name == 'FromDate') {
-              var ToDate = inputValue.ToDate;
-              ToDate = Moment(inputValue.ToDate).format('YYYY-MM-DD')
-              if (ToDate < value) {
-                // console.log('event >>>'+event);
-                alert('"From date" should be less than "To date"');
-                event.target.value = Moment(inputValue.FromDate).format('YYYY-MM-DD')
-                event.preventDefault();
-                event.stopPropagation();
-                return false;
-              }
-            }
-            setInputValue((prev) => ({
-              ...prev,
-              ['Date']: [
-                FromDate,
-                ToDate,
-              ]
-            }));
-            
-        }
-
-        setInputValue((prev) => ({
-          ...prev,
-          [name]: value
-        }));
-
-      };
-
-
-  
-
-      // Start Calling ResultDataApi and Update with Input change
-    const callApi = (params=ResultDataReq) => { 
-      rr_dispatch(ResultDataApi(params));
-      // rr_dispatch(ResultDataSheet2Api(ResultDataReq));
-      rr_dispatch(industryMasterAPI())
-      rr_dispatch(sectorMasterAPI())
-      rr_dispatch(allCompanyMasterAPI())
-    }
-
-    const inputBothVal = [ 'Date', 'Market_Cap'];
-
-    const applyBtn = () => {
-      let userInputStore = []
-      // let filterData = {...inputValue, ...sectorData , ...industryData, ...allCompanyData }
-// console.log("input values >>>>>>", inputValue);
-      
-      let params1 = FilterInputs;
-      
-      Object.keys(inputValue).map(key=>{
-        if(inputBothVal.includes(key)){
-          params1 = {
-            ...params1,
-            [key]:{
-              ...FilterInputs[key],
-              value1: inputValue[key][0],
-              value2: inputValue[key][1],
-            }
-          }
-        }else{
-            params1 = {
-              ...params1,
-              [key]:{
-                ...FilterInputs[key],
-                value1: inputValue[key]
-              }
-            }
-        }
-      })
-      let finalParams = QuterltyResultFinalReq(params1);
-
-      console.log(">>>>>>>", params1);
-
-      // rr_dispatch(ResultDataApi(finalParams))
-  
-    }
-    
-    // console.log(finalUserInputs);
-
-           useEffect(() => {
-            callApi()
-          }, [])
-    
-      
     return (
         
         <>
@@ -322,7 +116,7 @@ const FilterQuarterlyResult = ()=> {
         <div className="flex items-center justify-between pl-2 sticky top-[-9px] z-10  bg-[#E9EDEF]">
                     <Typography className="text-[15px] text-[#000] font-semibold">Filter</Typography>
                     <div>
-                    <Button className="mr-1 bg-theme text-[#fff] py-2 px-2 rounded shadow-none" onClick={()=>applyBtn()}>APPLY</Button>
+                    <Button className="mr-1 bg-theme text-[#fff] py-2 px-2 rounded shadow-none">APPLY</Button>
                     <Button className="mr-1 bg-[#FAE0E0] text-[#DD2025] py-2 px-2 rounded shadow-none">RESET </Button>
                     </div>
                 </div>
@@ -339,24 +133,22 @@ const FilterQuarterlyResult = ()=> {
          <Input
             type="date"
             name="FromDate"
-            defaultValue={Moment().add('-1', 'days').format('YYYY-MM-DD')}
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
           />
-          
+         
          <label className="text-[12px] text-[#000] font-medium">To </label>
          <Input
             type="date"
-            name="ToDate"
-            defaultValue={Moment().format('YYYY-MM-DD')}
+            name="To"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
           />
         </AccordionBody>
       </Accordion>
@@ -366,20 +158,20 @@ const FilterQuarterlyResult = ()=> {
        <Accordion open={ActiveAccordion.accordion_2} className="mt-2 rounded bg-[#fff] px-2 py-3 mt-2" icon={<Icon id={2} open={ActiveAccordion.accordion_2} />}>
         <AccordionHeader onClick={() => handleOpen(2)} className="flex border-none py-0 pt-0">
         <Typography className="text-[15px] text-[#000] font-semibold w-[90%]">Classification</Typography>
-            <Typography className="text-[13px] text-[#FF2026] font-semibold" onClick={()=> handleReset(2)  }>RESET</Typography>
+            <Typography className="text-[13px] text-[#FF2026] font-semibold" onClick={()=> handleReset(2)}>RESET</Typography>
         </AccordionHeader>
         <AccordionBody>
         <div className="flex justify-between">
 
 
         <label className="text-[12px] text-[#000] font-medium">Sectors (58)  </label>
-        <Typography className="text-[#7B70FF] text-[12px] font-semibold cursor-pointer" onClick={handleRefreshClassification}>Refresh</Typography>
+        <Typography className="text-[#7B70FF] text-[12px] font-semibold cursor-pointer">Refresh</Typography>
         </div>
         <Select
           components={animatedComponents}
           isMulti
-          options={sector} 
-          value={sectorData}
+          options={options}
+          value={selectedOptions}
           onChange={handleChange}
           closeMenuOnSelect={false}
           hideSelectedOptions={false}
@@ -392,8 +184,8 @@ const FilterQuarterlyResult = ()=> {
         <Select
           components={animatedComponents}
           isMulti
-          options={industry}
-          value={industryData}
+          options={IndustryOptionsTwo}
+          value={selectedIndustryTwo}
           onChange={handleChangeTwo}
           closeMenuOnSelect={false}
           hideSelectedOptions={false}
@@ -402,12 +194,12 @@ const FilterQuarterlyResult = ()=> {
           classNamePrefix="react-select"
         />
 
-   <label className="text-[12px] text-[#000] font-medium">Compnay </label>
+   <label className="text-[12px] text-[#000] font-medium">Industry (23 222) </label>
         <Select
           components={animatedComponents}
           isMulti
-          options={companies}
-          value={allCompanyData}
+          options={IndustryOptions}
+          value={selectedIndustry}
           onChange={handleChangeThree}
           closeMenuOnSelect={false}
           hideSelectedOptions={false}
@@ -416,7 +208,7 @@ const FilterQuarterlyResult = ()=> {
           classNamePrefix="react-select"
         />
 <div className="ml-[-11px]">
-<Checkbox label="Portfolio" name="Portfolio" onChange={handleChangeChecked}  className="w-[18px] h-[18px] custom-checkbox checked:border-[#4448F5] checked:bg-[#4448F5] rounded" />
+<Checkbox label="Portfolio" onChange={handleChangeChecked}  className="w-[18px] h-[18px] custom-checkbox checked:border-[#4448F5] checked:bg-[#4448F5] rounded" />
 </div>
   
 
@@ -432,114 +224,107 @@ const FilterQuarterlyResult = ()=> {
         
         </AccordionHeader>
         <AccordionBody>
-        <label className="text-[12px] text-[#000] font-medium" htmlFor="Market_Cap" >Market Cap </label>
+        <label className="text-[12px] text-[#000] font-medium">Market Cap </label>
+        
         <div className="flex gap-2">
         <div className="min-w[48%] w-[48%]">
         <Input
             type="text"
-            name="MarketCapFrom"
+            name="marketcap100"
             className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">100"
           />
         </div>
 
 <div className="min-w[48%] w-[48%]">
-       <Input
+<Input
             type="text"
-            name="MarketCapTo"
+            name="marketcap5000"
             className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder="<5000"
           />
 </div>
         </div>
 
-        <label className="text-[12px] text-[#000] font-medium" htmlFor="LTP" >LTP </label>
+        <label className="text-[12px] text-[#000] font-medium">LTP </label>
         <Input
             type="text"
-            name="LTP"
+            name="ltp"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">10"
           />
 
 
-<label className="text-[12px] text-[#000] font-medium" htmlFor="TTM_P_B">TTM (P/B) </label>
+<label className="text-[12px] text-[#000] font-medium">TTM (P/E) </label>
         <Input
             type="text"
-            name="TTM_P_B"
+            name="TTM"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">15"
           />
 
 
-    <label className="text-[12px] text-[#000] font-medium" htmlFor="TTM_P_E">TTM (P/E) </label>
+<label className="text-[12px] text-[#000] font-medium">ROCE </label>
         <Input
             type="text"
-            name="TTM_P_E"
+            name="rice"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">15"
           />
 
 
-<label className="text-[12px] text-[#000] font-medium" htmlFor="ROCE">ROCE </label>
+<label className="text-[12px] text-[#000] font-medium">TTM SALES ABS </label>
         <Input
             type="text"
-            name="ROCE"
+            name="TTM Sale"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">15"
           />
 
 
-   <label className="text-[12px] text-[#000] font-medium" htmlFor="TTMSalesAbs">TTM SALES ABS </label>
+<label className="text-[12px] text-[#000] font-medium">TTM PAT ABS </label>
         <Input
             type="text"
-            name="TTMSalesAbs"
+            name="TTM Pat Abs"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
-            placeholder=">15"
-          />
-
-
-<label className="text-[12px] text-[#000] font-medium" htmlFor="TTMPATAbs">TTM PAT ABS </label>
-        <Input
-            type="text"
-            name="TTMPATAbs"
-            className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-            labelProps={{
-              className: "hidden",
-            }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">50"
           />
+
+      
+         
+     
         </AccordionBody>
       </Accordion>
       {/* End Card Form */}
+
 
        {/* Start Card Form */}
        <Accordion open={ActiveAccordion.accordion_4}  className="rounded bg-[#fff] px-2 py-3 mt-2" icon={<Icon id={4} open={ActiveAccordion.accordion_4} />}>
@@ -548,106 +333,107 @@ const FilterQuarterlyResult = ()=> {
         
         </AccordionHeader>
         <AccordionBody>
-      
-      <label className="text-[12px] text-[#000] font-medium" htmlFor="Sales_YOY">SALES (YOY%) </label>
+        <label className="text-[12px] text-[#000] font-medium">Market Cap </label>
+       
+        <label className="text-[12px] text-[#000] font-medium">SALES (YOY%) </label>
         <Input
             type="text"
-            name="Sales_YOY"
+            name="sale yoy"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">10"
           />
 
 
-<label className="text-[12px] text-[#000] font-medium" htmlFor="Sales_QOQ">SALES (QOQ%) </label>
+<label className="text-[12px] text-[#000] font-medium">SALES (QOQ%) </label>
         <Input
             type="text"
-            name="Sales_QOQ"
+            name="sale QOQ"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">10"
           />
 
 
-<label className="text-[12px] text-[#000] font-medium" htmlFor="GP_YOY">GROSS PROFIT (YOY%) </label>
+<label className="text-[12px] text-[#000] font-medium">GROSS PROFIT (YOY%) </label>
         <Input
             type="text"
-            name="GP_YOY"
+            name="gross profit yoy"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">10"
           />
 
 
-<label className="text-[12px] text-[#000] font-medium" htmlFor="GP_QOQ">GROSS PROFIT (QOQ%) </label>
+<label className="text-[12px] text-[#000] font-medium">GROSS PROFIT (QOQ%) </label>
         <Input
             type="text"
-            name="GP_QOQ"
+            name="gross profit qoq"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">10"
           />
 
 
-  <label className="text-[12px] text-[#000] font-medium" htmlFor="EBDITA_YOY">EBDITA (YOY%) </label>
+<label className="text-[12px] text-[#000] font-medium">EBDITA (YOY%) </label>
         <Input
             type="text"
-            name="EBDITA_YOY"
+            name="ebdita yoy"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">10"
           />
 
 
-<label className="text-[12px] text-[#000] font-medium" htmlFor="EBDITA_QOQ">EBDITA (QOQ%) </label>
+<label className="text-[12px] text-[#000] font-medium">EBDITA (QOQ%) </label>
         <Input
             type="text"
-            name="EBDITA_QOQ"
+            name="ebdita QOQ"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">10"
           />
 
-<label className="text-[12px] text-[#000] font-medium" htmlFor="PAT_YOY">PAT (YOY%)</label>
+<label className="text-[12px] text-[#000] font-medium">PAT (YOY%)</label>
         <Input
             type="text"
-            name="PAT_YOY"
+            name="pat yoy"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">10"
           />
 
 
-<label className="text-[12px] text-[#000] font-medium" htmlFor="PAT_QOQ">PAT (QOQ%)</label>
+<label className="text-[12px] text-[#000] font-medium">PAT (QOQ%)</label>
         <Input
             type="text"
-            name="PAT_QOQ"
+            name="pat QOQ"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
+            // onChange={handleChangeInput}
             placeholder=">10"
           />
       
@@ -666,63 +452,28 @@ const FilterQuarterlyResult = ()=> {
         
         </AccordionHeader>
         <AccordionBody>
-        <label className="text-[12px] text-[#000] font-medium" htmlFor="EBDITA_TO">EBIDTA Margin (%) - To + </label>
-
-        {/* <select name="EBDITA_TO" id="" value={eBDITA_TO}   onChange={handleChangeFour}>
-           {
-            Options_EBDITA_TO.map((item)=> {
-             return (
-              <>
-               <option>
-                {item.value}
-              </option>
-              </>
-             )
-            })
-           }
-        </select> */}
-      
-      <Select
-  name="EBDITA_TO"
-  components={animatedComponents}
-  options={Options_EBDITA_TO}   
-  value={eBDITA_TO}               
-  onChange={handleChangeFour}       
-  closeMenuOnSelect={true}          
-  isClearable={true}              
-  hideSelectedOptions={false}       
-  placeholder="Select Name"      
-  className="react-select-container"
-  classNamePrefix="react-select"
-  isMulti={false}        
-/>
-      
-
-
-<label className="text-[12px] text-[#000] font-medium" htmlFor="PAT_TO">PAT-TO + </label>
-<Select
-  name="PAT_TO"
-  components={animatedComponents}
-  options={Options_PAT_TO}   
-  value={PAT_TO}               
-  onChange={handleChangeFive}       
-  closeMenuOnSelect={true}          
-  isClearable={true}              
-  hideSelectedOptions={false}       
-  placeholder="Select Name"      
-  className="react-select-container"
-  classNamePrefix="react-select"
-  isMulti={false}        
-/>
-        {/* <Input
+        <label className="text-[12px] text-[#000] font-medium">EBIDTA Margin (%) - To + </label>
+        <Input
             type="text"
-            name="PAT_TO"
+            name="ebidta margin"
             className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
             labelProps={{
               className: "hidden",
             }}
-            onChange={handleChangeInput}
-          /> */}
+            // onChange={handleChangeInput}
+          />
+
+
+<label className="text-[12px] text-[#000] font-medium">PAT-TO + </label>
+        <Input
+            type="text"
+            name="sale QOQ"
+            className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+            labelProps={{
+              className: "hidden",
+            }}
+            // onChange={handleChangeInput}
+          />
  </AccordionBody>
       </Accordion>
       {/* End Card Form */}
@@ -738,22 +489,21 @@ const FilterQuarterlyResult = ()=> {
 
 <div className="flex flex-col">
   <Radio
-    name="conditonsOptions"
-    value= "all"
+    name="selection"
      className=" custom-radio  checked:border-[#4448F5]"
-     onChange={handleChangeInput}
+    defaultChecked
     label={
       <div>
-        <Typography color="" className="text-[13px]"> All </Typography>
+        <Typography color="" className="text-[13px]">
+          All
+        </Typography>
       </div>
     }
   />
 
   <Radio
-    name="conditonsOptions"
-    value="saleUpTo10%"
+    name="selection"
      className=" custom-radio  checked:border-[#4448F5]"
-     onChange={handleChangeInput}
     label={
       <div>
         <Typography color="" className="text-[13px]">
@@ -764,10 +514,8 @@ const FilterQuarterlyResult = ()=> {
   />
 
   <Radio
-    value="saleUpTo20%"
-     name="conditonsOptions"
+    name="selection"
      className=" custom-radio  checked:border-[#4448F5]"
-     onChange={handleChangeInput}
     label={
       <div>
         <Typography color="" className="text-[13px]">
@@ -778,10 +526,8 @@ const FilterQuarterlyResult = ()=> {
   />
 
   <Radio
-    value="saleDownTo10%"
-     name="conditonsOptions"
+    name="selection"
  className=" custom-radio  checked:border-[#4448F5]"
- onChange={handleChangeInput}
     label={
       <div>
         <Typography color="" className="text-[13px]">

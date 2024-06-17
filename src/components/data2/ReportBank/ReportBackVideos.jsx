@@ -27,8 +27,10 @@ const ReportBackVideos = () => {
 
   const {
     ReportBankDrawer,
-    // setReportBankDrawer
+    setReportBankDrawer
   } = useContext(GlobalContext);
+
+
 
   const authState = useAuthState();
   const crtUserId = authState.user.UserID;
@@ -160,7 +162,7 @@ const ReportBackVideos = () => {
         <Typography className="text-[21px] text-[#000] font-bold">
           {ReportBankDrawer?.row_data?.CompanyName}
         </Typography>
-        <IconButton variant="text" color="blue-gray" onClick={() => {}}>
+        <IconButton variant="text" color="blue-gray" onClick={() => setReportBankDrawer(null)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
