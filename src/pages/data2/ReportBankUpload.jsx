@@ -8,7 +8,7 @@ import ReportOfReportTags from "../../components/data2/ReportUpload/ReportOfRepo
 
 const ReportBankUpload = ()=> {
 
-     const[activeButton, setActiveButton] =  useState(1)
+const[activeButton, setActiveButton] =  useState(1)
 
    const PageButton = [
     {

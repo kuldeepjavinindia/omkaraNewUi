@@ -1,0 +1,150 @@
+table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  table td, table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  table tr:nth-child(even){background-color: #f2f2f2;}
+  
+  table tr:hover {background-color: #ddd;}
+  
+  table th,  tfoot td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #525252;
+    color: white;
+  }
+  .headerName{
+    display: flex; justify-content: space-around; flex-wrap: wrap;
+    margin: 1rem 0;
+  }
+  .headerName a:hover {
+    background: #000;
+    color: #fff;
+}
+  .headerName a {
+    text-decoration: none;
+    border: 1px solid;
+    color: #000;
+    padding: 0.2rem 0.5rem;
+}
+.column-hide-Checkbox div {
+  display: inline;
+  margin: 0 0.5rem 0 0;
+}
+
+.b-tableAction{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0 0;
+  width: 100%;
+}
+
+.pagination button{
+  margin: 0 0.2rem;
+  height: 1.6rem;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.text-ellipsis a {
+  color: unset;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+}
+.body .tr:hover .td {
+  background: #c2d9fd !important;
+}
+
+.aSBan .table.sticky [data-sticky-last-left-td]{
+  box-shadow: unset !important;
+}
+
+.aSBan .table .td{
+  border-right: unset !important;
+}
+.th {
+  display: flex !important;
+  justify-content: center !important;
+  align-content: space-around;
+}
+div.table.sticky {
+  /* font-size: 0.65rem; */
+  font-size: 12px;
+  font-weight: 500;
+}
+.td:not(:nth-child(1), :nth-child(2)), .th {
+  text-align: center !important;
+}
+
+.totalRow1{
+  box-sizing: border-box;
+    width: 150px;
+    position: sticky;
+    z-index: 3;
+    left: 0px;
+}
+.totalRow2{
+  box-sizing: border-box;
+  width: 150px;
+  position: sticky;
+  z-index: 3;
+  left: 150px;
+}
+.totalRow3{
+  box-sizing: border-box;
+  width: 100px;
+  position: sticky;
+  z-index: 3;
+  left: 300px;
+}
+.calender .tr .td {
+  text-align: left !important;
+}
+.calender .tr .th {
+    background-color: #ffd3b3 !important;
+    font-weight: 600;
+}
+
+.calender .tr .td {
+    border-right: 1px solid #ddd !important;
+}
+.calender .tr:hover .td {
+  background: revert !important;
+}
+
+
+
+.firstTable .td:nth-child(4),
+.firstTable .td:nth-child(5),
+.firstTable .td:nth-child(6),
+.firstTable .td:nth-child(7),
+.firstTable .td:nth-child(8),
+.firstTable .td:nth-child(14),
+.firstTable .td:nth-child(15),
+.firstTable .td:nth-child(16),
+.firstTable .td:nth-child(17),
+.firstTable .td:nth-child(18),
+.firstTable .td:nth-child(24),
+.firstTable .td:nth-child(25),
+.firstTable .td:nth-child(26),
+.firstTable .td:nth-child(27),
+.firstTable .td:nth-child(28)
+{
+  background: #e0ecff;
+}
+
+.tr .th.customHeaderColor {
+  background: #ffb177 !important;
+}

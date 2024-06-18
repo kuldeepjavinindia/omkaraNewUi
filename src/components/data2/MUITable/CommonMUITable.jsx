@@ -16,6 +16,9 @@ import { visuallyHidden } from '@mui/utils';
 import { TextField } from '@mui/material';
 // import InsiderPopup from './InsiderPopup';
 import { useEffect } from 'react';
+import { Button, Input } from '@material-tailwind/react';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { CgSearch } from 'react-icons/cg';
 
 
 function createData(name, calories, fat, carbs, protein) {
@@ -95,7 +98,7 @@ export default function CommonMUITable(props) {
   const [orderBy, setOrderBy] = React.useState('column_2');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  // const [dense, setDense] = React.useState(false);
+  
 
   const handleRequestSort = (event, property) => {
     
@@ -312,137 +315,179 @@ EnhancedTableToolbar.propTypes = {
     
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+    <>
+    
+    <div>
+            {/* ========= Start Header Page =========== */}
+            <div className="flex justify-between items-center">
+              <div className="flex-grow-2 flex items-center gap-2 w-[60%] ">
+                <div>
+                  {/* <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
+                    SHOWING <span className="text-theme">1 to 10 of 10</span>
+                    ENTRIES
+                  </Typography> */}
+                  <Typography variant='sub-title2' sx={{ fontSize: '.9rem' }}>
+                    Showing <b>{FilterData && FilterData.length > 0 ? page * rowsPerPage + 1 : 0}</b> to <b>{FilterData && FilterData.length > 0 ? (FilterData.length > page * rowsPerPage + rowsPerPage && rowsPerPage != '-1') ?  page * rowsPerPage + rowsPerPage : FilterData.length : "0"}</b> of <b>{FilterData && FilterData.length}</b> entries
+                  </Typography>
 
+                </div>
+                <div className="flex-grow">
+                  <Input
+                    readOnly
+                    type="text"
+                    placeholder="Search Company"
+                    className="!border !border-gray-200 !h-8 !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                    labelProps={{
+                      className: "hidden",
+                    }}
+                    icon={
+                      <CgSearch
+                        size={19}
+                        className="text-gray-400 top-[-2px] absolute"
+                      />
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="flex-grow-0 flex justify-center mx-[14px] mt-[-4px]">
+                {/* <Select
+                  className="smallInput bg-[#fff] mt-0 !h-8 rounded border-none"
+                  value="Show 15"
+                  labelProps={{
+                    className: "hidden",
+                  }}
+                >
+                  <Option>Option 1</Option>
+                </Select> */}
+              </div>
+
+              <div className="flex-grow-1 ">
+                <div className="flex gap-1">
+                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+                    <IoIosArrowBack size={16} />
+                  </Button>
+                  {/* <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+                    <IoIosArrowBack size={16} />
+                    <IoIosArrowBack size={16} />
+                  </Button> */}
+                  <div className="w-[100px]">
+                    <Input
+                      type="text"
+                      defaultValue="1"
+                      size="md"
+                      className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                      labelProps={{
+                        className: "hidden",
+                      }}
+                    />
+                  </div>
+                  <Button className="w-[48px] !h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+                    <IoIosArrowForward />
+                  </Button>
+                  {/* <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+                    <IoIosArrowForward />
+                    <IoIosArrowForward />
+                  </Button> */}
+                </div>
+              </div>
+            </div>
+            {/* ========= End Header Page =========== */}
+
+            <div className="">
+              {/* Start Table */}
+              <div className="mt-8 data2Tabels relative overflow-x-auto">
+
+       
+              <Box sx={{ width: '100%' }}>
+        <Paper sx={{ width: '100%', mb: 2 }}>
+
+          
         
-      {/* <Box sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
-        <Typography variant='sub-title2' sx={{ fontSize: '.9rem', marginLeft: '1rem' }}>
-          Showing <b>{FilterData && FilterData.length > 0 ? page * rowsPerPage + 1 : 0}</b> to <b>{FilterData && FilterData.length > 0 ? (FilterData.length > page * rowsPerPage + rowsPerPage && rowsPerPage != '-1') ?  page * rowsPerPage + rowsPerPage : FilterData.length : "0"}</b> of <b>{FilterData && FilterData.length}</b> entries
-        </Typography>
+        
+          <TableContainer className='table-wo-border'  sx={{ 
+            maxHeight:'calc(100vh - 250px)'
+          }} ref={divRef} >
+            <Table stickyHeader aria-label="sticky table " id="table-to-xls">
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={FilterData && FilterData.length}
+              />
+              <TableBody>
+                {/* if you don't need to support IE11, you can replace the `stableSort` call with:
+                  rows.slice().sort(getComparator(order, orderBy)) */}
+                  {/* {console.log(FilterData)} */}
+                { FilterData && stableSort(FilterData, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    
+                    return (
 
-        <TextField placeholder='Search' className='search-input0' sx={{ padding: '0.1rem 0.7rem' }} onChange={(e) => requestSearch(e.target.value)} /> 
+                      <TableRow role="checkbox" tabIndex={-1} key={row?.code}>
+                        { 
+                        tableColumns && 
+                        tableColumns.map((column, i0) => {
+                          // console.log(row);
+                          // const customItem = row[i0];
+                          // const value = customItem?.value;
+                          
+                          const customItem = row[column.id + '_all'];
+                          const value = row[column.id];
+                          const COMPANY_NAME = row['column_2'];
+                          const stockId = row['column_1'];
+                          
+                          let cStyle = { textAlign: 'left', padding: '0.5rem', fontSize: '12px',fontWeight: '500', color: '#000' };
+                          if(column.id === "sectorName"){
+                            cStyle['cursor'] = "pointer";
+                          }
+                          
+                          var cStyleLeft = 0;
 
-        <Input
-          type="text"
-          defaultValue="1"
-          size="md"
-          className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-          labelProps={{
-            className: "hidden",
-          }}
-        />
-
-        <TablePagination
-          className='table-pagination-top'
-          rowsPerPageOptions={rowPerPageArr}
-          component="div"
-          count={FilterData && FilterData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Box> */}
-
-
-
-        {/* <InsiderPopup Open={Open} setOpen={setOpen} companyName={SelectedCompany?.companyName} companyId={SelectedCompany?.companyId} /> */}
-
-
-        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
-        <TableContainer className='table-wo-border'  sx={{ 
-          maxHeight:'calc(100vh - 250px)'
-         }} ref={divRef} >
-          <Table stickyHeader aria-label="sticky table " id="table-to-xls">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={FilterData && FilterData.length}
-            />
-            <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
-                 {/* {console.log(FilterData)} */}
-              { FilterData && stableSort(FilterData, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
+                          if (column.sticky) {
+                            cStyleLeft = i0 * 170; 
+                            cStyle.position = 'sticky';
+                            cStyle.top = '0px';
+                            cStyle.left = cStyleLeft;
+                            cStyle.zIndex = 9;
+                          }
+                          cStyle.backgroundColor = (customItem?.bgColor || '#fff');
+                          cStyle.color = (customItem?.textColor || '#333');
+                          if(column.id !== "column_2"){
+                            cStyle.textAlign = 'center';
+                          }
+                          if(column.id === "column_2"){
+                            cStyle.cursor = 'pointer';
+                          }
+                          
+                          return (
+                            <TableCell onClick={(e)=> column.id === "column_2" ? clickOnCell(row, COMPANY_NAME, stockId) : null } key={column.id} align={column.align} style={cStyle} >
+                              {value}
+                            </TableCell>
+                          );
+                        })}
+                        
+                      </TableRow>
+                    );
+                  })}
                   
-                  const labelId = `enhanced-table-checkbox-${index}`;
+              </TableBody>
+            </Table>
+          </TableContainer>
+          
+        </Paper>
+      </Box>
 
-                  return (
+                        
+              </div>
+              {/* End Table */}
+            </div>
+          </div>
 
-                    <TableRow role="checkbox" tabIndex={-1} key={row?.code}>
-                      { 
-                      tableColumns && 
-                      tableColumns.map((column, i0) => {
-                        // console.log(row);
-                        // const customItem = row[i0];
-                        // const value = customItem?.value;
-                        
-                        const customItem = row[column.id + '_all'];
-                        const value = row[column.id];
-                        const COMPANY_NAME = row['column_2'];
-                        const stockId = row['column_1'];
-                        
-                        let cStyle = { textAlign: 'left', padding: '0.5rem', fontSize: '12px',fontWeight: '500', color: '#000' };
-                        if(column.id === "sectorName"){
-                          cStyle['cursor'] = "pointer";
-                        }
-                        
-                        var cStyleLeft = 0;
-
-                        if (column.sticky) {
-                          cStyleLeft = i0 * 170; 
-                          cStyle.position = 'sticky';
-                          cStyle.top = '0px';
-                          cStyle.left = cStyleLeft;
-                          cStyle.zIndex = 9;
-                        }
-                        cStyle.backgroundColor = (customItem?.bgColor || '#fff');
-                        cStyle.color = (customItem?.textColor || '#333');
-                        if(column.id !== "column_2"){
-                          cStyle.textAlign = 'center';
-                        }
-                        if(column.id === "column_2"){
-                          cStyle.cursor = 'pointer';
-                        }
-                        
-                        return (
-                          <TableCell onClick={(e)=> column.id === "column_2" ? clickOnCell(row, COMPANY_NAME, stockId) : null } key={column.id} align={column.align} style={cStyle} >
-                            {value}
-                          </TableCell>
-                        );
-                      })}
-                      
-                    </TableRow>
-                  );
-                })}
-                
-            </TableBody>
-          </Table>
-        </TableContainer>
-        
-        
-        {/* <TablePagination
-          className='table-pagination-top'
-          rowsPerPageOptions={rowPerPageArr}
-          component="div"
-          count={FilterData && FilterData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
-        
-      </Paper>
-    </Box>
+   
+    </>
   );
 }

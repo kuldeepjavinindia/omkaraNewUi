@@ -372,6 +372,106 @@ export const QuterltyResultFinalReq = (data) => {
 
 
 
+
+
+
+
+export const valuation_Req = (inputsArray) => {
+
+  const filterArray = [
+    {
+      "type": "Classification",
+      "sub_type": [
+        {
+          "Sector": (inputsArray?.sectors?.value1 || null),
+          "Industry": (inputsArray?.industry?.value1 || null),
+          "Company": (inputsArray?.company?.value1 || null),
+          "Portfolio": (inputsArray?.portfolio?.value1 || false)
+        }
+      ]
+    },
+    {
+      "type": "Share Price (TTM)",
+      "sub_type": [
+        {
+          "Market_Cap": [(inputsArray?.Market_Cap?.value1 || ""), (inputsArray?.Market_Cap?.value2 || "")],
+          "LTP": (inputsArray?.LTP?.value1 || null),
+          "Away52wkHigh": (inputsArray?.Away52wkHigh?.value1 || null),
+          "Away52wkLow": (inputsArray?.Away52wkLow?.value1 || null),
+          "AllTimeHigh": (inputsArray?.AllTimeHigh?.value1 || null),
+          "TTM_PE": [(inputsArray?.TTM_PE?.value1 || ""), (inputsArray?.TTM_PE?.value2 || "")], //(inputsArray?.TTM_PE?.value1 || null),
+          "TTM_PBV": [(inputsArray?.TTM_PBV?.value1 || ""), (inputsArray?.TTM_PBV?.value2 || "")], //(inputsArray?.TTM_PBV?.value1 || null)
+        }
+      ]
+    },
+    {
+      "type": "Historical",
+      "sub_type": [
+        {
+          "Diff_Bw_5yrsAvg_PBV": (inputsArray?.Diff_Bw_5yrsAvg_PBV?.value1 || null),
+          "Diff_Bw_10yrsAvg_PBV": (inputsArray?.Diff_Bw_10yrsAvg_PBV?.value1 || null),
+          "Diff_Bw_5yrsAvg_PE": (inputsArray?.Diff_Bw_5yrsAvg_PE?.value1 || null),
+          "Diff_Bw_10yrsAvg_PE": (inputsArray?.Diff_Bw_10yrsAvg_PE?.value1 || null),
+          "Avg_Sales_3yrs": (inputsArray?.Avg_Sales_3yrs?.value1 || null),
+          "Avg_Sales_5yrs": (inputsArray?.Avg_Sales_5yrs?.value1 || null),
+          "Avg_Sales_10yrs": (inputsArray?.Avg_Sales_10yrs?.value1 || null),
+          "Avg_PAT_3yrs": (inputsArray?.Avg_PAT_3yrs?.value1 || null),
+          "Avg_PAT_5yrs": (inputsArray?.Avg_PAT_5yrs?.value1 || null),
+          "Avg_PAT_10yrs": (inputsArray?.Avg_PAT_10yrs?.value1 || null),
+          "GrossProfit3yrs": [(inputsArray?.GrossProfit3y?.value1 || ""), (inputsArray?.GrossProfit3y?.value2 || "")], //(inputsArray?.GrossProfit?.value1 || null),
+          "GrossProfit5yrs": [(inputsArray?.GrossProfit5y?.value1 || ""), (inputsArray?.GrossProfit5y?.value2 || "")], //(inputsArray?.GrossProfit?.value1 || null),
+          "GrossProfit10yrs": [(inputsArray?.GrossProfit10y?.value1 || ""), (inputsArray?.GrossProfit10y?.value2 || "")], //(inputsArray?.GrossProfit?.value1 || null),
+          "GrossProfitMargin3yrs": [(inputsArray?.GrossProfitMargin3y?.value1 || ""), (inputsArray?.GrossProfitMargin3y?.value2 || "")], //(inputsArray?.GrossProfitMargin?.value1 || null)
+          "GrossProfitMargin5yrs": [(inputsArray?.GrossProfitMargin5y?.value1 || ""), (inputsArray?.GrossProfitMargin5y?.value2 || "")], //(inputsArray?.GrossProfitMargin?.value1 || null)
+          "GrossProfitMargin10yrs": [(inputsArray?.GrossProfitMargin10y?.value1 || ""), (inputsArray?.GrossProfitMargin10y?.value2 || "")], //(inputsArray?.GrossProfitMargin?.value1 || null)
+        }
+      ]
+    },
+    {
+      "type": "Balance Sheet",
+      "sub_type": [
+        {
+          "Total_DebtEquity": (inputsArray?.Total_DebtEquity?.value1 || null),
+          "GrossBlockAdditionin_5yrs": (inputsArray?.GrossBlockAdditionin_5yrs?.value1 || null),
+          "TotalDebtIncreasein_5yrs": (inputsArray?.TotalDebtIncreasein_5yrs?.value1 || null),
+          "ROCE": [(inputsArray?.ROCE?.value1 || ""), (inputsArray?.ROCE?.value2 || "")], //(inputsArray?.ROCE?.value1 || null),
+          "NetCash": (inputsArray?.NetCash?.value1 || null),
+          "CFO_EBIDTA": (inputsArray?.CFO_EBIDTA?.value1 || null),
+          "Net_Cash_Mcap": (inputsArray?.Net_Cash_Mcap?.value1 || null)
+        }
+      ]
+    },
+
+    {
+      "type": "ShareHolding Pattern",
+      "sub_type": [
+        {
+          "Promoter_Holding": (inputsArray?.Promoter_Holding?.value1 || null),
+          "Pledge": (inputsArray?.Pledge?.value1 || null)
+        }
+      ]
+    },
+
+    {
+      "type": "ROCE",
+      "sub_type": [
+        {
+          "ROCE3yrs": [(inputsArray?.ROCE3yrs?.value1 || ""), (inputsArray?.ROCE3yrs?.value2 || "")],
+          "ROCE5yrs": [(inputsArray?.ROCE5yrs?.value1 || ""), (inputsArray?.ROCE5yrs?.value2 || "")],
+          "ROCE10yrs": [(inputsArray?.ROCE10yrs?.value1 || ""), (inputsArray?.ROCE10yrs?.value2 || "")],
+          "GrossProfit": [(inputsArray?.GrossProfit?.value1 || ""), (inputsArray?.GrossProfit?.value2 || "")],
+          "GrossProfitMargin": [(inputsArray?.GrossProfitMargin?.value1 || ""), (inputsArray?.GrossProfitMargin?.value2 || "")],
+        }
+      ]
+    }
+  ];
+
+  // console.log('valuation >> filterArray >> ', JSON.stringify(filterArray))
+  return filterArray;
+
+};
+
+
 export const add_to_importantReq = {
   "item_id":"",
   "user_id":"",
@@ -383,7 +483,7 @@ export const add_to_importantReq = {
 
 export const selectSectors = (sectorMasterData, setSectorMasterArr) => {
 
-  if (sectorMasterData.length > 0) {
+  if (sectorMasterData && sectorMasterData.length > 0) {
     var data1 = [];
     sectorMasterData.map((item) => {
       var d1 = { title: item.Sector, value: item.sectorID };
@@ -396,10 +496,10 @@ export const selectSectors = (sectorMasterData, setSectorMasterArr) => {
 
 export const industryMasterFun = (industryMasterData, setIndustryMasterArr) => {
 
-  if (industryMasterData.length > 0) {
+  if (industryMasterData && industryMasterData.length > 0) {
     var data1 = [];
     industryMasterData.map((item) => {
-      var d1 = { title: item.Sector, value: item.sectorID };
+      var d1 = { title: item.Industry, value: item.sectorID };
       data1.push(d1);
     })
     setIndustryMasterArr(data1);
@@ -409,7 +509,7 @@ export const industryMasterFun = (industryMasterData, setIndustryMasterArr) => {
 
 
 export const selectCompany = (allCompanyData, setCompanyMasterArr) => {
-  if (allCompanyData.length > 0) {
+  if (allCompanyData && allCompanyData.length > 0) {
     var data1 = [];
     allCompanyData.map((item) => {
       var d1 = { title: item.CompanyName, value: item.CompanyID };
