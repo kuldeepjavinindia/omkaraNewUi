@@ -70,7 +70,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function BulkDealMUITable(props) {
+export default function PriceTableComponent(props) {
   
   
   const [Open, setOpen] = React.useState(false);
@@ -235,7 +235,9 @@ const EnhancedTableHead = (props0) => {
                      }}
                      className=' !text-white'
                   >
-                    {column.label}
+                    <span dangerouslySetInnerHTML={{ 
+                        __html: column?.label
+                     }}></span>
                     {orderBy === column.id ? (
                       <Box component="span" sx={visuallyHidden}>
                         {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -245,7 +247,7 @@ const EnhancedTableHead = (props0) => {
                   
                   {
                     column?.isCheckbox && (
-                      <Checkbox checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
+                      <Checkbox sx={{ padding: 0 }} checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
                     )
                   }
   
@@ -365,7 +367,10 @@ useEffect(() => {
               { FilterData && stableSort(FilterData, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  
+                    if(index <10){
+
+                        // console.log('row >>> ', row)
+                    }
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -374,6 +379,12 @@ useEffect(() => {
                       { 
                       tableColumns && 
                       tableColumns.map((column, i0) => {
+
+                        if(i0 < 10){
+                            console.log('row >>> ', column)
+                        }
+
+
                         if(column?.isVisible){
                           const customItem = row[column.key + '_all'];
                           const value = row[column.key];
