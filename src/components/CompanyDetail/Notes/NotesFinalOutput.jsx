@@ -313,6 +313,7 @@ const NotesFinalOutput = () => {
       params = {
         ...params,
         CompanyID: cmpId,
+        UserID: authState.user.UserID,
       };
       rr_dispatch(UploadDocumentAnalysNoteApi([params]));
     }

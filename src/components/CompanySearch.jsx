@@ -80,7 +80,7 @@ const CompanySearch = (props) => {
   const rr_dispatch  = useDispatch();
 
   useEffect(() => {
-    if(Search != '' && Search.length > 3){
+    if(Search != '' && Search.length > 1){
         let params = companyMasterReq;
         params = {
             ...params,

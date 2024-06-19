@@ -281,6 +281,7 @@ const FinalOutPut = () => {
     params = {
       ...params,
       CompanyID: cmpId,
+      UserID: authState.user.UserID
     };
     rr_dispatch(UploadDocumentAPI([params]));
   };
