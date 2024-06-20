@@ -187,13 +187,29 @@ div:has(.smallInput.two) {
 .data2Tabels {
   overflow-x: scroll;
   table {
+    tbody{
+    
+    tr:nth-child(even){
+        background: #fff;
+      }
+    tr:nth-child(odd){
+    background: #E8F0F4;
+    }
+    tr{
+     td{
+      font-size: 13px;
+      font-weight: 600;
+      vertical-align: text-top;
+     }
+    }
+    }
     tr {
       th label {
         padding: 2px;
       }
       td {
         padding: 5px 5px;
-        white-space: nowrap;
+        // white-space: nowrap;
       }
     }
     tfoot tr td {
@@ -343,3 +359,37 @@ $border-color_3: $color_4;
 
 
 // End 12-June-2024
+
+
+// Start 20-June-2024
+.cst-customchange {
+  .MuiTablePagination-actions, .MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows {
+    display: none;
+  }
+  .MuiTablePagination-toolbar{
+    height: auto;
+    min-height: auto;
+    padding-left: 0;
+    margin: 0;
+  }
+  .MuiTablePagination-input{
+    background: #fff !important;
+    margin: 0;
+    width: 87px;
+    border-radius: 4px;
+
+    .MuiTablePagination-select{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .tableHeaderWithCheckandSort {
+    .MuiSvgIcon-fontSizeMedium{
+      color: #fff;
+    }
+  }
+
+}
+
+// End 20-June-2024

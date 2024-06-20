@@ -8,13 +8,11 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 
-import {AbsResult, Results} from '../../components/QuarterlyResult/Index'
+import { AbsResult, Results } from "../../components/QuarterlyResult/Index";
 
 import { useEffect } from "react";
 import { useState } from "react";
 import FilterQuarterlyResult from "../../components/data2/FilterQuarterlyResult";
-
-
 
 function TabsDefault(props) {
   const { TabsData, ActiveTab, setActiveTab } = props;
@@ -39,7 +37,7 @@ function TabsDefault(props) {
             >
               {label}
             </Tab>
-        ))}
+          ))}
         </TabsHeader>
         <TabsBody>
           {TabsData.map(({ value, desc }) => (
@@ -60,13 +58,26 @@ function TabsDefault(props) {
 const QuarterlyResult = () => {
   const [ActiveTab, setActiveTab] = useState("1");
 
+
+
+
+
+  
+
+
+
+
+
+
+
+
   const TypeTabs = [
     {
       value: "1",
       label: "ABS RESULTS",
       desc: (
         <>
-        <AbsResult/>
+          <AbsResult />
         </>
       ),
     },
@@ -75,28 +86,26 @@ const QuarterlyResult = () => {
       label: "Results(%)",
       desc: (
         <>
-          <Results/>
+          <Results />
         </>
       ),
     },
   ];
 
-
   return (
     <>
-   
-          <div className=" pt-2 FilterSidebar-Content-Layout" >
-          <FilterQuarterlyResult/>
+      <div className=" pt-2 FilterSidebar-Content-Layout">
+        
+        <FilterQuarterlyResult />
 
-     <div className="sc-container ">
-        <TabsDefault
-          TabsData={TypeTabs}
-          ActiveTab={ActiveTab}
-          setActiveTab={setActiveTab}
-        />
+        <div className="sc-container ">
+          <TabsDefault
+            TabsData={TypeTabs}
+            ActiveTab={ActiveTab}
+            setActiveTab={setActiveTab}
+          />
+        </div>
       </div>
-
-    </div>
     </>
   );
 };

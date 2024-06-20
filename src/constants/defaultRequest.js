@@ -275,77 +275,89 @@ export const Bulk_BlockDetail_Req = {
   mcap: ["", ""],
 };
 
+
 export const ResultDataReq = [
   {
-    $id: "",
-    type: "Share Price (TTM)",
-    sub_type: [
-      {
-        Market_Cap: ["", ""],
-        LTP: "",
-        TTM_P_B: "",
-        TTM_P_E: "",
-        ROCE: "",
-        TTMSalesAbs: "",
-        TTMPATAbs: "",
-      },
-    ],
+      $id: "",
+      type: "Share Price (TTM)",
+      sub_type: [
+          {
+              Market_Cap: [
+                  "",
+                  ""
+              ],
+              LTP: "",
+              TTM_P_B: "",
+              TTM_P_E: "",
+              ROCE: "",
+              TTMSalesAbs: "",
+              TTMPATAbs: ""
+          }
+      ]
   },
   {
-    type: "Result Data",
-    sub_type: [
-      {
-        $id: "5",
-        Sales_YOY: "",
-        Sales_QOQ: "",
-        EBDITA_YOY: "",
-        EBDITA_QOQ: "",
-        PAT_YOY: "",
-        PAT_QOQ: "",
-        GP_YOY: "",
-        GP_QOQ: "",
-      },
-    ],
+      type: "Result Data",
+      sub_type: [
+          {
+               $id: "5",
+              Sales_YOY: "",
+              Sales_QOQ: "",
+              EBDITA_YOY: "",
+              EBDITA_QOQ: "",
+              PAT_YOY: "",
+              PAT_QOQ: "",
+              GP_YOY: "",
+              GP_QOQ: ""
+          }
+      ]
   },
   {
-    type: "Turn Around",
-    sub_type: [
-      {
-        EBDITA_TO: "",
-        PAT_TO: "",
-        Gross_Margin: "",
-        Gross_Profit: "",
-      },
-    ],
+      type: "Turn Around",
+      sub_type: [
+          {
+              EBDITA_TO: "",
+              PAT_TO: "",
+              Gross_Margin: "",
+              Gross_Profit: ""
+          }
+      ]
   },
   {
-    type: "More Filters",
-    sub_type: [
-      {
-        Sector: [],
-        Industry: [],
-        Company: [],
-      },
-    ],
+      type : "More Filters",
+      sub_type: [
+          {
+              Sector: [
+
+              ],
+              Industry: [
+
+              ],
+              Company: [
+
+              ]
+          }
+      ]
   },
   {
-    type: "Date",
-    sub_type: [
-      {
-        FromDate: moment().add("-1", "days").format("MM/DD/YYYY"),
-        ToDate: moment().format("MM/DD/YYYY"),
-      },
-    ],
+      type: "Date",
+      sub_type: [
+          {
+              FromDate: moment().add('-1', 'days').format('MM/DD/YYYY'),
+              ToDate: moment().format('MM/DD/YYYY') 
+          }
+      ]
   },
   {
-    type: "Color",
-    sub_type: [
-      {
-        ColorCode: "",
-      },
-    ],
-  },
+      type: "Color",
+      sub_type: [
+          {
+              ColorCode: ""
+          }
+      ]
+  }
 ];
+
+
 
 // END DATA 2 Requests
 

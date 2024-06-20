@@ -6,7 +6,6 @@ import {
   Option,
   Checkbox,
   Button,
-  Spinner 
 } from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
@@ -51,6 +50,7 @@ const ValuationTable = () => {
 
         Object.keys(resHeads).forEach(key => {
             let label = resHeads[key].label;
+            // console.log({key, resHeads: resHeads[key], label, a1});
             let show_status = resHeads[key].show_status;
             if(show_status){
                 let width = 80;
@@ -70,7 +70,6 @@ const ValuationTable = () => {
                     }
                     mColArr.push(mCol);
                 }
-                console.log( ">>>>>>>>", mColArr);
             }
             a1++;
           })
@@ -89,16 +88,19 @@ const ValuationTable = () => {
         
     });
 
+    // console.log('allRowsData >>> ', allRowsData)
     setTableHeader(mColArr)
     setTableRows(allRowsData);
     // const NEW_COLUMN = mColArr;
 
+
+
+
+
+      
     }
 
   }, [ValuationLoading])
-
-
-  console.log("table header", TableHeader);
   
 
  const requestSearch = (searchedVal) => {
@@ -141,7 +143,6 @@ const ValuationTable = () => {
     };
     
 
-    
   return (
     <>
       <div className="flex justify-between pb-2">
@@ -158,26 +159,20 @@ const ValuationTable = () => {
         style={{ height: `calc(100vh - 7.5rem)` }}
       >
      
-          <div className="">
+
+     <div className="">
               {/* Start Table */}
-
-      {
-         ValuationLoading ? <Spinner /> :  (
-          <div className=" data2Tabels relative overflow-x-auto">
-          <ValuationTableData
-            tableColumns={TableHeader}
-            setTableColumns={setTableHeader}
-            tableRows={TableRows}
-            // tableRows={currentRows}
-            FilterData={FilterData}
-            setFilterData={setFilterData}
-            // divRef={divRef}
-           />
-  </div>
-        )
-      }
-
-          
+              <div className=" data2Tabels relative overflow-x-auto">
+                      <ValuationTableData
+                        tableColumns={TableHeader}
+                        setTableColumns={setTableHeader}
+                        tableRows={TableRows}
+                        // tableRows={currentRows}
+                        FilterData={FilterData}
+                        setFilterData={setFilterData}
+                        // divRef={divRef}
+                       />
+              </div>
               {/* End Table */}
             </div>
 

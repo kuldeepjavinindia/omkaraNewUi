@@ -147,6 +147,7 @@ const applyChart = (chartType) => {
 
   return (
     <>
+   
       <div className="flex justify-between mb-2">
         <div>
             {
@@ -193,6 +194,9 @@ const applyChart = (chartType) => {
 
         </div>
         <div>
+        <Typography className="text-[13px] text-[#000] font-medium">
+      Cons Priority  (In Cr.)
+    </Typography>
           <ButtonGroup
             ripple={false}
             size="sm"

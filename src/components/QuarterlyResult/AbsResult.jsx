@@ -1,10 +1,174 @@
 import { Typography, Input, Select, Option, Checkbox, Button } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
 import { CgSearch } from "react-icons/cg";
 // import FilterQuarterlyResult from "../data2/filter/FilterQuarterlyResult";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
+import { useSelector } from "react-redux";
+import AbsResultMUI from "./AbsResultMUI";
 
 const AbsResult= ()=> {
+
+  const {
+    ResultData:{
+      data: RDData,
+      loading: RDLoading,
+    }
+  } = useSelector(state=> state.Data2)
+  
+  const [NewColumns, setNewColumns] = useState([]);
+  const [TableData, setTableData] = useState([]);
+  const [totalData, setTotalData] = useState([]);
+
+  const callApi = () => {
+    let Headers = RDData?._Headers
+    let bodyData = RDData?.Data
+    let Total = RDData?.Total
+
+
+    var a1 = 0;
+    var mTitle = ' ';
+    var width = 75;
+    var mColArr = [];
+
+
+    var allRowsData = [];
+    bodyData.map((resBody) => {
+        var singleRow = {
+            "CompanyID": resBody._MainHeaders.CompanyID,
+            "IndustryID": resBody._MainHeaders.IndustryID,
+            "SectorID": resBody._MainHeaders.SectorID,
+            "CompanyDetail": resBody._MainHeaders._CompanyDetail,
+            "accessor_0": resBody._MainHeaders._CompanyDetail.Company_Name,
+            "accessor_1": resBody._MainHeaders.Sector,
+            "accessor_2": resBody._MainHeaders.MarketCap,
+            "accessor_3": resBody._sales.S1Q,
+            "accessor_4": resBody._sales.S2Q,
+            "accessor_5": resBody._sales.S3Q,
+            "accessor_6": resBody._sales.S4Q,
+            "accessor_7": resBody._sales.S5Q,
+            "accessor_8": resBody._GP.Gross_Profit_Cr1Q,
+            "accessor_9": resBody._GP.Gross_Profit_Cr2Q,
+            "accessor_10": resBody._GP.Gross_Profit_Cr3Q,
+            "accessor_11": resBody._GP.Gross_Profit_Cr4Q,
+            "accessor_12": resBody._GP.Gross_Profit_Cr5Q,
+            "accessor_13": resBody._GM.Gross_Profit_Margin1Q,
+            "accessor_14": resBody._GM.Gross_Profit_Margin2Q,
+            "accessor_15": resBody._GM.Gross_Profit_Margin3Q,
+            "accessor_16": resBody._GM.Gross_Profit_Margin4Q,
+            "accessor_17": resBody._GM.Gross_Profit_Margin5Q,
+            "accessor_18": resBody._Ebidta.EBDITA_Cr1Q,
+            "accessor_19": resBody._Ebidta.EBDITA_Cr2Q,
+            "accessor_20": resBody._Ebidta.EBDITA_Cr3Q,
+            "accessor_21": resBody._Ebidta.EBDITA_Cr4Q,
+            "accessor_22": resBody._Ebidta.EBDITA_Cr5Q,
+            "accessor_23": resBody._EM.EBDITA_Margin_Per1Q,
+            "accessor_24": resBody._EM.EBDITA_Margin_Per2Q,
+            "accessor_25": resBody._EM.EBDITA_Margin_Per3Q,
+            "accessor_26": resBody._EM.EBDITA_Margin_Per4Q,
+            "accessor_27": resBody._EM.EBDITA_Margin_Per5Q,
+            "accessor_28": resBody._pat.PAT_Cr1Q,
+            "accessor_29": resBody._pat.PAT_Cr2Q,
+            "accessor_30": resBody._pat.PAT_Cr3Q,
+            "accessor_31": resBody._pat.PAT_Cr4Q,
+            "accessor_32": resBody._pat.PAT_Cr5Q,
+        }
+        allRowsData.push(singleRow);
+    });
+
+
+
+    Headers.map((resHeads) => {
+      let subColArr = [];
+      let subCol = [];
+      let sticky = null;
+
+      if (resHeads?.type === "0") {
+        width = 150;
+        if (a1 === 2) {
+            width = 100;
+        }
+        let cols = {
+            Header: ((resHeads.ColumnName).replace('&nbsp;', ' ')),
+            Footer: ((resHeads.ColumnName).replace('&nbsp;', ' ')),
+            accessor: 'accessor_' + a1,
+            hideCheck: false,
+            width: width
+        }
+        a1++;
+        subColArr.push(cols);
+        sticky = 'left';
+
+        console.log('object')
+      }else{
+        width = 75;
+        mTitle = resHeads.ColumnName;
+        subCol = resHeads.SubColumn;
+
+        for (const key in subCol) {
+          if (Object.hasOwnProperty.call(subCol, key)) {
+              // var style = '';
+              if (key === 'Column5') {
+                  // style = {
+                  //     'borderRight': '2px solid #ddd !important'
+                  // };
+              }
+
+              if (key !== '$id') {
+                  const element = subCol[key];
+                  let cols = {
+                      label: element,
+                      // Footer: element,
+                      accessor: 'accessor_' + a1,
+                      hideCheck: true,
+                      width: width,
+                  }
+                  subColArr.push(cols);
+                  a1++;
+              }
+
+          }
+      }
+
+        console.log('object')
+      }
+
+      var bgClass = 'th';
+      let hideCheck = false;
+      if (a1 !== 1) {
+          hideCheck = true;
+      }
+      var mCol = {
+          label: mTitle,
+          // Footer: mTitle,
+          sticky: sticky,
+          hideCheck: hideCheck,
+          headerClassName: bgClass,
+          columns: subColArr,
+      }
+      mColArr.push(mCol);
+
+
+    })
+
+    
+    setNewColumns(mColArr)
+    setTableData(allRowsData)
+
+    // console.log('mColArr mColArr mColArr >>>>>>> ', allRowsData)
+    // console.log('RDData >>>>>>> ', RDData)
+  }
+
+
+  useEffect(() => {
+    // if(RDLoading){
+    // }
+    callApi()
+  }, [RDLoading])
+  
+
+
+  
     return (
         <>
 
@@ -83,7 +247,9 @@ const AbsResult= ()=> {
 <div className="">
   {/* Start Table */}
   <div className="mt-8 data2Tabels relative overflow-x-auto">
-  <table className="forensicTable w-full border border-collapse border-[#B3B3B3] h-full">
+  
+  
+  {/* <table className="forensicTable w-full border border-collapse border-[#B3B3B3] h-full">
     <thead className="bg-[#1E233A]">
       <tr className="!bg-[#1E233A]">
         <th className=""></th>
@@ -200,7 +366,15 @@ const AbsResult= ()=> {
         <td colSpan="5" className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-center pb-3">Gross Profit (Cr)</td>
       </tr>
     </tfoot>
-  </table>
+  </table> */}
+
+
+    <AbsResultMUI 
+      NewColumns={NewColumns}
+      TableData={TableData}
+      totalData={totalData}
+    />
+
 </div>
   {/* End Table */}
 </div>

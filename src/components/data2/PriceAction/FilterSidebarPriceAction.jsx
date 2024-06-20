@@ -16,10 +16,12 @@ import {
 } from "../../../store/slice/MasterSlice";
 import {
   industryMasterFun,
+  priceActionFilters,
   selectCompany,
   selectSectors,
 } from "../../../constants/helper";
 import { useDispatch, useSelector } from "react-redux";
+import { PriceActionApi } from "../../../store/slice/Data2Slice";
 
 const FilterSidebarPriceAction = () => {
   // const [open, setOpen] = useState(1);
@@ -54,13 +56,75 @@ const FilterSidebarPriceAction = () => {
     setInputs(prev);
   };
 
+  const topLabels = (data) =>{
 
-  const  applyNow = () => {
 
+    return {
+      "Market_Cap": {
+        "label": "Market Cap (Cr.)",
+        "value1": (data.MarketCapFrom || ''),
+        "value2": (data.MarketCapTo || '')
+      },
+      "Chg_from_week52_highPer": {
+        "label": "Change from 52wk High (%)",
+        "value1": (data.Chg_from_week52_highPer || ""),
+        "value2": ""
+      },
+      "Chg_from_week52_lowPer": {
+        "label": "Change from 52wk Low(%)",
+        "value1": (data.Chg_from_week52_lowPer || ""),
+        "value2": ""
+      },
+      "ChangeAllTimeHigh": {
+        "label": "Change All Time High(%)",
+        "value1": (data?.ChangeAllTimeHigh || ""),
+        "value2": "",
+      },
+      "TTM_PE": {
+        "label": "TTM PE (x)",
+        "value1": (data?.TTM_PEFrom || ""),
+        "value2": (data?.TTM_PETo || ""),
+      },
+      "TTM_PBV": {
+        "label": "TTM PBV (x)",
+        "value1": (data?.TTM_PBVFrom || ""),
+        "value2": (data?.TTM_PBVTo || "")
+      },
+      "sectors": {
+        "label": "Sector",
+        "value1": (data.Sector || ""),
+        "value2": ""
+      },
+      "industry": {
+        "label": "Industry",
+        "value1": (data.Industry || ""),
+        "value2": ""
+      },
+      "company": {
+        "label": "Company",
+        "value1": (data.Company || ""),
+        "value2": ""
+      },
+      "index": {
+        "label": "Index",
+        "value1": (data.Index || ""),
+        "value2": ""
+      },
+      "portfolio": {
+        "label": "Portfolio",
+        "value1": data.Portfolio,
+        "value2": ""
+      }
+    };
   }
 
 
 
+  const  applyNow = () => {
+    let n_topLabels = topLabels(Inputs);
+    let params = priceActionFilters(n_topLabels)
+    rr_dispatch(PriceActionApi(params))
+  }
 
 
   useEffect(() => {
@@ -288,12 +352,12 @@ const FilterSidebarPriceAction = () => {
                   <div className="min-w[48%] w-[48%]">
                     <Input
                       type="text"
-                      name="marketcap100"
+                      name="MarketCapFrom"
                       className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
                         className: "hidden",
                       }}
-                      // onChange={handleChangeInput}
+                      onChange={(e)=>handleChangeInput(e)}
                       placeholder=">100"
                     />
                   </div>
@@ -301,12 +365,12 @@ const FilterSidebarPriceAction = () => {
                   <div className="min-w[48%] w-[48%]">
                     <Input
                       type="text"
-                      name="marketcap5000"
+                      name="MarketCapTo"
                       className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
                         className: "hidden",
                       }}
-                      // onChange={handleChangeInput}
+                      onChange={(e)=>handleChangeInput(e)}
                       placeholder="<5000"
                     />
                   </div>
@@ -318,12 +382,12 @@ const FilterSidebarPriceAction = () => {
                 </label>
                 <Input
                   type="text"
-                  name="ltp"
+                  name="Chg_from_week52_highPer"
                   className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                   labelProps={{
                     className: "hidden",
                   }}
-                  // onChange={handleChangeInput}
+                  onChange={(e)=>handleChangeInput(e)}
                   placeholder=">10"
                 />
               </div>
@@ -334,12 +398,12 @@ const FilterSidebarPriceAction = () => {
                 </label>
                 <Input
                   type="text"
-                  name="TTM"
+                  name="Chg_from_week52_lowPer"
                   className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                   labelProps={{
                     className: "hidden",
                   }}
-                  // onChange={handleChangeInput}
+                  onChange={(e)=>handleChangeInput(e)}
                   placeholder=">15"
                 />
               </div>
@@ -350,12 +414,12 @@ const FilterSidebarPriceAction = () => {
                 </label>
                 <Input
                   type="text"
-                  name="rice"
+                  name="ChangeAllTimeHigh"
                   className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                   labelProps={{
                     className: "hidden",
                   }}
-                  // onChange={handleChangeInput}
+                  onChange={(e)=>handleChangeInput(e)}
                   placeholder=">15"
                 />
               </div>
@@ -369,12 +433,12 @@ const FilterSidebarPriceAction = () => {
                   <div className="min-w[48%] w-[48%]">
                     <Input
                       type="text"
-                      name="marketcap100"
+                      name="TTM_PEFrom"
                       className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
                         className: "hidden",
                       }}
-                      // onChange={handleChangeInput}
+                      onChange={(e)=>handleChangeInput(e)}
                       placeholder=">100"
                     />
                   </div>
@@ -382,12 +446,12 @@ const FilterSidebarPriceAction = () => {
                   <div className="min-w[48%] w-[48%]">
                     <Input
                       type="text"
-                      name="marketcap5000"
+                      name="TTM_PETo"
                       className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
                         className: "hidden",
                       }}
-                      // onChange={handleChangeInput}
+                      onChange={(e)=>handleChangeInput(e)}
                       placeholder="<5000"
                     />
                   </div>
@@ -401,26 +465,26 @@ const FilterSidebarPriceAction = () => {
                   <div className="min-w[48%] w-[48%]">
                     <Input
                       type="text"
-                      name="marketcap100"
+                      name="TTM_PBVFrom"
                       className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
                         className: "hidden",
                       }}
-                      // onChange={handleChangeInput}
-                      placeholder=">100"
+                      onChange={(e)=>handleChangeInput(e)}
+                      placeholder=">1"
                     />
                   </div>
 
                   <div className="min-w[48%] w-[48%]">
                     <Input
                       type="text"
-                      name="marketcap5000"
+                      name="TTM_PBVTo"
                       className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
                         className: "hidden",
                       }}
-                      // onChange={handleChangeInput}
-                      placeholder="<5000"
+                      onChange={(e)=>handleChangeInput(e)}
+                      placeholder="<20"
                     />
                   </div>
                 </div>
@@ -429,112 +493,6 @@ const FilterSidebarPriceAction = () => {
             </AccordionDetails>
           </Accordion>
 
-          {/* Start Card Form */}
-          {/* <Accordion open={ActiveAccordion.accordion_2}  className="rounded bg-[#fff] px-2 py-3 mt-2" icon={<Icon id={3} open={ActiveAccordion.accordion_2} />}>
-    <AccordionHeader onClick={() => handleOpen(2)} className="flex border-none py-0 pt-0">
-    <Typography className="text-[15px] text-[#000] font-semibold w-[90%]">Share Price (TTM)</Typography>
-    
-    </AccordionHeader>
-    <AccordionBody>
-    <label className="text-[12px] text-[#000] font-medium">Market Cap </label>
-    <div className="flex gap-2">
-        <div className="min-w[48%] w-[48%]">
-        <Input
-            type="text"
-            name="marketcap100"
-            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-            labelProps={{
-              className: "hidden",
-            }}
-            // onChange={handleChangeInput}
-            placeholder=">100"
-          />
-        </div>
-
-<div className="min-w[48%] w-[48%]">
-<Input
-            type="text"
-            name="marketcap5000"
-            className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-            labelProps={{
-              className: "hidden",
-            }}
-            // onChange={handleChangeInput}
-            placeholder="<5000"
-          />
-</div>
-        </div>
-
-    <label className="text-[12px] text-[#000] font-medium">LTP </label>
-    <Input
-        type="text"
-        name="ltp"
-        className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-        labelProps={{
-          className: "hidden",
-        }}
-        // onChange={handleChangeInput}
-        placeholder=">10"
-      />
-
-
-<label className="text-[12px] text-[#000] font-medium">TTM (P/E) </label>
-    <Input
-        type="text"
-        name="TTM"
-        className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-        labelProps={{
-          className: "hidden",
-        }}
-        // onChange={handleChangeInput}
-        placeholder=">15"
-      />
-
-
-<label className="text-[12px] text-[#000] font-medium">ROCE </label>
-    <Input
-        type="text"
-        name="rice"
-        className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-        labelProps={{
-          className: "hidden",
-        }}
-        // onChange={handleChangeInput}
-        placeholder=">15"
-      />
-
-
-<label className="text-[12px] text-[#000] font-medium">TTM SALES ABS </label>
-    <Input
-        type="text"
-        name="TTM Sale"
-        className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-        labelProps={{
-          className: "hidden",
-        }}
-        // onChange={handleChangeInput}
-        placeholder=">15"
-      />
-
-
-<label className="text-[12px] text-[#000] font-medium">TTM PAT ABS </label>
-    <Input
-        type="text"
-        name="TTM Pat Abs"
-        className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-        labelProps={{
-          className: "hidden",
-        }}
-        // onChange={handleChangeInput}
-        placeholder=">50"
-      />
-
-  
-     
- 
-    </AccordionBody>
-  </Accordion> */}
-          {/* End Card Form */}
         </div>
       </div>
       {/* End Filter SideBar */}

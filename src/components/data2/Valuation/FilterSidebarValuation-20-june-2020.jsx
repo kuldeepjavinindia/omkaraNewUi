@@ -531,7 +531,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">500"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -578,7 +578,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder="<30"
+                  placeholder=">15"
                 />
               </div>
 
@@ -594,7 +594,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">10"
+                  placeholder=">15"
                 />
               </div>
 
@@ -610,7 +610,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder="<10"
+                  placeholder=">15"
                 />
               </div>
               <div>
@@ -628,7 +628,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">1"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -641,7 +641,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder="<20"
+                      placeholder="<5000"
                     />
                   </div>
                 </div>
@@ -662,7 +662,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">1"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -675,7 +675,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder="<20"
+                      placeholder="<5000"
                     />
                   </div>
                 </div>
@@ -708,7 +708,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -724,7 +724,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -740,7 +740,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -756,7 +756,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -772,7 +772,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -788,7 +788,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -804,7 +804,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -820,7 +820,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -836,7 +836,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -852,7 +852,7 @@ const FilterSidebarValuation = () => {
                     className: "hidden",
                   }}
                   onChange={(e)=>handleChangeInput(e)}
-                  placeholder=">1"
+                  placeholder=">10"
                 />
               </div>
 
@@ -870,7 +870,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">1"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -883,7 +883,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder="<20"
+                      placeholder="<5000"
                     />
                   </div>
                 </div>
@@ -905,7 +905,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">1"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -918,7 +918,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder="<20"
+                      placeholder="<5000"
                     />
                   </div>
                 </div>
@@ -940,7 +940,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">1"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -953,7 +953,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder="<20"
+                      placeholder="<5000"
                     />
                   </div>
                 </div>
@@ -974,7 +974,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">1"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -987,7 +987,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder="<20"
+                      placeholder="<5000"
                     />
                   </div>
                 </div>
@@ -1008,7 +1008,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">1"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -1021,7 +1021,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder="<20"
+                      placeholder="<5000"
                     />
                   </div>
                 </div>
@@ -1042,7 +1042,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">1"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -1055,7 +1055,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder="<20"
+                      placeholder="<5000"
                     />
                   </div>
                 </div>
@@ -1110,7 +1110,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder=">1"
+                      placeholder=">100"
                     />
                   </div>
 
@@ -1123,7 +1123,7 @@ const FilterSidebarValuation = () => {
                         className: "hidden",
                       }}
                       onChange={(e)=>handleChangeInput(e)}
-                      placeholder="<20"
+                      placeholder="<5000"
                     />
                   </div>
                 </div>
@@ -1159,7 +1159,7 @@ const FilterSidebarValuation = () => {
                   className: "hidden",
                 }}
                 onChange={(e)=>handleChangeInput(e)}
-                placeholder="<1 or 0.5"
+                placeholder=">10"
               />
 
               </div>
@@ -1176,7 +1176,7 @@ const FilterSidebarValuation = () => {
                   className: "hidden",
                 }}
                 onChange={(e)=>handleChangeInput(e)}
-                placeholder="<1 or >100"
+                placeholder=">10"
               />
 
 
@@ -1193,7 +1193,7 @@ const FilterSidebarValuation = () => {
                   className: "hidden",
                 }}
                 onChange={(e)=>handleChangeInput(e)}
-                placeholder="<1 or >100"
+                placeholder=">10"
               />
              </div>
 
@@ -1212,7 +1212,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder=">1"
+                    placeholder=">100"
                   />
                 </div>
 
@@ -1225,7 +1225,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder="<20"
+                    placeholder="<5000"
                   />
                 </div>
               </div>
@@ -1247,7 +1247,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder=">1"
+                    placeholder=">100"
                   />
                 </div>
 
@@ -1260,7 +1260,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder="<20"
+                    placeholder="<5000"
                   />
                 </div>
               </div>
@@ -1282,7 +1282,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder=">1"
+                    placeholder=">100"
                   />
                 </div>
 
@@ -1295,7 +1295,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder="<20"
+                    placeholder="<5000"
                   />
                 </div>
               </div>
@@ -1316,7 +1316,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder=">1"
+                    placeholder=">100"
                   />
                 </div>
 
@@ -1329,7 +1329,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder="<20"
+                    placeholder="<5000"
                   />
                 </div>
               </div>
@@ -1349,7 +1349,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder="< or >10"
+                    placeholder=">100"
                   />
                   
              </div>
@@ -1366,7 +1366,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder="<1 or >20"
+                    placeholder=">100"
                   />
              </div>
 
@@ -1382,7 +1382,7 @@ const FilterSidebarValuation = () => {
                       className: "hidden",
                     }}
                     onChange={(e)=>handleChangeInput(e)}
-                    placeholder="<1 or >30"
+                    placeholder=">100"
                   />
                   
               
@@ -1409,7 +1409,7 @@ const FilterSidebarValuation = () => {
              <label className="text-[12px] text-[#000] font-medium">
                 Promoter Holding (%)
               </label>
-               <Input
+              <Input
                 type="text"
                 name="Promoter_Holding"
                 className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
@@ -1417,7 +1417,6 @@ const FilterSidebarValuation = () => {
                   className: "hidden",
                 }}
                 onChange={(e)=>handleChangeInput(e)}
-                 placeholder=">50"
               />
 
              </div>
@@ -1434,7 +1433,6 @@ const FilterSidebarValuation = () => {
                   className: "hidden",
                 }}
                 onChange={(e)=>handleChangeInput(e)}
-                placeholder=">10"
               />
               
             </div>

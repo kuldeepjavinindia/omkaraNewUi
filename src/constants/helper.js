@@ -237,138 +237,138 @@ export const selectVideoArr = [
 
 
 // Quterlty Result Input data
-export const FilterInputs = 
-  {
-    Market_Cap: {
-      label: "Market Cap",
-      value1: "",
-      value2: ""
-    },
-    Date: {
-      label: "Date Range",
-      value1: moment().add('-1', 'days').format('MM/DD/YYYY'),
-      value2: moment().format('MM/DD/YYYY') 
-    },
-    LTP: "",
-    TTM_P_B : "",
-     TTM_P_E : "",
-     ROCE: "",
-     TTM_Sales_Abs: "",
-     TTM_PAT_Abs: "",
-     Sales_YOY : "",
-    Sales_QOQ: "",
-    EBDITA_YOY: "",
-    EBDITA_QOQ: "",
-    PAT_YOY: "",
-    PAT_QOQ:"",
-    GROSS_PROFIT_YOY: "",
-    GROSS_PROFIT_QOQ: "",
-    EBDITA_TO: "",
-     PAT_TO: "",
-    ColorCode : {
-      label: "Color Code",
-      value1: "",
-      value2: ""
-    },
-    sectors: {
-      label: "Sector",
-      value1: "",
-      value2: ""
-    },
-    industry : {
-      label: "Industry",
-      value1: "",
-      value2: ""
-    },
-     company: {
-      label: "Company",
-      value1: "",
-      value2: ""
-    },
-    portfolio : {
-      label: "Portfolio",
-      value1: "",
-      value2: ""
-    }
-  }
+// export const FilterInputs = 
+//   {
+//     Market_Cap: {
+//       label: "Market Cap",
+//       value1: "",
+//       value2: ""
+//     },
+//     Date: {
+//       label: "Date Range",
+//       value1: moment().add('-1', 'days').format('MM/DD/YYYY'),
+//       value2: moment().format('MM/DD/YYYY') 
+//     },
+//     LTP: "",
+//     TTM_P_B : "",
+//      TTM_P_E : "",
+//      ROCE: "",
+//      TTM_Sales_Abs: "",
+//      TTM_PAT_Abs: "",
+//      Sales_YOY : "",
+//     Sales_QOQ: "",
+//     EBDITA_YOY: "",
+//     EBDITA_QOQ: "",
+//     PAT_YOY: "",
+//     PAT_QOQ:"",
+//     GROSS_PROFIT_YOY: "",
+//     GROSS_PROFIT_QOQ: "",
+//     EBDITA_TO: "",
+//      PAT_TO: "",
+//     ColorCode : {
+//       label: "Color Code",
+//       value1: "",
+//       value2: ""
+//     },
+//     sectors: {
+//       label: "Sector",
+//       value1: "",
+//       value2: ""
+//     },
+//     industry : {
+//       label: "Industry",
+//       value1: "",
+//       value2: ""
+//     },
+//      company: {
+//       label: "Company",
+//       value1: "",
+//       value2: ""
+//     },
+//     portfolio : {
+//       label: "Portfolio",
+//       value1: "",
+//       value2: ""
+//     }
+//   }
 
 
-export const QuterltyResultFinalReq = (data) => {
-  return [
-    {
-        $id: "",
-        type: "Share Price (TTM)",
-        sub_type: [
-            {
-                Market_Cap: [
-                  data?.Market_Cap?.value1 || "",
-                  data?.Market_Cap?.value2 || ""
-                ],
-                LTP: data?.LTP?.value1 || "",
-                TTM_P_B: data?.TTM_P_B?.value1 || "",
-                TTM_P_E: data?.TTM_P_E?.value1 || "",
-                ROCE: data?.data?.ROCE?.value1 ||  "",
-                TTMSalesAbs: data?.TTMSalesAbs?.value1 || "" ,
-                TTMPATAbs: data?.TTMPATAbs?.value1 || "" ,
-            }
-        ]
-    },
-    {
-        type: "Result Data",
-        sub_type: [
-            {
-                Sales_YOY: data?.Sales_YOY?.value1 || "",
-                Sales_QOQ: data?.Sales_QOQ?.value1 || "",
-                EBDITA_YOY: data?.EBDITA_YOY?.value1 || "",
-                EBDITA_QOQ: data?.EBDITA_QOQ?.value1 || "",
-                PAT_YOY: data?.PAT_YOY?.value1 || "",
-                PAT_QOQ: data?.PAT_QOQ?.value1 || "",
-                GP_YOY: data?.GP_YOY?.value1 || "",
-                GP_QOQ: data?.GP_QOQ?.value1 || "",
-            }
+// export const QuterltyResultFinalReq = (data) => {
+//   return [
+//     {
+//         $id: "",
+//         type: "Share Price (TTM)",
+//         sub_type: [
+//             {
+//                 Market_Cap: [
+//                   data?.Market_Cap?.value1 || "",
+//                   data?.Market_Cap?.value2 || ""
+//                 ],
+//                 LTP: data?.LTP?.value1 || "",
+//                 TTM_P_B: data?.TTM_P_B?.value1 || "",
+//                 TTM_P_E: data?.TTM_P_E?.value1 || "",
+//                 ROCE: data?.data?.ROCE?.value1 ||  "",
+//                 TTMSalesAbs: data?.TTMSalesAbs?.value1 || "" ,
+//                 TTMPATAbs: data?.TTMPATAbs?.value1 || "" ,
+//             }
+//         ]
+//     },
+//     {
+//         type: "Result Data",
+//         sub_type: [
+//             {
+//                 Sales_YOY: data?.Sales_YOY?.value1 || "",
+//                 Sales_QOQ: data?.Sales_QOQ?.value1 || "",
+//                 EBDITA_YOY: data?.EBDITA_YOY?.value1 || "",
+//                 EBDITA_QOQ: data?.EBDITA_QOQ?.value1 || "",
+//                 PAT_YOY: data?.PAT_YOY?.value1 || "",
+//                 PAT_QOQ: data?.PAT_QOQ?.value1 || "",
+//                 GP_YOY: data?.GP_YOY?.value1 || "",
+//                 GP_QOQ: data?.GP_QOQ?.value1 || "",
+//             }
             
-        ]
-    },
-    {
-        type: "Turn Around",
-        sub_type: [
-            {
-                EBDITA_TO: [],
-                PAT_TO: [],
-                Gross_Margin: data?.Gross_Margin?.value1 || "",
-                Gross_Profit: data?.Gross_Profit?.value1 || ""
-            }
-        ]
-    },
-    {
-        type : "More Filters",
-        sub_type: [
-            {
-                Sector: [data?.Sector] || [],
-                Industry: [data?.Industry] || [],
-                Company: [data?.Company] || []
-            }
-        ]
-    },
-    {
-        type: "Date",
-        sub_type: [
-            {
-                FromDate:  data?.Date?.FromDate   ||  moment().add('-1', 'days').format('MM/DD/YYYY'),
-                ToDate:  data?.Date?.ToDate || moment().format('MM/DD/YYYY') 
-            }
-        ]
-    },
-    {
-        type: "Color",
-        sub_type: [
-            {
-                ColorCode: ""
-            }
-        ]
-    }
-  ];
-}
+//         ]
+//     },
+//     {
+//         type: "Turn Around",
+//         sub_type: [
+//             {
+//                 EBDITA_TO: [],
+//                 PAT_TO: [],
+//                 Gross_Margin: data?.Gross_Margin?.value1 || "",
+//                 Gross_Profit: data?.Gross_Profit?.value1 || ""
+//             }
+//         ]
+//     },
+//     {
+//         type : "More Filters",
+//         sub_type: [
+//             {
+//                 Sector: [data?.Sector] || [],
+//                 Industry: [data?.Industry] || [],
+//                 Company: [data?.Company] || []
+//             }
+//         ]
+//     },
+//     {
+//         type: "Date",
+//         sub_type: [
+//             {
+//                 FromDate:  data?.Date?.FromDate   ||  moment().add('-1', 'days').format('MM/DD/YYYY'),
+//                 ToDate:  data?.Date?.ToDate || moment().format('MM/DD/YYYY') 
+//             }
+//         ]
+//     },
+//     {
+//         type: "Color",
+//         sub_type: [
+//             {
+//                 ColorCode: ""
+//             }
+//         ]
+//     }
+//   ];
+// }
 
 
 
@@ -472,6 +472,28 @@ export const valuation_Req = (inputsArray) => {
 };
 
 
+
+
+export const priceActionFilters = (inputsArray) => {
+  // console.log(inputsArray);
+  const filterArray = {
+      "Index": inputsArray.index?.value1,
+      "Sector": inputsArray.sectors?.value1,
+      "Industry": inputsArray.industry?.value1,
+      "Portfolio":inputsArray.portfolio.value1,
+      "Company": inputsArray.company?.value1,
+      "Market_Cap": [inputsArray.Market_Cap?.value1, inputsArray.Market_Cap?.value2],
+      "TTM_P_E": [inputsArray.TTM_PE?.value1, inputsArray.TTM_PE?.value2],
+      "TTM_P_B": [inputsArray.TTM_PBV?.value1, inputsArray.TTM_PBV?.value2],
+      "Chg_from_week52_highPer": inputsArray.Chg_from_week52_highPer?.value1,
+      "Chg_from_week52_lowPer": inputsArray.Chg_from_week52_lowPer?.value1,
+      "ChangeAllTimeHigh": inputsArray.ChangeAllTimeHigh?.value1
+  }
+  return filterArray;
+}
+
+
+
 export const add_to_importantReq = {
   "item_id":"",
   "user_id":"",
@@ -549,3 +571,134 @@ export const filterSelectIndustryBySector = (sectors, industryMaster, setIndustr
   setIndustryMasterArr(data1);
 }
 
+
+// Data 2
+// Quterlty Result Input data
+export const FilterInputs = 
+  {
+    Market_Cap: {
+      label: "Market Cap",
+      value1: "",
+      value2: ""
+    },
+    Date: {
+      label: "Date Range",
+      value1: moment().add('-1', 'days').format('MM/DD/YYYY'),
+      value2: moment().format('MM/DD/YYYY') 
+    },
+    LTP: "",
+    TTM_P_B : "",
+     TTM_P_E : "",
+     ROCE: "",
+     TTM_Sales_Abs: "",
+     TTM_PAT_Abs: "",
+     Sales_YOY : "",
+    Sales_QOQ: "",
+    EBDITA_YOY: "",
+    EBDITA_QOQ: "",
+    PAT_YOY: "",
+    PAT_QOQ:"",
+    GROSS_PROFIT_YOY: "",
+    GROSS_PROFIT_QOQ: "",
+    EBDITA_TO: "",
+     PAT_TO: "",
+    ColorCode : {
+      label: "Color Code",
+      value1: "",
+      value2: ""
+    },
+    sectors: {
+      label: "Sector",
+      value: []
+    },
+    industry : {
+      label: "Industry",
+      value: []
+    },
+     company: {
+      label: "Company",
+      value: []
+    },
+    portfolio : {
+      label: "Portfolio",
+      value: []
+    }
+  }
+
+
+export const QuterltyResultFinalReq = (data) => {
+  return [
+    {
+        $id: "",
+        type: "Share Price (TTM)",
+        sub_type: [
+            {
+                Market_Cap: [
+                  data?.Market_Cap?.value1 || "",
+                  data?.Market_Cap?.value2 || ""
+                ],
+                LTP: data?.LTP?.value1 || "",
+                TTM_P_B: data?.TTM_P_B?.value1 || "",
+                TTM_P_E: data?.TTM_P_E?.value1 || "",
+                ROCE: data?.ROCE?.value1 ||  "",
+                TTMSalesAbs: data?.TTMSalesAbs?.value1 || "" ,
+                TTMPATAbs: data?.TTMPATAbs?.value1 || "" ,
+            }
+        ]
+    },
+    {
+        type: "Result Data",
+        sub_type: [
+            {
+                Sales_YOY: data?.Sales_YOY?.value1 || "",
+                Sales_QOQ: data?.Sales_QOQ?.value1 || "",
+                EBDITA_YOY: data?.EBDITA_YOY?.value1 || "",
+                EBDITA_QOQ: data?.EBDITA_QOQ?.value1 || "",
+                PAT_YOY: data?.PAT_YOY?.value1 || "",
+                PAT_QOQ: data?.PAT_QOQ?.value1 || "",
+                GP_YOY: data?.GP_YOY?.value1 || "",
+                GP_QOQ: data?.GP_QOQ?.value1 || "",
+            }
+            
+        ]
+    },
+    {
+        type: "Turn Around",
+        sub_type: [
+            {
+                EBDITA_TO: [data?.EBDITA_TO?.value1] ||   [],
+                PAT_TO: [data?.PAT_TO?.value1] ||   [] ,
+                Gross_Margin: data?.Gross_Margin?.value1 || "",
+                Gross_Profit: data?.Gross_Profit?.value1 || ""
+            }
+        ]
+    },
+    {
+        type : "More Filters",
+        sub_type: [
+            {
+                Sector: [data?.Sector] || [],
+                Industry: [data?.Industry] || [],
+                Company: [data?.Company] || []
+            }
+        ]
+    },
+    {
+        type: "Date",
+        sub_type: [
+            {
+                FromDate:  data?.Date?.value1   ||  moment().add('-1', 'days').format('MM/DD/YYYY'),
+                ToDate:  data?.Date?.value2 || moment().format('MM/DD/YYYY') 
+            }
+        ]
+    },
+    {
+        type: "Color",
+        sub_type: [
+            {
+                ColorCode: ""
+            }
+        ]
+    }
+  ];
+}
