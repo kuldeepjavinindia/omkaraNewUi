@@ -238,36 +238,36 @@ const EnhancedTableHead = (props0) => {
             >
 
             
-            <th className="!text-white  text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-            <div className='flex item-center gap-1 tableHeaderWithCheckandSort'>
-                <TableSortLabel
-                    active={orderBy === column.id}
-                    direction={orderBy === column.id ? order : 'asc'}
-                    onClick={createSortHandler(column.id)}
-                    sx={{ 
-                      justifyContent: column.id !== 'column_2' && column.id !== 'column_4' ? 'center' : 'start',
-                      width: '100%', 
-                     }}
-                     className=' !text-white'
-                  >
-                    {column.label}
-                    {orderBy === column.id ? (
-                      <Box component="span" sx={visuallyHidden}>
-                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                      </Box>
-                    ) : null}
-                  </TableSortLabel>
-                <div>
-               
-                {
-                    column?.isCheckbox && (
-                      <Checkbox className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
-                      checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
-                    )
-                  }
-                </div>
-            </div>
-        </th>
+          <th className="!text-white  text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <div className='flex item-center gap-1 tableHeaderWithCheckandSort'>
+              <TableSortLabel
+                  active={orderBy === column.id}
+                  direction={orderBy === column.id ? order : 'asc'}
+                  onClick={createSortHandler(column.id)}
+                  sx={{ 
+                    justifyContent: column.id !== 'column_2' && column.id !== 'column_4' ? 'center' : 'start',
+                    width: '100%', 
+                    }}
+                    className=' !text-white'
+                >
+                  {column.label}
+                  {orderBy === column.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
+              <div>
+              
+              {
+                  column?.isCheckbox && (
+                    <Checkbox className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
+                    checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
+                  )
+                }
+              </div>
+          </div>
+      </th>
 
             </TableCell>
         )
@@ -462,7 +462,7 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
     </div>
   {/* ========= End Header Page =========== */}
 
-    <Box sx={{ width: '50%' }}>
+    <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableContainer className='table-wo-border'  sx={{ 
           maxHeight:'calc(100vh - 250px)'
@@ -533,8 +533,7 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
       </Paper>
     </Box>
 
-       {/* start Bottom Pagination Button */}
-    
+ {/* start Bottom Pagination Button */}
    <div className="mt-4">
       <div className="flex justify-end">
       <div className="flex-grow-0 flex justify-center mx-[14px] ">

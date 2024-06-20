@@ -7,15 +7,16 @@ import {
 Checkbox,
   Button,
 } from "@material-tailwind/react";
+
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
-
 
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import TableFooter from '@mui/material/TableFooter';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -26,7 +27,8 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 
 import { visuallyHidden } from '@mui/utils';
-import { TextField } from '@mui/material';
+import {TextField } from '@mui/material';
+
 // import InsiderPopup from './InsiderPopup';
 import { useEffect } from 'react';
 import { GlobalContext } from '../../../context/GlobalContext';
@@ -83,7 +85,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function PriceTableComponent(props) {
+export default function BulkDealMUITable(props) {
   
   
   const [Open, setOpen] = React.useState(false);
@@ -211,7 +213,7 @@ const EnhancedTableHead = (props0) => {
             var cStyleLeft = 0;
   
             if (column.sticky) {
-              cStyleLeft = i0 * 140;
+              cStyleLeft = i0 * 170;
               cStyle.position = 'sticky';
               cStyle.top = '0px';
               cStyle.left = cStyleLeft;
@@ -235,10 +237,10 @@ const EnhancedTableHead = (props0) => {
               className='tableHeader'
             >
 
-        {/* header */}
-        <th className="!text-white  text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+            
+            <th className="!text-white  text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
             <div className='flex item-center gap-1 tableHeaderWithCheckandSort'>
-            <TableSortLabel
+                <TableSortLabel
                     active={orderBy === column.id}
                     direction={orderBy === column.id ? order : 'asc'}
                     onClick={createSortHandler(column.id)}
@@ -248,9 +250,7 @@ const EnhancedTableHead = (props0) => {
                      }}
                      className=' !text-white'
                   >
-                    <span dangerouslySetInnerHTML={{ 
-                        __html: column?.label
-                     }}></span>
+                    {column.label}
                     {orderBy === column.id ? (
                       <Box component="span" sx={visuallyHidden}>
                         {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -261,17 +261,14 @@ const EnhancedTableHead = (props0) => {
                
                 {
                     column?.isCheckbox && (
-                      <Checkbox
-                      className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
-                      sx={{ padding: 0 }} checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
+                      <Checkbox className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
+                      checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
                     )
                   }
                 </div>
             </div>
         </th>
-        {/* header */}
 
-  
             </TableCell>
         )
 
@@ -301,6 +298,7 @@ const handleCheckbox = (item) => {
   let cols = tableColumns;
   let updatedItem = item;
   updatedItem.isVisible = !item.isVisible;
+
   let findIndex = tableColumns.indexOf(item)
   cols[findIndex] = updatedItem
   console.log('item >>> ', {cols, updatedItem})
@@ -312,7 +310,6 @@ const handleCheckbox = (item) => {
 
   const requestSearch = (searchedVal) => {
     const filteredRows = tableRows.filter((row) => {
-      
         return Object.keys(row).some((key) => {
           return String(row[key]).toLowerCase().includes(searchedVal.toLowerCase());
         });
@@ -360,12 +357,13 @@ const handlePreviousPage = () => {
   setPage((prevPage) => prevPage - 1);
 };
 
+
+const totalPages = Math.ceil(tableRows.length / rowsPerPage);
+
   return (
-
-    <>
-
-          {/* ========= Start Header Page =========== */}
-          <div className="flex justify-between items-center pb-4">
+   <>
+  {/* ========= Start Header Page =========== */}
+    <div className="flex justify-between items-center pb-4">
               <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
                 <div>
                   <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
@@ -464,12 +462,8 @@ const handlePreviousPage = () => {
     </div>
   {/* ========= End Header Page =========== */}
 
-
-
-     <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '50%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-
-        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer className='table-wo-border'  sx={{ 
           maxHeight:'calc(100vh - 250px)'
          }} ref={divRef} >
@@ -483,69 +477,24 @@ const handlePreviousPage = () => {
               handleCheckbox={handleCheckbox}
               rowCount={FilterData && FilterData.length}
             />
-            <TableBody>
-    
+            <TableBody >
               { FilterData && stableSort(FilterData, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                    if(index <10){
-
-                        // console.log('row >>> ', row)
-                    }
+                  
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
 
-                    <TableRow role="checkbox" tabIndex={-1} key={index} style={{ 
-                      background: '#fff'
-                     }}>
+                    <TableRow role="checkbox " tabIndex={-1} key={index}   >
                       { 
                       tableColumns && 
                       tableColumns.map((column, i0) => {
-
-                      
-                        
-
-
-                        if(i0 < 10){
-                            // console.log('row >>> ', column)
-                        }
-
                         if(column?.isVisible){
                           const customItem = row[column.key + '_all'];
                           const value = row[column.key];
-                        
-                            let cStyle = { 
-                              minWidth: column.minWidth,
-                              maxWidth: column.maxWidth,
-                              textAlign: 'left',
-                              padding: '0.5rem',
-                              fontSize: '12px',
-                              fontWeight: '600',
-                            }
-                  
-                            var cStyleLeft = 0;
-                  
-                            if (column.sticky) {
-                              cStyleLeft = i0 * 140;
-                              cStyle.position = 'sticky';
-                              cStyle.top = '0px';
-                              cStyle.left = cStyleLeft;
-                              cStyle.zIndex = 5;
-                              cStyle.backgroundColor = (column?.bgColor || '#fff');
-                            }
-                            
-                            // cStyle.backgroundColor = ((i0 % 2 === 0 ) ? "#E8F0F4" : '#fff');
-
-                            // cStyle.color = (column?.textColor || '#fff');
-                  
-                            if(column.id !== "column_2" && column.id !== "column_4" ){
-                              cStyle.textAlign = 'center';
-                            }
-
-
-
-
+                          
+                            let cStyle = {}
                           return (
                             <TableCell key={column.key} align={column.align} style={cStyle} >
                               { value }
@@ -559,16 +508,34 @@ const handlePreviousPage = () => {
                 })}
                 
             </TableBody>
+    
+            <TableFooter className='sticky bottom-0'>
+          <TableRow>
+             {
+              tableColumns && tableColumns.length > 0 && tableColumns.map((item) => {
+                return (
+                  <>
+              <TableCell className='!text-white  text-[12px] xl:text-[13px] font-semibold bg-[#1E233A]'>{item.label} </TableCell>
+                  </>
+                )
+              })
+            } 
+          
+            
+          </TableRow>
+        </TableFooter>
+
+
+
           </Table>
         </TableContainer>
-        
-        
-        
+
       </Paper>
     </Box>
 
- {/* start Bottom Pagination Button */}
- <div className="mt-4">
+       {/* start Bottom Pagination Button */}
+    
+   <div className="mt-4">
       <div className="flex justify-end">
       <div className="flex-grow-0 flex justify-center mx-[14px] ">
       <TablePagination
@@ -640,9 +607,6 @@ const handlePreviousPage = () => {
   
     </div>
 {/* End Bottom Pagination Button */}
-
-
-    </>
-   
+   </>
   );
 }

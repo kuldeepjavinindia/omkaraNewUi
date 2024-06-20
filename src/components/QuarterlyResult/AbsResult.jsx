@@ -18,7 +18,25 @@ const AbsResult= ()=> {
   
   const [NewColumns, setNewColumns] = useState([]);
   const [TableData, setTableData] = useState([]);
-  const [totalData, setTotalData] = useState([]);
+  const [TotalData, setTotalData] = useState([]);
+  const [FilterData, setFilterData] = useState(null)
+
+  // const requestSearch = (searchedVal) => {
+  //   const filteredRows = TableData.filter((row) => {
+      
+  //       return Object.keys(row).some((key) => {
+  //         return String(row[key]).toLowerCase().includes(searchedVal.toLowerCase());
+  //       });
+  //   });
+    
+  //   if (searchedVal.length < 1) {
+  //     setFilterData(TableData)
+  //   }
+  //   else {
+  //     setFilterData(filteredRows)
+  //   }
+  // };
+
 
   const callApi = () => {
     let Headers = RDData?._Headers
@@ -161,9 +179,10 @@ const AbsResult= ()=> {
 
 
   useEffect(() => {
-    // if(RDLoading){
-    // }
-    callApi()
+    // console.log('RDLoading >>> ', RDLoading)
+    if(!RDLoading){
+      callApi()
+    }
   }, [RDLoading])
   
 
@@ -372,7 +391,11 @@ const AbsResult= ()=> {
     <AbsResultMUI 
       NewColumns={NewColumns}
       TableData={TableData}
-      totalData={totalData}
+      FilterData={FilterData}
+      setFilterData={setFilterData}
+      TotalData={TotalData}
+      setTotalData={setTotalData}
+
     />
 
 </div>

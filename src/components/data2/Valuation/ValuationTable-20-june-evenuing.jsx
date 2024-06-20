@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {Typography,Spinner } from "@material-tailwind/react";
-import { MdCancel } from "react-icons/md";
+import {
+  Typography,
+  Input,
+  Select,
+  Option,
+  Checkbox,
+  Button,
+  Spinner 
+} from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
@@ -22,9 +29,10 @@ const ValuationTable = () => {
   const [TableHeader, setTableHeader] = useState([])
   const [TableRows, setTableRows] = useState([])
   const [FilterData, setFilterData] = useState(null)
-  const [closeLable, setCloseLable] = useState(false);
 
-
+    // Pagination States
+    const [currentPage, setCurrentPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(30);
 
   useEffect(() => {
     
@@ -112,14 +120,26 @@ const ValuationTable = () => {
 
 
 
+    // Pagination logic
+    const indexOfLastRow = currentPage * rowsPerPage;
+    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+    const currentRows = TableRows.slice(indexOfFirstRow, indexOfLastRow);
+    const totalPages = Math.ceil(TableRows.length / rowsPerPage)
 
-
-
+    const handlePreviousPage = () => {
+      if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+  
+    const handleNextPage = () => {
+      if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+  
+  
+    const handleRowsPerPageChange = (newRowsPerPage) => {
+      setRowsPerPage(newRowsPerPage);
+      setCurrentPage(1);
+    };
     
-
-const handleLabelClose = ()=> {
-
-}
 
     
   return (
@@ -133,26 +153,17 @@ const handleLabelClose = ()=> {
         </span>
       </div>
 
-      <div className="border-[1px] border-theme-c6 bg-theme-c5 p-4 rounded" style={{ height: `calc(100vh - 7.5rem)` }} >
-      
-      <div className="flex flex-col justify-between">
-        {/* Start Selected label  */}
-          <div className="flex  ">
-        <div className="bg-[#fff] p-3 relative">
-        <span className="absolute top-[-6px] right-[-6px] cursor-pointer" 
-        onClick={handleLabelClose}
-        ><MdCancel fill="#4448f5" size={18} /> </span>
-          <Typography className="text-[12px] text-[#000] font-semibold mb-1"> Market Cap (Cr.) </Typography>
-           <div className="bg-[#e9edef] px-1 border border-theme rounded w-fit"> 
-            <Typography className="text-[12px] text-[#000] font-semibold"> 63 </Typography> </div>
-         </div>
-          </div>
-        {/* End Selected label  */}
+      <div
+        className="border-[1px] border-theme-c6 bg-theme-c5 p-4 rounded"
+        style={{ height: `calc(100vh - 7.5rem)` }}
+      >
+     
+          <div className="">
+              {/* Start Table */}
 
-         {/*============= Start Table =========== */}
-         {
+      {
          ValuationLoading ? <Spinner /> :  (
-           <div className=" data2Tabels relative overflow-x-auto">
+          <div className=" data2Tabels relative overflow-x-auto">
           <ValuationTableData
             tableColumns={TableHeader}
             setTableColumns={setTableHeader}
@@ -165,13 +176,11 @@ const handleLabelClose = ()=> {
   </div>
         )
       }
-{/*=============== End Table ================*/}
 
+          
+              {/* End Table */}
+            </div>
 
-      </div>
-     
-
-       
       </div>
     </>
   );

@@ -1,17 +1,4 @@
 import * as React from 'react';
-import {
-  Typography,
-  Input,
-  Select,
-  Option,
-Checkbox,
-  Button,
-} from "@material-tailwind/react";
-import { CgSearch } from "react-icons/cg";
-import { IoIosArrowBack } from "react-icons/io";
-import { IoIosArrowForward } from "react-icons/io";
-
-
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -22,11 +9,11 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
-
+import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 
 import { visuallyHidden } from '@mui/utils';
-import { TextField } from '@mui/material';
+import { Checkbox, TextField } from '@mui/material';
 // import InsiderPopup from './InsiderPopup';
 import { useEffect } from 'react';
 import { GlobalContext } from '../../../context/GlobalContext';
@@ -211,7 +198,7 @@ const EnhancedTableHead = (props0) => {
             var cStyleLeft = 0;
   
             if (column.sticky) {
-              cStyleLeft = i0 * 140;
+              cStyleLeft = i0 * 170;
               cStyle.position = 'sticky';
               cStyle.top = '0px';
               cStyle.left = cStyleLeft;
@@ -232,13 +219,13 @@ const EnhancedTableHead = (props0) => {
               align={column.align}
               sortDirection={orderBy === column.id ? order : false}
               style={cStyle}
-              className='tableHeader'
             >
-
-        {/* header */}
-        <th className="!text-white  text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-            <div className='flex item-center gap-1 tableHeaderWithCheckandSort'>
-            <TableSortLabel
+             <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  }}>
+  
+                <TableSortLabel
                     active={orderBy === column.id}
                     direction={orderBy === column.id ? order : 'asc'}
                     onClick={createSortHandler(column.id)}
@@ -257,20 +244,15 @@ const EnhancedTableHead = (props0) => {
                       </Box>
                     ) : null}
                   </TableSortLabel>
-                <div>
-               
-                {
+                  
+                  {
                     column?.isCheckbox && (
-                      <Checkbox
-                      className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
-                      sx={{ padding: 0 }} checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
+                      <Checkbox sx={{ padding: 0 }} checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
                     )
                   }
-                </div>
-            </div>
-        </th>
-        {/* header */}
-
+  
+  
+              </Box>
   
             </TableCell>
         )
@@ -308,6 +290,11 @@ const handleCheckbox = (item) => {
   setToggleCheckBox(!ToggleCheckBox)
   
 }
+
+
+
+
+
 
 
   const requestSearch = (searchedVal) => {
@@ -352,122 +339,12 @@ useEffect(() => {
 }, [ToggleCheckBox])
 
 
-const handleNextPage = () => {
-  setPage((prevPage) => prevPage + 1);
-};
 
-const handlePreviousPage = () => {
-  setPage((prevPage) => prevPage - 1);
-};
 
   return (
-
-    <>
-
-          {/* ========= Start Header Page =========== */}
-          <div className="flex justify-between items-center pb-4">
-              <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
-                <div>
-                  <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
-                    SHOWING <span className="text-theme">
-                       {/* 1 -500 of {tableRows.length}  */}
-                       {page * rowsPerPage + 1} - {Math.min((page + 1) * rowsPerPage, FilterData && FilterData.length)} of {FilterData && FilterData.length}
-                      </span> ENTRIES
-                  </Typography>
-                </div>
-                <div className="flex-grow">
-                  <Input
-                    type="text"
-                    onChange={(e)=> requestSearch(e.target.value)}
-                    placeholder="Search Company"
-                    className="!border !border-gray-200 !h-8 !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-                    labelProps={{
-                      className: "hidden",
-                    }}
-                    icon={
-                      <CgSearch
-                        size={19}
-                        className="text-gray-400 top-[-2px] absolute"
-                      />
-                    }
-                  />
-                </div>
-              </div>
-
-              <div className="flex-grow-0 flex justify-center mx-[14px] mt-[-4px]">
-
-         <TablePagination
-          className='table-pagination-top cst-customchange'
-          rowsPerPageOptions={rowPerPageArr}
-          component="div"
-          count={FilterData && FilterData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-
-              </div>
-
-              <div className="flex-grow-1 ">
-                <div className="flex gap-1">
-                <Button
-          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-          disabled={page === 0}
-          onClick={handlePreviousPage}
-        >
-          <IoIosArrowBack size={16} />
-              </Button>
-                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                   onClick={() => setPage(0)}
-                  >
-                    <IoIosArrowBack size={16} />
-                    <IoIosArrowBack size={16} />
-                  </Button>
-                  <div className="w-[100px]">
-                    <Input
-                      type="number"
-                      defaultValue="1"
-                      size="md"
-                      className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-                      labelProps={{
-                        className: "hidden",
-                      }}
-
-                      value={page}
-                      onChange={(e) => {
-                        const page = parseInt(e.target.value);
-                        if (!isNaN(page) && page >= 1 && page <= totalPages) {
-                          setPage(page);
-                        }
-                      }}
-
-                    />
-                  </div>
-                  <Button
-          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center ml-2"
-          disabled={
-            page >= Math.ceil((FilterData && FilterData.length) / rowsPerPage) - 1
-          }
-             onClick={handleNextPage}
-          >
-              <IoIosArrowForward size={16} />
-                 </Button>
-                 <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                  onClick={() => setPage(totalPages)}
-                  >
-                    <IoIosArrowForward />
-                    <IoIosArrowForward />
-                  </Button>
-                </div>
-              </div>
-    </div>
-  {/* ========= End Header Page =========== */}
-
-
-
-     <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
+
 
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer className='table-wo-border'  sx={{ 
@@ -484,7 +361,9 @@ const handlePreviousPage = () => {
               rowCount={FilterData && FilterData.length}
             />
             <TableBody>
-    
+              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
+                 rows.slice().sort(getComparator(order, orderBy)) */}
+                 {/* {console.log(FilterData)} */}
               { FilterData && stableSort(FilterData, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -496,56 +375,21 @@ const handlePreviousPage = () => {
 
                   return (
 
-                    <TableRow role="checkbox" tabIndex={-1} key={index} style={{ 
-                      background: '#fff'
-                     }}>
+                    <TableRow role="checkbox" tabIndex={-1} key={index}>
                       { 
                       tableColumns && 
                       tableColumns.map((column, i0) => {
 
-                      
-                        
-
-
                         if(i0 < 10){
-                            // console.log('row >>> ', column)
+                            console.log('row >>> ', column)
                         }
+
 
                         if(column?.isVisible){
                           const customItem = row[column.key + '_all'];
                           const value = row[column.key];
-                        
-                            let cStyle = { 
-                              minWidth: column.minWidth,
-                              maxWidth: column.maxWidth,
-                              textAlign: 'left',
-                              padding: '0.5rem',
-                              fontSize: '12px',
-                              fontWeight: '600',
-                            }
-                  
-                            var cStyleLeft = 0;
-                  
-                            if (column.sticky) {
-                              cStyleLeft = i0 * 140;
-                              cStyle.position = 'sticky';
-                              cStyle.top = '0px';
-                              cStyle.left = cStyleLeft;
-                              cStyle.zIndex = 5;
-                              cStyle.backgroundColor = (column?.bgColor || '#fff');
-                            }
-                            
-                            // cStyle.backgroundColor = ((i0 % 2 === 0 ) ? "#E8F0F4" : '#fff');
-
-                            // cStyle.color = (column?.textColor || '#fff');
-                  
-                            if(column.id !== "column_2" && column.id !== "column_4" ){
-                              cStyle.textAlign = 'center';
-                            }
-
-
-
-
+                          
+                            let cStyle = {}
                           return (
                             <TableCell key={column.key} align={column.align} style={cStyle} >
                               { value }
@@ -562,17 +406,8 @@ const handlePreviousPage = () => {
           </Table>
         </TableContainer>
         
-        
-        
-      </Paper>
-    </Box>
-
- {/* start Bottom Pagination Button */}
- <div className="mt-4">
-      <div className="flex justify-end">
-      <div className="flex-grow-0 flex justify-center mx-[14px] ">
-      <TablePagination
-          className='table-pagination-top cst-customchange'
+        <TablePagination
+          className='table-pagination-top'
           rowsPerPageOptions={rowPerPageArr}
           component="div"
           count={FilterData && FilterData.length}
@@ -580,69 +415,9 @@ const handlePreviousPage = () => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-  </div>
-
-  <div className="flex-grow-1 ">
-    <div className="flex gap-1">
-    <Button
-          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-          disabled={page === 0}
-          onClick={handlePreviousPage}
-        >
-          <IoIosArrowBack size={16} />
-              </Button>
-                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                   onClick={() => setPage(0)}
-                  >
-                    <IoIosArrowBack size={16} />
-                    <IoIosArrowBack size={16} />
-                  </Button>
-             <div className="w-[100px]">
-                  <Input
-                      type="number"
-                      defaultValue="1"
-                      size="md"
-                      className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-                      labelProps={{
-                        className: "hidden",
-                      }}
-
-                      value={page}
-                      onChange={(e) => {
-                        const page = parseInt(e.target.value);
-                        if (!isNaN(page) && page >= 1 && page <= totalPages) {
-                          setPage(page);
-                        }
-                      }}
-
-                    />
-    </div>
-    <Button
-          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center ml-2"
-          disabled={
-            page >= Math.ceil((FilterData && FilterData.length) / rowsPerPage) - 1
-          }
-             onClick={handleNextPage}
-          >
-              <IoIosArrowForward size={16} />
-                 </Button>
-                 <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                  onClick={() => setPage(totalPages)}
-                  >
-                    <IoIosArrowForward />
-                    <IoIosArrowForward />
-                  </Button>
-    </div>
-    
-  </div>
-      </div>
-  
-    </div>
-{/* End Bottom Pagination Button */}
-
-
-    </>
-   
+        />
+        
+      </Paper>
+    </Box>
   );
 }
