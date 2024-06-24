@@ -1,23 +1,24 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import { visuallyHidden } from '@mui/utils';
+import * as React from "react";
+import PropTypes from "prop-types";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import Tooltip from "@mui/material/Tooltip";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import { visuallyHidden } from "@mui/utils";
+import { openCompany } from "../../constants/helper";
 
 function createData(id, name, calories, fat, carbs, protein) {
   return {
@@ -31,19 +32,19 @@ function createData(id, name, calories, fat, carbs, protein) {
 }
 
 const rows = [
-  createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
-  createData(2, 'Donut', 452, 25.0, 51, 4.9),
-  createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-  createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-  createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
-  createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
-  createData(9, 'KitKat', 518, 26.0, 65, 7.0),
-  createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
-  createData(11, 'Marshmallow', 318, 0, 81, 2.0),
-  createData(12, 'Nougat', 360, 19.0, 9, 37.0),
-  createData(13, 'Oreo', 437, 18.0, 63, 4.0),
+  createData(1, "Cupcake", 305, 3.7, 67, 4.3),
+  createData(2, "Donut", 452, 25.0, 51, 4.9),
+  createData(3, "Eclair", 262, 16.0, 24, 6.0),
+  createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
+  createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
+  createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
+  createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
+  createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
+  createData(9, "KitKat", 518, 26.0, 65, 7.0),
+  createData(10, "Lollipop", 392, 0.2, 98, 0.0),
+  createData(11, "Marshmallow", 318, 0, 81, 2.0),
+  createData(12, "Nougat", 360, 19.0, 9, 37.0),
+  createData(13, "Oreo", 437, 18.0, 63, 4.0),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -57,7 +58,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -80,108 +81,106 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'name',
+    id: "name",
     numeric: false,
     disablePadding: true,
-    label: 'Dessert (100g serving)',
+    label: "Dessert (100g serving)",
   },
   {
-    id: 'calories',
+    id: "calories",
     numeric: true,
     disablePadding: false,
-    label: 'Calories',
+    label: "Calories",
   },
   {
-    id: 'fat',
+    id: "fat",
     numeric: true,
     disablePadding: false,
-    label: 'Fat (g)',
+    label: "Fat (g)",
   },
   {
-    id: 'carbs',
+    id: "carbs",
     numeric: true,
     disablePadding: false,
-    label: 'Carbs (g)',
+    label: "Carbs (g)",
   },
   {
-    id: 'protein',
+    id: "protein",
     numeric: true,
     disablePadding: false,
-    label: 'Protein (g)',
+    label: "Protein (g)",
   },
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, NewColumns,  order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+  const {
+    onSelectAllClick,
+    NewColumns,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
-  console.log(NewColumns)
+  console.log("NewColumns >>>> ", NewColumns);
 
-  const ChildCell = ({data}) => {
-
+  const ChildCell = ({ data }) => {
     return (
-        <>
-            {
-            data && data.length > 0 && data.map((element, i)=>{
-                        return (
-                            <>
-            <TableCell
-                    key={i}
-                >
-                    <div>
+      <>
+        {data &&
+          data.length > 0 &&
+          data.map((element, i) => {
+            return (
+              <>
+                <TableCell key={i} style={{ 
+                  minWidth: element?.width
+                 }}>
+                  <div>
                     <TableSortLabel
-                    active={orderBy === element?.accessor}
-                    direction={orderBy === element?.accessor ? order : 'asc'}
-                    onClick={createSortHandler(element?.accessor)}
+                      active={orderBy === element?.accessor}
+                      direction={orderBy === element?.accessor ? order : "asc"}
+                      onClick={createSortHandler(element?.accessor)}
+                      sx={{ 
+                        textAlign:'start'
+                       }}
                     >
-                    {element.label}
-                    {orderBy === element?.accessor ? (
+                      {element.label}
+                      {orderBy === element?.accessor ? (
                         <Box component="span" sx={visuallyHidden}>
-                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                          {order === "desc"
+                            ? "sorted descending"
+                            : "sorted ascending"}
                         </Box>
-                    ) : null}
+                      ) : null}
                     </TableSortLabel>
-                    </div>
+                  </div>
                 </TableCell>
-                            </>
-        )
-                })
-            }
-        </>
-    )
-
-  } 
+              </>
+            );
+          })}
+      </>
+    );
+  };
 
   return (
     <TableHead>
-
       <TableRow>
         {NewColumns.map((headCell, i) => (
-          <TableCell
-            key={i}
-            colSpan={headCell.columns.length}
-            align='center'
-          >
-            <div>
-                {headCell.label}
-            </div>
+          <TableCell key={i} colSpan={headCell.columns.length} align="center">
+            <div>{headCell.label}</div>
           </TableCell>
         ))}
-
-
       </TableRow>
       <TableRow>
-        
-      {NewColumns.map((headCell, i) => {
-            let array = headCell.columns;
-            return <ChildCell data={array} key={i}/>            
+        {NewColumns.map((headCell, i) => {
+          let array = headCell.columns;
+          return <ChildCell data={array} key={i} />;
         })}
-        
       </TableRow>
-
     </TableHead>
   );
 }
@@ -190,33 +189,30 @@ EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
 
-
-
 export default function AbsResultMUI(props) {
-
-    const {
-        NewColumns,
-        TableData,
-        FilterData,
-        setFilterData,
-        TotalData,
-        setTotalData
-    } = props
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const {
+    NewColumns,
+    TableData,
+    FilterData,
+    setFilterData,
+    TotalData,
+    setTotalData,
+  } = props;
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -242,7 +238,7 @@ export default function AbsResultMUI(props) {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
     setSelected(newSelected);
@@ -271,95 +267,115 @@ export default function AbsResultMUI(props) {
     () =>
       stableSort(rows, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
+        page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage]
   );
 
   React.useEffect(() => {
     if (TableData) {
-      setFilterData(TableData) 
+      setFilterData(TableData);
     }
-  }, [TableData])
-
+  }, [TableData]);
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-      {/* TableData  {TableData.length} */}
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", mb: 2 }}>
+        {/* TableData {FilterData.length} */}
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={dense ? "small" : "medium"}
           >
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
-              orderBy={orderBy} 
+              orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={FilterData && FilterData.length}
               NewColumns={NewColumns}
             />
             <TableBody>
-              {FilterData && FilterData.length > 0 && FilterData.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
+              {FilterData &&
+                FilterData.length > 0 &&
+                FilterData.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                ).map((row, index) => {
+                  const isItemSelected = isSelected(row.id);
+                  const labelId = `enhanced-table-checkbox-${index}`;
 
-                if(index == 0){
-                    console.log('row <><<><> ', row)
-                }
-                let a0 = 0
-                let rowObj = Object.keys(row)
+                  if (index == 0) {
+                    console.log("row <><<><> ", row);
+                  }
+                  let a0 = 0;
+                  let rowObj = Object.keys(row);
+
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, row.id)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.id}
+                      selected={isItemSelected}
+                      // sx={{ cursor: "pointer" }}
+                    >
+                      {rowObj.map((item_1, i_i) => {
+                        let a0_0 = row[item_1];
+                        // let clr = row?.CompanyDetail;
+                        let cStyle = {
+                          
+                        };
+                        if(i_i == 4){
+                          cStyle = {
+                            display: "-webkit-box",
+                            width: "100%",
+                            height: "20px",
+                            WebkitLineClamp: "2",
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            // backgroundColor: row?.CompanyDetail.Color
+                          }
+                        } 
+
+
+                        if(i_i == 1){
+                          console.log(row)
+                        }
+                        
+
+                        if (i_i > 3) {
+                          return (
+                            <TableCell key={i_i} >
+                              {/* {i_i} */}
+                              <div onClick={()=>{
+                                if(i_i == 4){
+                                    openCompany({
+                                      CompanyID: row?.CompanyID
+                                    }, "", true)
+                                }
+                              }} className={`${i_i == 4 ? "cursor-pointer cell_"+row?.CompanyDetail.Color : ""} px-1`} style={cStyle}>
+
+                                    {a0_0}
+                                </div>
+                            </TableCell>
+                          );
+                        }
+                        
+                      })}
+                    </TableRow>
+                  );
+                })}
                 
-
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id}
-                    selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    
-
-{
-    rowObj.map((item_1, i_i)=>{
-        let a0_0 =  row[item_1]
-        if(i_i > 3){
-            console.log('a0_0  >>> ', a0_0)
-        
-            return (
-                <TableCell key={i_i} align="right">{a0_0}</TableCell>
-            )
-        }
-    })
-}
-                    
-
-                  </TableRow>
-                );
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
-
-        
-
-        {/* <TablePagination
+        <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={FilterData && FilterData.length}
@@ -367,10 +383,8 @@ export default function AbsResultMUI(props) {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
-
+        />
       </Paper>
-      
     </Box>
   );
 }

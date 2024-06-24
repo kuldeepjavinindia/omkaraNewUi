@@ -107,8 +107,8 @@ const AbsResult= ()=> {
             width = 100;
         }
         let cols = {
-            Header: ((resHeads.ColumnName).replace('&nbsp;', ' ')),
-            Footer: ((resHeads.ColumnName).replace('&nbsp;', ' ')),
+            label: ((resHeads.ColumnName).replace('&nbsp;', ' ')),
+            // Footer: ((resHeads.ColumnName).replace('&nbsp;', ' ')),
             accessor: 'accessor_' + a1,
             hideCheck: false,
             width: width
@@ -179,7 +179,7 @@ const AbsResult= ()=> {
 
 
   useEffect(() => {
-    // console.log('RDLoading >>> ', RDLoading)
+    console.log('RDLoading >>> ', RDLoading)
     if(!RDLoading){
       callApi()
     }

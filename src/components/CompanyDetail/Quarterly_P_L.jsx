@@ -1,13 +1,31 @@
 import { Button, ButtonGroup } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Quarterly_P_L_Chart from "./Quarterly_P_L_Chart";
 import Quarterly_P_L_Segment from "./Quarterly_P_L_Segment";
 import Quarterly_P_L_Result from "./Quarterly_P_L_Result";
 import Quarterly_P_L_LastQuarter from "./Quarterly_P_L_LastQuarter";
 import { ConStdArray } from "../../constants/helper";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { SC_Data20_Req, SC_QResult_Req } from "../../constants/defaultRequest";
+import { useParams } from "react-router-dom";
+import { QuarterlyResultApi, SCData20YearsApi } from "../../store/slice/SingleCompnaySlice";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const Quarterly_P_L = () => {
+  const rr_dispatch = useDispatch()
+  const rrd_params = useParams();
+    
+
+  const {
+    QuarterBtn, setQuarterBtn
+  } =  useContext(GlobalContext);
+
+
+  let cmpId = rrd_params?.company_id;
+  if(cmpId){
+    cmpId = window.atob(cmpId);
+  }
+
 
 
   const RightSideTabs = {
@@ -72,7 +90,7 @@ const Quarterly_P_L = () => {
         </>
       ),
       value: "con",
-      id: "1",
+      id: 1,
     },
     {
       label: "Segments",
@@ -85,7 +103,7 @@ const Quarterly_P_L = () => {
         </>
       ),
       value: "std",
-      id: "2",
+      id: 2,
     },
     {
       label: "Latest Quarter",
@@ -98,7 +116,7 @@ const Quarterly_P_L = () => {
         </>
       ),
       value: "std",
-      id: "3",
+      id: 3,
     },
     {
       label: "Chart ",
@@ -111,7 +129,7 @@ const Quarterly_P_L = () => {
         </>
       ),
       value: "std",
-      id: "4",
+      id: 4,
     },
   ];
 
@@ -126,11 +144,106 @@ const Quarterly_P_L = () => {
     }
     return data
   }
+  let a = [
+    {
+      id:"1",
+      label:"Quarterly",
+      months: '3',
+      rightTabShow:[1,2,3,4]
+    },
+    {
+      id:"2",
+      label:"Half Yearly",
+      months: '6',
+      rightTabShow:[1,4]
+    },
+    {
+      id:"3",
+      label:"Annually",
+      months: '12',
+      rightTabShow:[1,4]
+    }
+  ]
+  // const [QuarterBtn, setQuarterBtn] = useState(a[0])
+
+  const tab_1 = UpdateRightSideTabs.tab_1;
+  const qtrClick = (item) => {
+    
+    setQuarterBtn(item)
+    let type = tab_1?.activeType
+    let params = SC_QResult_Req;
+    params = {
+      ...params,
+      CompanyId: cmpId,
+      type: type,
+      Qtr: item.months
+    }
+    rr_dispatch(QuarterlyResultApi(params))
+
+    let params_2 = SC_Data20_Req;
+    params_2 = {
+        ...params_2,
+        CompanyId: cmpId,
+        type: type,
+        Qtr: item.months
+    }
+    rr_dispatch(SCData20YearsApi([params_2]))
+
+
+
+  }
+
+
+  useEffect(() => {
+    setQuarterBtn(a[0])
+  }, [])
   
 
   return (
     <>
-      <div className="flex justify-between mb-2">
+
+
+
+    
+    <div className="">
+    <ButtonGroup
+            ripple={false}
+            size="sm"
+            className=" border-[1px] rounded-lg shadow-none"
+          >
+            {a.map((item, i) => {
+              
+                return (
+                  <Button
+                    key={i}
+                    className={`border-none  shadow-none hover:shadow-none ${
+                      QuarterBtn.id == item?.id
+                        ? "bg-theme text-white"
+                        : "bg-white text-[#606F7B]"
+                    }  `}
+                    onClick={()=>qtrClick(item)}
+                  >
+                    {item.label}
+                  </Button>
+                );
+              
+            })}
+          </ButtonGroup>
+
+      {/* {
+        a.map((item, i) => {
+          return (
+            <Button className={`${
+              QuarterBtn.id == item?.id
+                ? "bg-theme"
+                : "text-theme border-theme"
+            }`} variant={`${QuarterBtn.id == item?.id ? "" : "outlined"}`} onClick={()=>qtrClick(item)}  key={i} size="sm"> {item.label}</Button>
+          )
+        })
+      } */}
+    </div>
+
+      <div className="flex justify-between items-end mb-2">
         <div>
           {
             secondaryButton.map((itm, i)=>{
@@ -139,7 +252,7 @@ const Quarterly_P_L = () => {
                 let tabBtnData = UpdateRightSideTabs[keyName];
                 
                 return (
-                  <div className="flex gap-2 mb-2" key={i}>
+                  <div className="flex gap-x-2" key={i}>
                     {primaryButton.map((item, i) => (
                       <>
                         <Button
@@ -174,19 +287,19 @@ const Quarterly_P_L = () => {
             })
           }
           
-          <div className="text-black font-medium mb-2 text-[13px]">
+          <>
             {
               SecondaryBtn.id == 2 && (
-                <>
+                <div className="text-black font-medium mb-2 text-[13px]">
                   Quarterly Segment {`"${PrimaryBtn?.label}"`} { SCQtrSegmentData._Headers && SCQtrSegmentData._Headers.length > 0 && (
                     <>
                       (showing data from last {SCQtrSegmentData._Headers && SCQtrSegmentData._Headers.length-1} quarters)
                     </>
                   )}
-                </>
+                </div>
               )
             }
-          </div>
+          </>
         </div>
         <div>
           
@@ -225,25 +338,27 @@ const Quarterly_P_L = () => {
           <ButtonGroup
             ripple={false}
             size="sm"
-            className=" border-[1px] rounded-lg mb-4 shadow-none"
+            className=" border-[1px] rounded-lg shadow-none"
           >
             {secondaryButton.map((item, i) => {
-              return (
-                <Button
-                  key={i}
-                  className={`border-none  shadow-none hover:shadow-none ${
-                    SecondaryBtn.id == item.id
-                      ? "bg-[#22242F] text-white"
-                      : "bg-white text-[#606F7B]"
-                  }  `}
-                  onClick={() => {
-                    setSecondaryBtn(item);
-                    
-                  }}
-                >
-                  {item.label}
-                </Button>
-              );
+              if(QuarterBtn?.rightTabShow && QuarterBtn?.rightTabShow.includes(item.id)){
+                return (
+                  <Button
+                    key={i}
+                    className={`border-none  shadow-none hover:shadow-none ${
+                      SecondaryBtn.id == item.id
+                        ? "bg-[#22242F] text-white"
+                        : "bg-white text-[#606F7B]"
+                    }  `}
+                    onClick={() => {
+                      setSecondaryBtn(item);
+                      
+                    }}
+                  >
+                    {item.label}
+                  </Button>
+                );
+              }
             })}
           </ButtonGroup>
 
@@ -278,6 +393,7 @@ const Quarterly_P_L = () => {
         )
       }
       <div>{SecondaryBtn.component}</div>
+      
     </>
   );
 };

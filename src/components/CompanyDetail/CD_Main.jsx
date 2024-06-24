@@ -370,7 +370,8 @@ const CD_Main = () => {
 
           return (
             <div
-              className="bg-[#F9FAFA] rounded-sm p-4 font-medium text-[13px]"
+              className="bg-[#F9FAFA] rounded-sm p-4 font-medium text-[13px] Single-overviewtableData
+"
               key={i}
             >
               <table className="w-full">

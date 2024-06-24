@@ -23,6 +23,9 @@ const GlobalContextProvider = ({ children }) => {
 
 
   
+  const [QuarterBtn, setQuarterBtn] = useState({})
+
+
 
   const PeersBtnRef1 = useRef(null); //SendNotificationModal
   const PeersBtnRef2 = useRef(null); //SendNotificationModal
@@ -30,6 +33,7 @@ const GlobalContextProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
+        QuarterBtn, setQuarterBtn,
         RepoListParams, setRepoListParams,
         BulkDealInsiderModalBtn, setBulkDealInsiderModalBtn,
         ReportBankDrawer,

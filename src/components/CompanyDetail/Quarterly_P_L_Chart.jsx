@@ -1,11 +1,12 @@
 import { Button } from "@material-tailwind/react"
 import CustomChart from "./CustomChart"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SCData20YearsApi } from "../../store/slice/SingleCompnaySlice";
 import { SC_Data20_Req } from "../../constants/defaultRequest";
 import { useParams } from 'react-router-dom';
 import LoginComponent from "../LoginComponent";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const quarterButton = [
     {
@@ -103,7 +104,10 @@ const quarterlySelect = (quarter=5, data=Year20Data?.Data) => {
 }
 
 
-
+const {
+    QuarterBtn,
+    // setQuarterBtn
+} = useContext(GlobalContext)
 
 const {
     SCData20Years:{
@@ -119,7 +123,8 @@ const callApi = (type=tab_1?.activeType) => {
     params = {
         ...params,
         CompanyId: cmpId,
-        type: type
+        type: type,
+        Qtr: QuarterBtn.months
     }
     rr_dispatch(SCData20YearsApi([params]))
 

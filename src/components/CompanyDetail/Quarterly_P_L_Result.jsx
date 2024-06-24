@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BarChartData_Columns_Rows, QuarterlyResultApi, ResultDocumentApi } from '../../store/slice/SingleCompnaySlice';
 import { Result_Document_Req, SC_QResult_Req } from '../../constants/defaultRequest';
@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { IconButton } from '@material-tailwind/react';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import QuarterlyAnalyticsInfoModal from './Modals/QuarterlyAnalyticsInfoModal';
+import { GlobalContext } from '../../context/GlobalContext';
 
 
 
@@ -16,7 +17,10 @@ const Quarterly_P_L_Result = (props) => {
     setUpdateRightSideTabs
   } = props
 
-
+  const {
+    QuarterBtn,
+    setQuarterBtn
+  } = useContext(GlobalContext)
   const tab_1 = UpdateRightSideTabs.tab_1;
 
 
@@ -45,7 +49,8 @@ const Quarterly_P_L_Result = (props) => {
     params = {
       ...params,
       CompanyId: cmpId,
-      type: type
+      type: type,
+      Qtr: QuarterBtn.months
     }
     rr_dispatch(QuarterlyResultApi(params))
   }

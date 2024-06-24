@@ -200,13 +200,14 @@ const menuItem = [
     childItem: [
       {
         id: 1,
-        // name: "Result Data",
-        name: "Quarterly Results",
+        name: "Result Data",
+        // name: "Quarterly Results",
         link: "/quarterly-result",
       },
       {
         id: 2,
-        name: "Result Calendar (New)",
+        // name: "Result Calendar (New)",
+        name: "Result Calendar",
         link: "/result-calendar",
       },
       // {

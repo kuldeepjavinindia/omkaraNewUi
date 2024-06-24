@@ -93,6 +93,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  RR_TagMaster: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  }
   
 };
 
@@ -123,6 +129,10 @@ let FIISDateMasterReq = `${slice_base_url}/FIISDateMaster`;
 
 // OMKARA CAPITAL API
 let DefaultMastersReq = `${MAIN_SITE_BASE_URL}/default-masters`;
+let RR_TagMasterReq = (`${slice_base_url}/RR_TagMaster`);
+
+
+
 
 
 
@@ -267,6 +277,18 @@ export const RR_BrokerMasterAPI = createAsyncThunk(
     return response?.data;
   }
 );
+
+
+
+
+// RR_TagMaster Thunk
+export const RR_TagMasterReqApi = createAsyncThunk(
+  "RR_TagMaster",
+   async(all_params)=> {
+      const response = await axios.post(`${RR_TagMasterReq}`, all_params)
+      return response?.data
+   }
+)
 
 
 
@@ -589,6 +611,26 @@ const TrendlyneSlice = createSlice({
       state.RR_BrokerMaster.data = action.payload;
     });
     // // END RR_BrokerMaster DATA
+
+      // // START RR_TagMaster DATA
+   builder.addCase(RR_TagMasterReqApi.pending, (state) => {
+    state.RR_TagMaster.loading = true;
+    state.RR_TagMaster.error = false;
+    state.RR_TagMaster.msgType = null;
+  });
+  builder.addCase(RR_TagMasterReqApi.fulfilled, (state, action) => {
+    state.RR_TagMaster.data = action.payload;
+    state.RR_TagMaster.loading = false;
+    state.RR_TagMaster.msg = "success";
+    state.RR_TagMaster.msgType = "success";
+  });
+  builder.addCase(RR_TagMasterReqApi.rejected, (state, action) => {
+    state.RR_TagMaster.loading = false;
+    state.RR_TagMaster.error = true;
+    state.RR_TagMaster.msgType = "error";
+    state.RR_TagMaster.msg = action.payload?.msg;
+    state.RR_TagMaster.data = action.payload;
+  });
 
     
   },

@@ -90,6 +90,13 @@ const initialState = {
         msg: null,
         error: null,
     },
+
+    AssignEmployee: {
+        loading: true,
+        data: [],
+        msg: null,
+        error: null,
+    },
     // START REPORT_BANK
 
     
@@ -118,6 +125,7 @@ const PriceAction_Req = (`${slice_base_url}/PriceAction`);
 const FIIsModel_Req = (`${slice_base_url}/FIIsModel`);
 const FIIsTopBottom_Req = (`${slice_base_url}/FIIsTopBottom`);
 const ResultCalender_Req = (`${slice_base_url}/ResultCalender`);
+const AssignEmployee_Req = (`${slice_base_url}/AssignCompanyToEmployees`);
 
 
 
@@ -226,6 +234,15 @@ export const ResultCalenderApi = createAsyncThunk(
     "ResultCalender",
     async(all_params) => {
         const response = await axios.post(`${ResultCalender_Req}`, all_params)
+        return response?.data
+    }
+)
+
+// AssignEmployee
+export const AssignEmployeeApi = createAsyncThunk(
+    "AssignEmployee",
+    async(all_params) => {
+        const response = await axios.post(`${AssignEmployee_Req}`, all_params)
         return response?.data
     }
 )
@@ -494,6 +511,27 @@ const Data2slice = createSlice({
             state.ResultCalender.error = true;
          });
          //End ResultCalender
+
+
+         
+        //START AssignEmployee Reducers
+        builder.addCase(AssignEmployeeApi.pending, (state)=> {
+            state.AssignEmployee.loading = true;
+            state.AssignEmployee.error = false;
+            state.AssignEmployee.msg = null
+        });
+        builder.addCase(AssignEmployeeApi.fulfilled, (state, action)=> {
+            state.AssignEmployee.loading = false;
+            state.AssignEmployee.data = action.payload
+            state.AssignEmployee.msg = "success"
+        });
+         builder.addCase(AssignEmployeeApi.rejected, (state, action)=> {
+            state.AssignEmployee.loading = false;
+            state.AssignEmployee.data = action.payload;
+            state.AssignEmployee.msg = action.payload?.msg;
+            state.AssignEmployee.error = true;
+         });
+         //End AssignEmployee
 
 
 

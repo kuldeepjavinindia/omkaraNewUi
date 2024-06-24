@@ -96,6 +96,7 @@ export const companyNotesReq = { CompanyID: "" };
 export const SC_QResult_Req = {
   CompanyId: "",
   type: "con",
+  Qtr: "3",
 };
 
 export const SC_SCAnnualP_L_Req = {
@@ -275,89 +276,77 @@ export const Bulk_BlockDetail_Req = {
   mcap: ["", ""],
 };
 
-
 export const ResultDataReq = [
   {
-      $id: "",
-      type: "Share Price (TTM)",
-      sub_type: [
-          {
-              Market_Cap: [
-                  "",
-                  ""
-              ],
-              LTP: "",
-              TTM_P_B: "",
-              TTM_P_E: "",
-              ROCE: "",
-              TTMSalesAbs: "",
-              TTMPATAbs: ""
-          }
-      ]
+    $id: "",
+    type: "Share Price (TTM)",
+    sub_type: [
+      {
+        Market_Cap: ["", ""],
+        LTP: "",
+        TTM_P_B: "",
+        TTM_P_E: "",
+        ROCE: "",
+        TTMSalesAbs: "",
+        TTMPATAbs: "",
+      },
+    ],
   },
   {
-      type: "Result Data",
-      sub_type: [
-          {
-               $id: "5",
-              Sales_YOY: "",
-              Sales_QOQ: "",
-              EBDITA_YOY: "",
-              EBDITA_QOQ: "",
-              PAT_YOY: "",
-              PAT_QOQ: "",
-              GP_YOY: "",
-              GP_QOQ: ""
-          }
-      ]
+    type: "Result Data",
+    sub_type: [
+      {
+        $id: "5",
+        Sales_YOY: "",
+        Sales_QOQ: "",
+        EBDITA_YOY: "",
+        EBDITA_QOQ: "",
+        PAT_YOY: "",
+        PAT_QOQ: "",
+        GP_YOY: "",
+        GP_QOQ: "",
+      },
+    ],
   },
   {
-      type: "Turn Around",
-      sub_type: [
-          {
-              EBDITA_TO: "",
-              PAT_TO: "",
-              Gross_Margin: "",
-              Gross_Profit: ""
-          }
-      ]
+    type: "Turn Around",
+    sub_type: [
+      {
+        EBDITA_TO: "",
+        PAT_TO: "",
+        Gross_Margin: "",
+        Gross_Profit: "",
+      },
+    ],
   },
   {
-      type : "More Filters",
-      sub_type: [
-          {
-              Sector: [
-
-              ],
-              Industry: [
-
-              ],
-              Company: [
-
-              ]
-          }
-      ]
+    type: "More Filters",
+    sub_type: [
+      {
+        Sector: [],
+        Industry: [],
+        Company: [],
+      },
+    ],
   },
   {
-      type: "Date",
-      sub_type: [
-          {
-              FromDate: moment().add('-1', 'days').format('MM/DD/YYYY'),
-              ToDate: moment().format('MM/DD/YYYY') 
-          }
-      ]
+    type: "Date",
+    sub_type: [
+      {
+        FromDate: moment().add("-1", "days").format("MM/DD/YYYY"),
+        ToDate: moment().format("MM/DD/YYYY"),
+      },
+    ],
   },
   {
-      type: "Color",
-      sub_type: [
-          {
-              ColorCode: ""
-          }
-      ]
-  }
+    type: "Color",
+    sub_type: [
+      {
+        ColorCode: "",
+      },
+    ],
+  },
 ];
-
-
 
 // END DATA 2 Requests
 
@@ -381,3 +370,43 @@ export const priceAction_Req = {
   Chg_from_week52_lowPer: "",
   ChangeAllTimeHigh: "",
 };
+
+//21-june-2024
+export const ReportBankUploadNoteReq = {
+  CompanyID: "",
+  description: "",
+  UserID: "",
+  CommentType: "",
+  Heading: "",
+  Type: "RR_Comments",
+};
+
+export const RR_TagMasterReq = {
+  TagID: "",
+  RR_Tag: "",
+  Tag_Title: "",
+  optionType: 3,
+};
+//21-june-2024
+
+export const calendar_Req = {
+  UserId: 22,
+  FromDate: moment().format('MM/DD/YYYY'),
+  ToDate: moment().add(1, 'week').format('MM/DD/YYYY'),
+  Sector: [],
+  Industry: [],
+  Market_Cap: ["", ""],
+  Portfolio: false,
+};
+
+
+
+// export const calendar_Req = {
+//     From_Date: moment().format('MM/DD/YYYY'),
+//     To_Date: moment().add(1, 'week').format('MM/DD/YYYY'),
+//     Market_Cap: ["", ""],
+//     UserId: "1",
+//     Portfolio: false,
+//     Sector: [],
+//     Industry: [],
+// }

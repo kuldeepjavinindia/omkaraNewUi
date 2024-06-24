@@ -253,6 +253,7 @@ let MediaCommentReq = `${slice_base_url}/VDRMediaCommentWithReply`;
 let VideoLikeDislikeReq = `${slice_base_url}/VDRMediaUserLiskeDislike`;
 let MediaCommentLikeDislikeReq = `${slice_base_url}/VDRCommentUserLiskeDislike`;
 let ResultDocumentReq = `${slice_base_url}/ResultDocument_New_ACEAPI`;
+let ResultDocument2Req = `${slice_base_url}/ResultDocument`;
 
 let BoardOfDirectorDetailReq = `${slice_base_url}/BoardOfDirectorDetails`;
 
@@ -505,7 +506,13 @@ export const MediaCommentLikeDislikeApi = createAsyncThunk(
 export const ResultDocumentApi = createAsyncThunk(
   "ResultDocument",
   async (all_param = {}) => {
-    const response = await axios.post(`${ResultDocumentReq}`, all_param);
+
+    let response;
+    if(all_param.data2){
+      response = await axios.post(`${ResultDocument2Req}`, all_param);
+    }else{
+      response = await axios.post(`${ResultDocumentReq}`, all_param);
+    }
     return response?.data;
   }
 );
@@ -522,7 +529,7 @@ export const BoardOfDirectorDetailApi = createAsyncThunk(
 // DateACE Thunk
 export const DateACEApi = createAsyncThunk(
   "DateACE",
-  async (all_param = {}) => {
+  async () => {
     const response = await axios.get(`${DateACE_Req}`);
     return response?.data;
   }

@@ -187,6 +187,20 @@ div:has(.smallInput.two) {
 .data2Tabels {
   overflow-x: scroll;
   table {
+
+   thead {
+    tr {
+      th{
+        white-space: nowrap;
+        text-align: right !important;
+ 
+      }
+      th:nth-child(1){
+        text-align: left !important;
+      }
+    }
+   }
+
     tbody{
     
     tr:nth-child(even){
@@ -200,6 +214,10 @@ div:has(.smallInput.two) {
       font-size: 13px;
       font-weight: 600;
       vertical-align: text-top;
+      text-align: right !important;
+     }
+     td:nth-child(1){
+      text-align: left !important;
      }
     }
     }
@@ -363,6 +381,11 @@ $border-color_3: $color_4;
 
 // Start 20-June-2024
 .cst-customchange {
+  &.two{
+    .MuiTablePagination-input {
+      border: 1px solid #C7C7C7;
+    } 
+  }
   .MuiTablePagination-actions, .MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows {
     display: none;
   }
@@ -393,3 +416,33 @@ $border-color_3: $color_4;
 }
 
 // End 20-June-2024
+
+// End 21-June-2024
+.Single-overviewtableData {
+  table{
+    tr{
+      td:nth-child(2) {
+        text-align: right;
+      }
+    }
+  }
+}
+// End 21-June-2024
+
+
+
+.cell_{
+  &Red{
+    background: #ffc4c4;
+  }
+  &Green{
+    background: #ccffd0;
+  }
+  &Orange {
+    background: #ffdcc1;
+    color:#000 !important
+  }
+  &Black {
+    color:#000 !important
+  }
+}

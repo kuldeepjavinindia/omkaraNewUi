@@ -279,30 +279,31 @@ EnhancedTableToolbar.propTypes = {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - FilterData.length) : 0;
     
 
-
-    const requestSearch = (searchedVal) => {
-      const filteredRows = tableRows.filter((row) => {
-          return Object.keys(row).some((key) => {
-            return String(row[key]).toLowerCase().includes(searchedVal.toLowerCase());
-          });
-      });
+  const requestSearch = (searchedVal) => {
+    const filteredRows = tableRows.filter((row) => {
       
-      if (searchedVal.length < 1) {
-        setFilterData(tableRows)
-      }
-      else {
-        setFilterData(filteredRows)
-      }
-    };
+        return Object.keys(row).some((key) => {
+          return String(row[key]).toLowerCase().includes(searchedVal.toLowerCase());
+        });
+    });
+    
+    if (searchedVal.length < 1) {
+      setFilterData(tableRows)
+    }
+    else {
+      setFilterData(filteredRows)
+    }
+  };
 
-
-
-    console.log(FilterData);
 
     let rowPerPageArr = [
       { label: 25, value: 25 },
       { label: 50, value: 50 },
       { label: 100, value: 100 },
+      { label: 500, value: 500 },
+      { label: 1000, value: 1000 },
+      { label: 2500, value: 2500 },
+      { label: 5000, value: 5000 },
       { label: 'All', value: (FilterData && FilterData.length) },
     ];
     
@@ -313,42 +314,27 @@ EnhancedTableToolbar.propTypes = {
     }, [tableRows])
     
 
-
-    const handleNextPage = () => {
-      setPage((prevPage) => prevPage + 1);
-    };
-    
-    const handlePreviousPage = () => {
-      setPage((prevPage) => prevPage - 1);
-    };
-
-
-
-
-
-
   return (
     <>
     
     <div>
-
-
-
-     {/* ========= Start Header Page =========== */}
-    <div className="flex justify-between items-center pb-2">
-              <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
+            {/* ========= Start Header Page =========== */}
+            <div className="flex justify-between items-center">
+              <div className="flex-grow-2 flex items-center gap-2 w-[60%] ">
                 <div>
-                <Typography className="!text-[11px] !lg:text-[12px] !font-semibold !text-[#000]">
-                    SHOWING <span className="text-theme">
-                   
-                       {page * rowsPerPage + 1} - {Math.min((page + 1) * rowsPerPage, FilterData && FilterData.length)} of {FilterData && FilterData.length}
-                      </span> ENTRIES
+                  {/* <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
+                    SHOWING <span className="text-theme">1 to 10 of 10</span>
+                    ENTRIES
+                  </Typography> */}
+                  <Typography variant='sub-title2' sx={{ fontSize: '.9rem' }}>
+                    Showing <b>{FilterData && FilterData.length > 0 ? page * rowsPerPage + 1 : 0}</b> to <b>{FilterData && FilterData.length > 0 ? (FilterData.length > page * rowsPerPage + rowsPerPage && rowsPerPage != '-1') ?  page * rowsPerPage + rowsPerPage : FilterData.length : "0"}</b> of <b>{FilterData && FilterData.length}</b> entries
                   </Typography>
+
                 </div>
                 <div className="flex-grow">
                   <Input
+                    readOnly
                     type="text"
-                    onChange={(e)=> requestSearch(e.target.value)}
                     placeholder="Search Company"
                     className="!border !border-gray-200 !h-8 !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                     labelProps={{
@@ -365,78 +351,52 @@ EnhancedTableToolbar.propTypes = {
               </div>
 
               <div className="flex-grow-0 flex justify-center mx-[14px] mt-[-4px]">
-
-         <TablePagination
-          className='table-pagination-top cst-customchange'
-          rowsPerPageOptions={rowPerPageArr}
-          component="div"
-          count={FilterData && FilterData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-
+                {/* <Select
+                  className="smallInput bg-[#fff] mt-0 !h-8 rounded border-none"
+                  value="Show 15"
+                  labelProps={{
+                    className: "hidden",
+                  }}
+                >
+                  <Option>Option 1</Option>
+                </Select> */}
               </div>
 
               <div className="flex-grow-1 ">
                 <div className="flex gap-1">
-                <Button
-          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-          disabled={page === 0}
-          onClick={handlePreviousPage}
-        >
-          <IoIosArrowBack size={16} />
-              </Button>
-                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                   onClick={() => setPage(0)}
-                  >
-                    <IoIosArrowBack size={16} />
+                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
                     <IoIosArrowBack size={16} />
                   </Button>
+                  {/* <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+                    <IoIosArrowBack size={16} />
+                    <IoIosArrowBack size={16} />
+                  </Button> */}
                   <div className="w-[100px]">
                     <Input
-                      type="number"
+                      type="text"
                       defaultValue="1"
                       size="md"
                       className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
                         className: "hidden",
                       }}
-
-                      value={page}
-                      onChange={(e) => {
-                        const page = parseInt(e.target.value);
-                        if (!isNaN(page) && page >= 1 && page <= totalPages) {
-                          setPage(page);
-                        }
-                      }}
-
                     />
                   </div>
-                  <Button
-          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center ml-2"
-          disabled={
-            page >= Math.ceil((FilterData && FilterData.length) / rowsPerPage) - 1
-          }
-             onClick={handleNextPage}
-          >
-              <IoIosArrowForward size={16} />
-                 </Button>
-                 <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                  onClick={() => setPage(totalPages)}
-                  >
-                    <IoIosArrowForward />
+                  <Button className="w-[48px] !h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
                     <IoIosArrowForward />
                   </Button>
+                  {/* <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
+                    <IoIosArrowForward />
+                    <IoIosArrowForward />
+                  </Button> */}
                 </div>
               </div>
-    </div>
-  {/* ========= End Header Page =========== */}
+            </div>
+            {/* ========= End Header Page =========== */}
 
             <div className="">
               {/* Start Table */}
-              <div className=" data2Tabels relative overflow-x-auto">
+              <div className="mt-8 data2Tabels relative overflow-x-auto">
 
        
               <Box sx={{ width: '100%' }}>
@@ -525,84 +485,7 @@ EnhancedTableToolbar.propTypes = {
               </div>
               {/* End Table */}
             </div>
-
           </div>
-
-
-
-  {/* start Bottom Pagination Button */}
-   <div className="mt-2">
-      <div className="flex justify-end">
-      <div className="flex-grow-0 flex justify-center mx-[14px] ">
-      <TablePagination
-          className='table-pagination-top cst-customchange'
-          rowsPerPageOptions={rowPerPageArr}
-          component="div"
-          count={FilterData && FilterData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-  </div>
-
-  <div className="flex-grow-1 ">
-    <div className="flex gap-1">
-    <Button
-          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-          disabled={page === 0}
-          onClick={handlePreviousPage}
-        >
-          <IoIosArrowBack size={16} />
-              </Button>
-                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                   onClick={() => setPage(0)}
-                  >
-                    <IoIosArrowBack size={16} />
-                    <IoIosArrowBack size={16} />
-                  </Button>
-             <div className="w-[100px]">
-                  <Input
-                      type="number"
-                      defaultValue="1"
-                      size="md"
-                      className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-                      labelProps={{
-                        className: "hidden",
-                      }}
-
-                      value={page}
-                      onChange={(e) => {
-                        const page = parseInt(e.target.value);
-                        if (!isNaN(page) && page >= 1 && page <= totalPages) {
-                          setPage(page);
-                        }
-                      }}
-
-                    />
-    </div>
-    <Button
-          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center ml-2"
-          disabled={
-            page >= Math.ceil((FilterData && FilterData.length) / rowsPerPage) - 1
-          }
-             onClick={handleNextPage}
-          >
-              <IoIosArrowForward size={16} />
-                 </Button>
-                 <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                  onClick={() => setPage(totalPages)}
-                  >
-                    <IoIosArrowForward />
-                    <IoIosArrowForward />
-                  </Button>
-    </div>
-    
-  </div>
-      </div>
-  
-    </div>
-{/* End Bottom Pagination Button */}
 
    
     </>

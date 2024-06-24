@@ -227,41 +227,60 @@ const FilterQuarterlyResult = () => {
     // console.log(name, val);
   };
 
-  const handleChangeInput = (e) => {
-    let value = e.target.value;
-    let name = e.target.name;
+ 
 
+
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+
+    // Temporarily store the new state values
+    let newFromDate = name === "FromDate" ? value : inputValue.FromDate;
+    let newToDate = name === "ToDate" ? value : inputValue.ToDate;
+    let newMarketCapFrom = name === "MarketCapFrom" ? value : inputValue.MarketCapFrom;
+    let newMarketCapTo = name === "MarketCapTo" ? value : inputValue.MarketCapTo;
+
+    // Update the state based on input change
     setInputValue((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
 
+    // Handle Date updates separately
     if (name === "FromDate" || name === "ToDate") {
-      let fromDate = Moment(inputValue.FromDate).format("MM/DD/YYYY");
-      let toDate = Moment(inputValue.ToDate).format("MM/DD/YYYY");
+      let formattedFromDate = Moment(newFromDate).format("MM/DD/YYYY");
+      let formattedToDate = Moment(newToDate).format("MM/DD/YYYY");
 
-      if (fromDate != "" && toDate != "") {
+      console.log('Updated FromDate:', formattedFromDate);
+      console.log('Updated ToDate:', formattedToDate);
+
+      if (formattedFromDate && formattedToDate) {
         setInputValue((prev) => ({
           ...prev,
-          ["Date"]: [fromDate, toDate],
+          Date: [formattedFromDate, formattedToDate]
         }));
       }
     }
 
+    // Handle Market Cap updates separately
     if (name === "MarketCapFrom" || name === "MarketCapTo") {
-      let marketCapfrom = inputValue?.MarketCapFrom;
-      let marketCapTo = inputValue?.MarketCapTo;
+      console.log('Updated MarketCapFrom:', newMarketCapFrom);
+      console.log('Updated MarketCapTo:', newMarketCapTo);
 
-      console.log("marketcap>>>   ", marketCapTo);
-
-      if (marketCapfrom != "" && marketCapTo != "") {
+      if (newMarketCapFrom && newMarketCapTo) {
         setInputValue((prev) => ({
           ...prev,
-          ["Market_Cap"]: [marketCapfrom, marketCapTo],
+          Market_Cap: [newMarketCapFrom, newMarketCapTo]
         }));
       }
     }
   };
+
+
+// Log the inputValue whenever it updates
+  useEffect(() => {
+    console.log('inputValue updated:', inputValue);
+  }, [inputValue]);
+
 
 
 

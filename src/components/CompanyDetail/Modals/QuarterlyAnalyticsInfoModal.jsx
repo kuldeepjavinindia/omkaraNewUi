@@ -47,6 +47,7 @@ const QuarterlyAnalyticsInfoModal = (props) => {
 
   useEffect(() => {
     if (!loading) {
+      setCopied(false)
       setNewData(data[0]);
     }
   }, [loading]);
@@ -58,7 +59,7 @@ const QuarterlyAnalyticsInfoModal = (props) => {
         {/* <DialogHeader>
          
         </DialogHeader> */}
-        <DialogBody className="h-[42rem] overflow-auto">
+        <DialogBody className="max-h-[42rem] overflow-auto">
 
 
           {loading ? (
@@ -87,7 +88,11 @@ const QuarterlyAnalyticsInfoModal = (props) => {
                         <strong className=" font-bold text-[24px]">
                           {NewData?.company_name}
                         </strong>
-                        <span className=" font-medium"> {DialogData}</span>
+
+                        {
+                          (DialogData && typeof DialogData != "boolean") &&  
+                          <span className=" font-medium"> {DialogData}</span>
+                        }
                       </h4>
                       <h6 className=" text-[13px] text-gray-400">
                         Omkara Results Review{" "}
@@ -219,7 +224,10 @@ const QuarterlyAnalyticsInfoModal = (props) => {
                     YoY){" "}
                   </div>
                   <div>Stock is trading at TTM P/E of {NewData?.TTM_P_E} </div>
-                  <div>EPS Rs. {NewData?.EPS}. </div>
+                  {
+                    NewData?.EPS && 
+                    <div>EPS Rs. {NewData?.EPS}. </div>
+                  }
                   <br />
                   <br />
 

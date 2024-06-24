@@ -58,19 +58,7 @@ function TabsDefault(props) {
 const QuarterlyResult = () => {
   const [ActiveTab, setActiveTab] = useState("1");
 
-
-
-
-
   
-
-
-
-
-
-
-
-
   const TypeTabs = [
     {
       value: "1",
