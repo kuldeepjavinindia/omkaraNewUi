@@ -148,7 +148,9 @@ function SubMenuItem({ data }) {
           data?.childItem.map((item, i) => {
             return (
               <>
-                <MenuItem key={i} className="flex items-center gap-2 active:bg-inherit hover:bg-[#585D67]  focus:bg-inherit">
+                <MenuItem onClick={()=>{
+                  setOpenMenu(false)
+                }} key={i} className="flex items-center gap-2 active:bg-inherit hover:bg-[#585D67]  focus:bg-inherit">
                   <Link to={item?.link || item?.path} target={`${item?.path ? "_blank" : "_self"}`} className=" font-normal text-white w-full  block">
                     <Typography variant="small" className="w-full flex items-center gap-1">
                       {item?.logo && (

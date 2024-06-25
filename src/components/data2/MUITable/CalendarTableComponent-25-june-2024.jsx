@@ -14,11 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 // import DrawerContainer from '../Common/DrawerContainer';
 import { Button, Typography } from "@mui/material";
 // import { vdrAssignEmployeeAction, vdrEmployeeAction } from '../../redux/actions/VdrAction';
-import { IoAddOutline } from "react-icons/io5";
-
+import { BsFillPlusCircleFill } from "react-icons/bs";
 import { AiFillMinusCircle } from "react-icons/ai";
-import { MdOutlineDeleteOutline } from "react-icons/md";
-
 
 // import TooltipText from '../../frontend/components/CustomChart/TooltipText';
 import { showCalendarActionBtn } from "../../../constants/helper";
@@ -190,13 +187,13 @@ export default function CalendarTableComponent(props) {
           className="calendar"
         >
           <TableHead>
-            <TableRow className="!bg-[#1E233A]" >
+            <TableRow>
               {tableColumns &&
                 tableColumns.map((column) => {
                   return (
-                    <TableCell 
-                    className="!text-white !p-2 !text-[12px] !xl:text-[13px] font-semibold !bg-[#1E233A]"
+                    <TableCell
                       sx={{}}
+                      className="text-[12px]"
                       key={column.id}
                       align={column.align}
                       // style={{ minWidth: column.minWidth, maxWidth: column.maxWidth, fontWeight: '600' }}
@@ -257,7 +254,7 @@ export default function CalendarTableComponent(props) {
                             }
                             onMouseLeave={() => cellFunction(null)}
                             key={column.id}
-                            className="text-ellipsis tableCell fontSize-12px fontWeight-600 !p-2"
+                            className="text-ellipsis tableCell fontSize-12px fontWeight-600"
                             align={column.align}
                             style={cStyle}
                             onClick={() => cellClicked(row)}
@@ -265,26 +262,10 @@ export default function CalendarTableComponent(props) {
                             {/* { row[a00]?.usersData ? <Avatar size={50}  textSizeRatio={10} name={row[a00]?.usersData[0].user_name} /> : null } */}
 
                             <div className="demoNew">
-                                
-                                <div className="flex">
-                                <div>
-                                  {column.format && typeof value === "number" ? (
-                                column.format(value)
-                                   ) : value ? (
-                                   <TooltipText
-                                  className="text-ellipsis"
-                                   title={value}
-                                  >
-                                    <span className=" text-[12px] xl:text-[13px] text-[#000] font-semibold texttableEliplse">{value} </span>
-                                  </TooltipText>
-                              ) : null}
-                            </div>
-
-                            <div className="flex">
-
-                            <div>
-                            {row[a00]?.usersData[0]?.user_name ? (
-                                <TooltipText title={row[a00]?.usersData[0]?.user_name} >
+                              {row[a00]?.usersData[0]?.user_name ? (
+                                <TooltipText
+                                  title={row[a00]?.usersData[0]?.user_name}
+                                >
                                   <Avatar
                                     sx={{
                                       bgcolor: "cornflowerblue",
@@ -299,41 +280,22 @@ export default function CalendarTableComponent(props) {
                                   </Avatar>
                                 </TooltipText>
                               ) : null}
+
+                              {column.format && typeof value === "number" ? (
+                                column.format(value)
+                              ) : value ? (
+                                <TooltipText
+                                  className="text-ellipsis"
+                                  title={value}
+                                >
+                                  <span>{value}</span>
+                                </TooltipText>
+                              ) : null}
                             </div>
 
-
-                            <div>
-                                {showCalendarActionBtn(authState.user.UserID) &&
-                                  AssignEmployeeArr.includes(
-                                    row[a00]?.CompanyID
-                                  ) &&
-                                  HoverState === row[a00]?.CompanyID && (
-                                    <div className="cell_add_icon">
-                                      <TooltipText title={"Remove"}>
-                                        <IconButton
-                                       
-                                          variant="contained"
-                                          sx={{ minWidth: "fit-content" }}
-                                          onClick={() =>
-                                            removeAssignEmployee(
-                                              row[a00]?.CompanyID
-                                            )
-                                          }
-                                          color="error"
-                                            className=" bg-[#DD2025] text-white  !rounded-full !w-[20px] !h-[20px]"
-                                          company_id={row[a00]?.CompanyID || ""}
-                                        >
-                                          <MdOutlineDeleteOutline  size={15}/>
-
-                                        </IconButton>
-                                      </TooltipText>
-                                    </div>
-                                  )}
-                                </div>
-
-                              <div>
-                              {value && (
+                            {value && (
                               <>
+                                {/* {JSON.stringify(showCalendarActionBtn(authState.user.UserID))} */}
                                 {showCalendarActionBtn(authState.user.UserID) &&
                                   !AssignEmployeeArr.includes(
                                     row[a00]?.CompanyID
@@ -342,9 +304,9 @@ export default function CalendarTableComponent(props) {
                                     <div className="cell_add_icon">
                                       <TooltipText title={"Assign"}>
                                         <IconButton
-                                         
-                                           className=" bg-theme text-white  rounded-full w-[20px] h-[20px]"
-                                            onClick={(e) => {
+                                          size="sm"
+                                          className=" bg-theme"
+                                          onClick={(e) => {
                                             // [
                                               setCompanyData({
                                                 deleteStatus: false,
@@ -363,46 +325,47 @@ export default function CalendarTableComponent(props) {
                                                   companyData: row[a00],
                                                 }
                                               })
-                                             
+                                              // toggleDrawer(anchor, true)(e),
+                                              // setOpenForm("calendar"),
+                                              // setLevelType(1),
+                                              // setInputType(0),
+                                            // ]
                                           }}
-                                         
+                                          color="primary"
                                           company_id={row[a00]?.CompanyID || ""}
                                         >
-                                           {/* <BsFillPlusCircleFill size={14} /> */}
-                                           <IoAddOutline />
-
+                                          <BsFillPlusCircleFill size={16} />
                                         </IconButton>
-
                                       </TooltipText>
                                     </div>
                                   )}
 
-                               
-                               
+                                {showCalendarActionBtn(authState.user.UserID) &&
+                                  AssignEmployeeArr.includes(
+                                    row[a00]?.CompanyID
+                                  ) &&
+                                  HoverState === row[a00]?.CompanyID && (
+                                    <div className="cell_add_icon">
+                                      <TooltipText title={"Remove"}>
+                                        <Button
+                                          size="small"
+                                          variant="contained"
+                                          sx={{ minWidth: "fit-content" }}
+                                          onClick={() =>
+                                            removeAssignEmployee(
+                                              row[a00]?.CompanyID
+                                            )
+                                          }
+                                          color="error"
+                                          company_id={row[a00]?.CompanyID || ""}
+                                        >
+                                          <AiFillMinusCircle size={20} />
+                                        </Button>
+                                      </TooltipText>
+                                    </div>
+                                  )}
                               </>
                             )}
-                              </div>
-                             
-
-
-                              </div>
-
-
-
-
-                                </div>
-
-                           
-                            
-                     
-                              
-
-
-
-
-                            </div>
-
-                           
                           </TableCell>
                         );
                       })}

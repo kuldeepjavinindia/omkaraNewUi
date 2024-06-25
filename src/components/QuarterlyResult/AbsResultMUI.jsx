@@ -3,6 +3,7 @@ import {
   Typography,
   Input,
   Button,
+  Checkbox
 } from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
@@ -20,7 +21,7 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
+
 import Tooltip from "@mui/material/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -122,6 +123,7 @@ const headCells = [
 function EnhancedTableHead(props) {
   const {
     onSelectAllClick,
+    handleCheckbox,
     NewColumns,
     order,
     orderBy,
@@ -135,21 +137,21 @@ function EnhancedTableHead(props) {
 
   console.log("NewColumns >>>> ", NewColumns);
 
-  const ChildCell = ({ data, style }) => {
+  const ChildCell = ({ data, style, p_label }) => {
     return (
       <>
         {data &&
           data.length > 0 &&
           data.map((element, i) => {
-
+            if(element.isVisible){
     
             return (
               <>
-                <TableCell key={i} style={{
+                <TableCell  key={i} style={{
                   ...style,
                   minWidth: element?.width
-                 }}>
-                  <div>
+                 }}  className=' tableHeader' >
+                  <div className="inline-flex items-center"> 
                     <TableSortLabel
                       active={orderBy === element?.accessor}
                       direction={orderBy === element?.accessor ? order : "asc"}
@@ -168,12 +170,12 @@ function EnhancedTableHead(props) {
                       ) : null}
                     </TableSortLabel>
                   </div>
-
+               
                   {
                     element?.isCheckbox && (
                       <Checkbox size="small" className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
                       checked={element?.isCheckbox} onClick={()=>{
-                        // handleCheckbox(element)
+                        handleCheckbox(element, 'child', p_label)
                       }} />
                     )
                   }
@@ -181,6 +183,7 @@ function EnhancedTableHead(props) {
                 </TableCell>
               </>
             );
+          }
           })}
       </>
     );
@@ -190,53 +193,56 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {NewColumns.map((headCell, i) =>{
+if(headCell.columns.filter(item=>item.isVisible == true).length > 0 && headCell.isVisible){
 
-let cStyle = { 
-  minWidth: "140px",
-  maxWidth: headCell.maxWidth,
-  padding: '0.5rem',
-  fontSize: '12px',
-  fontWeight: '500',
-  backgroundColor: headCell?.bgColor || '#1E233A',
-  color: headCell?.textColor || '#fff',
-  position: 'sticky',
-  top: 0, 
-  zIndex: 2
-};
-
-// Apply sticky styles to the first three columns
-if (i < 3) {
-  cStyle.left = `${i * 140}px`; 
-  cStyle.zIndex = 9;
+  let cStyle = { 
+    minWidth: "140px",
+    maxWidth: headCell.maxWidth,
+    padding: '0.5rem',
+    fontSize: '12px',
+    fontWeight: '500',
+    backgroundColor: headCell?.bgColor || '#1E233A',
+    color: headCell?.textColor || '#fff',
+    position: 'sticky',
+    top: 0, 
+    zIndex: 2
+  };
+  
+  // Apply sticky styles to the first three columns
+  if (i < 3) {
+    cStyle.left = `${i * 140}px`; 
+    cStyle.zIndex = 9;
+  }
+  
+  
+  
+            return (
+              <TableCell  style = {cStyle} key={i} colSpan={headCell.columns.length} >
+                <div>
+                <div style={{ 
+                  textAlign:'center'
+                 }}>
+                  {headCell.label}
+                 {
+                    headCell?.isCheckbox && (
+                      <Checkbox size="small" className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
+                      checked={headCell?.isCheckbox} onClick={()=>{
+                        handleCheckbox(headCell, 'main')
+                      }} />
+                    )
+                  }
+          </div>
+  
+                </div>
+              </TableCell>
+            )
 }
-
-
-
-          return (
-            <TableCell  style = {cStyle} key={i} colSpan={headCell.columns.length} >
-              <div>
-              <div style={{ 
-                textAlign:'center'
-               }}>
-                {headCell.label}
-               {
-                  headCell?.isCheckbox && (
-                    <Checkbox size="small" className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
-                    checked={headCell?.isCheckbox} onClick={()=>{
-                      // handleCheckbox(headCell)
-                    }} />
-                  )
-                }
-        </div>
-
-              </div>
-            </TableCell>
-          )
 
         })}
       </TableRow>
       <TableRow>
         {NewColumns.map((headCell, i) => {
+          
           let array = headCell.columns;
           let cStyle = { 
             minWidth: "140px",
@@ -258,7 +264,7 @@ if (i < 3) {
 
           return (
             <>
-              <ChildCell style = {cStyle} data={array} key={i} />
+              <ChildCell  p_label={headCell.label} style = {cStyle} data={array} key={i} />
             </>
           )
         })}
@@ -279,6 +285,7 @@ EnhancedTableHead.propTypes = {
 export default function AbsResultMUI(props) {
   const {
     NewColumns,
+    setNewColumns,
     TableData,
     FilterData,
     setFilterData,
@@ -290,7 +297,8 @@ export default function AbsResultMUI(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(50);
+  const [ToggleCheckBox, setToggleCheckBox] = React.useState(false);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -343,7 +351,6 @@ export default function AbsResultMUI(props) {
 
   
   let rowPerPageArr = [
-    { label: 25, value: 25 },
     { label: 50, value: 50 },
     { label: 100, value: 100 },
     { label: 500, value: 500 },
@@ -393,6 +400,40 @@ export default function AbsResultMUI(props) {
 
 
 
+  const handleCheckbox = (item, type="", p_label="") => {
+    // console.log('item >>> ', item) 
+    
+    let cols = NewColumns;
+  
+    if(type == 'child' && p_label != ""){
+      // updatedItem.isVisible
+      let fData = NewColumns.find(item=>item.label == p_label)
+      let c_findIndex = NewColumns.indexOf(fData);
+  
+      let child_findIndex = fData.columns.indexOf(item)
+      
+      let updatedItem = item;
+      updatedItem.isVisible = !item.isVisible;
+      fData['columns'][child_findIndex] = updatedItem
+  
+  
+      cols[c_findIndex] = fData
+      // console.log('fData >>>> ', cols)
+    }else{
+      let updatedItem = item;
+          updatedItem.isVisible = !item.isVisible;
+      let findIndex = NewColumns.indexOf(item)
+          cols[findIndex] = updatedItem
+    }
+    
+   
+    // console.log(cols);
+    setNewColumns(cols) 
+    setToggleCheckBox(!ToggleCheckBox)
+    
+  }
+
+  
 
 
   const handleNextPage = () => {
@@ -413,6 +454,7 @@ export default function AbsResultMUI(props) {
         {data &&
           data.length > 0 &&
           data.map((element, i) => {
+            if(element.isVisible){
             let val = rowData[element.accessor];
             
             return (
@@ -420,13 +462,14 @@ export default function AbsResultMUI(props) {
                 <TableCell key={i} style={{
                   ...style
                  }}>
-                  <div>
+                  <div className="texttableEliplse">
                     {val}
                   {/* {element.label} */}
                   </div>
                 </TableCell>
               </>
             );
+          }
           })}
       </>
     );
@@ -560,6 +603,7 @@ export default function AbsResultMUI(props) {
               onRequestSort={handleRequestSort}
               rowCount={FilterData && FilterData.length}
               NewColumns={NewColumns}
+              handleCheckbox={handleCheckbox}
             />
             <TableBody>
               {FilterData &&
@@ -607,7 +651,7 @@ export default function AbsResultMUI(props) {
                         if (i < 3) {
                           cStyle.backgroundColor = '#fff';
                           cStyle.left = `${i * 140}px`; 
-                          cStyle.zIndex = 9;
+                          cStyle.zIndex = 2;
                         }
                         if (i == 2) {
                           cStyle.borderRight = '1px solid #000';

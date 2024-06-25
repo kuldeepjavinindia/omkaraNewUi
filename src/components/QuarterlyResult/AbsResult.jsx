@@ -94,9 +94,9 @@ const AbsResult= ()=> {
         allRowsData.push(singleRow);
     });
 
-    let isCheckbox = true;
 
     Headers.map((resHeads) => {
+      let isCheckbox = true;
       let subColArr = [];
       let subCol = [];
       let sticky = null;
@@ -112,7 +112,7 @@ const AbsResult= ()=> {
             accessor: 'accessor_' + a1,
             hideCheck: false,
             width: width,
-            isCheckbox: isCheckbox,
+            isCheckbox: false,
             isVisible: true,
         }
         a1++;
@@ -155,12 +155,11 @@ const AbsResult= ()=> {
       }
       var mCol = {
           label: mTitle,
-          // Footer: mTitle,
           sticky: sticky,
           hideCheck: hideCheck,
           headerClassName: bgClass,
           columns: subColArr,
-          isCheckbox: isCheckbox,
+          isCheckbox: (resHeads?.type === "0" ? false : isCheckbox),
           isVisible: true,
       }
       mColArr.push(mCol);
@@ -199,6 +198,7 @@ const AbsResult= ()=> {
 
     <AbsResultMUI 
       NewColumns={NewColumns}
+      setNewColumns ={setNewColumns }
       TableData={TableData}
       FilterData={FilterData}
       setFilterData={setFilterData}

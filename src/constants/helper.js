@@ -651,7 +651,92 @@ export const FilterInputs = {
   },
 };
 
-export const QuterltyResultFinalReq = (data) => {
+
+
+
+export const QuterltyResultFinalReq = (inputsArray) => {
+  // console.log('inputsArray >>> ', inputsArray)
+
+  const filterArray = [
+    {
+      "$id": null,
+      "type": "Share Price (TTM)",
+      "sub_type": [
+        {
+          "Market_Cap": [
+            (inputsArray.Market_Cap.value1 || ''),
+            (inputsArray.Market_Cap.value2 || '')
+          ],
+          "LTP": (inputsArray.LTP.value1 || ""),
+          "TTM_P_B": (inputsArray.TTM_P_B.value1 || ""),
+          "TTM_P_E": (inputsArray.TTM_P_E.value1 || ""),
+          "ROCE": (inputsArray.ROCE.value1 || ""),
+          "TTMSalesAbs": (inputsArray.TTM_Sales_Abs.value1 || ""),
+          "TTMPATAbs": (inputsArray.TTM_PAT_Abs.value1 || "")
+        }
+      ]
+    },
+    {
+      "type": "Result Data",
+      "sub_type": [
+        {
+          "$id": "5",
+          "Sales_YOY": (inputsArray.Sales_YOY.value1 || ""),
+          "Sales_QOQ": (inputsArray.Sales_QOQ.value1 || ""),
+          "EBDITA_YOY": (inputsArray.EBDITA_YOY.value1 || ""),
+          "EBDITA_QOQ": (inputsArray.EBDITA_QOQ.value1 || ""),
+          "PAT_YOY": (inputsArray.PAT_YOY.value1 || ""),
+          "PAT_QOQ": (inputsArray.PAT_QOQ.value1 || ""),
+          "GP_YOY": (inputsArray.GROSS_PROFIT_YOY.value1 || ""),
+          "GP_QOQ": (inputsArray.GROSS_PROFIT_QOQ.value1 || "")
+        }
+      ]
+    },
+    {
+      "type": "Turn Around",
+      "sub_type": [
+        {
+          "EBDITA_TO": inputsArray.EBDITA_TO.value1 || "",
+          "PAT_TO": inputsArray.PAT_TO.value1 || ""
+        }
+      ]
+    },
+    {
+      "type": "More Filters",
+      "sub_type": [
+        {
+          "Sector": inputsArray.sectors.value1,
+          "Industry": inputsArray.industry.value1,
+          "Company": inputsArray.company.value1,
+          "Portfolio": inputsArray.portfolio.value1,
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "sub_type": [
+        {
+          "FromDate": inputsArray.Date.value1,
+          "ToDate": inputsArray.Date.value2
+        }
+      ]
+    },
+    {
+      "type": "Color",
+      "sub_type": [
+        {
+          "ColorCode": inputsArray.ColorCode.value1
+        }
+      ]
+    }
+  ];
+
+  return filterArray;
+
+};
+
+
+export const QuterltyResultFinalReq_00 = (data) => {
   return [
     {
       $id: "",
@@ -690,8 +775,8 @@ export const QuterltyResultFinalReq = (data) => {
       type: "Turn Around",
       sub_type: [
         {
-          EBDITA_TO: [data?.EBDITA_TO?.value1] || [],
-          PAT_TO: [data?.PAT_TO?.value1] || [],
+          EBDITA_TO: data?.EBDITA_TO?.value1 || "",
+          PAT_TO: data?.PAT_TO?.value1 || "",
           Gross_Margin: data?.Gross_Margin?.value1 || "",
           Gross_Profit: data?.Gross_Profit?.value1 || "",
         },
@@ -701,9 +786,9 @@ export const QuterltyResultFinalReq = (data) => {
       type: "More Filters",
       sub_type: [
         {
-          Sector: [data?.Sector] || [],
-          Industry: [data?.Industry] || [],
-          Company: [data?.Company] || [],
+          Sector: data?.Sector?.value1 || [],
+          Industry: data?.Industry?.value1 || [],
+          Company: data?.Company?.value1 || [],
         },
       ],
     },
@@ -722,7 +807,7 @@ export const QuterltyResultFinalReq = (data) => {
       type: "Color",
       sub_type: [
         {
-          ColorCode: "",
+          ColorCode: data?.ColorCode?.value1,
         },
       ],
     },
@@ -770,5 +855,17 @@ export const selectEmployee = (employeeMaster, setEmployeeMasterArr) => {
       })
       shortAsc(data1)
       setEmployeeMasterArr(data1);
+  }
+}
+
+export const selectTurnAround = (turnAroundMaster, setTurnAroundMasterArr) => {
+  if (turnAroundMaster.length > 0) {
+    var data1 = [];
+    console.log('turnAroundMaster>> ' + JSON.stringify(turnAroundMaster))
+    turnAroundMaster.map((item) => {
+      var d1 = { title: item.FilterName, value: item.Id };
+      data1.push(d1);
+    })
+    setTurnAroundMasterArr(data1);
   }
 }

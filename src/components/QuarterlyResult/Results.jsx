@@ -158,6 +158,7 @@ const Results = () => {
    
                 <ResultMUI 
                   NewColumns={NewColumns}
+                  setNewColumns={setNewColumns}
                   TableData={TableData}
                   FilterData={FilterData}
                   setFilterData={setFilterData}

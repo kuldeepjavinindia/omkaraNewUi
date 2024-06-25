@@ -1,4 +1,3 @@
-import { ImLoop2 } from "react-icons/im"; 
 import {
   Typography,
   Button,
@@ -21,13 +20,11 @@ import {
   industryMasterAPI,
   sectorMasterAPI,
   allCompanyMasterAPI,
-  turnAroundMasterAPI,
 } from "../../store/slice/MasterSlice";
 import { ResultDataReq } from "../../constants/defaultRequest";
 import Moment from "moment";
-import { FilterInputs, QuterltyResultFinalReq, selectTurnAround } from "../../constants/helper";
+import { FilterInputs, QuterltyResultFinalReq } from "../../constants/helper";
 import { GlobalContext } from "../../context/GlobalContext";
-import { Autocomplete, TextField } from "@mui/material";
 
 function Icon({ id, open }) {
   return (
@@ -53,16 +50,11 @@ function Icon({ id, open }) {
 const animatedComponents = makeAnimated();
 
 const FilterQuarterlyResult = () => {
-  const [sectorData, setSectorData] = useState([]);
-  const [industryData, setIndustryData] = useState([]);
-  const [allCompanyData, setAllCompanyData] = useState([]);
-  
-  const [TurnAroundMasterArr, setTurnAroundMasterArr] = useState([]);
-
-  const [eBDITA_TO, setEBDITA_TO] = useState({});
-  const [PAT_TO, setPAT_TO] = useState({});
-  const [patToKey, setPatToKey] = useState(false);
-  const [ebditaKey, setEbditaKey] = useState(false);
+  const [sectorData, setSectorData] = useState();
+  const [industryData, setIndustryData] = useState();
+  const [allCompanyData, setAllCompanyData] = useState();
+  const [eBDITA_TO, setEBDITA_TO] = useState();
+  const [PAT_TO, setPAT_TO] = useState();
 
   const [inputValue, setInputValue] = useState({
     FromDate: Moment().format("MM-DD-YYYY"), // Initial value in MM-DD-YY format
@@ -75,8 +67,14 @@ const FilterQuarterlyResult = () => {
   
   const {
     // FilterChipsData,
-    setFilterChipsData
+    setFilterChipsData,
   } = useContext(GlobalContext)
+
+
+  // const {
+  //   // filterDataChip,
+  //   setFilterDataChip
+  // } = useContext(GlobalContext)
 
 
 
@@ -97,11 +95,6 @@ const FilterQuarterlyResult = () => {
       data: allCompanyMasterMasterData,
       loading: allCompanyMasterMasterLoading,
     },
-    turnAroundMaster: {
-      data: turnAroundData,
-      loading: turnAroundLoading,
-    },
-
   } = useSelector((state) => state.Masters);
 
   // Start Calling ResultDataApi and Update with Input change
@@ -114,16 +107,6 @@ const FilterQuarterlyResult = () => {
     accordion_5: false,
     accordion_6: false,
   });
-
-  useEffect(() => {
-      rr_dispatch(turnAroundMasterAPI())
-  }, [])
-  useEffect(() => {
-    if(turnAroundLoading){
-      selectTurnAround(turnAroundData, setTurnAroundMasterArr)
-    }  
-  }, [turnAroundLoading])
-  
 
   const handleOpen = (value) => {
     let key = `accordion_${value}`;
@@ -140,6 +123,53 @@ const FilterQuarterlyResult = () => {
       [key]: true ? false : false,
     }));
   };
+
+  const handleResetDate = (value)=> {
+
+ console.log("ddfsdfs");
+
+
+  
+ if (name === "FromDate" || name === "ToDate") {
+  let formattedFromDate =  Moment().add("-1", "days").format("YYYY-MM-DD");
+  let formattedToDate = Moment().format("YYYY-MM-DD");
+
+  console.log('Updated FromDate:', formattedFromDate);
+  console.log('Updated ToDate:', formattedToDate);
+
+  if (formattedFromDate || formattedToDate) {
+    setInputValue((prev) => ({
+      ...prev,
+      Date: [formattedFromDate, formattedToDate]
+    }));
+  }
+}
+
+
+    let key = `accordion_${value}`;
+    setActiveAccordion((prev) => ({
+      ...prev,
+      [key]: true ? false : false,
+    }));
+
+
+
+
+  }
+
+
+  const handleResetSIC = (value)=> {
+    let key = `accordion_${value}`;
+    setActiveAccordion((prev) => ({
+      ...prev,
+      [key]: true ? false : false,
+    }));
+
+    setSectorData(" ");
+    setIndustryData("");
+    setAllCompanyData("")
+
+  }
 
   const handleRefreshClassification = () => {
     setSectorData(null);
@@ -266,7 +296,6 @@ const FilterQuarterlyResult = () => {
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
 
-    console.log('name, value', name, value)
     // Temporarily store the new state values
     let newFromDate = name === "FromDate" ? value : inputValue.FromDate;
     let newToDate = name === "ToDate" ? value : inputValue.ToDate;
@@ -355,16 +384,16 @@ const FilterQuarterlyResult = () => {
       
       let params1 = FilterInputs;
 
-      // console.log("inputValue >>>>>>>>>", inputValue);
-      
+      console.log("inputValue >>>>>>>>>", inputValue);
+
       Object.keys(inputValue).map((key) => {
         if (inputBothVal.includes(key)) {
           params1 = {
             ...params1,
             [key]: {
               ...FilterInputs[key],
-              value1: inputValue[key][0] || "",
-              value2: inputValue[key][1] || "",
+              value1: inputValue[key][0],
+              value2: inputValue[key][1],
             },
           };
         } else {
@@ -372,30 +401,21 @@ const FilterQuarterlyResult = () => {
             ...params1,
             [key]: {
               ...FilterInputs[key],
-              value1: inputValue[key] || "",
+              value1: inputValue[key],
             },
           };
         }
       });
-      console.log("inputValue >>>>>>>>>", params1);
-
       setFilterChipsData(params1);
+      // setFilterDataChip(params1);
 
       let finalParams = QuterltyResultFinalReq(params1);
+    
       callBothAPIs(finalParams)
 
     }
   };
 
-  const resetTurnAround = () => {
-
-    setInputValue({ ...inputValue, ['EBDITA_TO']: "", ['PAT_TO']: "" });
-    setEBDITA_TO({});
-    setPAT_TO({});
-    setPatToKey(!patToKey);
-    setEbditaKey(!ebditaKey);
-
-  }
 
 
   // console.log(finalUserInputs);
@@ -441,7 +461,7 @@ const FilterQuarterlyResult = () => {
               </Typography>
               <Typography
                 className="text-[13px] text-[#FF2026] font-semibold"
-                onClick={() => handleReset(1)}
+                onClick={() => handleResetDate(1)}
               >
                 RESET
               </Typography>
@@ -493,15 +513,13 @@ const FilterQuarterlyResult = () => {
               </Typography>
               <Typography
                 className="text-[13px] text-[#FF2026] font-semibold"
-                onClick={() => handleReset(2)}
-              >
-                RESET
+                onClick={() => handleResetSIC(2)}> RESET
               </Typography>
             </AccordionHeader>
             <AccordionBody>
               <div className="flex justify-between">
                 <label className="text-[12px] text-[#000] font-medium">
-                  Sectors (58){" "}
+                  Sectors (58)
                 </label>
                 <Typography
                   className="text-[#7B70FF] text-[12px] font-semibold cursor-pointer"
@@ -894,11 +912,6 @@ const FilterQuarterlyResult = () => {
                 htmlFor="EBDITA_TO"
               >
                 EBIDTA Margin (%) - To +{" "}
-
-                <Button size="sm" onClick={() => resetTurnAround()} style={{ top: 0, right: 0 }} type="button" variant="contained">
-                  {/* <LoopIcon style={{ height: '1rem', width: '1rem' }} /> */}
-                  <ImLoop2 size={14} />
-                </Button>
               </label>
 
               {/* <select name="EBDITA_TO" id="" value={eBDITA_TO}   onChange={handleChangeFour}>
@@ -914,45 +927,8 @@ const FilterQuarterlyResult = () => {
             })
            }
         </select> */}
-               <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={TurnAroundMasterArr}
-                    values={eBDITA_TO}
-                    keyName={ebditaKey}
-                    getOptionLabel={(option) => option.title}
-                    renderOption={(props, option) => (
-                      <li
-                        {...props}
-                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
-                      >
-                        {option.title}
-                      </li>
-                    )}
-                    onChange={(event, newInputValue) => {
-                      var val1 = [];
-                      for (var a = 0; a < newInputValue.length; a++) {
-                        val1.push(newInputValue[a].value);
-                      }
-                      setInputValue({ ...inputValue, ["EBDITA_TO"]: val1 });
-                      setEBDITA_TO(newInputValue);
-                      // console.log('Company >> ',company)
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=""
-                        placeholder={
-                          turnAroundLoading ? "Loading..." : "Select"
-                        }
-                        size="small"
-                        className=""
-                      />
-                    )}
-                  />
 
-
-              {/* <Select
+              <Select
                 name="EBDITA_TO"
                 components={animatedComponents}
                 options={Options_EBDITA_TO}
@@ -965,7 +941,7 @@ const FilterQuarterlyResult = () => {
                 className="react-select-container"
                 classNamePrefix="react-select"
                 isMulti={false}
-              /> */}
+              />
 
               <label
                 className="text-[12px] text-[#000] font-medium"
@@ -973,45 +949,7 @@ const FilterQuarterlyResult = () => {
               >
                 PAT-TO +{" "}
               </label>
-              <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={TurnAroundMasterArr}
-                    values={PAT_TO}
-                    keyName={patToKey}
-                    
-                    getOptionLabel={(option) => option.title}
-                    renderOption={(props, option) => (
-                      <li
-                        {...props}
-                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
-                      >
-                        {option.title}
-                      </li>
-                    )}
-                    onChange={(event, newInputValue) => {
-                      var val1 = [];
-                      for (var a = 0; a < newInputValue.length; a++) {
-                        val1.push(newInputValue[a].value);
-                      }
-                      setInputValue({ ...inputValue, ["PAT_TO"]: val1 });
-                      setPAT_TO(newInputValue);
-                      // console.log('Company >> ',company)
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=""
-                        placeholder={
-                          turnAroundLoading ? "Loading..." : "Select"
-                        }
-                        size="small"
-                        className=""
-                      />
-                    )}
-                  />
-
-              {/* <Select
+              <Select
                 name="PAT_TO"
                 components={animatedComponents}
                 options={Options_PAT_TO}
@@ -1024,7 +962,7 @@ const FilterQuarterlyResult = () => {
                 className="react-select-container"
                 classNamePrefix="react-select"
                 isMulti={false}
-              /> */}
+              />
               {/* <Input
             type="text"
             name="PAT_TO"
@@ -1055,8 +993,8 @@ const FilterQuarterlyResult = () => {
             <AccordionBody>
               <div className="flex flex-col">
                 <Radio
-                  name="ColorCode"
-                  value=""
+                  name="conditonsOptions"
+                  value="all"
                   className=" custom-radio  checked:border-[#4448F5]"
                   onChange={handleChangeInput}
                   label={
@@ -1067,8 +1005,8 @@ const FilterQuarterlyResult = () => {
                 />
 
                 <Radio
-                  name="ColorCode"
-                  value="Green"
+                  name="conditonsOptions"
+                  value="saleUpTo10%"
                   className=" custom-radio  checked:border-[#4448F5]"
                   onChange={handleChangeInput}
                   label={
@@ -1082,8 +1020,8 @@ const FilterQuarterlyResult = () => {
                 />
 
                 <Radio
-                  value="Orange"
-                  name="ColorCode"
+                  value="saleUpTo20%"
+                  name="conditonsOptions"
                   className=" custom-radio  checked:border-[#4448F5]"
                   onChange={handleChangeInput}
                   label={
@@ -1096,8 +1034,8 @@ const FilterQuarterlyResult = () => {
                 />
 
                 <Radio
-                  value="Red"
-                  name="ColorCode"
+                  value="saleDownTo10%"
+                  name="conditonsOptions"
                   className=" custom-radio  checked:border-[#4448F5]"
                   onChange={handleChangeInput}
                   label={

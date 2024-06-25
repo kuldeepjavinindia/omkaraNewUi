@@ -137,7 +137,7 @@ const handleLabelClose = ()=> {
       
       <div className="flex flex-col justify-between">
         {/* Start Selected label  */}
-          <div className="flex  ">
+          {/* <div className="flex  ">
         <div className="bg-[#fff] p-3 relative">
         <span className="absolute top-[-6px] right-[-6px] cursor-pointer" 
         onClick={handleLabelClose}
@@ -146,7 +146,7 @@ const handleLabelClose = ()=> {
            <div className="bg-[#e9edef] px-1 border border-theme rounded w-fit"> 
             <Typography className="text-[12px] text-[#000] font-semibold"> 63 </Typography> </div>
          </div>
-          </div>
+          </div> */}
         {/* End Selected label  */}
 
          {/*============= Start Table =========== */}

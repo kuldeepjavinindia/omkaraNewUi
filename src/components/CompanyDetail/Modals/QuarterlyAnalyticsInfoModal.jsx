@@ -28,6 +28,10 @@ const QuarterlyAnalyticsInfoModal = (props) => {
     navigator.clipboard.writeText(Ref.current.innerText);
     setCopied(true);
   };
+  const onWpIconClick = (props) => {
+    navigator.clipboard.writeText(Ref.current.innerText);
+    window.open('https://wa.me', '_blank')
+  };
 
   const getColorStatus = (val = "", type = "", isHide = true) => {
     if (!val) return "N/A";
@@ -113,7 +117,7 @@ const QuarterlyAnalyticsInfoModal = (props) => {
                           src={`${
                             import.meta.env.VITE_BASE_URL
                           }/images/icons/copy_icon.svg`}
-                          alt=""
+                          onClick={() => onWpIconClick()}
                         />
                       </IconButton>
 

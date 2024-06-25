@@ -4,7 +4,6 @@ import {
   Typography,
   Input,
   Button,
-  Checkbox
 } from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
@@ -23,6 +22,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 
 import Paper from '@mui/material/Paper';
+import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
@@ -138,6 +138,8 @@ function EnhancedTableHead(props) {
         
       {NewColumns.map((headCell, k) => {
 
+if(headCell?.isVisible){
+
 let cStyle = { 
   minWidth: "140px",
   maxWidth: headCell.maxWidth,
@@ -193,7 +195,10 @@ if (k < 3) {
       </div>
     </TableCell>
   );
-})}
+}
+}
+
+)}
 
 
       </TableRow>
@@ -214,6 +219,7 @@ EnhancedTableHead.propTypes = {
 
 export default function ResultMUI({
     NewColumns,
+    setNewColumns,
     TableData,
     FilterData,
     setFilterData,
@@ -226,6 +232,7 @@ export default function ResultMUI({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
+  const [ToggleCheckBox, setToggleCheckBox] = React.useState(false);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -263,9 +270,27 @@ export default function ResultMUI({
 
 
 
+  
+ 
+const handleCheckbox = (item) => {
+  // console.log('item >>> ', item) 
+  let cols = NewColumns;
+  let updatedItem = item;
+  updatedItem.isVisible = !item.isVisible;
+
+  let findIndex = NewColumns.indexOf(item)
+  cols[findIndex] = updatedItem
+  
+  setNewColumns(cols) 
+  setToggleCheckBox(!ToggleCheckBox)
+  
+}
+
+
+
 
   let rowPerPageArr = [
-    { label: 25, value: 25 },
+    // { label: 25, value: 25 },
     { label: 50, value: 50 },
     { label: 100, value: 100 },
     { label: 500, value: 500 },
@@ -332,6 +357,12 @@ export default function ResultMUI({
   }, [TableData]);
 
   
+  React.useEffect(() => {
+  // console.log('TableColumns >>> ', TableColumns)
+}, [ToggleCheckBox])
+
+
+
   const handleNextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
@@ -444,7 +475,7 @@ export default function ResultMUI({
   {/* ========= End Header Page =========== */}
 
 
- <Box sx={{ width: '100%' }}>
+ <Box sx={{ width: '100%', minHeight: '70vh' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         
         <TableContainer className='table-wo-border'  sx={{ 
@@ -462,6 +493,7 @@ export default function ResultMUI({
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
+              handleCheckbox={handleCheckbox}
               rowCount={FilterData && FilterData.length}
             />
             <TableBody>
@@ -480,6 +512,8 @@ export default function ResultMUI({
                     {
 
  NewColumns.map((headCell, k) => {
+
+  if(headCell?.isVisible){
     let item = row[headCell.id];
      let val = item
   // console.log('val >><><>< ', headCell.id, row)
@@ -522,16 +556,17 @@ export default function ResultMUI({
                     {
                       headCell.id == 'Info' ?
                       <div>
-                          <IconButton className=" !p-0" onClick={(e)=>clickInfo(e, row)}>
-                              <AiOutlineInfoCircle size={18} />
+                          <IconButton onClick={(e)=>clickInfo(e, row)}>
+                              <AiOutlineInfoCircle />
                           </IconButton>
                       </div>
                       :
-                      <div className="texttableEliplse">{val}</div>
+                      <div >{val}</div>
                     }
                    </TableCell>
     </>
   )
+}
 })
 
                     }
