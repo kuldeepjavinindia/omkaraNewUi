@@ -399,6 +399,8 @@ export const calendar_Req = {
   Portfolio: false,
 };
 
+export const AssignEmployee_Req = { optionType: "2" }
+
 
 
 // export const calendar_Req = {

@@ -8,7 +8,7 @@ import {
   Checkbox,
   Radio,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -24,6 +24,7 @@ import {
 import { ResultDataReq } from "../../constants/defaultRequest";
 import Moment from "moment";
 import { FilterInputs, QuterltyResultFinalReq } from "../../constants/helper";
+import { GlobalContext } from "../../context/GlobalContext";
 
 function Icon({ id, open }) {
   return (
@@ -61,6 +62,15 @@ const FilterQuarterlyResult = () => {
   });
   name = "EBDITA_TO";
   const [finalUserInputs, setFinalUserInputs] = useState();
+
+
+  
+  const {
+    // FilterChipsData,
+    setFilterChipsData
+  } = useContext(GlobalContext)
+
+
 
   const rr_dispatch = useDispatch();
   // const [open, setOpen] = useState(1);
@@ -253,7 +263,7 @@ const FilterQuarterlyResult = () => {
       console.log('Updated FromDate:', formattedFromDate);
       console.log('Updated ToDate:', formattedToDate);
 
-      if (formattedFromDate && formattedToDate) {
+      if (formattedFromDate || formattedToDate) {
         setInputValue((prev) => ({
           ...prev,
           Date: [formattedFromDate, formattedToDate]
@@ -266,7 +276,7 @@ const FilterQuarterlyResult = () => {
       console.log('Updated MarketCapFrom:', newMarketCapFrom);
       console.log('Updated MarketCapTo:', newMarketCapTo);
 
-      if (newMarketCapFrom && newMarketCapTo) {
+      if (newMarketCapFrom || newMarketCapTo) {
         setInputValue((prev) => ({
           ...prev,
           Market_Cap: [newMarketCapFrom, newMarketCapTo]
@@ -321,7 +331,7 @@ const FilterQuarterlyResult = () => {
       
       let params1 = FilterInputs;
 
-      // console.log("filterInputs", params1);
+      console.log("inputValue >>>>>>>>>", inputValue);
 
       Object.keys(inputValue).map((key) => {
         if (inputBothVal.includes(key)) {
@@ -343,6 +353,7 @@ const FilterQuarterlyResult = () => {
           };
         }
       });
+      setFilterChipsData(params1);
       let finalParams = QuterltyResultFinalReq(params1);
       callBothAPIs(finalParams)
 

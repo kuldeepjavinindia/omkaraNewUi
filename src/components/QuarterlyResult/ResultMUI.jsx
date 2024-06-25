@@ -1,5 +1,13 @@
 import { AiOutlineInfoCircle } from "react-icons/ai"; 
 import * as React from 'react';
+import {
+  Typography,
+  Input,
+  Button,
+} from "@material-tailwind/react";
+import { CgSearch } from "react-icons/cg";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -12,10 +20,9 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
@@ -117,7 +124,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, NewColumns } =
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, NewColumns, handleCheckbox } =
     props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -127,35 +134,68 @@ function EnhancedTableHead(props) {
     <TableHead>
       
       
-      <TableRow>
+      <TableRow className="!bg-[#1E233A]">
         
-        
-        {NewColumns.map((headCell, k) => (
-          <TableCell
-            key={headCell?.id}
-            align={headCell?.numeric ? 'right' : 'left'}
-            padding={headCell?.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell?.id ? order : false}
-          >
-            <div>
-              <TableSortLabel
-                active={orderBy === headCell?.id}
-                direction={orderBy === headCell?.id ? order : 'asc'}
-                onClick={createSortHandler(headCell?.id)}
-              >
-                <span dangerouslySetInnerHTML={{ __html: headCell?.label }} />
+      {NewColumns.map((headCell, k) => {
 
-                
-                {orderBy === headCell?.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
+let cStyle = { 
+  minWidth: "140px",
+  maxWidth: headCell.maxWidth,
+  padding: '0.5rem',
+  fontSize: '12px',
+  fontWeight: '500',
+  backgroundColor: headCell?.bgColor || '#1E233A',
+  color: headCell?.textColor || '#fff',
+  position: 'sticky',
+  top: 0, 
+  zIndex: 2, 
+};
 
-            </div>
-          </TableCell>
-        ))}
+// Apply sticky styles to the first three columns
+if (k < 3) {
+  cStyle.left = `${k * 140}px`; 
+  cStyle.zIndex = 9;
+}
+
+  return (
+    <TableCell
+      key={headCell?.id}
+      align={headCell?.numeric ? 'right' : 'left'}
+      // padding={headCell?.disablePadding ? 'none' : 'normal'}
+      sortDirection={orderBy === headCell?.id ? order : false}
+      style={cStyle}
+    >
+      <div>
+        <TableSortLabel
+          active={orderBy === headCell?.id}
+          direction={orderBy === headCell?.id ? order : 'asc'}
+          onClick={createSortHandler(headCell?.id)}
+        >
+          <span dangerouslySetInnerHTML={{ __html: headCell?.label }} />
+
+          {orderBy === headCell?.id ? (
+            <Box component="span" sx={visuallyHidden}>
+              {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+            </Box>
+          ) : null}
+        </TableSortLabel>
+
+        {
+          headCell?.isCheckbox && (
+            <Checkbox size="small" className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
+            checked={headCell?.isCheckbox} onClick={()=>{
+              handleCheckbox(headCell)
+            }} />
+          )
+        }
+
+
+      </div>
+    </TableCell>
+  );
+})}
+
+
       </TableRow>
     </TableHead>
   );
@@ -221,6 +261,39 @@ export default function ResultMUI({
     setSelected(newSelected);
   };
 
+
+
+
+  let rowPerPageArr = [
+    { label: 25, value: 25 },
+    { label: 50, value: 50 },
+    { label: 100, value: 100 },
+    { label: 500, value: 500 },
+    { label: 1000, value: 1000 },
+    { label: 2500, value: 2500 },
+    { label: 5000, value: 5000 },
+    { label: 'All', value: (FilterData && FilterData.length) },
+  ];
+
+
+  const requestSearch = (searchedVal) => {
+    const filteredRows = TableData.filter((row) => {
+        return Object.keys(row).some((key) => {
+          return String(row[key]).toLowerCase().includes(searchedVal.toLowerCase());
+        });
+    });
+    
+    if (searchedVal.length < 1) {
+      setFilterData(TableData)
+    }
+    else {
+      setFilterData(filteredRows)
+    }
+  };
+
+
+
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -259,12 +332,124 @@ export default function ResultMUI({
   }, [TableData]);
 
   
+  const handleNextPage = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+  
+  const handlePreviousPage = () => {
+    setPage((prevPage) => prevPage - 1);
+  };
 
   return (
-    <Box sx={{ width: '100%' }}>
+
+ <>
+  {/* ========= Start Header Page =========== */}
+  <div className="flex justify-between items-center pb-4">
+              <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
+                <div>
+                  <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
+                    SHOWING <span className="text-theme">
+                       {/* 1 -500 of {tableRows.length}  */}
+                       {page * rowsPerPage + 1} - {Math.min((page + 1) * rowsPerPage, FilterData && FilterData.length)} of {FilterData && FilterData.length}
+                      </span> ENTRIES
+                  </Typography>
+                </div>
+                <div className="flex-grow">
+                  <Input
+                    type="text"
+                    onChange={(e)=> requestSearch(e.target.value)}
+                    placeholder="Search Company"
+                    className="!border !border-gray-200 !h-8 !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                    labelProps={{
+                      className: "hidden",
+                    }}
+                    icon={
+                      <CgSearch
+                        size={19}
+                        className="text-gray-400 top-[-2px] absolute"
+                      />
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="flex-grow-0 flex justify-center mx-[14px] mt-[-4px]">
+
+         <TablePagination
+          className='table-pagination-top cst-customchange'
+          rowsPerPageOptions={rowPerPageArr}
+          component="div"
+          count={FilterData && FilterData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+
+              </div>
+
+              <div className="flex-grow-1 ">
+                <div className="flex gap-1">
+                <Button
+          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
+          disabled={page === 0}
+          onClick={handlePreviousPage}
+        >
+          <IoIosArrowBack size={16} />
+              </Button>
+                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
+                   onClick={() => setPage(0)}
+                  >
+                    <IoIosArrowBack size={16} />
+                    <IoIosArrowBack size={16} />
+                  </Button>
+                  <div className="w-[100px]">
+                    <Input
+                      type="number"
+                      defaultValue="1"
+                      size="md"
+                      className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                      labelProps={{
+                        className: "hidden",
+                      }}
+
+                      value={page}
+                      onChange={(e) => {
+                        const page = parseInt(e.target.value);
+                        if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                          setPage(page);
+                        }
+                      }}
+
+                    />
+                  </div>
+                  <Button
+          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center ml-2"
+          disabled={
+            page >= Math.ceil((FilterData && FilterData.length) / rowsPerPage) - 1
+          }
+             onClick={handleNextPage}
+          >
+              <IoIosArrowForward size={16} />
+                 </Button>
+                 <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
+                  onClick={() => setPage(totalPages)}
+                  >
+                    <IoIosArrowForward />
+                    <IoIosArrowForward />
+                  </Button>
+                </div>
+              </div>
+    </div>
+  {/* ========= End Header Page =========== */}
+
+
+ <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         
-        <TableContainer>
+        <TableContainer className='table-wo-border'  sx={{ 
+          maxHeight:'calc(100vh - 250px)'
+         }}>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
@@ -294,9 +479,9 @@ export default function ResultMUI({
                   >
                     {
 
-NewColumns.map((headCell, k) => {
-  let item = row[headCell.id];
-  let val = item
+ NewColumns.map((headCell, k) => {
+    let item = row[headCell.id];
+     let val = item
   // console.log('val >><><>< ', headCell.id, row)
   let cStyle = {}
     if(typeof item == 'object'){
@@ -306,9 +491,34 @@ NewColumns.map((headCell, k) => {
         color: item?.Color
       }
     }
+
+
+// Apply general cell styles
+  cStyle = { 
+    ...cStyle, // Retain any styles applied from the object check above
+    minWidth: headCell.minWidth,
+    maxWidth: headCell.maxWidth,
+    textAlign: 'left',
+    padding: '0.5rem',
+    fontSize: '12px',
+    fontWeight: '600',
+  };
+
+    var cStyleLeft = 0;
+
+    if (k < 3) {
+      cStyleLeft = k * 130;
+      cStyle.position = 'sticky';
+      cStyle.top = '0px';
+      cStyle.left = cStyleLeft;
+      cStyle.zIndex = 5;
+      cStyle.backgroundColor = '#fff';
+    
+    }
+
   return (
     <>
-                   <TableCell >
+                   <TableCell style={cStyle}>
                     {
                       headCell.id == 'Info' ?
                       <div>
@@ -317,7 +527,7 @@ NewColumns.map((headCell, k) => {
                           </IconButton>
                       </div>
                       :
-                      <div style={cStyle}>{val}</div>
+                      <div >{val}</div>
                     }
                    </TableCell>
     </>
@@ -334,7 +544,7 @@ NewColumns.map((headCell, k) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
+        {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={FilterData && FilterData.length}
@@ -342,9 +552,89 @@ NewColumns.map((headCell, k) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        /> */}
       </Paper>
       
     </Box>
+
+
+{/* start Bottom Pagination Button */}
+<div className="mt-2">
+      <div className="flex justify-end">
+      <div className="flex-grow-0 flex justify-center mx-[14px] ">
+         <TablePagination
+          className='table-pagination-top cst-customchange'
+          rowsPerPageOptions={rowPerPageArr}
+          component="div"
+          count={FilterData && FilterData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+  </div>
+
+  <div className="flex-grow-1 ">
+    <div className="flex gap-1">
+    <Button
+          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
+          disabled={page === 0}
+          onClick={handlePreviousPage}
+        >
+          <IoIosArrowBack size={16} />
+              </Button>
+                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
+                   onClick={() => setPage(0)}
+                  >
+                    <IoIosArrowBack size={16} />
+                    <IoIosArrowBack size={16} />
+                  </Button>
+             <div className="w-[100px]">
+                  <Input
+                      type="number"
+                      defaultValue="1"
+                      size="md"
+                      className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                      labelProps={{
+                        className: "hidden",
+                      }}
+
+                      value={page}
+                      onChange={(e) => {
+                        const page = parseInt(e.target.value);
+                        if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                          setPage(page);
+                        }
+                      }}
+
+                    />
+    </div>
+    <Button
+          className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center ml-2"
+          disabled={
+            page >= Math.ceil((FilterData && FilterData.length) / rowsPerPage) - 1
+          }
+             onClick={handleNextPage}
+          >
+              <IoIosArrowForward size={16} />
+                 </Button>
+                 <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
+                  onClick={() => setPage(totalPages)}
+                  >
+                    <IoIosArrowForward />
+                    <IoIosArrowForward />
+                  </Button>
+    </div>
+    
+  </div>
+      </div>
+  
+    </div>
+{/* End Bottom Pagination Button */}
+
+
+ </>
+
+    
   );
 }

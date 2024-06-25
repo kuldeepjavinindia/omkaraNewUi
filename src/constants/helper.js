@@ -575,8 +575,15 @@ export const filterSelectIndustryBySector = (
   setIndustryMasterArr
 ) => {
   let industryMasterFilter = [];
+  
+  if(sectors.length === 0){
+    industryMasterFun(industryMaster, setIndustryMasterArr)
+    return 
+  }
+
   for (var i = 0; i < sectors.length; i++) {
     let sectors_val = sectors[i].value;
+    console.log('industryMasterData >>>> ', sectors_val)
     var industryMasterFilter1 = industryMaster.filter(
       (industry) => sectors_val == industry.sectorID
     );
@@ -723,6 +730,22 @@ export const QuterltyResultFinalReq = (data) => {
 };
 
 
+export const shortAsc = (data1) => {
+  data1.sort((a, b) => {
+      var a1 = a.title.toLowerCase();
+      var b1 = b.title.toLowerCase();
+
+      if (a1 > b1) {
+          return 1
+      } else
+      if (a1 < b1) {
+          return -1
+      } else {
+          return 0
+      }
+  })
+  return data1;
+}
 
 
 export const showCalendarActionBtn = (UserID) => {
@@ -733,3 +756,19 @@ export const showCalendarActionBtn = (UserID) => {
         return false
     }
 } 
+
+
+export const selectEmployee = (employeeMaster, setEmployeeMasterArr) => {
+  if (employeeMaster.length > 0) {
+      var data1 = [];
+      employeeMaster.filter((fItem)=> { if(fItem.employee_type == 'Analyst') return fItem }).map((item) => {
+          let empName = item.employee_name;
+
+              empName = empName[0].toUpperCase() + empName.slice(1)
+          var d1 = { title: empName, value: item.user_id };
+          data1.push(d1);
+      })
+      shortAsc(data1)
+      setEmployeeMasterArr(data1);
+  }
+}

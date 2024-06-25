@@ -11,16 +11,20 @@ import {
   MenuList,
   MenuItem,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CgSearch } from "react-icons/cg";
 import { BiChevronDown } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import ResultModal from "../../components/CompanyDetail/ModalComment/ResultModal";
 import moment from "moment";
 import { calendar_Req } from "../../constants/defaultRequest";
-import { ResultCalenderApi } from "../../store/slice/Data2Slice";
+import { AssignEmployeeApi, ResultCalenderApi } from "../../store/slice/Data2Slice";
 import { useDispatch, useSelector } from "react-redux";
 import CalendarTableComponent from "../../components/data2/MUITable/CalendarTableComponent";
+import { GlobalContext } from "../../context/GlobalContext";
+import { Autocomplete, TextField } from "@mui/material";
+import { industryMasterAPI, sectorMasterAPI } from "../../store/slice/MasterSlice";
+import { filterSelectIndustryBySector, industryMasterFun, selectSectors } from "../../constants/helper";
 
 const ResultCalendar = () => {
   const [isToggled, setIsToggled] = useState(false);
@@ -28,13 +32,26 @@ const ResultCalendar = () => {
   const [open, setOpen] = useState(false);
   const rr_dispatch = useDispatch();
 
+
+  
+  const {
+    ResultModalBtn,
+    // setResultModalBtn,
+  } = useContext(GlobalContext);
+
   const [FilterData, setFilterData] = useState(null);
   const [TableColumns, setTableColumns] = useState(null);
   const [TableBodyData, setTableBodyData] = useState(null);
-  const [assignedData, setAssignedData] = useState([]);
+  
   const [checked, setChecked] = useState(false);
 
   const [Inputs, setInputs] = useState(calendar_Req);
+  const [SectorMasterArr, setSectorMasterArr] = useState([]);
+  const [IndustryMasterArr, setIndustryMasterArr] = useState([]);
+  // const [CompanyMasterArr, setCompanyMasterArr] = useState([]);
+  const [Sectors, setSectors] = useState([]);
+  const [Industry, setIndustry] = useState([]);
+  // const [Company, setCompany] = useState([]);
 
   const handleAccIn = () => {
     setAccordion(true);
@@ -57,8 +74,17 @@ const ResultCalendar = () => {
       loadingOnAdd
   }
 
-
   } = useSelector((state) => state.Data2);
+  const {
+    sectorMaster: { loading: sectorMasterLoading, data: sectorMasterData },
+    industryMaster: {
+      loading: industryMasterLoading,
+      data: industryMasterData,
+    },
+    
+  } = useSelector((state) => state.Masters);
+
+
 
   const handleChangeInput = (event) => {
     const name = event.target.name;
@@ -74,6 +100,26 @@ const ResultCalendar = () => {
   const handleToggle = () => {
     setIsToggled(!isToggled);
   };
+
+
+  useEffect(() => {
+    rr_dispatch(sectorMasterAPI());
+    rr_dispatch(industryMasterAPI());
+    // rr_dispatch(allCompanyMasterAPI());
+  }, []);
+  useEffect(() => {
+    if (!sectorMasterLoading) {
+      selectSectors(sectorMasterData, setSectorMasterArr);
+    }
+  }, [sectorMasterLoading]);
+
+  useEffect(() => {
+    if (!industryMasterLoading) {
+      industryMasterFun(industryMasterData, setIndustryMasterArr);
+    }
+  }, [industryMasterLoading]);
+
+
 
   const callApi = (type="") => {
     let sectorValue = [];
@@ -133,11 +179,16 @@ const ResultCalendar = () => {
 
   useEffect(() => {
     callApi();
+    rr_dispatch(AssignEmployeeApi({ optionType: "2" }));
   }, []);
 
+
+
+
   useEffect(() => {
-    if (!rcLoading) {
+    if (!rcLoading && !AssignEmployeeLoading) {
       
+      let new_assignedData = AssignEmployee.data.map((item) => item.company_id);
 
       let a1 = 0;
       const tableHead = rcData.Headers;
@@ -214,9 +265,14 @@ const ResultCalendar = () => {
             obj1[CompanyId] = { 'Company_Name': columnValue[0], 'CompanyID': columnValue[1] };
             var assignedVar = false;
             var uData = [];
-            if(assignedData.includes(columnValue[1])){
+            console.log('columnValue <><><>< ', {new_assignedData, columnValue})
+            if(new_assignedData.includes(columnValue[1])){
               assignedVar = true;
               uData = AssignEmployee.data.filter((resAssign) => resAssign.company_id == columnValue[1]);
+              // console.log('columnValue <><><>< ', {columnValue, uData})
+              if(columnValue[1] == "123782"){
+                console.log('AssignEmployee.data >>>>> ', {AssignEmployee: AssignEmployee.data , uData, columnValue})
+              }
             }
             obj1[CompanyId]['assigned'] = assignedVar;
             obj1[CompanyId]['usersData'] = uData;
@@ -241,7 +297,7 @@ const ResultCalendar = () => {
               if(sItem){
                 if(sItem?.assigned === true){
                   newRowData.push(item);
-                  console.log('newRowData >> ', item)
+                  // console.log('newRowData >> ', item)
                   return ;
                   // return item;
                 }
@@ -254,15 +310,12 @@ const ResultCalendar = () => {
       if(checked){
         setTableBodyData(newRowData);
       }else{
-        setTableBodyData(rowsData);
+        setTableBodyData(rowsData); 
       }
-
-
-
-
+      console.log('AssignEmployeeLoading ------  >>>> ', rowsData)
 
     }
-  }, [rcLoading]);
+  }, [rcLoading, AssignEmployeeLoading]);
 
   return (
     <>
@@ -275,7 +328,7 @@ const ResultCalendar = () => {
             <div className=" flex gap-2  items-center resultCalenderheader">
               <div>
                 <label className="text-[12px] text-[#000] font-medium">
-                  Company Search{" "}
+                  Company Search
                 </label>
                 <Input
                   type="text"
@@ -295,24 +348,93 @@ const ResultCalendar = () => {
                 />
               </div>
 
-              <div>
+              <div className=" min-w-52">
                 <label className="text-[12px]  text-[#000] font-medium">
-                  Sectors{" "}
+                  Sectors ({SectorMasterArr.length})
                 </label>
-                <Select
-                  className="bg-[#fff] border-none "
-                  value=""
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                >
-                  <Option>Option 1</Option>
-                </Select>
+                <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={SectorMasterArr}
+                    values={Sectors}
+                    multiple
+                    className=" bg-white"
+                    getOptionLabel={(option) => option.title}
+                    onChange={(event, newInputValue) => {
+                      var val1 = [];
+                      for (var a = 0; a < newInputValue.length; a++) {
+                        val1.push(newInputValue[a].value);
+                      }
+                      setInputs({ ...Inputs, ["Sector"]: val1 });
+                      filterSelectIndustryBySector(newInputValue, industryMasterData, setIndustryMasterArr)
+                      setSectors(newInputValue);
+                    }}
+                    renderOption={(props, option) => (
+                      <li
+                        {...props}
+                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
+                      >
+                        {option.title}
+                      </li>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label=""
+                        placeholder="Select"
+                        size="small"
+                        className=""
+                      />
+                    )}
+                  />
+              </div>
+
+              <div className=" min-w-52">
+                <label className="text-[12px]  text-[#000] font-medium">
+                  Industry ({IndustryMasterArr.length})
+                </label>
+                <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={IndustryMasterArr}
+                    values={Industry}
+                    multiple
+                    className=" bg-white"
+                    getOptionLabel={(option) => option.title}
+                    renderOption={(props, option) => (
+                      <li
+                        {...props}
+                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
+                      >
+                        {option.title}
+                      </li>
+                    )}
+                    onChange={(event, newInputValue) => {
+                      var val1 = [];
+                      for (var a = 0; a < newInputValue.length; a++) {
+                        val1.push(newInputValue[a].value);
+                      }
+                      setInputs({ ...Inputs, ["Industry"]: val1 });
+                      setIndustry(newInputValue);
+                      // console.log('Company >> ',company)
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label=""
+                        placeholder={
+                          industryMasterLoading ? "Loading..." : "Select"
+                        }
+                        size="small"
+                        className=""
+                      />
+                    )}
+                  />
               </div>
 
               <div>
                 <label className="text-[12px] text-[#000] font-medium">
-                  From{" "}
+                  From
                 </label>
                 <Input
                   type="date"
@@ -328,7 +450,7 @@ const ResultCalendar = () => {
 
               <div>
                 <label className="text-[12px] text-[#000] font-medium">
-                  To{" "}
+                  To
                 </label>
                 <Input
                   type="date"
@@ -344,7 +466,7 @@ const ResultCalendar = () => {
 
               <div className="smallInput">
                 <label className="text-[12px] text-[#000] font-medium">
-                  Market Cap{" "}
+                  Market Cap
                 </label>
                 <div className="flex gap-2 w-[50%]">
                   <Input
@@ -414,7 +536,7 @@ const ResultCalendar = () => {
                     className="mr-1 bg-theme text-[#fff] py-2 px-3 rounded text-[12px] "
                     onClick={() => applyFilter()}
                   >
-                    SUBMIT{" "}
+                    SUBMIT
                   </Button>
                 </div>
 
@@ -497,7 +619,10 @@ const ResultCalendar = () => {
           </div>
           {/*Start  Table  */}
 
-          <ResultModal open={open} setOpen={setOpen} />
+          {
+            ResultModalBtn?.type && 
+              <ResultModal />
+          }
 
           <div></div>
         </div>

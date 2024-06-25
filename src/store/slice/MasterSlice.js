@@ -33,6 +33,12 @@ const initialState = {
     msg: null,
     error: null,
   },
+  P_IndexMaster: {
+    loading: true,
+    data: [],
+    msg: null,
+    error: null,
+  },
   FIISDateMaster: {
     loading: true,
     data: [],
@@ -130,7 +136,6 @@ let FIISDateMasterReq = `${slice_base_url}/FIISDateMaster`;
 // OMKARA CAPITAL API
 let DefaultMastersReq = `${MAIN_SITE_BASE_URL}/default-masters`;
 let RR_TagMasterReq = (`${slice_base_url}/RR_TagMaster`);
-
 
 
 
@@ -632,6 +637,7 @@ const TrendlyneSlice = createSlice({
     state.RR_TagMaster.data = action.payload;
   });
 
+  
     
   },
 });

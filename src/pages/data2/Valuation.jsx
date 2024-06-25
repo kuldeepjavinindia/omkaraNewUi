@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import FilterSidebarValuation from "../../components/data2/Valuation/FilterSidebarValuation";
 import ValuationTable from "../../components/data2/Valuation/ValuationTable";
 import { useDispatch, useSelector } from "react-redux";
+import FilterItemChips from "../../components/data2/FilterItemChips";
 // import { ValuationApi } from "../../store/slice/Data2Slice";
 
 const Valuation = () => {
@@ -81,6 +82,7 @@ const Valuation = () => {
         <FilterSidebarValuation />
 
         <div className="sc-container ">
+          <FilterItemChips />
           <ValuationTable bodyData={ValuationData?.Data} headers={ValuationData?.Headers} />
         </div>
       </div>

@@ -7,7 +7,7 @@ import {
   Checkbox,
   TextField,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,6 +22,7 @@ import {
   valuation_Req,
 } from "../../../constants/helper";
 import { ValuationApi } from "../../../store/slice/Data2Slice";
+import { GlobalContext } from "../../../context/GlobalContext";
 
 const FilterSidebarValuation = () => {
   const rr_dispatch = useDispatch();
@@ -42,7 +43,10 @@ const FilterSidebarValuation = () => {
   const [Sectors, setSectors] = useState([]);
   const [Industry, setIndustry] = useState([]);
   const [Company, setCompany] = useState([]);
-
+  const {
+    // filterDataChip,
+    setFilterDataChip
+  } = useContext(GlobalContext)
   const handleChangeInput = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -120,6 +124,7 @@ const FilterSidebarValuation = () => {
       },
       "TTM_Sales_Abs": {
         "label": "TTM_Sales_Abs",
+        "value1": (inputs.TTM_Sales_Abs || ""),
         "value2": (inputs.TTM_Sales_Abs || ""),
       },
       "TTM_PBV": {
@@ -239,7 +244,7 @@ const FilterSidebarValuation = () => {
       },
       "portfolio": {
         "label": "Portfolio",
-        "value1": inputs?.Portfolio,
+        "value1": inputs?.Portfolio || "",
         "value2": ""
       },
       "ROCE3yrs": {
@@ -305,6 +310,10 @@ const FilterSidebarValuation = () => {
 
   const applyFun = () => {
     let topLabels = topLabels0(Inputs)
+    
+    setFilterDataChip(topLabels)
+
+
     let finalValuation_Req = valuation_Req(topLabels);
     rr_dispatch(ValuationApi(finalValuation_Req));
   };

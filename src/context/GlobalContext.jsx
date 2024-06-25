@@ -24,6 +24,9 @@ const GlobalContextProvider = ({ children }) => {
 
   
   const [QuarterBtn, setQuarterBtn] = useState({})
+  const [ResultModalBtn, setResultModalBtn] = useState(null)
+  const [FilterChipsData, setFilterChipsData] = useState(null)
+  const [filterDataChip, setFilterDataChip] = useState(null)
 
 
 
@@ -33,6 +36,9 @@ const GlobalContextProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
+        filterDataChip, setFilterDataChip,
+        FilterChipsData, setFilterChipsData,
+        ResultModalBtn, setResultModalBtn,
         QuarterBtn, setQuarterBtn,
         RepoListParams, setRepoListParams,
         BulkDealInsiderModalBtn, setBulkDealInsiderModalBtn,

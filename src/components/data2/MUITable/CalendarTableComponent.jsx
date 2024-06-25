@@ -23,20 +23,33 @@ import { AssignEmployeeApi } from "../../../store/slice/Data2Slice";
 import TooltipText from "./TooltipText";
 import { useAuthState } from "../../../context/AuthContext";
 import { IconButton } from "@material-tailwind/react";
+import { AssignEmployee_Req } from "../../../constants/defaultRequest";
+import { GlobalContext } from "../../../context/GlobalContext";
 // import Avatar from 'react-avatar';
 
-export default function CalendarTableComponent({
-  resultData,
-  tableColumns,
-  loading,
-  ref,
-  dataFor,
-  assignedMembers,
-  FilterData,
-  setFilterData,
-}) {
+export default function CalendarTableComponent(props) {
+
+
+  const {
+    resultData,
+    tableColumns,
+    loading,
+    ref,
+    dataFor,
+    assignedMembers,
+    FilterData,
+    setFilterData,
+  } = props
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
+
+
+  
+  const {
+    // ResultModalBtn,
+    setResultModalBtn,
+  } = React.useContext(GlobalContext);
 
   //   const { data: employeeData, loading: employeeLoading } = useSelector((state) => state.vdrCompanyReducer);
 
@@ -102,6 +115,10 @@ export default function CalendarTableComponent({
   //   }, [dispatch])
 
   React.useEffect(() => {
+    
+  }, [props]);
+
+  React.useEffect(() => {
     if (resultData) {
       setFilterData(resultData);
     }
@@ -111,15 +128,20 @@ export default function CalendarTableComponent({
     // console.log(assignedMembers)
   }, [assignedMembers]);
 
-  //   React.useEffect(() => {
-  //     if (AssignEmployeeLoading) {
-  //       dispatch(vdrAssignEmployeeAction({ optionType: "2" }, 'list'));
-  //     }
-  //     if (!AssignEmployeeLoading) {
-  //       var arrData = AssignEmployee.data.map((item) => item.company_id)
-  //       setAssignEmployeeArr(arrData);
-  //     }
-  //   }, [dispatch, AssignEmployeeLoading])
+    React.useEffect(() => {
+      if (AssignEmployeeLoading) {
+        dispatch(AssignEmployeeApi(AssignEmployee_Req));
+      }
+    }, [dispatch])
+
+
+    React.useEffect(() => {
+      if (!AssignEmployeeLoading) {
+        console.log('AssignEmployee.data ???? ', AssignEmployee)
+        var arrData = AssignEmployee.data.map((item) => item.company_id)
+        setAssignEmployeeArr(arrData);
+      }
+    }, [dispatch, AssignEmployeeLoading])
 
   const removeAssignEmployee = (CompanyID) => {
     const paramsData = {
@@ -189,6 +211,8 @@ export default function CalendarTableComponent({
                 {
                   /* console.warn(row); */
                 }
+
+                // console.log('row >>>>> ', row)
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {tableColumns &&
@@ -282,19 +306,31 @@ export default function CalendarTableComponent({
                                         <IconButton
                                           size="sm"
                                           className=" bg-theme"
-                                          onClick={(e) => [
-                                            setCompanyData({
-                                              deleteStatus: false,
-                                              company_id: row[a00].CompanyID,
-                                              company_name: value,
-                                              date: column?.dates,
-                                              companyData: row[a00],
-                                            }),
-                                            toggleDrawer(anchor, true)(e),
-                                            setOpenForm("calendar"),
-                                            setLevelType(1),
-                                            setInputType(0),
-                                          ]}
+                                          onClick={(e) => {
+                                            // [
+                                              setCompanyData({
+                                                deleteStatus: false,
+                                                company_id: row[a00].CompanyID,
+                                                company_name: value,
+                                                date: column?.dates,
+                                                companyData: row[a00],
+                                              }),
+                                              setResultModalBtn({
+                                                type: true,
+                                                data:{
+                                                  deleteStatus: false,
+                                                  company_id: row[a00].CompanyID,
+                                                  company_name: value,
+                                                  date: column?.dates,
+                                                  companyData: row[a00],
+                                                }
+                                              })
+                                              // toggleDrawer(anchor, true)(e),
+                                              // setOpenForm("calendar"),
+                                              // setLevelType(1),
+                                              // setInputType(0),
+                                            // ]
+                                          }}
                                           color="primary"
                                           company_id={row[a00]?.CompanyID || ""}
                                         >

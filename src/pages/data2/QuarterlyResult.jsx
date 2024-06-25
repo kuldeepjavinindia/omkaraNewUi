@@ -13,6 +13,7 @@ import { AbsResult, Results } from "../../components/QuarterlyResult/Index";
 import { useEffect } from "react";
 import { useState } from "react";
 import FilterQuarterlyResult from "../../components/data2/FilterQuarterlyResult";
+import { FilterChipsMain } from "../../components";
 
 function TabsDefault(props) {
   const { TabsData, ActiveTab, setActiveTab } = props;
@@ -87,6 +88,7 @@ const QuarterlyResult = () => {
         <FilterQuarterlyResult />
 
         <div className="sc-container ">
+          {/* <FilterChipsMain /> */}
           <TabsDefault
             TabsData={TypeTabs}
             ActiveTab={ActiveTab}
