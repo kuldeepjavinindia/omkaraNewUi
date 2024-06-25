@@ -1,7 +1,26 @@
 import { Typography, Button,  Accordion, AccordionHeader, AccordionBody,Input, Checkbox , Radio   } from "@material-tailwind/react";
-import { useState } from "react";
+import {
+  AccordionDetails,
+  AccordionSummary,
+  Autocomplete,
+  TextField,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
+import {
+  allCompanyMasterAPI,
+  industryMasterAPI,
+  sectorMasterAPI,
+} from "../../../store/slice/MasterSlice";
+import {
+  industryMasterFun,
+  priceActionFilters,
+  selectCompany,
+  selectSectors,
+} from "../../../constants/helper";
+import { useSelector, useDispatch } from "react-redux";
+import { BiChevronDown } from "react-icons/bi";
 
 
 
@@ -25,7 +44,28 @@ function Icon({ id, open }) {
 
 
 const FilterSidebarDeliveryData = ()=> {
- // const [open, setOpen] = useState(1);
+
+  const {
+    sectorMaster: { loading: sectorMasterLoading, data: sectorMasterData },
+    industryMaster: {
+      loading: industryMasterLoading,
+      data: industryMasterData,
+    },
+    allCompanyMaster: { loading: allCompanyLoading, data: allCompanyData },
+  } = useSelector((state) => state.Masters);
+
+  const [Inputs, setInputs] = useState({});
+  const [SectorMasterArr, setSectorMasterArr] = useState([]);
+  const [IndustryMasterArr, setIndustryMasterArr] = useState([]);
+  const [CompanyMasterArr, setCompanyMasterArr] = useState([]);
+  const [Sectors, setSectors] = useState([]);
+  const [Industry, setIndustry] = useState([]);
+  const [Company, setCompany] = useState([]);
+  const [selectedValue, setSelectedValue] = useState('');
+
+
+
+  const rr_dispatch = useDispatch()
 
  const [ActiveAccordion, setActiveAccordion] = useState({
     accordion_1: true,
@@ -56,7 +96,7 @@ const handleReset = (value)=> {
 }
 
 
-console.log('prev >>> ', ActiveAccordion);
+// console.log('prev >>> ', ActiveAccordion);
 
 const options = [
     { value: 'Option 1', label: 'Option 2' },
@@ -98,8 +138,68 @@ const options = [
   const handleChangeChecked = (event) => {
     let val = event.target.checked;
     let name = event.target.name;
+     let prev = Inputs
+
+     setInputs((prev)=> ({
+      ...prev,
+      [name] : val
+     }))
+
+    // console.log(name, val);
    
   };
+
+
+
+  const handleChangeInput = (e)=> {
+    const {name, value, checked} = e.target
+    let prev = Inputs
+    setInputs((prev)=> (
+      {
+        ...prev,
+        [name] : value
+      }
+    ))
+    
+
+    if(checked) {
+      setSelectedValue(value)
+    }
+  
+  }
+
+
+  console.log("selected value", selectedValue);
+
+  console.log("input value", Inputs);
+
+
+  useEffect(() => {
+    rr_dispatch(sectorMasterAPI());
+    rr_dispatch(industryMasterAPI());
+    rr_dispatch(allCompanyMasterAPI());
+  }, []);
+  useEffect(() => {
+    if (!sectorMasterLoading) {
+      selectSectors(sectorMasterData, setSectorMasterArr);
+    }
+  }, [sectorMasterLoading]);
+
+  useEffect(() => {
+    if (!industryMasterLoading) {
+      industryMasterFun(industryMasterData, setIndustryMasterArr);
+    }
+  }, [industryMasterLoading]);
+
+  useEffect(() => {
+    if (!allCompanyLoading) {
+      selectCompany(allCompanyData, setCompanyMasterArr);
+    }
+  }, [allCompanyLoading]);
+
+
+
+
 
 
 return (
@@ -116,70 +216,162 @@ return (
         <div className=""> 
 
    {/* Start Card Form */}
-   <Accordion open={ActiveAccordion.accordion_1} className="mt-2 rounded bg-[#fff] px-2 py-3 mt-2" icon={<Icon id={1} open={ActiveAccordion.accordion_1} />}>
-    <AccordionHeader onClick={() => handleOpen(1)} className="flex border-none py-0 pt-0">
-    <Typography className="text-[15px] text-[#000] font-semibold w-[90%]">Classification</Typography>
-        <Typography className="text-[13px] text-[#FF2026] font-semibold bg-[#fff] " onClick={()=> handleReset(1)}>RESET</Typography>
-    </AccordionHeader>
-    <AccordionBody>
-    <div className="flex justify-between">
+       <Accordion
+            className="my-2 shadow-none bg-white rounded-md"
+            defaultExpanded
+          >
+            <AccordionSummary
+              expandIcon={<BiChevronDown size={30} />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+              // sx={{
+              //   fontSize:'10px'
+              //  }}
+              className=" text-[15px] font-semibold"
+            >
+              Classification
+            </AccordionSummary>
+            <AccordionDetails>
+              <div>
+                <div className="grid grid-cols-1">
+                  <label className="text-[12px] text-[#000] font-medium ">
+                    Sectors ({SectorMasterArr.length})
+                  </label>
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={SectorMasterArr}
+                    values={Sectors}
+                    multiple
+                    getOptionLabel={(option) => option.title}
+                    onChange={(event, newInputValue) => {
+                      var val1 = [];
+                      for (var a = 0; a < newInputValue.length; a++) {
+                        val1.push(newInputValue[a].value);
+                      }
+                      setInputs({ ...Inputs, ["Sector"]: val1 });
+                      setSectors(newInputValue);
+                    }}
+                    renderOption={(props, option) => (
+                      <li
+                        {...props}
+                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
+                      >
+                        {option.title}
+                      </li>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label=""
+                        placeholder="Select"
+                        size="small"
+                        className=""
+                      />
+                    )}
+                  />
+                </div>
 
+                <div className="grid grid-cols-1">
+                  <label className="text-[12px] text-[#000] font-medium ">
+                    Industry ({IndustryMasterArr.length})
+                  </label>
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={IndustryMasterArr}
+                    values={Industry}
+                    multiple
+                    getOptionLabel={(option) => option.title}
+                    renderOption={(props, option) => (
+                      <li
+                        {...props}
+                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
+                      >
+                        {option.title}
+                      </li>
+                    )}
+                    onChange={(event, newInputValue) => {
+                      var val1 = [];
+                      for (var a = 0; a < newInputValue.length; a++) {
+                        val1.push(newInputValue[a].value);
+                      }
+                      setInputs({ ...Inputs, ["Industry"]: val1 });
+                      setIndustry(newInputValue);
+                      // console.log('Company >> ',company)
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label=""
+                        placeholder={
+                          allCompanyLoading ? "Loading..." : "Select"
+                        }
+                        size="small"
+                        className=""
+                      />
+                    )}
+                  />
+                </div>
 
-    <label className="text-[12px] text-[#000] font-medium">Sectors (58)  </label>
-    <Typography className="text-[#7B70FF] text-[12px] font-semibold cursor-pointer">Refresh</Typography>
-    </div>
-    <Select
-      components={animatedComponents}
-      isMulti
-      options={options}
-      value={selectedOptions}
-      onChange={handleChange}
-      closeMenuOnSelect={false}
-      hideSelectedOptions={false}
-      placeholder="Select Names"
-      className="react-select-container"
-      classNamePrefix="react-select"
-    />
-     
-<label className="text-[12px] text-[#000] font-medium">Industry (23) </label>
-    <Select
-      components={animatedComponents}
-      isMulti
-      options={IndustryOptionsTwo}
-      value={selectedIndustryTwo}
-      onChange={handleChangeTwo}
-      closeMenuOnSelect={false}
-      hideSelectedOptions={false}
-      placeholder="Select Names"
-      className="react-select-container"
-      classNamePrefix="react-select"
-    />
+                <div className="grid grid-cols-1">
+                  <label className="text-[12px] text-[#000] font-medium ">
+                    Company ({CompanyMasterArr.length})
+                  </label>
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={CompanyMasterArr}
+                    values={Company}
+                    multiple
+                    getOptionLabel={(option) => option.title}
+                    renderOption={(props, option) => (
+                      <li
+                        {...props}
+                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
+                      >
+                        {option.title}
+                      </li>
+                    )}
+                    onChange={(event, newInputValue) => {
+                      var val1 = [];
+                      for (var a = 0; a < newInputValue.length; a++) {
+                        val1.push(newInputValue[a].value);
+                      }
+                      setInputs({ ...Inputs, ["Company"]: val1 });
+                      setCompany(newInputValue);
+                      // console.log('Company >> ',company)
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label=""
+                        placeholder={
+                          allCompanyLoading ? "Loading..." : "Select"
+                        }
+                        size="small"
+                        className=""
+                      />
+                    )}
+                  />
+                </div>
 
-<label className="text-[12px] text-[#000] font-medium">Industry (23 222) </label>
-    <Select
-      components={animatedComponents}
-      isMulti
-      options={IndustryOptions}
-      value={selectedIndustry}
-      onChange={handleChangeThree}
-      closeMenuOnSelect={false}
-      hideSelectedOptions={false}
-      placeholder="Select Names"
-      className="react-select-container"
-      classNamePrefix="react-select"
-    />
+                <div className=" flex items-center mt-2">
+          
+            
+        <div className="ml-[-11px]">
 
+        <Radio name="type" value= "portfolio" label="Portfolio"  className="w-[18px] h-[18px] custom-radio left-custome checked:border-[#4448F5]"  onChange={handleChangeInput} checked={selectedValue === "portfolio"}  />
 
-  <div className="ml-[-11px]">
-        <Radio name="type" label="Portfolio"  className="w-[18px] h-[18px] custom-radio left-custome checked:border-[#4448F5]" />
-        <Radio name="type" label="F&O"  className=" custom-radio  checked:border-[#4448F5]" defaultChecked />
+        <Radio name="type"  value="F_O" label="F&O"  className=" custom-radio  checked:border-[#4448F5]"
+        onChange={handleChangeInput}  checked={selectedValue === "F_O"}  />
 
   </div>
-    
-    
 
-    </AccordionBody>
-  </Accordion>
+                </div>
+              </div>
+            </AccordionDetails>
+          </Accordion>
   {/* End Card Form */}
 
      {/* Start Card Form */}
@@ -190,10 +382,13 @@ return (
     </AccordionHeader>
     <AccordionBody> 
       <div className="ml-[0]">
-      <Checkbox label="50 DMA"  
+      <Checkbox label="50 DMA"  name = "50DMA"
       className="w-[18px] h-[18px] custom-checkbox checked:border-[#4448F5] checked:bg-[#4448F5] rounded"
+      onChange={handleChangeChecked}
       />
-      <Checkbox label="200 DMA"  className="w-[18px] h-[18px] custom-checkbox checked:border-[#4448F5] checked:bg-[#4448F5] rounded"/>
+      <Checkbox label="200 DMA" name = "200DMA"  className="w-[18px] h-[18px] custom-checkbox checked:border-[#4448F5] checked:bg-[#4448F5] rounded"
+       onChange={handleChangeChecked}
+      />
       </div>
        
  
