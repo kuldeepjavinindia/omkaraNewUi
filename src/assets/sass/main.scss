@@ -462,3 +462,20 @@ $border-color_3: $color_4;
   color: #000;
 }
 //25-06-202
+
+
+
+::-webkit-scrollbar {
+  height:  5px !important;              
+  width:  5px !important;    
+  // border: 1px solid #d5d5d5;
+  background-color: #4448f5;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4448f5; 
+}

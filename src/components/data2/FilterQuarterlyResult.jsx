@@ -257,6 +257,11 @@ const FilterQuarterlyResult = () => {
   const handleChangeChecked = (event) => {
     let val = event.target.checked;
     let name = event.target.name;
+    setInputValue((prev) => ({
+      ...prev,
+      [name]: val
+    }));
+
     // console.log(name, val);
   };
 
@@ -377,7 +382,8 @@ const FilterQuarterlyResult = () => {
           };
         }
       });
-      console.log("inputValue >>>>>>>>>", params1);
+
+      console.log("inputValue >>>>>>>>>", {params1, inputValue});
 
       setFilterChipsData(params1);
 

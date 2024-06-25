@@ -705,10 +705,10 @@ export const QuterltyResultFinalReq = (inputsArray) => {
       "type": "More Filters",
       "sub_type": [
         {
-          "Sector": inputsArray.sectors.value1,
-          "Industry": inputsArray.industry.value1,
-          "Company": inputsArray.company.value1,
-          "Portfolio": inputsArray.portfolio.value1,
+          Sector: inputsArray?.Sector?.value1 || [],
+          Industry: inputsArray?.Industry?.value1 || [],
+          Company: inputsArray?.Company?.value1 || [],
+          "Portfolio": (inputsArray?.Portfolio?.value1 || false),
         }
       ]
     },

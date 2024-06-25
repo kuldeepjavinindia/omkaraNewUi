@@ -463,7 +463,16 @@ export default function AbsResultMUI(props) {
                   ...style
                  }}>
                   <div className="texttableEliplse">
-                    {val}
+                    {
+                      element.accessor == "accessor_0" ?
+                        <Tooltip title={val} placement="top">
+                          {val}
+                        </Tooltip>
+                        :
+                        <>
+                        {val}
+                        </>
+                    }
                   {/* {element.label} */}
                   </div>
                 </TableCell>
@@ -530,6 +539,14 @@ export default function AbsResultMUI(props) {
 
               <div className="flex-grow-1 ">
                 <div className="flex gap-1">
+                  
+                <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
+                   onClick={() => setPage(0)}
+                  >
+                    <IoIosArrowBack size={16} />
+                    <IoIosArrowBack size={16} />
+                  </Button>
+
                 <Button
           className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
           disabled={page === 0}
@@ -537,12 +554,6 @@ export default function AbsResultMUI(props) {
         >
           <IoIosArrowBack size={16} />
               </Button>
-                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                   onClick={() => setPage(0)}
-                  >
-                    <IoIosArrowBack size={16} />
-                    <IoIosArrowBack size={16} />
-                  </Button>
                   <div className="w-[100px]">
                     <Input
                       type="number"
@@ -552,8 +563,8 @@ export default function AbsResultMUI(props) {
                       labelProps={{
                         className: "hidden",
                       }}
-
-                      value={page}
+                      readOnly
+                      value={page+1}
                       onChange={(e) => {
                         const page = parseInt(e.target.value);
                         if (!isNaN(page) && page >= 1 && page <= totalPages) {
@@ -587,10 +598,11 @@ export default function AbsResultMUI(props) {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         {/* TableData {FilterData.length} */}
-        <TableContainer className='table-wo-border'  sx={{ 
+        <TableContainer className='table-wo-border relative'  sx={{ 
           maxHeight:'calc(100vh - 250px)'
          }}>
           <Table
+          className=" relative"
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
             size={dense ? "small" : "medium"}
@@ -651,7 +663,7 @@ export default function AbsResultMUI(props) {
                         if (i < 3) {
                           cStyle.backgroundColor = '#fff';
                           cStyle.left = `${i * 140}px`; 
-                          cStyle.zIndex = 2;
+                          cStyle.zIndex = 9;
                         }
                         if (i == 2) {
                           cStyle.borderRight = '1px solid #000';
@@ -746,8 +758,8 @@ export default function AbsResultMUI(props) {
                       labelProps={{
                         className: "hidden",
                       }}
-
-                      value={page}
+                      readOnly
+                      value={page+1}
                       onChange={(e) => {
                         const page = parseInt(e.target.value);
                         if (!isNaN(page) && page >= 1 && page <= totalPages) {
