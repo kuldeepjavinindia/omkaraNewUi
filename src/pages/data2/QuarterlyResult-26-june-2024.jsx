@@ -9,13 +9,11 @@ import {
 } from "@material-tailwind/react";
 
 import { AbsResult, Results } from "../../components/QuarterlyResult/Index";
+
 import { useEffect } from "react";
 import { useState } from "react";
 import FilterQuarterlyResult from "../../components/data2/FilterQuarterlyResult";
 import { FilterChipsMain } from "../../components";
-import FilterItemChips from "../../components/data2/FilterItemChips";
-import { ResultDataApi } from "../../store/slice/Data2Slice";
-import {QuterltyResultFinalReq} from '../../constants/helper'
 
 function TabsDefault(props) {
   const { TabsData, ActiveTab, setActiveTab } = props;
@@ -48,8 +46,6 @@ function TabsDefault(props) {
               key={value}
               value={value}
               className="border-[1px] border-theme-c6 bg-theme-c5"
-              style={{ height: `calc(100vh - 12rem)` }}
-
             >
               {desc}
             </TabPanel>
@@ -67,7 +63,7 @@ const QuarterlyResult = () => {
   const TypeTabs = [
     {
       value: "1",
-      label: "Abs Results",
+      label: "ABS RESULTS",
       desc: (
         <>
           <AbsResult />
@@ -93,7 +89,6 @@ const QuarterlyResult = () => {
 
         <div className="sc-container ">
           {/* <FilterChipsMain /> */}
-          <FilterItemChips  dispatchName = {ResultDataApi}  finalRquest = {QuterltyResultFinalReq} />
           <TabsDefault
             TabsData={TypeTabs}
             ActiveTab={ActiveTab}

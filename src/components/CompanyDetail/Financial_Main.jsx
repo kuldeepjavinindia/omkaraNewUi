@@ -29,7 +29,7 @@ import PeerComponent from "./peer/PeerComponent";
 
     const data = [
       {
-        label: "QUARTERLY P&L",
+        label: "INTERIM Results",
         value: "1",
         desc: (
             <>

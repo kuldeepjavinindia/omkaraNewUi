@@ -241,15 +241,17 @@ export default function CalendarTableComponent(props) {
                         {
                           /* console.log(row[a00]); */
                         }
-                        // if(!row[a00]?.assigned && assignedMembers){
-                        //   return (
-                        //     <TableCell  className="text-ellipsis tableCell">
 
-                        //     </TableCell>
-                        //   )
-                        // }else{
+                        if(!row[a00]?.assigned && assignedMembers){
+                          return (
+                            <TableCell  className="text-ellipsis tableCell" 
+                            key={column.id}>
 
-                        // }
+                            </TableCell>
+                          )
+                        }else{
+                          // console.log('object')
+                        }
                         return (
                           <TableCell
                             onMouseEnter={() =>
@@ -412,15 +414,8 @@ export default function CalendarTableComponent(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={resultData && resultData.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
+
+
     </Paper>
   );
 }

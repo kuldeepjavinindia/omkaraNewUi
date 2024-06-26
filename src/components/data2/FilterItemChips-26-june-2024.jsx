@@ -3,11 +3,9 @@ import { Typography } from '@material-tailwind/react';
 import { useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalContext';
 import { MdCancel } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-
-
-const FilterItemChips = ({dispatchName, finalRquest}) => {
+const FilterItemChips = () => {
   const {
     sectorMaster: { loading: sectorMasterLoading, data: sectorMasterData },
     industryMaster: {
@@ -15,10 +13,7 @@ const FilterItemChips = ({dispatchName, finalRquest}) => {
       data: industryMasterData,
     },
     allCompanyMaster: { loading: allCompanyLoading, data: allCompanyData },
-    turnAroundMaster: { loading: TALoading, data: TAData },
   } = useSelector((state) => state.Masters);
-
-  const rr_dispatch = useDispatch()
 
   const { filterDataChip, setFilterDataChip } = useContext(GlobalContext);
   const [chipsCards, setChipsCards] = useState(filterDataChip);
@@ -41,38 +36,21 @@ const FilterItemChips = ({dispatchName, finalRquest}) => {
 
   const arrVal = (key, itemval) => {
     switch (key) {
-      case 'company': 
-      case 'Company': 
+      case 'company':
         return allCompanyData
           .filter((item) => itemval.includes(item.CompanyID))
           .map((item) => item.CompanyName)
           .join(', ');
       case 'sectors':
-      case 'Sector':
         return sectorMasterData
           .filter((item) => itemval.includes(item.sectorID))
           .map((item) => item.Sector)
           .join(', ');
       case 'industry':
-      case 'Industry':
         return industryMasterData
           .filter((item) => itemval.includes(item.IndustryID))
           .map((item) => item.Industry)
           .join(', ');
-
-      case 'EBDITA_TO':
-        return TAData
-        .filter((item) => item.Id == itemval)
-        .map((item) => item.FilterName)
-        .join(', ');
-
-      case 'PAT_TO':
-        return TAData
-        .filter((item) => item.Id == itemval)
-        .map((item) => item.FilterName)
-        .join(', ');
-
-
       default:
         return itemval;
     }
@@ -107,15 +85,12 @@ const FilterItemChips = ({dispatchName, finalRquest}) => {
     setToggleState(!ToggleState)
     setFilterDataChip(topLabels)
 
-    let finalParams = finalRquest(filterDataChip);
-     rr_dispatch(dispatchName(finalParams))
 
-    // console.log("toggle state >>>>>>", filterDataChip);
   };
 
   
   useEffect(() => {
-   
+    
   }, [ToggleState])
   
 
@@ -159,7 +134,7 @@ const FilterItemChips = ({dispatchName, finalRquest}) => {
       {
         filterDataChip && Object.keys(filterDataChip).map( (key, index) => {
           let item = filterDataChip?.[key];
-          // console.log('item.value1 >> ', item)
+          console.log('item.value1 >> ', item)
           if(item.value1 != ""){
             return (
               <div key={index} className="bg-[#fff] p-3 relative">

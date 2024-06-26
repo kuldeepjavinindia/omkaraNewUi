@@ -144,18 +144,36 @@ function EnhancedTableHead(props) {
           data.length > 0 &&
           data.map((element, i) => {
             if(element.isVisible){
-    
+              let n_style = {};
+              if(data.length == 5 && i == 0){
+                n_style = {
+                  ...n_style,
+                  borderLeft:'2px solid #B3B3B3'
+                }
+              }
             return (
               <>
                 <TableCell  key={i} style={{
                   ...style,
-                  minWidth: element?.width
+                  ...n_style,
+                  minWidth: element?.width,
+                  width: element?.width,
                  }}  className=' tableHeader' >
+                  
+                  {
+                    element?.isCheckbox && (
+                      <Checkbox size="small" className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
+                      checked={element?.isCheckbox} onClick={()=>{
+                        handleCheckbox(element, 'child', p_label)
+                      }} />
+                    )
+                  }
                   <div className="inline-flex items-center"> 
                     <TableSortLabel
                       active={orderBy === element?.accessor}
                       direction={orderBy === element?.accessor ? order : "asc"}
                       onClick={createSortHandler(element?.accessor)}
+                      className="TableSortLabel"
                       sx={{ 
                         textAlign:'start'
                        }}
@@ -167,18 +185,10 @@ function EnhancedTableHead(props) {
                             ? "sorted descending"
                             : "sorted ascending"}
                         </Box>
-                      ) : null}
+                      ) : null} 
                     </TableSortLabel>
                   </div>
                
-                  {
-                    element?.isCheckbox && (
-                      <Checkbox size="small" className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
-                      checked={element?.isCheckbox} onClick={()=>{
-                        handleCheckbox(element, 'child', p_label)
-                      }} />
-                    )
-                  }
 
                 </TableCell>
               </>
@@ -188,6 +198,7 @@ function EnhancedTableHead(props) {
       </>
     );
   };
+  let a0_new = 0;
 
   return (
     <TableHead>
@@ -195,9 +206,10 @@ function EnhancedTableHead(props) {
         {NewColumns.map((headCell, i) =>{
 if(headCell.columns.filter(item=>item.isVisible == true).length > 0 && headCell.isVisible){
 
+  let width = headCell?.width;
   let cStyle = { 
-    minWidth: "140px",
-    maxWidth: headCell.maxWidth,
+    width: width,
+    maxWidth: width,
     padding: '0.5rem',
     fontSize: '12px',
     fontWeight: '500',
@@ -210,8 +222,21 @@ if(headCell.columns.filter(item=>item.isVisible == true).length > 0 && headCell.
   
   // Apply sticky styles to the first three columns
   if (i < 3) {
-    cStyle.left = `${i * 140}px`; 
+    // cStyle.left = `${i * 140}px`; 
+    
+    cStyle.left = `${a0_new}px`; 
+    a0_new = a0_new + width
+    cStyle.zIndex = 11;
+  }else{
     cStyle.zIndex = 9;
+  }
+  
+  
+  if(headCell.columns.length == 5){
+    // n_style = {
+    //   ...n_style,
+    // }
+    cStyle.borderLeft = '2px solid #B3B3B3'
   }
   
   
@@ -242,23 +267,29 @@ if(headCell.columns.filter(item=>item.isVisible == true).length > 0 && headCell.
       </TableRow>
       <TableRow>
         {NewColumns.map((headCell, i) => {
-          
+          if(i == 0){
+            a0_new = 0
+          }
+          let width = headCell?.width;
+
           let array = headCell.columns;
           let cStyle = { 
-            minWidth: "140px",
-            maxWidth: headCell.maxWidth,
+            width: width,
+            maxWidth: width,
             padding: '0.5rem',
             fontSize: '12px',
             fontWeight: '500',
             backgroundColor: headCell?.bgColor || '#1E233A',
             color: headCell?.textColor || '#fff',
             position: 'sticky',
-            top: 0, 
-            zIndex: 2, 
+            top: 42.5, 
           };
           
           if (i < 3) {
-            cStyle.left = `${i * 140}px`; 
+            cStyle.left = `${a0_new}px`; 
+            a0_new = a0_new + width
+            cStyle.zIndex = 11;
+          }else{
             cStyle.zIndex = 9;
           }
 
@@ -292,8 +323,8 @@ export default function AbsResultMUI(props) {
     TotalData,
     setTotalData,
   } = props;
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [order, setOrder] = React.useState("desc");
+  const [orderBy, setOrderBy] = React.useState("accessor_2");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -303,6 +334,7 @@ export default function AbsResultMUI(props) {
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
+    // console.log('property >>> ', property)
     setOrderBy(property);
   };
 
@@ -456,13 +488,30 @@ export default function AbsResultMUI(props) {
           data.map((element, i) => {
             if(element.isVisible){
             let val = rowData[element.accessor];
-            
+            let itemStyle = {};
+            let COLOR = rowData?.CompanyDetail?.Color
+            let n_style = {};
+            if(data.length == 5 && i == 0){
+              n_style = {
+                ...n_style,
+                borderLeft:'2px solid #B3B3B3'
+              }
+            }
             return (
               <>
                 <TableCell key={i} style={{
-                  ...style
+                  ...style,
+                  ...n_style,
+                  // width: element?.width+"!important",
+                  width: element?.width,
+                  // maxWidth: element?.width,
                  }}>
-                  <div className="texttableEliplse">
+                  <div style={itemStyle} className={`texttableEliplse ${element.accessor == "accessor_0" ? "cursor-pointer cell_"+COLOR : ""} `} onClick={()=>{
+                    if(element.accessor == "accessor_0"){
+                        console.log('rowData >>>> ', rowData)
+                        openCompany({CompanyID: rowData.CompanyID}, '', true)
+                    }
+                  }}>
                     {
                       element.accessor == "accessor_0" ?
                         <Tooltip title={val} placement="top">
@@ -473,7 +522,7 @@ export default function AbsResultMUI(props) {
                         {val}
                         </>
                     }
-                  {/* {element.label} */}
+                    
                   </div>
                 </TableCell>
               </>
@@ -485,6 +534,7 @@ export default function AbsResultMUI(props) {
   };
 
 
+  let a0_new = 0;
 
 
   return (
@@ -493,7 +543,7 @@ export default function AbsResultMUI(props) {
 
 
   {/* ========= Start Header Page =========== */}
-  <div className="flex justify-between items-center pb-4">
+  <div className="flex justify-between items-center pb-4 paginationHeader">
               <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
                 <div>
                   <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
@@ -599,7 +649,7 @@ export default function AbsResultMUI(props) {
       <Paper sx={{ width: "100%", mb: 2 }}>
         {/* TableData {FilterData.length} */}
         <TableContainer className='table-wo-border relative'  sx={{ 
-          maxHeight:'calc(100vh - 250px)'
+          maxHeight:'calc(100vh - 250px)', minHeight : "calc(100vh - 200px)"
          }}>
           <Table
           className=" relative"
@@ -620,7 +670,8 @@ export default function AbsResultMUI(props) {
             <TableBody>
               {FilterData &&
                 FilterData.length > 0 &&
-                FilterData.slice(
+                stableSort(FilterData, getComparator(order, orderBy))
+                .slice(
                   page * rowsPerPage,
                   page * rowsPerPage + rowsPerPage
                 ).map((row, index) => {
@@ -628,7 +679,8 @@ export default function AbsResultMUI(props) {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   if (index == 0) {
-                    console.log("row <><<><> ", row);
+                    // a0_new = 0
+                    // console.log("row <><<><> ", row);
                   }
                   let a0 = 0;
                   let rowObj = Object.keys(row);
@@ -637,7 +689,7 @@ export default function AbsResultMUI(props) {
                     
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
+                      // onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -645,29 +697,43 @@ export default function AbsResultMUI(props) {
                       selected={isItemSelected}
                       // sx={{ cursor: "pointer" }}
                     >
+                      
+                      {
+                        NewColumns.map((headCell, i) =>{
+                          if(i == 0){
+                            a0_new = 0
+                          }
+                        let width = headCell?.width;
 
-                      {NewColumns.map((headCell, i) =>{
-
-
-                        let cStyle = { 
-                          minWidth: "140px",
-                          maxWidth: headCell.maxWidth,
-                          padding: '0.5rem',
+                        let cStyle = {
+                          width: width,
+                          maxWidth: width,
+                          // padding: '0.5rem',
                           fontSize: '12px',
                           fontWeight: '500',
                           position: 'sticky',
                           top: 0, 
                           zIndex: 2, 
                         };
+                        // console.log('cStyle >>>>> ', headCell)
 
                         if (i < 3) {
                           cStyle.backgroundColor = '#fff';
-                          cStyle.left = `${i * 140}px`; 
+                          cStyle.left = `${a0_new}px`; 
                           cStyle.zIndex = 9;
+                          a0_new = a0_new + width
                         }
                         if (i == 2) {
-                          cStyle.borderRight = '1px solid #000';
+                          
+                          // cStyle.backgroundColor = '#fff000';
+                          // cStyle.borderRight = '1px solid #000000';
                         }
+                        if (i < 2) {
+                          cStyle.textAlign = 'left';
+                        }else{
+                          cStyle.textAlign = 'center';
+                        }
+                        // console.log('row >><<<< ', row)
 
                           return (
                             <>

@@ -231,9 +231,8 @@ const EnhancedTableHead = (props0) => {
                     justifyContent: column.id !== 'column_2' && column.id !== 'column_4' ? 'center' : 'start',
                     width: '100%', 
                    }}
-                   className=' !text-white '
+                   className=' !text-white TableSortLabel'
                 >
-                  11
                   {column.label}
                   {orderBy === column.id ? (
                     <Box component="span" sx={visuallyHidden}>

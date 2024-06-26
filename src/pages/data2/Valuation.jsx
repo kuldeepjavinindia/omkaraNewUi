@@ -4,6 +4,8 @@ import ValuationTable from "../../components/data2/Valuation/ValuationTable";
 import { useDispatch, useSelector } from "react-redux";
 import FilterItemChips from "../../components/data2/FilterItemChips";
 // import { ValuationApi } from "../../store/slice/Data2Slice";
+import {valuation_Req} from '../../constants/helper'
+import { ValuationApi } from "../../store/slice/Data2Slice";
 
 const Valuation = () => {
 
@@ -82,7 +84,8 @@ const Valuation = () => {
         <FilterSidebarValuation />
 
         <div className="sc-container ">
-          <FilterItemChips />
+        <FilterItemChips    dispatchName = {ValuationApi} finalRquest =  {valuation_Req} />
+          
           <ValuationTable bodyData={ValuationData?.Data} headers={ValuationData?.Headers} />
         </div>
       </div>

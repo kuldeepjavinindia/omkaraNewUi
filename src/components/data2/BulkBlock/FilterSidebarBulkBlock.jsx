@@ -173,7 +173,7 @@ return (
     <AccordionBody>
     
        <div className="pb-2">
-       <label className="text-[12px] text-[#000] font-medium">Company (({CompanyMasterArr.length})) </label>
+       <label className="text-[12px] text-[#000] font-medium">Company ({CompanyMasterArr.length}) </label>
    
             <Autocomplete
                     disablePortal

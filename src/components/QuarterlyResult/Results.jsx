@@ -45,15 +45,24 @@ const Results = () => {
     let Header = ResultData._Headers[0];
 
 
-    const NEW_COLUMN = [ 
-    ]
+    const NEW_COLUMN = []
 
-    let isCheckbox = true;
     Object.keys(Header).map((key, i)=>{
+      let isCheckbox = true;
+      let width = 80;
       if(i > 0){
         let element = Header[key];
+        if(i < 3){
+          width = 150
+          isCheckbox = false
+        }
+        if(i == 3){
+          width = 100
+          isCheckbox = false
+        }
         let obj = {
-          label: element,
+          label: element.replaceAll("&nbsp;", " "),
+          width: width,
           sticky: 'left',
           hideCheck: false,
           accessor: key,

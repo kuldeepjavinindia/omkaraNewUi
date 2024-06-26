@@ -72,7 +72,7 @@ const BulkBlockTable = () => {
       BulkDealData?.Header && BulkDealData?.Header.map((item, a0)=>{
         let formatType = 'Float';
           if(item?.value !== "StockID"){
-            console.log(item)
+            // console.log(item)
             if(item?.column === "column_1" || item?.column === "column_3"){
               formatType = 'String';
             }
@@ -96,7 +96,7 @@ const BulkBlockTable = () => {
       // });
       let bodyArr0 = [];
       
-      let isFloatCol = ["column_3", "column_7", "column_8", "column_9"];
+      let isFloatCol = ["column_3", "column_5", "column_6", "column_7"];
       // let isFloatCol = ["column_5","column_6", "column_7", "column_9"];
       let minDigits_ZERO = ["column_7"];
 
@@ -107,14 +107,14 @@ const BulkBlockTable = () => {
             let a000 = {[a0.column]:a0};
             let c_all = a0.column + '_all';
             let valueItem = a0.value;
-            
+            console.log('a0?.column >>>>> ', a0?.column)
             if(isFloatCol.includes(a0?.column) && valueItem !== ''){
               valueItem = parseFloat(valueItem);
               let minimumFractionDigits = 2;
               if(minDigits_ZERO.includes(a0?.column)){
                 minimumFractionDigits = 0;
               }
-              valueItem =  valueItem.toLocaleString('en-IN', {minimumFractionDigits: minimumFractionDigits})
+              // valueItem =  valueItem.toLocaleString('en-IN', {minimumFractionDigits: minimumFractionDigits})
             }
 
             a10 = { ...a10, [a0.column]:valueItem, [c_all]:a0 }

@@ -59,37 +59,38 @@ const AbsResult= ()=> {
             "CompanyDetail": resBody._MainHeaders._CompanyDetail,
             "accessor_0": resBody._MainHeaders._CompanyDetail.Company_Name,
             "accessor_1": resBody._MainHeaders.Sector,
-            "accessor_2": resBody._MainHeaders.MarketCap,
-            "accessor_3": resBody._sales.S1Q,
-            "accessor_4": resBody._sales.S2Q,
-            "accessor_5": resBody._sales.S3Q,
-            "accessor_6": resBody._sales.S4Q,
-            "accessor_7": resBody._sales.S5Q,
-            "accessor_8": resBody._GP.Gross_Profit_Cr1Q,
-            "accessor_9": resBody._GP.Gross_Profit_Cr2Q,
-            "accessor_10": resBody._GP.Gross_Profit_Cr3Q,
-            "accessor_11": resBody._GP.Gross_Profit_Cr4Q,
-            "accessor_12": resBody._GP.Gross_Profit_Cr5Q,
-            "accessor_13": resBody._GM.Gross_Profit_Margin1Q,
-            "accessor_14": resBody._GM.Gross_Profit_Margin2Q,
-            "accessor_15": resBody._GM.Gross_Profit_Margin3Q,
-            "accessor_16": resBody._GM.Gross_Profit_Margin4Q,
-            "accessor_17": resBody._GM.Gross_Profit_Margin5Q,
-            "accessor_18": resBody._Ebidta.EBDITA_Cr1Q,
-            "accessor_19": resBody._Ebidta.EBDITA_Cr2Q,
-            "accessor_20": resBody._Ebidta.EBDITA_Cr3Q,
-            "accessor_21": resBody._Ebidta.EBDITA_Cr4Q,
-            "accessor_22": resBody._Ebidta.EBDITA_Cr5Q,
-            "accessor_23": resBody._EM.EBDITA_Margin_Per1Q,
-            "accessor_24": resBody._EM.EBDITA_Margin_Per2Q,
-            "accessor_25": resBody._EM.EBDITA_Margin_Per3Q,
-            "accessor_26": resBody._EM.EBDITA_Margin_Per4Q,
-            "accessor_27": resBody._EM.EBDITA_Margin_Per5Q,
-            "accessor_28": resBody._pat.PAT_Cr1Q,
-            "accessor_29": resBody._pat.PAT_Cr2Q,
-            "accessor_30": resBody._pat.PAT_Cr3Q,
-            "accessor_31": resBody._pat.PAT_Cr4Q,
-            "accessor_32": resBody._pat.PAT_Cr5Q,
+            // "accessor_2": parseFloat(resBody._MainHeaders.MarketCap),
+            "accessor_2": resBody._MainHeaders.MarketCap ? parseFloat(resBody._MainHeaders.MarketCap) : "",
+            "accessor_3": resBody._sales.S1Q ? parseFloat(resBody._sales.S1Q) : "",
+            "accessor_4": resBody._sales.S2Q ? parseFloat(resBody._sales.S2Q) : "",
+            "accessor_5": resBody._sales.S3Q ? parseFloat(resBody._sales.S3Q) : "",
+            "accessor_6": resBody._sales.S4Q ? parseFloat(resBody._sales.S4Q) : "",
+            "accessor_7": resBody._sales.S5Q ? parseFloat(resBody._sales.S5Q) : "",
+            "accessor_8": resBody._GP.Gross_Profit_Cr1Q ? parseFloat(resBody._GP.Gross_Profit_Cr1Q) : "",
+            "accessor_9": resBody._GP.Gross_Profit_Cr2Q ? parseFloat(resBody._GP.Gross_Profit_Cr2Q) : "",
+            "accessor_10": resBody._GP.Gross_Profit_Cr3Q ? parseFloat(resBody._GP.Gross_Profit_Cr3Q) : "",
+            "accessor_11": resBody._GP.Gross_Profit_Cr4Q ? parseFloat(resBody._GP.Gross_Profit_Cr4Q) : "",
+            "accessor_12": resBody._GP.Gross_Profit_Cr5Q ? parseFloat(resBody._GP.Gross_Profit_Cr5Q) : "",
+            "accessor_13": resBody._GM.Gross_Profit_Margin1Q ? parseFloat(resBody._GM.Gross_Profit_Margin1Q) : "",
+            "accessor_14": resBody._GM.Gross_Profit_Margin2Q ? parseFloat(resBody._GM.Gross_Profit_Margin2Q) : "",
+            "accessor_15": resBody._GM.Gross_Profit_Margin3Q ? parseFloat(resBody._GM.Gross_Profit_Margin3Q) : "",
+            "accessor_16": resBody._GM.Gross_Profit_Margin4Q ? parseFloat(resBody._GM.Gross_Profit_Margin4Q) : "",
+            "accessor_17": resBody._GM.Gross_Profit_Margin5Q ? parseFloat(resBody._GM.Gross_Profit_Margin5Q) : "",
+            "accessor_18": resBody._Ebidta.EBDITA_Cr1Q ? parseFloat(resBody._Ebidta.EBDITA_Cr1Q) : "",
+            "accessor_19": resBody._Ebidta.EBDITA_Cr2Q ? parseFloat(resBody._Ebidta.EBDITA_Cr2Q) : "",
+            "accessor_20": resBody._Ebidta.EBDITA_Cr3Q ? parseFloat(resBody._Ebidta.EBDITA_Cr3Q) : "",
+            "accessor_21": resBody._Ebidta.EBDITA_Cr4Q ? parseFloat(resBody._Ebidta.EBDITA_Cr4Q) : "",
+            "accessor_22": resBody._Ebidta.EBDITA_Cr5Q ? parseFloat(resBody._Ebidta.EBDITA_Cr5Q) : "",
+            "accessor_23": resBody._EM.EBDITA_Margin_Per1Q ? parseFloat(resBody._EM.EBDITA_Margin_Per1Q) : "",
+            "accessor_24": resBody._EM.EBDITA_Margin_Per2Q ? parseFloat(resBody._EM.EBDITA_Margin_Per2Q) : "",
+            "accessor_25": resBody._EM.EBDITA_Margin_Per3Q ? parseFloat(resBody._EM.EBDITA_Margin_Per3Q) : "",
+            "accessor_26": resBody._EM.EBDITA_Margin_Per4Q ? parseFloat(resBody._EM.EBDITA_Margin_Per4Q) : "",
+            "accessor_27": resBody._EM.EBDITA_Margin_Per5Q ? parseFloat(resBody._EM.EBDITA_Margin_Per5Q) : "",
+            "accessor_28": resBody._pat.PAT_Cr1Q ? parseFloat(resBody._pat.PAT_Cr1Q) : "",
+            "accessor_29": resBody._pat.PAT_Cr2Q ? parseFloat(resBody._pat.PAT_Cr2Q) : "",
+            "accessor_30": resBody._pat.PAT_Cr3Q ? parseFloat(resBody._pat.PAT_Cr3Q) : "",
+            "accessor_31": resBody._pat.PAT_Cr4Q ? parseFloat(resBody._pat.PAT_Cr4Q) : "",
+            "accessor_32": resBody._pat.PAT_Cr5Q ? parseFloat(resBody._pat.PAT_Cr5Q) : "",
         }
         allRowsData.push(singleRow);
     });
@@ -127,7 +128,6 @@ const AbsResult= ()=> {
 
         for (const key in subCol) {
           if (Object.hasOwnProperty.call(subCol, key)) {
-             
               if (key !== '$id') {
                   const element = subCol[key];
                   let cols = {
@@ -145,8 +145,7 @@ const AbsResult= ()=> {
           }
       }
 
-        console.log('object')
-      }
+    }
 
       var bgClass = 'th';
       let hideCheck = false;
@@ -156,6 +155,7 @@ const AbsResult= ()=> {
       var mCol = {
           label: mTitle,
           sticky: sticky,
+          width: width,
           hideCheck: hideCheck,
           headerClassName: bgClass,
           columns: subColArr,

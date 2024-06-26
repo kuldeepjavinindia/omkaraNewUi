@@ -50,7 +50,7 @@ const Quarterly_P_L_Result = (props) => {
       ...params,
       CompanyId: cmpId,
       type: type,
-      Qtr: QuarterBtn.months
+      Qtr: QuarterBtn.months || 3
     }
     rr_dispatch(QuarterlyResultApi(params))
   }

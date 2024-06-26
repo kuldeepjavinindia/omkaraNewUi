@@ -601,57 +601,6 @@ export const filterSelectIndustryBySector = (
 
 // Data 2
 // Quterlty Result Input data
-// export const FilterInputs = {
-//   Market_Cap: {
-//     label: "Market Cap",
-//     value1: "",
-//     value2: "",
-//   },
-//   Date: {
-//     label: "Date Range",
-//     value1: moment().add("-1", "days").format("MM/DD/YYYY"),
-//     value2: moment().format("MM/DD/YYYY"),
-//   },
-//   LTP: "",
-//   TTM_P_B: "",
-//   TTM_P_E: "",
-//   ROCE: "",
-//   TTM_Sales_Abs: "",
-//   TTM_PAT_Abs: "",
-//   Sales_YOY: "",
-//   Sales_QOQ: "",
-//   EBDITA_YOY: "",
-//   EBDITA_QOQ: "",
-//   PAT_YOY: "",
-//   PAT_QOQ: "",
-//   GROSS_PROFIT_YOY: "",
-//   GROSS_PROFIT_QOQ: "",
-//   EBDITA_TO: "",
-//   PAT_TO: "",
-//   ColorCode: {
-//     label: "Color Code",
-//     value1: "",
-//     value2: "",
-//   },
-//   sectors: {
-//     label: "Sector",
-//     value: [],
-//   },
-//   industry: {
-//     label: "Industry",
-//     value: [],
-//   },
-//   company: {
-//     label: "Company",
-//     value: [],
-//   },
-//   portfolio: {
-//     label: "Portfolio",
-//     value: [],
-//   },
-// };
-
-
 export const FilterInputs = {
   Market_Cap: {
     label: "Market Cap",
@@ -663,113 +612,44 @@ export const FilterInputs = {
     value1: moment().add("-1", "days").format("MM/DD/YYYY"),
     value2: moment().format("MM/DD/YYYY"),
   },
-  LTP: {
-    label: "LTP",
-    value1: "",
-    value2: "",
-  },
-  TTM_P_B:  {
-    label: "TTM_P_B",
-    value1: "",
-    value2: "",
-  },
-  TTM_P_E: {
-    label: "TTM_P_E",
-    value1: "",
-    value2: "",
-  },
-  ROCE:  {
-    label: "ROCE",
-    value1: "",
-    value2: "",
-  },
-  TTMSalesAbs: {
-    label: "TTM_Sales_Abs",
-    value1: "",
-    value2: "",
-  },
-  TTMPATAbs: {
-    label: "TTM_PAT_Abs",
-    value1: "",
-    value2: "",
-  },
-  Sales_YOY: {
-    label: "Sales_YOY",
-    value1: "",
-    value2: "",
-  },
-  Sales_QOQ: {
-    label: "Sales_QOQ",
-    value1: "",
-    value2: "",
-  },
-  EBDITA_YOY: {
-    label: "EBDITA_YOY",
-    value1: "",
-    value2: "",
-  },
-  EBDITA_QOQ: {
-    label: "EBDITA_QOQ",
-    value1: "",
-    value2: "",
-  },
-  PAT_YOY: {
-    label: "PAT_YOY",
-    value1: "",
-    value2: "",
-  },
-  PAT_QOQ: {
-    label: "PAT_QOQ",
-    value1: "",
-    value2: "",
-  },
-  GP_YOY: {
-    label: "GROSS_PROFIT_YOY",
-    value1: "",
-    value2: "",
-  },
-  GP_QOQ: {
-    label: "GROSS_PROFIT_QOQ",
-    value1: "",
-    value2: "",
-  },
-  EBDITA_TO: {
-    label: "EBDITA_TO",
-    value1: "",
-    value2: "",
-  },
-  PAT_TO: {
-    label: "PAT_TO",
-    value1: "",
-    value2: "",
-  },
+  LTP: "",
+  TTM_P_B: "",
+  TTM_P_E: "",
+  ROCE: "",
+  TTM_Sales_Abs: "",
+  TTM_PAT_Abs: "",
+  Sales_YOY: "",
+  Sales_QOQ: "",
+  EBDITA_YOY: "",
+  EBDITA_QOQ: "",
+  PAT_YOY: "",
+  PAT_QOQ: "",
+  GROSS_PROFIT_YOY: "",
+  GROSS_PROFIT_QOQ: "",
+  EBDITA_TO: "",
+  PAT_TO: "",
   ColorCode: {
     label: "Color Code",
     value1: "",
     value2: "",
   },
-  Sector: {
+  sectors: {
     label: "Sector",
-    value1: [],
-    value2: "",
+    value: [],
   },
-  Industry: {
+  industry: {
     label: "Industry",
-    value1: [],
-    value2: "",
+    value: [],
   },
-  Company: {
+  company: {
     label: "Company",
-    value1: [],
-    value2: "",
+    value: [],
   },
   portfolio: {
     label: "Portfolio",
-    value1: "",
-    value2: "",
+    value: [],
   },
 };
-
 
 
 
@@ -791,8 +671,8 @@ export const QuterltyResultFinalReq = (inputsArray) => {
           "TTM_P_B": (inputsArray.TTM_P_B.value1 || ""),
           "TTM_P_E": (inputsArray.TTM_P_E.value1 || ""),
           "ROCE": (inputsArray.ROCE.value1 || ""),
-         "TTMSalesAbs": (inputsArray.TTMSalesAbs.value1 || ""),
-          "TTMPATAbs": (inputsArray.TTMPATAbs.value1 || "")
+          "TTMSalesAbs": (inputsArray.TTM_Sales_Abs.value1 || ""),
+          "TTMPATAbs": (inputsArray.TTM_PAT_Abs.value1 || "")
         }
       ]
     },
@@ -807,8 +687,8 @@ export const QuterltyResultFinalReq = (inputsArray) => {
           "EBDITA_QOQ": (inputsArray.EBDITA_QOQ.value1 || ""),
           "PAT_YOY": (inputsArray.PAT_YOY.value1 || ""),
           "PAT_QOQ": (inputsArray.PAT_QOQ.value1 || ""),
-        "GP_YOY": (inputsArray.GP_YOY.value1 || ""),
-          "GP_QOQ": (inputsArray.GP_QOQ.value1 || "")
+          "GP_YOY": (inputsArray.GROSS_PROFIT_YOY.value1 || ""),
+          "GP_QOQ": (inputsArray.GROSS_PROFIT_QOQ.value1 || "")
         }
       ]
     },

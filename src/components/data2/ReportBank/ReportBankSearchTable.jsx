@@ -1189,9 +1189,10 @@ const NextFun = () => {
                         {
                           return (
                             <TableCell key={column.id} align={column.align} style={cStyle} >
-                              {column.format && typeof value === 'float0'
+                              {/* {column.format && typeof value === 'float0'
                                 ? column.format(value)
-                                : value }
+                                : value } */}
+                                {value}
                             </TableCell>
                           );
                         }

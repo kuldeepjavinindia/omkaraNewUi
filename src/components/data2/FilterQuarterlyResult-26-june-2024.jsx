@@ -9,7 +9,6 @@ import {
   Checkbox,
   Radio,
 } from "@material-tailwind/react";
-
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
@@ -29,12 +28,6 @@ import Moment from "moment";
 import { FilterInputs, QuterltyResultFinalReq, selectTurnAround } from "../../constants/helper";
 import { GlobalContext } from "../../context/GlobalContext";
 import { Autocomplete, TextField } from "@mui/material";
-// import {
-//   industryMasterFun,
-//   selectCompany,
-//   selectSectors,
-// } from "../../../constants/helper";
-import { selectCompany, selectSectors, industryMasterFun } from "../../constants/helper";
 
 function Icon({ id, open }) {
   return (
@@ -60,9 +53,9 @@ function Icon({ id, open }) {
 const animatedComponents = makeAnimated();
 
 const FilterQuarterlyResult = () => {
-  // const [sectorData, setSectorData] = useState([]);
-  // const [industryData, setIndustryData] = useState([]);
-  // const [allCompanyData, setAllCompanyData] = useState([]);
+  const [sectorData, setSectorData] = useState([]);
+  const [industryData, setIndustryData] = useState([]);
+  const [allCompanyData, setAllCompanyData] = useState([]);
   
   const [TurnAroundMasterArr, setTurnAroundMasterArr] = useState([]);
 
@@ -72,22 +65,9 @@ const FilterQuarterlyResult = () => {
   const [ebditaKey, setEbditaKey] = useState(false);
 
   const [inputValue, setInputValue] = useState({
-    FromDate: Moment().format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
-    ToDate: Moment().format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
-    Date:[
-      Moment().format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
-      Moment().format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
-    ]
+    FromDate: Moment().format("MM-DD-YYYY"), // Initial value in MM-DD-YY format
+    ToDate: Moment().format("MM-DD-YYYY"), // Initial value in MM-DD-YY format
   });
-
-
-  const [SectorMasterArr, setSectorMasterArr] = useState([]);
-  const [IndustryMasterArr, setIndustryMasterArr] = useState([]);
-  const [CompanyMasterArr, setCompanyMasterArr] = useState([]);
-  const [Sectors, setSectors] = useState([]);
-  const [Industry, setIndustry] = useState([]);
-  const [Company, setCompany] = useState([]);
-
   name = "EBDITA_TO";
   const [finalUserInputs, setFinalUserInputs] = useState();
 
@@ -95,8 +75,7 @@ const FilterQuarterlyResult = () => {
   
   const {
     // FilterChipsData,
-    setFilterChipsData,
-    setFilterDataChip
+    setFilterChipsData
   } = useContext(GlobalContext)
 
 
@@ -109,10 +88,19 @@ const FilterQuarterlyResult = () => {
   } = useSelector((state) => state.Data2);
 
   const {
-    sectorMaster: { loading: sectorMasterLoading, data: sectorMasterData },
-    industryMaster: { loading: industryMasterLoading, data: industryMasterData,},
-    allCompanyMaster: { loading: allCompanyLoading, data: allCompanyData },
-    turnAroundMaster: { data: turnAroundData, loading: turnAroundLoading, },
+    industryMaster: {
+      data: IndustryMasterData,
+      loading: IndustryMasterLoading,
+    },
+    sectorMaster: { data: sectorMasterData, loading: sectorMasterLoading },
+    allCompanyMaster: {
+      data: allCompanyMasterMasterData,
+      loading: allCompanyMasterMasterLoading,
+    },
+    turnAroundMaster: {
+      data: turnAroundData,
+      loading: turnAroundLoading,
+    },
 
   } = useSelector((state) => state.Masters);
 
@@ -154,12 +142,38 @@ const FilterQuarterlyResult = () => {
     }));
   };
 
+  const handleRefreshClassification = () => {
+    setSectorData(null);
+    setIndustryData(null);
+    setAllCompanyData(null);
+  };
 
+  const industry = [];
+  IndustryMasterData.map((item, index) => {
+    let createIndustryOptions = {
+      value: item.IndustryID,
+      label: item.Industry,
+    };
+    industry.push(createIndustryOptions);
+  });
 
+  const sector = [];
+  sectorMasterData.map((item, index) => {
+    let createIndustryOptions = {
+      value: item.sectorID,
+      label: item.Sector,
+    };
+    sector.push(createIndustryOptions);
+  });
 
-
-
-  
+  const companies = [];
+  allCompanyMasterMasterData.map((item, index) => {
+    let createIndustryOptions = {
+      value: item.CompanyID,
+      label: item.CompanyName,
+    };
+    companies.push(createIndustryOptions);
+  });
 
   const handleChange = (selected) => {
     // selected
@@ -255,153 +269,58 @@ const FilterQuarterlyResult = () => {
  
 
 
-  // const handleChangeInput = (e) => {
-  //   const { name, value } = e.target;
-  //   // Temporarily store the new state values
-  //   let newFromDate = name === "FromDate" ? value : inputValue.FromDate;
-  //   let newToDate = name === "ToDate" ? value : inputValue.ToDate;
-  //   let newMarketCapFrom = name === "MarketCapFrom" ? value : inputValue.MarketCapFrom;
-  //   let newMarketCapTo = name === "MarketCapTo" ? value : inputValue.MarketCapTo;
-
-
-  //   // Handle Date updates separately
-  //   if (name === "FromDate" || name === "ToDate") {
-  //     let formattedFromDate = Moment(newFromDate).format("MM/DD/YYYY");
-  //     let formattedToDate = Moment(newToDate).format("MM/DD/YYYY");
-
-  //     console.log('Updated FromDate:', formattedFromDate);
-  //     console.log('Updated ToDate:', formattedToDate);
-
-  //     if (formattedFromDate || formattedToDate) {
-  //       setInputValue((prev) => ({
-  //         ...prev,
-  //         Date: [formattedFromDate, formattedToDate]
-  //       }));
-  //     }
-  //   }
-
-  //   // Handle Market Cap updates separately
-  //   if (name === "MarketCapFrom" || name === "MarketCapTo") {
-  //     console.log('Updated MarketCapFrom:', newMarketCapFrom);
-  //     console.log('Updated MarketCapTo:', newMarketCapTo);
-
-  //     if (newMarketCapFrom || newMarketCapTo) {
-  //       setInputValue((prev) => ({
-  //         ...prev,
-  //         Market_Cap: [newMarketCapFrom, newMarketCapTo]
-  //       }));
-  //     }
-  //   }
-
-  //   // Update the state based on input change
-  //   setInputValue((prev) => ({
-  //     ...prev,
-  //     [name]: value
-  //   }));
-
-
-  // };
-
-
-
-  // const handleChangeInput = (e) => {
-  //   const { name, value } = e.target;
-  
-  //   setInputValue((prev) => {
-  //     let updatedState = { ...prev };
-  
-  //     // Handle Date updates
-  //     if (name === "FromDate" || name === "ToDate") {
-  //       let newFromDate = name === "FromDate" ? value : prev.Date?.[0] || "";
-  //       let newToDate = name === "ToDate" ? value : prev.Date?.[1] || "";
-  
-  //       let formattedFromDate = Moment(newFromDate).format("MM/DD/YYYY");
-  //       let formattedToDate = Moment(newToDate).format("MM/DD/YYYY");
-  
-  //       console.log('Updated FromDate:', formattedFromDate);
-  //       console.log('Updated ToDate:', formattedToDate);
-  
-  //       // Update the Date array in the state
-  //       updatedState.Date = [formattedFromDate, formattedToDate];
-  //     }
-  
-  //     // Handle Market Cap updates
-  //     if (name === "MarketCapFrom" || name === "MarketCapTo") {
-  //       let newMarketCapFrom = name === "MarketCapFrom" ? value : prev.Market_Cap?.[0] || "";
-  //       let newMarketCapTo = name === "MarketCapTo" ? value : prev.Market_Cap?.[1] || "";
-  
-  
-  //       // Update the Market Cap array in the state
-  //       updatedState.Market_Cap = [newMarketCapFrom, newMarketCapTo];
-  //     }
-  
-  //     // Update other fields directly
-  //     if (name !== "FromDate" && name !== "ToDate" && name !== "MarketCapFrom" && name !== "MarketCapTo") {
-  //       updatedState[name] = value;
-  //     }
-  
-  //     // Ensure FromDate, ToDate, MarketCapFrom, and MarketCapTo are not separate keys
-  //     delete updatedState.FromDate;
-  //     delete updatedState.ToDate;
-  //     delete updatedState.MarketCapFrom;
-  //     delete updatedState.MarketCapTo;
-  
-  //     return updatedState;
-  //   });
-  // };
-  
-  
-
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
 
-    setInputValue((prev) => {
-        let updatedState = { ...prev };
+    console.log('name, value', name, value)
+    // Temporarily store the new state values
+    let newFromDate = name === "FromDate" ? value : inputValue.FromDate;
+    let newToDate = name === "ToDate" ? value : inputValue.ToDate;
+    let newMarketCapFrom = name === "MarketCapFrom" ? value : inputValue.MarketCapFrom;
+    let newMarketCapTo = name === "MarketCapTo" ? value : inputValue.MarketCapTo;
 
-        // Handle Date updates
-        if (name === "FromDate" || name === "ToDate") {
-            let newFromDate = name === "FromDate" ? value : prev.Date?.[0] || "";
-            let newToDate = name === "ToDate" ? value : prev.Date?.[1] || "";
+    // Update the state based on input change
+    setInputValue((prev) => ({
+      ...prev,
+      [name]: value
+    }));
 
-            // Check if the new dates are valid and format them
-            let formattedFromDate =  Moment(newFromDate).format("MM/DD/YYYY");
-            let formattedToDate =  Moment(newToDate).format("MM/DD/YYYY");
+    // Handle Date updates separately
+    if (name === "FromDate" || name === "ToDate") {
+      let formattedFromDate = Moment(newFromDate).format("MM/DD/YYYY");
+      let formattedToDate = Moment(newToDate).format("MM/DD/YYYY");
 
-            // Update the Date array in the state
-            updatedState.Date = [formattedFromDate, formattedToDate];
+      console.log('Updated FromDate:', formattedFromDate);
+      console.log('Updated ToDate:', formattedToDate);
 
-            // console.log({formattedFromDate, formattedToDate})
-        }
+      if (formattedFromDate || formattedToDate) {
+        setInputValue((prev) => ({
+          ...prev,
+          Date: [formattedFromDate, formattedToDate]
+        }));
+      }
+    }
 
-        // Handle Market Cap updates
-        if (name === "MarketCapFrom" || name === "MarketCapTo") {
-            let newMarketCapFrom = name === "MarketCapFrom" ? value : prev.Market_Cap?.[0] || "";
-            let newMarketCapTo = name === "MarketCapTo" ? value : prev.Market_Cap?.[1] || "";
+    // Handle Market Cap updates separately
+    if (name === "MarketCapFrom" || name === "MarketCapTo") {
+      console.log('Updated MarketCapFrom:', newMarketCapFrom);
+      console.log('Updated MarketCapTo:', newMarketCapTo);
 
-            // Update the Market Cap array in the state
-            updatedState.Market_Cap = [newMarketCapFrom, newMarketCapTo];
-        }
-
-        // Update other fields directly
-        if (name !== "FromDate" && name !== "ToDate" && name !== "MarketCapFrom" && name !== "MarketCapTo") {
-            updatedState[name] = value;
-        }
-
-        // Ensure FromDate, ToDate, MarketCapFrom, and MarketCapTo are not separate keys
-        delete updatedState.FromDate;
-        delete updatedState.ToDate;
-        delete updatedState.MarketCapFrom;
-        delete updatedState.MarketCapTo;
-
-        return updatedState;
-    });
-};
+      if (newMarketCapFrom || newMarketCapTo) {
+        setInputValue((prev) => ({
+          ...prev,
+          Market_Cap: [newMarketCapFrom, newMarketCapTo]
+        }));
+      }
+    }
+  };
 
 
 // Log the inputValue whenever it updates
   useEffect(() => {
-    // console.log('inputValue updated:', inputValue);
+    console.log('inputValue updated:', inputValue);
   }, [inputValue]);
+
 
 
 
@@ -414,11 +333,11 @@ const FilterQuarterlyResult = () => {
 
   // Start Calling ResultDataApi and Update with Input change
   const callApi = (params = ResultDataReq) => {
-   //  rr_dispatch(ResultDataApi(params));
-    //  rr_dispatch(ResultDataSheet2Api(ResultDataReq));
-   // rr_dispatch(industryMasterAPI());
-   // rr_dispatch(sectorMasterAPI());
-   // r_dispatch(allCompanyMasterAPI());
+    // rr_dispatch(ResultDataApi(params));
+    // // rr_dispatch(ResultDataSheet2Api(ResultDataReq));
+    // rr_dispatch(industryMasterAPI());
+    // rr_dispatch(sectorMasterAPI());
+    // rr_dispatch(allCompanyMasterAPI());
     callBothAPIs(ResultDataReq)
     
   };
@@ -431,95 +350,48 @@ const FilterQuarterlyResult = () => {
 
 
 
-  // const applyBtn = () => {
-  //   // console.log(inputValue);
-  //   let fromDate = inputValue.FromDate;
-  //   let toDate = inputValue.ToDate;
-  //   if (Moment(fromDate, "MM/DD/YYYY").isAfter(toDate)) {
-  //     alert('"From date" should be less than "To date"');
-  //     return;
-  //   } else {
-      
-  //     let params1 = FilterInputs;
-
-  //     // console.log("inputValue >>>>>>>>>", inputValue);
-      
-  //     Object.keys(inputValue).map((key) => {
-  //       if (inputBothVal.includes(key)) {
-  //         params1 = {
-  //           ...params1,
-  //           [key]: {
-  //             ...FilterInputs[key],
-  //             value1: inputValue[key][0] || "",
-  //             value2: inputValue[key][1] || "",
-  //           },
-  //         }; 
-  //       } else {
-  //         params1 = {
-  //           ...params1,
-  //           [key]: {
-  //             ...FilterInputs[key],
-  //             value1: inputValue[key] || "",
-  //           },
-  //         };
-  //       }
-  //     });
-
-  //     console.log("inputValue >>>>>>>>>", params1);
-
-  //     // setFilterChipsData(params1);
-  //     setFilterDataChip(params1);
-
-  //     let finalParams = QuterltyResultFinalReq(params1);
-  //     callBothAPIs(finalParams)
-
-  //   }
-  // };
-
-
   const applyBtn = () => {
-    // Extract Date and Market Cap values from inputValue
-    // console.log('inputValue ???>>>> ', inputValue)
-    let fromDate = inputValue.FromDate || Moment().format("MM/DD/YYYY");
-    let toDate = inputValue.ToDate || Moment().format("MM/DD/YYYY");
-  
-    if (fromDate && toDate && Moment(fromDate, "MM-DD-YYYY").isAfter(toDate)) {
+    // console.log(inputValue);
+    let fromDate = inputValue.FromDate;
+    let toDate = inputValue.ToDate;
+    if (Moment(fromDate, "MM-DD-YYYY").isAfter(toDate)) {
       alert('"From date" should be less than "To date"');
       return;
+    } else {
+      
+      let params1 = FilterInputs;
+
+      // console.log("inputValue >>>>>>>>>", inputValue);
+      
+      Object.keys(inputValue).map((key) => {
+        if (inputBothVal.includes(key)) {
+          params1 = {
+            ...params1,
+            [key]: {
+              ...FilterInputs[key],
+              value1: inputValue[key][0] || "",
+              value2: inputValue[key][1] || "",
+            },
+          }; 
+        } else {
+          params1 = {
+            ...params1,
+            [key]: {
+              ...FilterInputs[key],
+              value1: inputValue[key] || "",
+            },
+          };
+        }
+      });
+
+      console.log("inputValue >>>>>>>>>", {params1, inputValue});
+
+      setFilterChipsData(params1);
+
+      let finalParams = QuterltyResultFinalReq(params1);
+      callBothAPIs(finalParams)
+
     }
-  
-    // Initialize parameters with existing FilterInputs
-    let params1 = { ...FilterInputs };
-  
-    Object.keys(inputValue).forEach((key) => {
-      if (key === 'Date') {
-        params1[key] = {
-          ...FilterInputs[key],
-          value1: inputValue.Date?.[0] || "",
-          value2: inputValue.Date?.[1] || ""
-        };
-      } else if (key === 'Market_Cap') {
-        params1[key] = {
-          ...FilterInputs[key],
-          value1: inputValue.Market_Cap?.[0] || "",
-          value2: inputValue.Market_Cap?.[1] || ""
-        };
-      } else if (!['FromDate', 'ToDate', 'MarketCapFrom', 'MarketCapTo'].includes(key)) {
-        // For other fields, update the value1 property
-        params1[key] = {
-          ...FilterInputs[key],
-          value1: inputValue[key] || ""
-        };
-      }
-    });
-  
-    console.log("inputValue >>>>>>>>>", params1);
-  
-    // setFilterChipsData(params1); // Uncomment if needed
-       setFilterDataChip(params1);
-  
-    let finalParams = QuterltyResultFinalReq(params1);
-    callBothAPIs(finalParams);
   };
 
   const resetTurnAround = () => {
@@ -533,15 +405,6 @@ const FilterQuarterlyResult = () => {
   }
 
 
-  useEffect(()=> {
-    let params1 = { ...FilterInputs };
-      // console.log("0 check initial ", params1);
-     setFilterDataChip(params1)
-   },[FilterInputs])
-
-
-
-
   // console.log(finalUserInputs);
   useEffect(() => {
     rr_dispatch(sectorMasterAPI());
@@ -549,28 +412,6 @@ const FilterQuarterlyResult = () => {
     rr_dispatch(allCompanyMasterAPI());
     callApi();
   }, [rr_dispatch]);
-
-
-  useEffect(() => {
-    if (!sectorMasterLoading) {
-      selectSectors(sectorMasterData, setSectorMasterArr);
-    }
-  }, [sectorMasterLoading]);
-
-  useEffect(() => {
-    if (!industryMasterLoading) {
-      industryMasterFun(industryMasterData, setIndustryMasterArr);
-    }
-  }, [industryMasterLoading]);
-
-  useEffect(() => {
-    if (!allCompanyLoading) {
-      selectCompany(allCompanyData, setCompanyMasterArr);
-    }
-  }, [allCompanyLoading]);
-
-
-
 
   return (
     <>
@@ -603,7 +444,7 @@ const FilterQuarterlyResult = () => {
               className="flex border-none py-0 pt-0"
             >
               <Typography className="text-[15px] text-[#000] font-semibold w-[90%]">
-                Date Range
+                Data Range
               </Typography>
               <Typography
                 className="text-[13px] text-[#FF2026] font-semibold"
@@ -650,7 +491,7 @@ const FilterQuarterlyResult = () => {
             className="mt-2 rounded bg-[#fff] px-2 py-3 mt-2"
             icon={<Icon id={2} open={ActiveAccordion.accordion_2} />}
           >
-              <AccordionHeader
+            <AccordionHeader
               onClick={() => handleOpen(2)}
               className="flex border-none py-0 pt-0"
             >
@@ -671,14 +512,12 @@ const FilterQuarterlyResult = () => {
                 </label>
                 <Typography
                   className="text-[#7B70FF] text-[12px] font-semibold cursor-pointer"
-                  // onClick={handleRefreshClassification}
+                  onClick={handleRefreshClassification}
                 >
                   Refresh
                 </Typography>
               </div>
-
-
-              {/* <Select
+              <Select
                 components={animatedComponents}
                 isMulti
                 options={sector}
@@ -689,50 +528,12 @@ const FilterQuarterlyResult = () => {
                 placeholder="Select Names"
                 className="react-select-container"
                 classNamePrefix="react-select"
-              /> */}
-
-
-
-                <Autocomplete
-               
-                    disablePortal
-                    id="combo-box-demo"
-                    
-                    options={SectorMasterArr}
-                    values={Sectors}
-                    multiple
-                    getOptionLabel={(option) => option.title}
-                    onChange={(event, newInputValue) => {
-                      var val1 = [];
-                      for (var a = 0; a < newInputValue.length; a++) {
-                        val1.push(newInputValue[a].value);
-                      }
-                      setInputValue({ ...inputValue, ["Sector"]: val1 });
-                      setSectors(newInputValue);
-                    }}
-                    renderOption={(props, option) => (
-                      <li
-                        {...props}
-                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
-                      >
-                        {option.title}
-                      </li>
-                    )}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=""
-                        placeholder="Select"
-                        size="small"
-                        className=""
-                      />
-                    )}
-                  />
+              />
 
               <label className="text-[12px] text-[#000] font-medium">
                 Industry (23){" "}
               </label>
-              {/* <Select
+              <Select
                 components={animatedComponents}
                 isMulti
                 options={industry}
@@ -743,50 +544,12 @@ const FilterQuarterlyResult = () => {
                 placeholder="Select Names"
                 className="react-select-container"
                 classNamePrefix="react-select"
-              /> */}
-
-
-                   <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={IndustryMasterArr}
-                    values={Industry}
-                    multiple
-                    getOptionLabel={(option) => option.title}
-                    renderOption={(props, option) => (
-                      <li
-                        {...props}
-                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
-                      >
-                        {option.title}
-                      </li>
-                    )}
-                    onChange={(event, newInputValue) => {
-                      var val1 = [];
-                      for (var a = 0; a < newInputValue.length; a++) {
-                        val1.push(newInputValue[a].value);
-                      }
-                      setInputValue({ ...inputValue, ["Industry"]: val1 });
-                      setIndustry(newInputValue);
-                      // console.log('Company >> ',company)
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=""
-                        placeholder={
-                          allCompanyLoading ? "Loading..." : "Select"
-                        }
-                        size="small"
-                        className=""
-                      />
-                    )}
-                  />
+              />
 
               <label className="text-[12px] text-[#000] font-medium">
-                Compnay
+                Compnay{" "}
               </label>
-              {/* <Select
+              <Select
                 components={animatedComponents}
                 isMulti
                 options={companies}
@@ -797,45 +560,7 @@ const FilterQuarterlyResult = () => {
                 placeholder="Select Names"
                 className="react-select-container"
                 classNamePrefix="react-select"
-              /> */}
-
-                   <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={CompanyMasterArr}
-                    values={Company}
-                    multiple
-                    getOptionLabel={(option) => option.title}
-                    renderOption={(props, option) => (
-                      <li
-                        {...props}
-                        className=" text-[13px] px-2 hover:bg-gray-300 cursor-pointer "
-                      >
-                        {option.title}
-                      </li>
-                    )}
-                    onChange={(event, newInputValue) => {
-                      var val1 = [];
-                      for (var a = 0; a < newInputValue.length; a++) {
-                        val1.push(newInputValue[a].value);
-                      }
-                      setInputValue({ ...inputValue, ["Company"]: val1 });
-                      setCompany(newInputValue);
-                      // console.log('Company >> ',company)
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=""
-                        placeholder={
-                          allCompanyLoading ? "Loading..." : "Select"
-                        }
-                        size="small"
-                        className=""
-                      />
-                    )}
-                  />
-
+              />
               <div className="ml-[-11px]">
                 <Checkbox
                   label="Portfolio"
@@ -847,14 +572,6 @@ const FilterQuarterlyResult = () => {
             </AccordionBody>
           </Accordion>
           {/* End Card Form */}
-
-            
-
-
-
-
- 
-
 
           {/* Start Card Form */}
           <Accordion

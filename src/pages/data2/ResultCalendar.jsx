@@ -25,6 +25,7 @@ import { GlobalContext } from "../../context/GlobalContext";
 import { Autocomplete, TextField } from "@mui/material";
 import { industryMasterAPI, sectorMasterAPI } from "../../store/slice/MasterSlice";
 import { filterSelectIndustryBySector, industryMasterFun, selectSectors } from "../../constants/helper";
+import { DateACEApi } from "../../store/slice/SingleCompnaySlice";
 
 const ResultCalendar = () => {
   const [isToggled, setIsToggled] = useState(false);
@@ -75,6 +76,13 @@ const ResultCalendar = () => {
   }
 
   } = useSelector((state) => state.Data2);
+
+  
+  const {
+    DateACE: { loading: DateACELoading, data: DateACEData },
+  } = useSelector((state) => state.SingleCompany);
+
+
   const {
     sectorMaster: { loading: sectorMasterLoading, data: sectorMasterData },
     industryMaster: {
@@ -97,8 +105,8 @@ const ResultCalendar = () => {
     // console.log(name, value);
   };
 
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
+  const handleToggle = (event) => {
+    setChecked(event.target.checked);
   };
 
 
@@ -122,8 +130,9 @@ const ResultCalendar = () => {
 
 
   const callApi = (type="") => {
-    let sectorValue = [];
-    let industryValue = [];
+    console.log('Inputs >>> ', Inputs)
+    // let sectorValue = [];
+    // let industryValue = [];
 
     let newFilterArray = calendar_Req;
     if(type != ""){
@@ -131,8 +140,8 @@ const ResultCalendar = () => {
         UserId: 22,
         FromDate: moment(Inputs?.FromDate).format("MM/DD/YYYY"),
         ToDate: moment(Inputs?.ToDate).format("MM/DD/YYYY"),
-        Sector: sectorValue,
-        Industry: industryValue,
+        Sector: Inputs?.Sector,
+        Industry: Inputs?.Industry,
         Market_Cap: [Inputs?.MarketCapFrom || "", Inputs?.MarketCapTo || ""],
         Portfolio: Inputs?.Portfolio || false,
       };
@@ -146,7 +155,7 @@ const ResultCalendar = () => {
       },
       sectors: {
         label: "Sector",
-        value1: Inputs?.Sectors || "",
+        value1: Inputs?.Sector || "",
         value2: "",
       },
       industry: {
@@ -174,19 +183,26 @@ const ResultCalendar = () => {
   };
 
   const applyFilter = () => {
-    callApi();
+    callApi('apply');
   };
 
   useEffect(() => {
     callApi();
+    rr_dispatch(DateACEApi())
     rr_dispatch(AssignEmployeeApi({ optionType: "2" }));
   }, []);
 
+useEffect(() => {
+  // if(!DateACELoading){
 
+  // }
+}, [DateACELoading])
 
 
   useEffect(() => {
     if (!rcLoading && !AssignEmployeeLoading) {
+
+      console.log('AssignEmployeeLoading >>> ', AssignEmployeeLoading, rcLoading, checked)
       
       let new_assignedData = AssignEmployee.data.map((item) => item.company_id);
 
@@ -265,7 +281,7 @@ const ResultCalendar = () => {
             obj1[CompanyId] = { 'Company_Name': columnValue[0], 'CompanyID': columnValue[1] };
             var assignedVar = false;
             var uData = [];
-            console.log('columnValue <><><>< ', {new_assignedData, columnValue})
+            
             if(new_assignedData.includes(columnValue[1])){
               assignedVar = true;
               uData = AssignEmployee.data.filter((resAssign) => resAssign.company_id == columnValue[1]);
@@ -307,21 +323,30 @@ const ResultCalendar = () => {
         
       });
 
+
+      
       if(checked){
         setTableBodyData(newRowData);
       }else{
         setTableBodyData(rowsData); 
       }
-      console.log('AssignEmployeeLoading ------  >>>> ', rowsData)
+      // console.log('AssignEmployeeLoading ------  >>>> ', rowsData)
 
     }
-  }, [rcLoading, AssignEmployeeLoading]);
+  }, [rcLoading, AssignEmployeeLoading, checked]);
 
   return (
     <>
       <div className="w-full border-[1px] border-[#B8BCF1] rounded py-3 px-3 bg-[#E9EDEF]">
         <div className="py-7 px-4">
           {/* rounded-md bg-[#fff] py-7 px-7 */}
+    {/* {
+      JSON.stringify(Inputs)
+    } */}
+
+
+
+
 
           <div className="flex  flex-wrap justify-between">
             {/* Start Header Result Calender Left Side*/}
@@ -431,16 +456,16 @@ const ResultCalendar = () => {
                     )}
                   />
               </div>
-
-              <div>
+              
+              <div className="!w-[140px]">
                 <label className="text-[12px] text-[#000] font-medium">
-                  From
+                  From 
                 </label>
                 <Input
                   type="date"
                   name="FromDate"
-                  defaultValue={Inputs.FromDate}
-                  className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                  value={(Inputs.FromDate ? moment(Inputs.FromDate).format('YYYY-MM-DD') : "")}
+                  className="!w-[140px] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                   labelProps={{
                     className: "hidden",
                   }}
@@ -448,15 +473,15 @@ const ResultCalendar = () => {
                 />
               </div>
 
-              <div>
+              <div className="!w-[140px]">
                 <label className="text-[12px] text-[#000] font-medium">
                   To
                 </label>
                 <Input
                   type="date"
                   name="ToDate"
-                  defaultValue={Inputs.ToDate}
-                  className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                  defaultValue={(Inputs.ToDate ? moment(Inputs.ToDate).format('YYYY-MM-DD') : "")}
+                  className="!w-[140px] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                   labelProps={{
                     className: "hidden",
                   }}
@@ -473,7 +498,7 @@ const ResultCalendar = () => {
                     type="text"
                     name="MarketCapFrom"
                     defaultValue={Inputs.MarketCapFrom}
-                    className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
+                    className="!w-[100px] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                     labelProps={{
                       className: "hidden",
                     }}
@@ -485,7 +510,7 @@ const ResultCalendar = () => {
                     type="text"
                     name="MarketCapTo"
                     defaultValue={Inputs.MarketCapTo}
-                    className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100 "
+                    className="!w-[100px] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100 "
                     labelProps={{
                       className: "hidden",
                     }}
@@ -499,8 +524,11 @@ const ResultCalendar = () => {
 
             {/* Start Header Result Calender Right Side*/}
             <div>
-              <Typography className="text-[13px] text-[#000] font-medium">
-                Data Updated 29-05-2024
+              
+              <Typography className="text-[13px] text-[#000] font-medium text-right">
+                Data Updated {
+                  DateACEData.result_calendar && DateACEData.result_calendar
+                }
               </Typography>
 
               <div className="flex gap-2 items-center ">
@@ -521,7 +549,7 @@ const ResultCalendar = () => {
                   <label>
                     <Switch
                       color="blue"
-                      checked={isToggled}
+                      checked={checked}
                       onChange={handleToggle}
                     />
                     <span className="ml-2">
@@ -562,6 +590,58 @@ const ResultCalendar = () => {
             {/*  End Header Result Calender Right Side*/}
           </div>
           {/* End Result Header  */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           {/*Start  Table  */}
           <div className="mt-8">

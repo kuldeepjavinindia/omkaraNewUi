@@ -117,13 +117,13 @@ const QuarterlyAnalyticsInfoModal = (props) => {
                           src={`${
                             import.meta.env.VITE_BASE_URL
                           }/images/icons/copy_icon.svg`}
-                          onClick={() => onWpIconClick()}
                         />
                       </IconButton>
 
                       <IconButton
                         size="sm"
                         className=" bg-transparent shadow-none"
+                        onClick={() => onWpIconClick()}
                       >
                         <img
                           className="h-5"

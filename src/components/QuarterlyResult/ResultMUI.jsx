@@ -3,8 +3,7 @@ import * as React from 'react';
 import {
   Typography,
   Input,
-  Button,
-  Checkbox
+  Button
 } from "@material-tailwind/react";
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
@@ -27,9 +26,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 import { visuallyHidden } from '@mui/utils';
-import { IconButton } from '@mui/material';
+import { Checkbox, IconButton, Tooltip } from '@mui/material';
 import { ResultDocumentApi } from "../../store/slice/SingleCompnaySlice";
 import { useDispatch } from "react-redux";
+import { openCompany } from "../../constants/helper";
 
 function createData(id, name, calories, fat, carbs, protein) {
   return {
@@ -129,7 +129,7 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-
+  let a0_new = 0
   return (
     <TableHead>
       
@@ -137,62 +137,76 @@ function EnhancedTableHead(props) {
       <TableRow className="!bg-[#1E233A]">
         
       {NewColumns.map((headCell, k) => {
-
-let cStyle = { 
-  minWidth: "140px",
-  maxWidth: headCell.maxWidth,
-  padding: '0.5rem',
-  fontSize: '12px',
-  fontWeight: '500',
-  backgroundColor: headCell?.bgColor || '#1E233A',
-  color: headCell?.textColor || '#fff',
-  position: 'sticky',
-  top: 0, 
-  zIndex: 2, 
-};
-
-// Apply sticky styles to the first three columns
-if (k < 3) {
-  cStyle.left = `${k * 140}px`; 
-  cStyle.zIndex = 9;
-}
-
-  return (
-    <TableCell
-      key={headCell?.id}
-      align={headCell?.numeric ? 'right' : 'left'}
-      // padding={headCell?.disablePadding ? 'none' : 'normal'}
-      sortDirection={orderBy === headCell?.id ? order : false}
-      style={cStyle}
-    >
-      <div>
-        <TableSortLabel
-          active={orderBy === headCell?.id}
-          direction={orderBy === headCell?.id ? order : 'asc'}
-          onClick={createSortHandler(headCell?.id)}
-        >
-          <span dangerouslySetInnerHTML={{ __html: headCell?.label }} />
-
-          {orderBy === headCell?.id ? (
-            <Box component="span" sx={visuallyHidden}>
-              {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-            </Box>
-          ) : null}
-        </TableSortLabel>
-
-        {
-          headCell?.isCheckbox && (
-            <Checkbox size="small" className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
-            checked={headCell?.isCheckbox} onClick={()=>{
-              handleCheckbox(headCell)
-            }} />
-          )
+        if(k == 0){
+          a0_new = 0
         }
+  if(headCell?.isVisible){
+  let width = headCell.width;
 
+  let cStyle = { 
+    minWidth: width,
+    maxWidth: width,
+    padding: '0.5rem',
+    fontSize: '12px',
+    fontWeight: '500',
+    backgroundColor: headCell?.bgColor || '#1E233A',
+    color: headCell?.textColor || '#fff',
+    position: 'sticky',
+    top: 0, 
+    zIndex: 2, 
+  };
+  
+  // Apply sticky styles to the first three columns
+  if (k < 3) {
+    cStyle.left = `${a0_new}px`; 
+    cStyle.zIndex = 9;
+    a0_new = a0_new + width
+  }
+  
+    return (
+      <TableCell
+        key={headCell?.id}
+        align={headCell?.numeric ? 'right' : 'left'}
+        // padding={headCell?.disablePadding ? 'none' : 'normal'}
+        sortDirection={orderBy === headCell?.id ? order : false}
+        style={cStyle}
+      >
+        <div>
+          
+        {
+            headCell?.isCheckbox && (
+              <Checkbox
+              size="small"
+              sx={{ 
+                padding: 0
+               }}
+              checked={headCell?.isCheckbox} onClick={()=>{
+                handleCheckbox(headCell)
+              }} />
+            )
+          }
 
-      </div>
-    </TableCell>
-  );
+          <TableSortLabel
+            active={orderBy === headCell?.id}
+            direction={orderBy === headCell?.id ? order : 'asc'}
+            onClick={createSortHandler(headCell?.id)}
+            className="TableSortLabel"
+          >
+            <span dangerouslySetInnerHTML={{ __html: headCell?.label }} />
+  
+            {orderBy === headCell?.id ? (
+              <Box component="span" sx={visuallyHidden}>
+                {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+              </Box>
+            ) : null}
+          </TableSortLabel>
+  
+  
+  
+        </div>
+      </TableCell>
+    );
+}
 })}
 
 
@@ -214,6 +228,7 @@ EnhancedTableHead.propTypes = {
 
 export default function ResultMUI({
     NewColumns,
+    setNewColumns,
     TableData,
     FilterData,
     setFilterData,
@@ -226,6 +241,7 @@ export default function ResultMUI({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
+  const [ToggleCheckBox, setToggleCheckBox] = React.useState(false);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -265,7 +281,6 @@ export default function ResultMUI({
 
 
   let rowPerPageArr = [
-    { label: 25, value: 25 },
     { label: 50, value: 50 },
     { label: 100, value: 100 },
     { label: 500, value: 500 },
@@ -325,6 +340,23 @@ export default function ResultMUI({
   }
 
 
+
+
+  const handleCheckbox = (item) => {
+    // console.log('item >>> ', item) 
+    let cols = NewColumns;
+    let updatedItem = item;
+    updatedItem.isVisible = !item.isVisible;
+  
+    let findIndex = NewColumns.indexOf(item)
+    cols[findIndex] = updatedItem
+    console.log('item >>> ', {cols, updatedItem})
+    setNewColumns(cols) 
+    setToggleCheckBox(!ToggleCheckBox)
+    
+  }
+
+
   React.useEffect(() => {
     if (TableData) {
       setFilterData(TableData);
@@ -340,11 +372,14 @@ export default function ResultMUI({
     setPage((prevPage) => prevPage - 1);
   };
 
+
+  let a0_new = 0
+
   return (
 
  <>
   {/* ========= Start Header Page =========== */}
-  <div className="flex justify-between items-center pb-4">
+  <div className="flex justify-between items-center pb-4 paginationHeader" >
               <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
                 <div>
                   <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
@@ -390,6 +425,13 @@ export default function ResultMUI({
 
               <div className="flex-grow-1 ">
                 <div className="flex gap-1">
+                  
+                <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
+                   onClick={() => setPage(0)}
+                  >
+                    <IoIosArrowBack size={16} />
+                    <IoIosArrowBack size={16} />
+                  </Button>
                 <Button
           className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
           disabled={page === 0}
@@ -397,12 +439,6 @@ export default function ResultMUI({
         >
           <IoIosArrowBack size={16} />
               </Button>
-                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                   onClick={() => setPage(0)}
-                  >
-                    <IoIosArrowBack size={16} />
-                    <IoIosArrowBack size={16} />
-                  </Button>
                   <div className="w-[100px]">
                     <Input
                       type="number"
@@ -413,7 +449,7 @@ export default function ResultMUI({
                         className: "hidden",
                       }}
 
-                      value={page}
+                      value={page+1}
                       onChange={(e) => {
                         const page = parseInt(e.target.value);
                         if (!isNaN(page) && page >= 1 && page <= totalPages) {
@@ -448,7 +484,7 @@ export default function ResultMUI({
       <Paper sx={{ width: '100%', mb: 2 }}>
         
         <TableContainer className='table-wo-border'  sx={{ 
-          maxHeight:'calc(100vh - 250px)'
+          maxHeight:'calc(100vh - 250px) ', minHeight : "calc(100vh- 100px)"
          }}>
           <Table
             sx={{ minWidth: 750 }}
@@ -462,6 +498,7 @@ export default function ResultMUI({
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
+              handleCheckbox={handleCheckbox}
               rowCount={FilterData && FilterData.length}
             />
             <TableBody>
@@ -480,24 +517,33 @@ export default function ResultMUI({
                     {
 
  NewColumns.map((headCell, k) => {
+
+  if(k == 0){
+    a0_new = 0
+  }
+
+  if(headCell?.isVisible){
+
     let item = row[headCell.id];
      let val = item
   // console.log('val >><><>< ', headCell.id, row)
   let cStyle = {}
+  let divStyle = {}
     if(typeof item == 'object'){
       val = item.value
-      cStyle = {
-        ...cStyle,
+      divStyle = {
+        ...divStyle,
         color: item?.Color
       }
     }
 
 
 // Apply general cell styles
+  let width = headCell.width;
   cStyle = { 
     ...cStyle, // Retain any styles applied from the object check above
-    minWidth: headCell.minWidth,
-    maxWidth: headCell.maxWidth,
+    width: width,
+    maxWidth: width,
     textAlign: 'left',
     padding: '0.5rem',
     fontSize: '12px',
@@ -507,14 +553,16 @@ export default function ResultMUI({
     var cStyleLeft = 0;
 
     if (k < 3) {
-      cStyleLeft = k * 130;
+      cStyleLeft = a0_new;
       cStyle.position = 'sticky';
       cStyle.top = '0px';
       cStyle.left = cStyleLeft;
       cStyle.zIndex = 5;
       cStyle.backgroundColor = '#fff';
-    
+      a0_new = a0_new + width
     }
+    
+    let COLOR = row?.CompanyDetail?.Color
 
   return (
     <>
@@ -527,11 +575,29 @@ export default function ResultMUI({
                           </IconButton>
                       </div>
                       :
-                      <div className="texttableEliplse">{val}</div>
+                      <div style={divStyle} className={`texttableEliplse ${headCell.id == "Company_Name" ? "cursor-pointer cell_"+COLOR : ""} `} onClick={()=>{
+                        if(headCell.id == "Company_Name"){
+                            // console.log('rowData >>>> ', row)
+                            openCompany({CompanyID: row.CompanyID}, '', true)
+                        }
+                      }} >
+                        {
+                          headCell.id == "Company_Name" ?
+                          <Tooltip title={val} placement="top">
+                          {val}
+                        </Tooltip>
+                          :
+                          val
+                        }
+                        
+                      </div>
                     }
                    </TableCell>
     </>
   )
+
+
+}
 })
 
                     }
@@ -544,38 +610,37 @@ export default function ResultMUI({
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={FilterData && FilterData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
+        
       </Paper>
       
     </Box>
 
 
 {/* start Bottom Pagination Button */}
-<div className="mt-2">
+<div className="mt-2 ">
       <div className="flex justify-end">
       <div className="flex-grow-0 flex justify-center mx-[14px] ">
          <TablePagination
-          className='table-pagination-top cst-customchange'
-          rowsPerPageOptions={rowPerPageArr}
-          component="div"
-          count={FilterData && FilterData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+            className='table-pagination-top cst-customchange'
+            rowsPerPageOptions={rowPerPageArr}
+            component="div"
+            count={FilterData && FilterData.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
   </div>
 
   <div className="flex-grow-1 ">
     <div className="flex gap-1">
+      
+    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
+                   onClick={() => setPage(0)}
+                  >
+                    <IoIosArrowBack size={16} />
+                    <IoIosArrowBack size={16} />
+                  </Button>
     <Button
           className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
           disabled={page === 0}
@@ -583,12 +648,6 @@ export default function ResultMUI({
         >
           <IoIosArrowBack size={16} />
               </Button>
-                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                   onClick={() => setPage(0)}
-                  >
-                    <IoIosArrowBack size={16} />
-                    <IoIosArrowBack size={16} />
-                  </Button>
              <div className="w-[100px]">
                   <Input
                       type="number"
@@ -599,7 +658,7 @@ export default function ResultMUI({
                         className: "hidden",
                       }}
 
-                      value={page}
+                      value={page+1}
                       onChange={(e) => {
                         const page = parseInt(e.target.value);
                         if (!isNaN(page) && page >= 1 && page <= totalPages) {
