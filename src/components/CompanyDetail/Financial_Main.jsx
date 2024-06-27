@@ -29,7 +29,7 @@ import PeerComponent from "./peer/PeerComponent";
 
     const data = [
       {
-        label: "INTERIM Results",
+        label: "Interim Results",
         value: "1",
         desc: (
             <>
@@ -38,7 +38,7 @@ import PeerComponent from "./peer/PeerComponent";
         ),
       },
       {
-        label: "ANNUAL P&L",
+        label: "Annual P&L",
         value: "2",
         desc: (
           <>
@@ -47,7 +47,7 @@ import PeerComponent from "./peer/PeerComponent";
         ),
       },
       {
-        label: "BALANCE SHEET",
+        label: "Balance Sheet",
         value: "3",
         desc: (
           <>
@@ -56,7 +56,7 @@ import PeerComponent from "./peer/PeerComponent";
         ),
       },
       {
-        label: "CASH FLOWS",
+        label: "Cash Flows",
         value: "4",
         desc: (
           <>
@@ -65,7 +65,7 @@ import PeerComponent from "./peer/PeerComponent";
         ),
       },
       {
-        label: "RATIOS",
+        label: "Ratios",
         value: "5",
         desc: (
           <>
@@ -74,7 +74,7 @@ import PeerComponent from "./peer/PeerComponent";
         ),
       },
       {
-        label: "PEERS",
+        label: "Peers",
         value: "6",
         desc: (
           <>
@@ -83,7 +83,7 @@ import PeerComponent from "./peer/PeerComponent";
         ),
       },
       {
-        label: "SHAREHOLDING %",
+        label: "Shareholding %",
         value: "7",
         desc: (
           <>

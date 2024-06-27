@@ -146,8 +146,8 @@ function EnhancedTableHead(props) {
   let cStyle = { 
     minWidth: width,
     maxWidth: width,
-    padding: '0.5rem',
-    fontSize: '12px',
+    
+    fontSize: '11px',
     fontWeight: '500',
     backgroundColor: headCell?.bgColor || '#1E233A',
     color: headCell?.textColor || '#fff',
@@ -483,8 +483,8 @@ export default function ResultMUI({
  <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         
-        <TableContainer className='table-wo-border'  sx={{ 
-          maxHeight:'calc(100vh - 250px) ', minHeight : "calc(100vh- 100px)"
+        <TableContainer className='table-wo-border tableHeightManage'  sx={{ 
+          maxHeight:'calc(100vh - 250px) '
          }}>
           <Table
             sx={{ minWidth: 750 }}
@@ -525,16 +525,18 @@ export default function ResultMUI({
   if(headCell?.isVisible){
 
     let item = row[headCell.id];
-     let val = item
-  // console.log('val >><><>< ', headCell.id, row)
+    let item2 = row[`${headCell.id}_obj`];
+    let val = item
+  
   let cStyle = {}
   let divStyle = {}
-    if(typeof item == 'object'){
-      val = item.value
+    if(typeof item2 == 'object'){
+      // val = item.value
       divStyle = {
         ...divStyle,
-        color: item?.Color
+        color: item2?.Color
       }
+      // console.log('val item2 >><><>< ', item2, divStyle)
     }
 
 
@@ -545,7 +547,7 @@ export default function ResultMUI({
     width: width,
     maxWidth: width,
     textAlign: 'left',
-    padding: '0.5rem',
+    
     fontSize: '12px',
     fontWeight: '600',
   };
@@ -571,19 +573,18 @@ export default function ResultMUI({
                       headCell.id == 'Info' ?
                       <div>
                           <IconButton className=" !p-0" onClick={(e)=>clickInfo(e, row)}>
-                              <AiOutlineInfoCircle size={18} />
+                              <AiOutlineInfoCircle size={16} />
                           </IconButton>
                       </div>
                       :
                       <div style={divStyle} className={`texttableEliplse ${headCell.id == "Company_Name" ? "cursor-pointer cell_"+COLOR : ""} `} onClick={()=>{
                         if(headCell.id == "Company_Name"){
-                            // console.log('rowData >>>> ', row)
                             openCompany({CompanyID: row.CompanyID}, '', true)
                         }
                       }} >
                         {
                           headCell.id == "Company_Name" ?
-                          <Tooltip title={val} placement="top">
+                          <Tooltip title={val} placement="top" disableInteractive>
                           {val}
                         </Tooltip>
                           :
@@ -619,7 +620,7 @@ export default function ResultMUI({
 {/* start Bottom Pagination Button */}
 <div className="mt-2 ">
       <div className="flex justify-end">
-      <div className="flex-grow-0 flex justify-center mx-[14px] ">
+      <div className="flex-grow-0 flex justify-center mx-[14px] paginationHeader">
          <TablePagination
             className='table-pagination-top cst-customchange'
             rowsPerPageOptions={rowPerPageArr}

@@ -27,6 +27,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import { openCompany } from "../../constants/helper";
+import { TableFooter } from "@mui/material";
 
 function createData(id, name, calories, fat, carbs, protein) {
   return {
@@ -277,7 +278,7 @@ if(headCell.columns.filter(item=>item.isVisible == true).length > 0 && headCell.
             width: width,
             maxWidth: width,
             padding: '0.5rem',
-            fontSize: '12px',
+            fontSize: '11px',
             fontWeight: '500',
             backgroundColor: headCell?.bgColor || '#1E233A',
             color: headCell?.textColor || '#fff',
@@ -479,7 +480,7 @@ export default function AbsResultMUI(props) {
 
 
   
-  const BodyChildCell = ({ data, rowData, style }) => {
+  const BodyChildCell = ({ data, rowData, style, type }) => {
 
     return (
       <>
@@ -507,14 +508,14 @@ export default function AbsResultMUI(props) {
                   // maxWidth: element?.width,
                  }}>
                   <div style={itemStyle} className={`texttableEliplse ${element.accessor == "accessor_0" ? "cursor-pointer cell_"+COLOR : ""} `} onClick={()=>{
-                    if(element.accessor == "accessor_0"){
+                    if(element.accessor == "accessor_0" && !type ){
                         console.log('rowData >>>> ', rowData)
                         openCompany({CompanyID: rowData.CompanyID}, '', true)
                     }
                   }}>
                     {
                       element.accessor == "accessor_0" ?
-                        <Tooltip title={val} placement="top">
+                        <Tooltip title={val} placement="top" disableInteractive>
                           {val}
                         </Tooltip>
                         :
@@ -648,8 +649,8 @@ export default function AbsResultMUI(props) {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         {/* TableData {FilterData.length} */}
-        <TableContainer className='table-wo-border relative'  sx={{ 
-          maxHeight:'calc(100vh - 250px)', minHeight : "calc(100vh - 200px)"
+        <TableContainer className='table-wo-border relative tableHeightManage'   sx={{ 
+          maxHeight:'calc(100vh - 250px)'
          }}>
           <Table
           className=" relative"
@@ -742,32 +743,6 @@ export default function AbsResultMUI(props) {
                           )
                       })}
 
-                      
-                      {/* {rowObj.map((item_1, i_i) => {
-                        let a0_0 = row[item_1];
-                        // let clr = row?.CompanyDetail;
-                        let cStyle = {};
-
-                        if (i_i > 3) {
-                          return (
-                            <TableCell key={i_i} >
-                            
-                              <div onClick={()=>{
-                                if(i_i == 4){
-                                    openCompany({
-                                      CompanyID: row?.CompanyID
-                                    }, "", true)
-                                }
-                              }} className={`${i_i == 4 ? "cursor-pointer cell_"+row?.CompanyDetail.Color : ""} px-1`} style={cStyle}>
-                                     {a0_0}
-                                </div>
-                            </TableCell>
-                          );
-                        }
-                        
-                      })} */}
-
-
 
                     </TableRow>
 
@@ -775,8 +750,61 @@ export default function AbsResultMUI(props) {
 
                   );
                 })}
+
+
+<TableRow
+                    >
+                      
+                      {
+                        NewColumns.map((headCell, i) =>{
+                          if(i == 0){
+                            a0_new = 0
+                          }
+                        let width = headCell?.width;
+
+                        let cStyle = {
+                          width: width,
+                          maxWidth: width,
+                          // padding: '0.5rem',
+                          fontSize: '12px',
+                          fontWeight: '500',
+                          position: 'sticky',
+                          top: 0, 
+                          zIndex: 2, 
+                        };
+                        
+
+                        if (i < 3) {
+                          cStyle.backgroundColor = '#fff';
+                          cStyle.left = `${a0_new}px`; 
+                          cStyle.zIndex = 9;
+                          a0_new = a0_new + width
+                        }
+                       
+                        
+                        if (i < 2) {
+                          cStyle.textAlign = 'left';
+                        }else{
+                          cStyle.textAlign = 'center';
+                        }
+                        // console.log('row >><<<< ', row)
+
+                          return (
+                            <>
+                              <BodyChildCell data={headCell.columns} rowData={TotalData} style={cStyle} type="total_row" />
+                            </>
+                          )
+                      })}
+
+
+                    </TableRow>
+
+
                 
             </TableBody>
+            {/* <TableFooter>
+              
+            </TableFooter> */}
           </Table>
         </TableContainer>
  
@@ -787,7 +815,7 @@ export default function AbsResultMUI(props) {
 {/* start Bottom Pagination Button */}
    <div className="mt-2">
       <div className="flex justify-end">
-      <div className="flex-grow-0 flex justify-center mx-[14px] ">
+      <div className="flex-grow-0 flex justify-center mx-[14px] paginationHeader">
          <TablePagination
           className='table-pagination-top cst-customchange'
           rowsPerPageOptions={rowPerPageArr}

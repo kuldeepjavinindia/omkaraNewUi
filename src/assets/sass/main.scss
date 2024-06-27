@@ -192,6 +192,7 @@ div:has(.smallInput.two) {
     tr {
       th{
         white-space: nowrap;
+        padding: 8px;
         // text-align: right !important;
  
       }
@@ -214,6 +215,7 @@ div:has(.smallInput.two) {
       font-size: 13px;
       font-weight: 600;
       vertical-align: text-top;
+    
       // text-align: right !important;
      }
      td:nth-child(1){
@@ -539,3 +541,27 @@ $border-color_3: $color_4;
   }
  
 }
+
+
+
+//27-june-2024
+.tableHeightManage {
+  min-height: 30vh;
+  // Apply styles for screens greater than 1023px
+  @include mixins.respond-to(small-desktop) {
+    min-height: 50vh;
+
+  }
+
+  // Apply styles for screens greater than 1440px
+  @include mixins.respond-to(large-desktop) {
+   min-height: 60vh;
+  }
+}
+.css-10by3a5-MuiButtonBase-root-MuiMenuItem-root-MuiTablePagination-menuItem {
+  font-size: 13px !important;
+}
+.labelItem span {
+  font-size: 12px !important;
+}
+//27-june-2024

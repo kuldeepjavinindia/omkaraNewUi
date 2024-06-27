@@ -163,15 +163,56 @@ const AbsResult= ()=> {
           isVisible: true,
       }
       mColArr.push(mCol);
-
-
     })
 
+    Total = Total?.[0];
+    let TotalData = {
+            "accessor_0": Total?.Total,
+            "accessor_1": "",
+            "accessor_2": "",
+            "accessor_3": Total?.Sales1Q ? parseFloat(Total?.Sales1Q) : "",
+            "accessor_4": Total?.Sales2Q ? parseFloat(Total?.Sales2Q) : "",
+            "accessor_5": Total?.Sales3Q ? parseFloat(Total?.Sales3Q) : "",
+            "accessor_6": Total?.Sales4Q ? parseFloat(Total?.Sales4Q) : "",
+            "accessor_7": Total?.Sales5Q ? parseFloat(Total?.Sales5Q) : "",
+
+            "accessor_8": Total?.Gross_Profit_1Q ? parseFloat(Total?.Gross_Profit_1Q) : "",
+            "accessor_9": Total?.Gross_Profit_2Q ? parseFloat(Total?.Gross_Profit_2Q) : "",
+            "accessor_10": Total?.Gross_Profit_3Q ? parseFloat(Total?.Gross_Profit_3Q) : "",
+            "accessor_11": Total?.Gross_Profit_4Q ? parseFloat(Total?.Gross_Profit_4Q) : "",
+            "accessor_12": Total?.Gross_Profit_5Q ? parseFloat(Total?.Gross_Profit_5Q) : "",
+
+            "accessor_13": Total?.GrossProfit_Margin1Q ? parseFloat(Total?.GrossProfit_Margin1Q) : "",
+            "accessor_14": Total?.GrossProfit_Margin2Q ? parseFloat(Total?.GrossProfit_Margin2Q) : "",
+            "accessor_15": Total?.GrossProfit_Margin3Q ? parseFloat(Total?.GrossProfit_Margin3Q) : "",
+            "accessor_16": Total?.GrossProfit_Margin4Q ? parseFloat(Total?.GrossProfit_Margin4Q) : "",
+            "accessor_17": Total?.GrossProfit_Margin5Q ? parseFloat(Total?.GrossProfit_Margin5Q) : "",
+
+            "accessor_18": Total?.EBDITA1Q ? parseFloat(Total?.EBDITA1Q) : "",
+            "accessor_19": Total?.EBDITA2Q ? parseFloat(Total?.EBDITA2Q) : "",
+            "accessor_20": Total?.EBDITA3Q ? parseFloat(Total?.EBDITA3Q) : "",
+            "accessor_21": Total?.EBDITA4Q ? parseFloat(Total?.EBDITA4Q) : "",
+            "accessor_22": Total?.EBDITA5Q ? parseFloat(Total?.EBDITA5Q) : "",
+
+            "accessor_23": Total?.EBDITAMargin1Q ? parseFloat(Total?.EBDITAMargin1Q) : "",
+            "accessor_24": Total?.EBDITAMargin2Q ? parseFloat(Total?.EBDITAMargin2Q) : "",
+            "accessor_25": Total?.EBDITAMargin3Q ? parseFloat(Total?.EBDITAMargin3Q) : "",
+            "accessor_26": Total?.EBDITAMargin4Q ? parseFloat(Total?.EBDITAMargin4Q) : "",
+            "accessor_27": Total?.EBDITAMargin5Q ? parseFloat(Total?.EBDITAMargin5Q) : "",
+
+            "accessor_28": Total?.PAT1Q ? parseFloat(Total?.PAT1Q) : "",
+            "accessor_29": Total?.PAT2Q ? parseFloat(Total?.PAT2Q) : "",
+            "accessor_30": Total?.PAT3Q ? parseFloat(Total?.PAT3Q) : "",
+            "accessor_31": Total?.PAT4Q ? parseFloat(Total?.PAT4Q) : "",
+            "accessor_32": Total?.PAT5Q ? parseFloat(Total?.PAT5Q) : "",
+
+    };
     
     setNewColumns(mColArr)
     setTableData(allRowsData)
+    setTotalData(TotalData)
 
-    console.log('mColArr mColArr mColArr >>>>>>> ', mColArr)
+    console.log('Total Total Total >>>>>>> ', TotalData)
     // console.log('RDData >>>>>>> ', RDData)
   }
 

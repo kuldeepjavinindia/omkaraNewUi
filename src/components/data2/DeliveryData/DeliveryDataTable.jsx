@@ -1,15 +1,135 @@
-import { Typography, Input, Select, Option , Checkbox, Button} from "@material-tailwind/react";
+import { Typography, Input, Select, Option , Checkbox, Button, Spinner} from "@material-tailwind/react";
+import { useEffect, useState } from "react";
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { useDispatch, useSelector } from "react-redux";
+import DeliveryDataMUI from "./DeliveryDataMUI";
 
 
 
 
 
 const DeliveryDataTable= ()=> {
+
+  const rr_dispatch = useDispatch();
+
+  const {
+    DeliveryVolume:{
+      data: DVData,
+      loading: DVLoading,
+    }
+  } = useSelector(state=>state.Data2)
+
+  
+  const [NewColumns, setNewColumns] = useState([]);
+  const [TableData, setTableData] = useState([]);
+  const [FilterData, setFilterData] = useState([]);
+  // const [Totaldata, setTotalData] = useState([]);
+
+
+  // const callAPI = () => {
+    
+  //   // rr_dispatch()
+  // }
+
+  // useEffect(() => {
+  //   callAPI();
+  // }, [])
+  
+  
+
+  useEffect(() => {
+    if(!DVLoading){
+      
+let bodyData = DVData?.Data
+let headers = DVData?.Header
+      
+      var cols = [];
+      var allRowsData = [];
+      bodyData.map((resBody)=>{
+          var singleRow = {};
+          Object.keys(resBody).forEach(key => {
+              singleRow[key] = resBody[key];
+          })
+          allRowsData.push(singleRow);
+          
+      });
+
+      
+
+      var a1 = 0;
+      var mColArr = [];
+
+      
+      headers.map((resHeads)=>{
+        
+          let width = 75;
+          var sticky = null;
+         
+          let hideCheck = false;
+          if(a1 !== 1){
+              hideCheck = true;
+          }
+
+          Object.keys(resHeads).forEach(key => {
+              var label = resHeads[key].label;
+              let isCheckbox = true;
+
+              var show_status = resHeads[key].show_status;
+              if(show_status){
+                   width = 80;
+                  // var bgColor = 'th';
+
+                  if(key == 'CompName' || key == 'Industry'){
+                      width = 200;
+                      isCheckbox = false
+                  }
+
+                  // if(key == 'YesDelVol' || key == 'DelTimes' || key == 'DelValue'){
+                  //         bgColor = bgColor+' customHeaderColor';
+                  // }
+
+                  if(key !== '$id'){
+                      var mCol = {
+                          label:(label || ""),
+                          // Footer:(label || ""), 
+                          sticky:sticky,
+                          hideCheck:hideCheck,
+                          isCheckbox: isCheckbox,
+                          isVisible: true,
+                          accessor:key,
+                          key:key,
+                          width:width,
+                      }
+                      mColArr.push(mCol);
+                  }
+              }
+              a1++;
+            })
+      });
+
+      const NEW_COLUMN = mColArr;
+      console.log('NEW_COLUMN >>> ', NEW_COLUMN)
+      setTableData(allRowsData);
+      setNewColumns(NEW_COLUMN);
+
+
+    }
+  }, [rr_dispatch, DVLoading])
+  
+  
+  
+
+
+
+
+
+
+
+
     return (
         <>
 <div className="pr-2">
@@ -26,75 +146,39 @@ const DeliveryDataTable= ()=> {
 
 <div className="flex flex-col h-full justify-between ">
   <div>
-    {/* ========= Start Header Page =========== */}
-<div className="flex justify-between items-center">
-  <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
-    <div>
-      <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
-        SHOWING <span className="text-theme">1 to 10 of 10</span> ENTRIES
-      </Typography>
-    </div>
-    <div className="flex-grow">
-      <Input
-        type="text"
-        placeholder="Search Company"
-        className="!border !border-gray-200 !h-8 !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-        labelProps={{
-          className: "hidden",
-        }}
-        icon={<CgSearch size={19} className="text-gray-400 top-[-2px] absolute" />}
-      />
-    </div>
-  </div>
-
-  <div className="flex-grow-0 flex justify-center mx-[14px] mt-[-4px]">
-    <Select className="smallInput bg-[#fff] mt-0 !h-8 rounded border-none" value="Show 15" 
-    labelProps={{
-      className: "hidden",
-    }}
-    >
-      <Option>Option 1</Option>
-    </Select>
-  </div>
-
-  <div className="flex-grow-1 ">
-
-    <div className="flex gap-1">
-    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
-      <IoIosArrowBack size={16} />
-    </Button>
-    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
-      <IoIosArrowBack size={16} />
-      <IoIosArrowBack size={16} />
-    </Button>
-    <div className="w-[100px]">
-      <Input
-        type="text"
-        defaultValue="1"
-        size="md"
-        className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-        labelProps={{
-          className: "hidden",
-        }}
-      />
-    </div>
-    <Button className="w-[48px] !h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
-      <IoIosArrowForward />
-    </Button>
-    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
-      <IoIosArrowForward />
-      <IoIosArrowForward />
-    </Button>
-    </div>
-    
-  </div>
-</div>
-{/* ========= End Header Page =========== */}
+   
+   
 
 <div className="">
 {/* Start Table */}
 <div className="mt-8 data2Tabels relative overflow-x-auto">
-  <table className="forensicTable   h-full wordBreakThead">
+
+
+{
+  DVLoading ?
+  <>
+    <Spinner />
+  </>
+  :
+  <>
+   <DeliveryDataMUI 
+
+      FilterData={FilterData}
+      setFilterData={setFilterData}
+      tableRows={TableData}
+      setTableRows={setTableData}
+      tableColumns={NewColumns}
+      setTableColumns={setNewColumns}
+
+    />
+
+  </>
+
+}
+
+   
+
+  {/* <table className="forensicTable   h-full wordBreakThead">
     <thead className="bg-[#1E233A] ">
       <tr className="!bg-[#1E233A]">
         <th className="sticky left-0 !text-white p-2 text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A] z-10" style={{ width: '150px' }}>COMPANY NAME</th>
@@ -180,7 +264,7 @@ const DeliveryDataTable= ()=> {
         <td className="text-white p-2 text-[12px] xl:text-[13px] font-semibold bg-[#1E233A] text-right" >ROCE</td>
       </tr>
     </tfoot>
-  </table>
+  </table> */}
 </div>
 {/* End Table */}
   </div>
@@ -189,53 +273,7 @@ const DeliveryDataTable= ()=> {
 
 </div>
 
-{/* start Bottom Pagination Button */}
-<div className="mt-4">
-      <div className="flex justify-end">
-      <div className="flex-grow-0 flex justify-center mx-[14px] ">
-    <Select className="smallInput bg-[#fff] mt-0 !h-8 rounded border-none" value="Show 15"
-     labelProps={{
-      className: "hidden",
-    }}
-    >
-      <Option>Option 1</Option>
-    </Select>
-  </div>
 
-  <div className="flex-grow-1 ">
-    <div className="flex gap-1">
-    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
-      <IoIosArrowBack size={16} />
-    </Button>
-    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
-      <IoIosArrowBack size={16} />
-      <IoIosArrowBack size={16} />
-    </Button>
-    <div className="w-[100px]">
-      <Input
-        type="text"
-        defaultValue="1"
-        size="md"
-        className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
-        labelProps={{
-          className: "hidden",
-        }}
-      />
-    </div>
-    <Button className="w-[48px] !h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
-      <IoIosArrowForward />
-    </Button>
-    <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center">
-      <IoIosArrowForward />
-      <IoIosArrowForward />
-    </Button>
-    </div>
-    
-  </div>
-      </div>
-  
-    </div>
-{/* End Bottom Pagination Button */}
 </div>
         </div>
 

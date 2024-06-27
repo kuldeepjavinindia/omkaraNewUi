@@ -21,7 +21,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 
 
 // import TooltipText from '../../frontend/components/CustomChart/TooltipText';
-import { showCalendarActionBtn } from "../../../constants/helper";
+import { openCompany, showCalendarActionBtn } from "../../../constants/helper";
 import { AssignEmployeeApi } from "../../../store/slice/Data2Slice";
 import TooltipText from "./TooltipText";
 import { useAuthState } from "../../../context/AuthContext";
@@ -273,12 +273,16 @@ export default function CalendarTableComponent(props) {
                                   {column.format && typeof value === "number" ? (
                                 column.format(value)
                                    ) : value ? (
-                                   <TooltipText
-                                  className="text-ellipsis"
-                                   title={value}
-                                  >
-                                    <span className=" text-[12px] xl:text-[13px] text-[#000] font-semibold texttableEliplse">{value} </span>
-                                  </TooltipText>
+                                    <>
+                                      <TooltipText
+                                      className="text-ellipsis"
+                                      title={value}
+                                      >
+                                        <span onClick={()=>{
+                                          openCompany({CompanyID: row[a00]?.CompanyID}, '', true)
+                                        }} className=" cursor-pointer text-[12px] xl:text-[13px] text-[#000] font-semibold texttableEliplse">{value} </span>
+                                      </TooltipText>
+                                    </>
                               ) : null}
                             </div>
 

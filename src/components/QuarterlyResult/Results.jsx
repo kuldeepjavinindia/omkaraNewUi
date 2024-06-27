@@ -76,6 +76,7 @@ const Results = () => {
     })
 
     
+    
 
     // {
     //   Header: "Company name",
@@ -100,7 +101,7 @@ const Results = () => {
           "SectorID": resBody.SectorID,
           "Company_Name": resBody?._CompanyDetail?.Company_Name,
           "Sector": resBody.Sector,
-          "MarketCap": resBody.MarketCap,
+          "MarketCap": resBody.MarketCap ? parseFloat(resBody.MarketCap) : "",
           "LTP": resBody.LTP,
           "week52_high": resBody.week52_high,
           "Chg_from_week52_highPer": resBody.Chg_from_week52_highPer,
@@ -109,22 +110,28 @@ const Results = () => {
           "TTM_P_E": resBody.TTM_P_E,
           "TTM_P_B": resBody.TTM_P_B,
           "TTM_End": resBody.TTM_End,
-          "Sales_YoY_Per": resBody.Sales_YoY_Per,
-          "Sales_YoY_Per_value": resBody.Sales_YoY_Per.value,
-          "Sales_QoQ_Per": resBody.Sales_QoQ_Per,
-          "Sales_QoQ_Per_value": resBody.Sales_QoQ_Per.value,
-          "GP_YoY_Per": resBody.GP_YoY_Per,
-          "GP_YoY_Per_value": resBody.GP_YoY_Per.value,
-          "GP_QoQ_Per": resBody.GP_QoQ_Per,
-          "GP_QoQ_Per_value": resBody.GP_QoQ_Per.value, 
-          "EBIDTA_Growth_YoY": resBody.EBIDTA_Growth_YoY,
-          "EBIDTA_Growth_YoY_value": resBody.EBIDTA_Growth_YoY.value,
-          "EBIDTA_Growth_QoQ": resBody.EBIDTA_Growth_QoQ,
-          "EBIDTA_Growth_QoQ_value": resBody.EBIDTA_Growth_QoQ.value,
-          "PAT_Growth_YoY_Per": resBody.PAT_Growth_YoY_Per,
-          "PAT_Growth_YoY_Per_value": resBody.PAT_Growth_YoY_Per.value,
-          "PAT_Growth_QoQ_Per": resBody.PAT_Growth_QoQ_Per,
-          "PAT_Growth_QoQ_Per_value": resBody.PAT_Growth_QoQ_Per.value, 
+
+
+          "Sales_YoY_Per_obj": resBody.Sales_YoY_Per,
+          "Sales_QoQ_Per_obj": resBody.Sales_QoQ_Per,
+          "GP_YoY_Per_obj": resBody.GP_YoY_Per,
+          "GP_QoQ_Per_obj": resBody.GP_QoQ_Per,
+          "EBIDTA_Growth_YoY_obj": resBody.EBIDTA_Growth_YoY,
+          "EBIDTA_Growth_QoQ_obj": resBody.EBIDTA_Growth_QoQ,
+          "PAT_Growth_YoY_Per_obj": resBody.PAT_Growth_YoY_Per,
+          "PAT_Growth_QoQ_Per_obj": resBody.PAT_Growth_QoQ_Per,
+          
+
+          "Sales_YoY_Per": resBody.Sales_YoY_Per?.value ? parseFloat(resBody.Sales_YoY_Per?.value) : "",
+          "Sales_QoQ_Per": resBody.Sales_QoQ_Per?.value ? parseFloat(resBody.Sales_QoQ_Per?.value) : "",
+          "GP_YoY_Per": resBody.GP_YoY_Per?.value ? parseFloat(resBody.GP_YoY_Per?.value) : "",
+          "GP_QoQ_Per": resBody.GP_QoQ_Per?.value ? parseFloat(resBody.GP_QoQ_Per?.value) : "",
+          "EBIDTA_Growth_YoY": resBody.EBIDTA_Growth_YoY?.value ? parseFloat(resBody.EBIDTA_Growth_YoY?.value) : "",
+          "EBIDTA_Growth_QoQ": resBody.EBIDTA_Growth_QoQ?.value ? parseFloat(resBody.EBIDTA_Growth_QoQ?.value) : "",
+          "PAT_Growth_YoY_Per": resBody.PAT_Growth_YoY_Per?.value ? parseFloat(resBody.PAT_Growth_YoY_Per?.value) : "",
+          "PAT_Growth_QoQ_Per": resBody.PAT_Growth_QoQ_Per?.value ? parseFloat(resBody.PAT_Growth_QoQ_Per?.value) : "",
+
+
           "D_E": resBody.D_E,
           "RoCE_per": resBody.RoCE_per,
           "Info_div": "", 
@@ -158,6 +165,9 @@ const Results = () => {
   return (
     <>
       {/* <QuarterlyResultModal open={open} setOpen={setOpen} /> */}
+
+
+    {/* {JSON.stringify(NewColumns)} */}
 
       <QuarterlyAnalyticsInfoModal DialogData={open} setDialogData={setOpen} />
 

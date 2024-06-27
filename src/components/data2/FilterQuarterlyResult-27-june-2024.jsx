@@ -7,7 +7,7 @@ import {
   AccordionBody,
   Input,
   Checkbox,
-  // Radio,
+  Radio,
 } from "@material-tailwind/react";
 
 import { useContext, useEffect, useState } from "react";
@@ -28,7 +28,7 @@ import { ResultDataReq } from "../../constants/defaultRequest";
 import Moment from "moment";
 import { FilterInputs, QuterltyResultFinalReq, selectTurnAround } from "../../constants/helper";
 import { GlobalContext } from "../../context/GlobalContext";
-import { Autocomplete, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 // import {
 //   industryMasterFun,
 //   selectCompany,
@@ -72,10 +72,10 @@ const FilterQuarterlyResult = () => {
   const [ebditaKey, setEbditaKey] = useState(false);
 
   const [inputValue, setInputValue] = useState({
-    FromDate: Moment().add("-1", "days").format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
+    FromDate: Moment().format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
     ToDate: Moment().format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
     Date:[
-      Moment().add("-1", "days").format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
+      Moment().format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
       Moment().format("MM/DD/YYYY"), // Initial value in MM-DD-YY format
     ]
   });
@@ -87,8 +87,6 @@ const FilterQuarterlyResult = () => {
   const [Sectors, setSectors] = useState([]);
   const [Industry, setIndustry] = useState([]);
   const [Company, setCompany] = useState([]);
-  const [toggleReset, setToggleReset] = useState(false);
-  const [dateToggle, setDateToggle] = useState(false)
 
   name = "EBDITA_TO";
   const [finalUserInputs, setFinalUserInputs] = useState();
@@ -117,11 +115,6 @@ const FilterQuarterlyResult = () => {
     turnAroundMaster: { data: turnAroundData, loading: turnAroundLoading, },
 
   } = useSelector((state) => state.Masters);
-
-
-  const sectorsCount = sectorMasterData.length
-  const industryCount = industryMasterData.length
-  const compnayCount = allCompanyData.length
 
   // Start Calling ResultDataApi and Update with Input change
 
@@ -162,64 +155,91 @@ const FilterQuarterlyResult = () => {
   };
 
 
- 
-  var initialDates = [ Moment().add(-1, 'days').format('YYYY-MM-DD'), // Yesterday's date
-    Moment().format('YYYY-MM-DD'), // Today's date
+
+
+
+
+  
+
+  const handleChange = (selected) => {
+    // selected
+    let prevPrams = inputValue;
+    prevPrams = {
+      ...prevPrams,
+      Sector: selected.map((item) => item.value),
+    };
+    setInputValue(prevPrams);
+    setSectorData(selected);
+    // console.log( "Sector Data", selected);
+  };
+
+  const handleChangeTwo = (selected) => {
+    let prevPrams = inputValue;
+    prevPrams = {
+      ...prevPrams,
+      Industry: selected.map((item) => item.value),
+    };
+    setInputValue(prevPrams);
+
+    setIndustryData(selected);
+    // console.log( "Industry Data", selected);
+  };
+
+  const handleChangeThree = (selected) => {
+    let prevPrams = inputValue;
+    prevPrams = {
+      ...prevPrams,
+      Company: selected.map((item) => item.value),
+    };
+    setInputValue(prevPrams);
+
+    setAllCompanyData(selected);
+    // console.log( "Company  Data", selected);
+  };
+
+  const Options_EBDITA_TO = [
+    { label: "QoQ", value: "QoQ" },
+    { label: "YoY", value: "YoY" },
   ];
 
-  const handleResetDate = (value) => {
+  const handleChangeFour = (selected) => {
+    let elkey = Object.keys(selected);
 
-    // console.log(inputValue.Date[0]);
+    let getSelectBoxValue = elkey.map((item) => {
+      return selected[item];
+    });
 
-    let key = `accordion_${value}`;
-    setActiveAccordion((prev) => ({
-      ...prev,
-      [key]: true ? false : false,
-    }));
+    let prevPrams = inputValue;
+    prevPrams = {
+      ...prevPrams,
+      EBDITA_TO: getSelectBoxValue[0],
+    };
 
-    // console.log('value ??>>> ', initialDates, Moment(inputValue.Date[0]).format('YYYY-MM-DD'))
+    setInputValue(prevPrams);
+    setEBDITA_TO(selected);
+  };
 
-    setInputValue({
-      ...inputValue,
-      Date: initialDates,
-      FromDate: initialDates[0],
-      ToDate: initialDates[1],
-      // value={inputValue.FromDate}
-    })
-    
+  const Options_PAT_TO = [
+    { label: "QoQ", value: "QoQ" },
+    { label: "YoY", value: "YoY" },
+  ];
 
-  }
+  const handleChangeFive = (selected) => {
+    let elkey = Object.keys(selected);
 
+    let getSelectBoxValue = elkey.map((item) => {
+      return selected[item];
+    });
 
-const handleRestSIC = (value) => {
-  let key = `accordion_${value}`;
-  setActiveAccordion((prev) => ({
-    ...prev,
-    [key]: true ? false : false,
-  }));
+    let prevPrams = inputValue;
+    prevPrams = {
+      ...prevPrams,
+      PAT_TO: getSelectBoxValue[0],
+    };
 
-  setSectors([]);
-  setIndustry([]); 
-  setCompany([])
-  setInputValue({ ...inputValue, Sector: [], Industry: [] , Company: [] });
-
-  setToggleReset((prev) => !prev);
-
-
-}
-
-
-
-
-
-const handleResetAll = (value) => {
-
-  window.location.reload();
-  console.log("inputValue >>>>>>>>>", inputValue);
-}
-
-
-
+    setInputValue(prevPrams);
+    setPAT_TO(selected);
+  };
 
   const handleChangeChecked = (event) => {
     let val = event.target.checked;
@@ -233,11 +253,107 @@ const handleResetAll = (value) => {
   };
 
  
+
+
+  // const handleChangeInput = (e) => {
+  //   const { name, value } = e.target;
+  //   // Temporarily store the new state values
+  //   let newFromDate = name === "FromDate" ? value : inputValue.FromDate;
+  //   let newToDate = name === "ToDate" ? value : inputValue.ToDate;
+  //   let newMarketCapFrom = name === "MarketCapFrom" ? value : inputValue.MarketCapFrom;
+  //   let newMarketCapTo = name === "MarketCapTo" ? value : inputValue.MarketCapTo;
+
+
+  //   // Handle Date updates separately
+  //   if (name === "FromDate" || name === "ToDate") {
+  //     let formattedFromDate = Moment(newFromDate).format("MM/DD/YYYY");
+  //     let formattedToDate = Moment(newToDate).format("MM/DD/YYYY");
+
+  //     console.log('Updated FromDate:', formattedFromDate);
+  //     console.log('Updated ToDate:', formattedToDate);
+
+  //     if (formattedFromDate || formattedToDate) {
+  //       setInputValue((prev) => ({
+  //         ...prev,
+  //         Date: [formattedFromDate, formattedToDate]
+  //       }));
+  //     }
+  //   }
+
+  //   // Handle Market Cap updates separately
+  //   if (name === "MarketCapFrom" || name === "MarketCapTo") {
+  //     console.log('Updated MarketCapFrom:', newMarketCapFrom);
+  //     console.log('Updated MarketCapTo:', newMarketCapTo);
+
+  //     if (newMarketCapFrom || newMarketCapTo) {
+  //       setInputValue((prev) => ({
+  //         ...prev,
+  //         Market_Cap: [newMarketCapFrom, newMarketCapTo]
+  //       }));
+  //     }
+  //   }
+
+  //   // Update the state based on input change
+  //   setInputValue((prev) => ({
+  //     ...prev,
+  //     [name]: value
+  //   }));
+
+
+  // };
+
+
+
+  // const handleChangeInput = (e) => {
+  //   const { name, value } = e.target;
+  
+  //   setInputValue((prev) => {
+  //     let updatedState = { ...prev };
+  
+  //     // Handle Date updates
+  //     if (name === "FromDate" || name === "ToDate") {
+  //       let newFromDate = name === "FromDate" ? value : prev.Date?.[0] || "";
+  //       let newToDate = name === "ToDate" ? value : prev.Date?.[1] || "";
+  
+  //       let formattedFromDate = Moment(newFromDate).format("MM/DD/YYYY");
+  //       let formattedToDate = Moment(newToDate).format("MM/DD/YYYY");
+  
+  //       console.log('Updated FromDate:', formattedFromDate);
+  //       console.log('Updated ToDate:', formattedToDate);
+  
+  //       // Update the Date array in the state
+  //       updatedState.Date = [formattedFromDate, formattedToDate];
+  //     }
+  
+  //     // Handle Market Cap updates
+  //     if (name === "MarketCapFrom" || name === "MarketCapTo") {
+  //       let newMarketCapFrom = name === "MarketCapFrom" ? value : prev.Market_Cap?.[0] || "";
+  //       let newMarketCapTo = name === "MarketCapTo" ? value : prev.Market_Cap?.[1] || "";
+  
+  
+  //       // Update the Market Cap array in the state
+  //       updatedState.Market_Cap = [newMarketCapFrom, newMarketCapTo];
+  //     }
+  
+  //     // Update other fields directly
+  //     if (name !== "FromDate" && name !== "ToDate" && name !== "MarketCapFrom" && name !== "MarketCapTo") {
+  //       updatedState[name] = value;
+  //     }
+  
+  //     // Ensure FromDate, ToDate, MarketCapFrom, and MarketCapTo are not separate keys
+  //     delete updatedState.FromDate;
+  //     delete updatedState.ToDate;
+  //     delete updatedState.MarketCapFrom;
+  //     delete updatedState.MarketCapTo;
+  
+  //     return updatedState;
+  //   });
+  // };
+  
   
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
-
 
     setInputValue((prev) => {
         let updatedState = { ...prev };
@@ -277,8 +393,6 @@ const handleResetAll = (value) => {
         delete updatedState.MarketCapFrom;
         delete updatedState.MarketCapTo;
 
-  
-        setDateToggle(false);
         return updatedState;
     });
 };
@@ -316,7 +430,53 @@ const handleResetAll = (value) => {
 
 
 
-  
+
+  // const applyBtn = () => {
+  //   // console.log(inputValue);
+  //   let fromDate = inputValue.FromDate;
+  //   let toDate = inputValue.ToDate;
+  //   if (Moment(fromDate, "MM/DD/YYYY").isAfter(toDate)) {
+  //     alert('"From date" should be less than "To date"');
+  //     return;
+  //   } else {
+      
+  //     let params1 = FilterInputs;
+
+  //     // console.log("inputValue >>>>>>>>>", inputValue);
+      
+  //     Object.keys(inputValue).map((key) => {
+  //       if (inputBothVal.includes(key)) {
+  //         params1 = {
+  //           ...params1,
+  //           [key]: {
+  //             ...FilterInputs[key],
+  //             value1: inputValue[key][0] || "",
+  //             value2: inputValue[key][1] || "",
+  //           },
+  //         }; 
+  //       } else {
+  //         params1 = {
+  //           ...params1,
+  //           [key]: {
+  //             ...FilterInputs[key],
+  //             value1: inputValue[key] || "",
+  //           },
+  //         };
+  //       }
+  //     });
+
+  //     console.log("inputValue >>>>>>>>>", params1);
+
+  //     // setFilterChipsData(params1);
+  //     setFilterDataChip(params1);
+
+  //     let finalParams = QuterltyResultFinalReq(params1);
+  //     callBothAPIs(finalParams)
+
+  //   }
+  // };
+
+
   const applyBtn = () => {
     // Extract Date and Market Cap values from inputValue
     // console.log('inputValue ???>>>> ', inputValue)
@@ -346,14 +506,14 @@ const handleResetAll = (value) => {
         };
       } else if (!['FromDate', 'ToDate', 'MarketCapFrom', 'MarketCapTo'].includes(key)) {
         // For other fields, update the value1 property
-           params1[key] = {
+        params1[key] = {
           ...FilterInputs[key],
           value1: inputValue[key] || ""
         };
       }
     });
   
-    
+    console.log("inputValue >>>>>>>>>", params1);
   
     // setFilterChipsData(params1); // Uncomment if needed
        setFilterDataChip(params1);
@@ -426,10 +586,8 @@ const handleResetAll = (value) => {
             >
               APPLY
             </Button>
-            <Button  className="mr-1 bg-[#FAE0E0] text-[#DD2025] py-2 px-2 rounded shadow-none" 
-            onClick={()=> handleResetAll(1)}
-            >
-              RESET
+            <Button className="mr-1 bg-[#FAE0E0] text-[#DD2025] py-2 px-2 rounded shadow-none">
+              RESET{" "}
             </Button>
           </div>
         </div>
@@ -449,22 +607,20 @@ const handleResetAll = (value) => {
               </Typography>
               <Typography
                 className="text-[13px] text-[#FF2026] font-semibold"
-                onClick={() => handleResetDate(1)}
+                onClick={() => handleReset(1)}
               >
                 RESET
               </Typography>
             </AccordionHeader>
             <AccordionBody>
               <label className="text-[12px] text-[#000] font-medium">
-                From 
+                From{" "}
               </label>
               <Input
                 type="date"
                 max={inputValue.ToDate}
-                value={Moment(inputValue?.Date[0]).format("YYYY-MM-DD")}
-                // value = {dateToggle ? Moment(inputValue?.Date[0]).format("YYYY-MM-DD") : Moment().add("-1", "days").format("YYYY-MM-DD") }
                 name="FromDate"
-                // defaultValue={Moment().add("-1", "days").format("YYYY-MM-DD")}
+                defaultValue={Moment().add("-1", "days").format("YYYY-MM-DD")}
                 className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                 labelProps={{
                   className: "hidden",
@@ -476,10 +632,6 @@ const handleResetAll = (value) => {
               <Input
                 type="date"
                 min={inputValue.FromDate}
-                // min={inputValue.Date[0]}
-                // value = {dateToggle? inputValue?.Date[1] : Moment().format("YYYY-MM-DD") }
-                // value={inputValue.ToDate}
-                value={Moment(inputValue?.Date[1]).format("YYYY-MM-DD")}
                 name="ToDate"
                 defaultValue={Moment().format("YYYY-MM-DD")}
                 className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
@@ -507,7 +659,7 @@ const handleResetAll = (value) => {
               </Typography>
               <Typography
                 className="text-[13px] text-[#FF2026] font-semibold"
-                onClick={() => handleRestSIC(2)}
+                onClick={() => handleReset(2)}
               >
                 RESET
               </Typography>
@@ -515,15 +667,17 @@ const handleResetAll = (value) => {
             <AccordionBody>
               <div className="flex justify-between">
                 <label className="text-[12px] text-[#000] font-medium">
-                  Sectors ({SectorMasterArr.length})
+                  Sectors (58){" "}
                 </label>
-                {/* <Typography
+                <Typography
                   className="text-[#7B70FF] text-[12px] font-semibold cursor-pointer"
                   // onClick={handleRefreshClassification}
                 >
                   Refresh
-                </Typography> */}
+                </Typography>
               </div>
+
+
               {/* <Select
                 components={animatedComponents}
                 isMulti
@@ -536,12 +690,16 @@ const handleResetAll = (value) => {
                 className="react-select-container"
                 classNamePrefix="react-select"
               /> */}
-                  <Autocomplete
+
+
+
+                <Autocomplete
+               
                     disablePortal
                     id="combo-box-demo"
+                    
                     options={SectorMasterArr}
-                    // values={Sectors}
-                    key={toggleReset ? 'sector-reset' : 'sector'}
+                    values={Sectors}
                     multiple
                     getOptionLabel={(option) => option.title}
                     onChange={(event, newInputValue) => {
@@ -551,7 +709,6 @@ const handleResetAll = (value) => {
                       }
                       setInputValue({ ...inputValue, ["Sector"]: val1 });
                       setSectors(newInputValue);
-                      setToggleReset(false)
                     }}
                     renderOption={(props, option) => (
                       <li
@@ -573,7 +730,7 @@ const handleResetAll = (value) => {
                   />
 
               <label className="text-[12px] text-[#000] font-medium">
-                Industry ({IndustryMasterArr.length})
+                Industry (23){" "}
               </label>
               {/* <Select
                 components={animatedComponents}
@@ -593,9 +750,7 @@ const handleResetAll = (value) => {
                     disablePortal
                     id="combo-box-demo"
                     options={IndustryMasterArr}
-                    // values={toggleReset ? Industry : null}
-                    key={toggleReset ? 'industry-reset' : 'industry'}
-                    
+                    values={Industry}
                     multiple
                     getOptionLabel={(option) => option.title}
                     renderOption={(props, option) => (
@@ -614,7 +769,6 @@ const handleResetAll = (value) => {
                       setInputValue({ ...inputValue, ["Industry"]: val1 });
                       setIndustry(newInputValue);
                       // console.log('Company >> ',company)
-                      setToggleReset(false)
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -630,7 +784,7 @@ const handleResetAll = (value) => {
                   />
 
               <label className="text-[12px] text-[#000] font-medium">
-                Company ({CompanyMasterArr.length})
+                Compnay
               </label>
               {/* <Select
                 components={animatedComponents}
@@ -649,8 +803,7 @@ const handleResetAll = (value) => {
                     disablePortal
                     id="combo-box-demo"
                     options={CompanyMasterArr}
-                    // values={Company}
-                    key={toggleReset ? 'compnay-reset' : 'company'}
+                    values={Company}
                     multiple
                     getOptionLabel={(option) => option.title}
                     renderOption={(props, option) => (
@@ -669,7 +822,6 @@ const handleResetAll = (value) => {
                       setInputValue({ ...inputValue, ["Company"]: val1 });
                       setCompany(newInputValue);
                       // console.log('Company >> ',company)
-                      setToggleReset(false)
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -723,14 +875,13 @@ const handleResetAll = (value) => {
                 className="text-[12px] text-[#000] font-medium"
                 htmlFor="Market_Cap"
               >
-                Market Cap
+                Market Cap{" "}
               </label>
               <div className="flex gap-2">
                 <div className="min-w[48%] w-[48%]">
                   <Input
                     type="text"
                     name="MarketCapFrom"
-                    // defaultValue=  {inputValue?.Market_Cap?.[0]}
                     className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                     labelProps={{
                       className: "hidden",
@@ -744,7 +895,6 @@ const handleResetAll = (value) => {
                   <Input
                     type="text"
                     name="MarketCapTo"
-                    // defaultValue={inputValue?.Market_Cap?.[1]}
                     className="  !w-[48%] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                     labelProps={{
                       className: "hidden",
@@ -764,7 +914,6 @@ const handleResetAll = (value) => {
               <Input
                 type="text"
                 name="LTP"
-                value={inputValue.LTP}
                 className=" !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                 labelProps={{
                   className: "hidden",
@@ -1191,26 +1340,7 @@ const handleResetAll = (value) => {
               </Typography>
             </AccordionHeader>
             <AccordionBody>
-
-                  <div>
-                  <FormControl component="fieldset">
-                    <RadioGroup
-                      aria-label="gender"
-                      defaultValue=""
-                      name="ColorCode"
-                      onChange={handleChangeInput}
-                    >
-                      <FormControlLabel className="labelItem " value="" control={<Radio />} label="All" />
-                      <FormControlLabel className="labelItem label_Green text-green-500 !text-[13px]" value="Green" control={<Radio />} label="Sales Up 10% (YoY & QoQ), Gross And EBIDTA Margins[YoY/QoQ] Improving." />
-                      <FormControlLabel className="labelItem label_Orange text-orange-500 !text-[13px]" value="Orange" control={<Radio />} label="Sales Up 20% (YoY & QoQ)." />
-                      <FormControlLabel className="labelItem label_Red text-red-500 !text-[13px]" value="Red" control={<Radio />} label="Sales Down 10% (YoY & QoQ), Gross And EBIDTA Margins[YoY/QoQ] Declining." />
-                    </RadioGroup>
-                    </FormControl>
-
-                  </div>
-
-
-              {/* <div className="flex flex-col">
+              <div className="flex flex-col">
                 <Radio
                   name="ColorCode"
                   value=""
@@ -1226,7 +1356,6 @@ const handleResetAll = (value) => {
                 <Radio
                   name="ColorCode"
                   value="Green"
-                  
                   className=" custom-radio  checked:border-[#4448F5]"
                   onChange={handleChangeInput}
                   label={
@@ -1267,7 +1396,7 @@ const handleResetAll = (value) => {
                     </div>
                   }
                 />
-              </div> */}
+              </div>
             </AccordionBody>
           </Accordion>
           {/* End Card Form */}

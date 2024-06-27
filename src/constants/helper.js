@@ -527,6 +527,39 @@ export const add_to_importantReq = {
   action: 0,
 };
 
+
+
+export const shortAsc = (data1) => {
+  data1.sort((a, b) => {
+      var a1 = a.title.toLowerCase();
+      var b1 = b.title.toLowerCase();
+
+      if (a1 > b1) {
+          return 1
+      } else
+      if (a1 < b1) {
+          return -1
+      } else {
+          return 0
+      }
+  })
+  return data1;
+}
+
+
+export const selectBrokerMaster = (RR_BrokerMasterData, setBrokerMasterArr) => {
+  if (RR_BrokerMasterData.length > 0) {
+    var data1 = [];
+
+    RR_BrokerMasterData.map((item) => {
+      var d1 = { title: item?.BrokerName, value: item?.ID };
+      data1.push(d1);
+    })
+    setBrokerMasterArr(shortAsc(data1));
+  }
+}
+
+
 export const selectSectors = (sectorMasterData, setSectorMasterArr) => {
   if (sectorMasterData && sectorMasterData.length > 0) {
     var data1 = [];
@@ -935,26 +968,14 @@ export const QuterltyResultFinalReq_00 = (data) => {
 };
 
 
-export const shortAsc = (data1) => {
-  data1.sort((a, b) => {
-      var a1 = a.title.toLowerCase();
-      var b1 = b.title.toLowerCase();
-
-      if (a1 > b1) {
-          return 1
-      } else
-      if (a1 < b1) {
-          return -1
-      } else {
-          return 0
-      }
-  })
-  return data1;
-}
-
-
 export const showCalendarActionBtn = (UserID) => {
-  var usersArr = [1, 3, 17, 4, 22];
+  var usersArr = [
+    1, // ADMIN
+    3, // VB
+    17, // KAPIL
+    // 4, // VINEET
+    2 // PARAG
+  ];
     if(usersArr.includes(Number(UserID))){
         return true
     } else {
@@ -981,7 +1002,7 @@ export const selectEmployee = (employeeMaster, setEmployeeMasterArr) => {
 export const selectTurnAround = (turnAroundMaster, setTurnAroundMasterArr) => {
   if (turnAroundMaster.length > 0) {
     var data1 = [];
-    console.log('turnAroundMaster>> ' + JSON.stringify(turnAroundMaster))
+    // console.log('turnAroundMaster>> ' + JSON.stringify(turnAroundMaster))
     turnAroundMaster.map((item) => {
       var d1 = { title: item.FilterName, value: item.Id };
       data1.push(d1);
@@ -990,3 +1011,66 @@ export const selectTurnAround = (turnAroundMaster, setTurnAroundMasterArr) => {
     setTurnAroundMasterArr(data1);
   }
 }
+
+
+
+
+export const deliveryDataFilters = (inputsArray) => {
+  const filterArray = [ 
+    {
+      "type": "Classification",
+      "sub_type": [
+        {
+          "Sector": (inputsArray?.sectors?.value1 || null),
+          "Industry": (inputsArray?.industry?.value1 || null),
+          "Company": (inputsArray?.company?.value1 || null),
+          "UserID": 1,
+          "F_O": (inputsArray?.chkF_O?.value1 || false),
+          "chkPortfolio": (inputsArray?.chkPortfolio?.value1 || false)
+        }
+      ]
+    },
+    {
+      "type": "Deliverable Volume",
+      "sub_type": [
+        {
+          "LtpVS200DMA": (inputsArray?.LtpVS200DMA?.value1 || null),
+          "Market_Cap": [(inputsArray?.Market_Cap?.value1 || ""), (inputsArray?.Market_Cap?.value2 || "")],
+          "DelQty": (inputsArray?.DelQty?.value1 || null),
+          "DelPer7D": (inputsArray?.DelPer7D?.value1 || null),
+          "Delvalue": (inputsArray?.Delvalue?.value1 || null)
+        }
+      ]
+    },
+    {
+      "type": "Time Interval",
+      "sub_type": [
+        {
+          "DelDays": (inputsArray?.DelDays?.value1 || "")
+        }
+      ]
+    },
+    {
+      "type": "Daily Moving Average",
+      "sub_type": [
+        {
+          "chkbox200DMA": (inputsArray?.chkbox200DMA?.value1 || false),
+          "chkbox50DMA": (inputsArray?.chkbox50DMA?.value1 || false),
+        }
+      ]
+    },
+    
+    {
+      "type":"extra",
+      "sub_type": [
+        {
+          "watchlistid": (inputsArray?.WatchListID?.value1 || null),
+        }
+      ]
+    }
+  ];
+  // console.log('deliveryDataFilters >>> '+JSON.stringify(filterArray))
+  return filterArray;
+
+};
+

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography } from '@material-tailwind/react';
+import { Typography, Button } from '@material-tailwind/react';
 import { useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalContext';
 import { MdCancel } from 'react-icons/md';
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 
-const FilterItemChips = ({dispatchName, finalRquest}) => {
+const FilterItemChips = ({dispatchName, dispatchName2, finalRquest}) => {
   const {
     sectorMaster: { loading: sectorMasterLoading, data: sectorMasterData },
     industryMaster: {
@@ -109,6 +109,7 @@ const FilterItemChips = ({dispatchName, finalRquest}) => {
 
     let finalParams = finalRquest(filterDataChip);
      rr_dispatch(dispatchName(finalParams))
+     rr_dispatch(dispatchName2(finalParams))
 
     // console.log("toggle state >>>>>>", filterDataChip);
   };
@@ -119,43 +120,18 @@ const FilterItemChips = ({dispatchName, finalRquest}) => {
   }, [ToggleState])
   
 
+
+  const resetAll = ()=> {
+    window.location.reload();
+  }
+
   // console.log(chipsCards);
 
   return (
     <>
-      <div className="flex gap-2 pb-2">
-        {/* {
-          JSON.stringify(chipsCards)
-        } */}
-        {/* {chipsCards
-          .filter((item) => item.value1 !== '' || item.value2 !== '')
-          .map((item, index) => {
-
-
-            return (
-              <div key={index} className="bg-[#fff] p-3 relative">
-                <span
-                  className="absolute top-[-6px] right-[-6px] cursor-pointer"
-                  onClick={() => handleLabelClose(item.keyname)}
-                >
-                  <MdCancel fill="#4448f5" size={18} />
-                </span>
-                <Typography className="text-[12px] text-[#000] font-semibold mb-1">
-                  {item.label}
-                </Typography>
-                <div className="bg-[#e9edef] px-1 border border-theme rounded w-fit">
-                  <Typography className="text-[12px] text-[#000] font-semibold">
-                    {arrVal(item.keyname, item.value1)}{' '}
-                    {item.value2 ? `- ${item.value2}` : ''}
-                  </Typography>
-                </div>
-              </div>
-            )
-          })} */} 
-
-
- 
-
+    <div className="flex justify-between ">
+    
+      <div className="flex gap-2 pb-2 flex-wrap">
       {
         filterDataChip && Object.keys(filterDataChip).map( (key, index) => {
           let item = filterDataChip?.[key];
@@ -183,8 +159,19 @@ const FilterItemChips = ({dispatchName, finalRquest}) => {
           }
         })
       }
-          
       </div>
+     
+      <div>
+   <Button className="mr-1 bg-theme text-[#fff] py-2 px-2 rounded shadow-none" onClick={resetAll} >   Reset</Button>
+      </div>
+
+
+
+    </div>
+
+              
+
+      
     </>
   );
 };

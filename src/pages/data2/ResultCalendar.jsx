@@ -22,7 +22,7 @@ import { AssignEmployeeApi, ResultCalenderApi } from "../../store/slice/Data2Sli
 import { useDispatch, useSelector } from "react-redux";
 import CalendarTableComponent from "../../components/data2/MUITable/CalendarTableComponent";
 import { GlobalContext } from "../../context/GlobalContext";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, TextField, Tooltip } from "@mui/material";
 import { industryMasterAPI, sectorMasterAPI } from "../../store/slice/MasterSlice";
 import { filterSelectIndustryBySector, industryMasterFun, selectSectors } from "../../constants/helper";
 import { DateACEApi } from "../../store/slice/SingleCompnaySlice";
@@ -52,6 +52,7 @@ const ResultCalendar = () => {
   // const [CompanyMasterArr, setCompanyMasterArr] = useState([]);
   const [Sectors, setSectors] = useState([]);
   const [Industry, setIndustry] = useState([]);
+  const [IsReset, setIsReset] = useState(false);
   // const [Company, setCompany] = useState([]);
 
   const handleAccIn = () => {
@@ -184,6 +185,7 @@ const ResultCalendar = () => {
 
   const applyFilter = () => {
     callApi('apply');
+    setIsReset(true)
   };
 
   useEffect(() => {
@@ -197,6 +199,23 @@ useEffect(() => {
 
   // }
 }, [DateACELoading])
+
+const requestSearch = (e) => {
+  let searchedVal = e.target.value;
+  const filteredRows = TableBodyData.filter((row) => {
+    
+      return Object.keys(row).some((key) => {
+        return String(row[key]).toLowerCase().includes(searchedVal.toLowerCase());
+      });
+  });
+  
+  if (searchedVal.length < 1) {
+    setFilterData(TableBodyData)
+  }
+  else {
+    setFilterData(filteredRows)
+  }
+};
 
 
   useEffect(() => {
@@ -363,7 +382,7 @@ useEffect(() => {
                     className: "hidden",
                   }}
                   containerProps={{ className: "min-w-[100px]" }}
-                  // onChange={(e)=>filterData(e, 'search')}
+                  onChange={(e)=>requestSearch(e, 'search')}
                   icon={
                     <CgSearch
                       size={19}
@@ -373,12 +392,13 @@ useEffect(() => {
                 />
               </div>
 
-              <div className=" min-w-52">
+              <div className=" min-w-40">
                 <label className="text-[12px]  text-[#000] font-medium">
                   Sectors ({SectorMasterArr.length})
                 </label>
                 <Autocomplete
                     disablePortal
+                    disabled={IsReset}
                     id="combo-box-demo"
                     options={SectorMasterArr}
                     values={Sectors}
@@ -414,12 +434,13 @@ useEffect(() => {
                   />
               </div>
 
-              <div className=" min-w-52">
+              <div className=" min-w-40">
                 <label className="text-[12px]  text-[#000] font-medium">
                   Industry ({IndustryMasterArr.length})
                 </label>
                 <Autocomplete
                     disablePortal
+                    disabled={IsReset}
                     id="combo-box-demo"
                     options={IndustryMasterArr}
                     values={Industry}
@@ -463,6 +484,7 @@ useEffect(() => {
                 </label>
                 <Input
                   type="date"
+                    disabled={IsReset}
                   name="FromDate"
                   value={(Inputs.FromDate ? moment(Inputs.FromDate).format('YYYY-MM-DD') : "")}
                   className="!w-[140px] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
@@ -479,6 +501,7 @@ useEffect(() => {
                 </label>
                 <Input
                   type="date"
+                    disabled={IsReset}
                   name="ToDate"
                   defaultValue={(Inputs.ToDate ? moment(Inputs.ToDate).format('YYYY-MM-DD') : "")}
                   className="!w-[140px] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
@@ -491,11 +514,12 @@ useEffect(() => {
 
               <div className="smallInput">
                 <label className="text-[12px] text-[#000] font-medium">
-                  Market Cap
+                  Market Cap (cr.)
                 </label>
                 <div className="flex gap-2 w-[50%]">
                   <Input
                     type="text"
+                    disabled={IsReset}
                     name="MarketCapFrom"
                     defaultValue={Inputs.MarketCapFrom}
                     className="!w-[100px] !border !border-[#C7C7C7]  !bg-[#fff] text-gray-900 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
@@ -507,6 +531,7 @@ useEffect(() => {
                   />
 
                   <Input
+                    disabled={IsReset}
                     type="text"
                     name="MarketCapTo"
                     defaultValue={Inputs.MarketCapTo}
@@ -519,6 +544,21 @@ useEffect(() => {
                   />
                 </div>
               </div>
+
+              <div className="mt-3">
+                  <Checkbox
+                    label="Portfolio"
+                    disabled={IsReset}
+                    checked={Inputs.Portfolio}
+                    onChange={(e) => {
+                      setInputs({
+                        ...Inputs,
+                        Portfolio: e.target.checked,
+                      });
+                    }}
+                  />
+                </div>
+
             </div>
             {/* End Header Result Calender Left Side*/}
 
@@ -532,40 +572,45 @@ useEffect(() => {
               </Typography>
 
               <div className="flex gap-2 items-center ">
-                <div>
-                  <Checkbox
-                    label="Portfolio"
-                    checked={Inputs.Portfolio}
-                    onChange={(e) => {
-                      setInputs({
-                        ...Inputs,
-                        Portfolio: e.target.checked,
-                      });
-                    }}
-                  />
-                </div>
+                
 
                 <div>
                   <label>
-                    <Switch
-                      color="blue"
-                      checked={checked}
-                      onChange={handleToggle}
-                    />
-                    <span className="ml-2">
-                      {/* {isToggled ? 'On' : 'Off'} */}
-                    </span>
+                    <Tooltip 
+                        title={checked ? 'Show All' : 'Show Highlighted'}  disableInteractive placement="top"
+                    >
+                      <Switch
+                        color="blue"
+                        checked={checked}
+                        onChange={handleToggle}
+                      />
+                      <span className="ml-2">
+                        {/* {isToggled ? 'On' : 'Off'} */}
+                      </span>
+                    </Tooltip>
                   </label>
                 </div>
 
                 <div>
-                  <Button
-                    variant="text"
-                    className="mr-1 bg-theme text-[#fff] py-2 px-3 rounded text-[12px] "
-                    onClick={() => applyFilter()}
-                  >
-                    SUBMIT
-                  </Button>
+                  {
+                    !IsReset ? 
+                    <Button
+                      variant="text"
+                      className="mr-1 bg-theme text-[#fff] py-2 px-3 rounded text-[12px] "
+                      onClick={() => applyFilter()}
+                    >
+                      SUBMIT
+                    </Button>  
+                    : 
+                    <Button
+                      color="red"
+                      className=" py-2 px-3 rounded text-[12px] "
+                      onClick={() => setIsReset(false)}
+                    >
+                      Reset
+                    </Button>
+                  }
+                  
                 </div>
 
                 <div>

@@ -14,11 +14,30 @@ import { useState } from "react";
 import FilterQuarterlyResult from "../../components/data2/FilterQuarterlyResult";
 import { FilterChipsMain } from "../../components";
 import FilterItemChips from "../../components/data2/FilterItemChips";
-import { ResultDataApi } from "../../store/slice/Data2Slice";
+import { ResultDataApi , ResultDataSheet2Api} from "../../store/slice/Data2Slice";
 import {QuterltyResultFinalReq} from '../../constants/helper'
+import { useContext } from "react";
+import { GlobalContext } from "../../context/GlobalContext";
 
 function TabsDefault(props) {
   const { TabsData, ActiveTab, setActiveTab } = props;
+
+  const {filterDataChip} = useContext(GlobalContext);
+ console.log(filterDataChip, "state get");
+
+ const areAllValuesBlank = (obj) => {
+  for (let key in obj) {
+    if (obj[key].value1 !== "" || obj[key].value2 !== "") {
+      return true; 
+    }
+  }
+  return false; 
+};
+
+
+const dynamicHeight = areAllValuesBlank(filterDataChip) ? "calc(100vh - 12rem)" : "calc(100vh - 7rem)";
+
+
   return (
     <>
       <Tabs value="1" className="cd-tabs">
@@ -45,14 +64,14 @@ function TabsDefault(props) {
         <TabsBody>
           {TabsData.map(({ value, desc }) => (
             <TabPanel
-              key={value}
-              value={value}
-              className="border-[1px] border-theme-c6 bg-theme-c5"
-              style={{ height: `calc(100vh - 12rem)` }}
+            key={value}
+            value={value}
+            className="border-[1px] border-theme-c6 bg-theme-c5"
+            style={{ minHeight: `${dynamicHeight}` }}
 
-            >
-              {desc}
-            </TabPanel>
+          >
+            {desc}
+          </TabPanel>
           ))}
         </TabsBody>
       </Tabs>
@@ -93,7 +112,7 @@ const QuarterlyResult = () => {
 
         <div className="sc-container ">
           {/* <FilterChipsMain /> */}
-          <FilterItemChips  dispatchName = {ResultDataApi}  finalRquest = {QuterltyResultFinalReq} />
+          <FilterItemChips  dispatchName = {ResultDataApi} dispatchName2 = {ResultDataSheet2Api}    finalRquest = {QuterltyResultFinalReq} />
           <TabsDefault
             TabsData={TypeTabs}
             ActiveTab={ActiveTab}
