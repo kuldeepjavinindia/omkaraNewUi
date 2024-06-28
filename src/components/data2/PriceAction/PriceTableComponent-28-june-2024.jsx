@@ -26,9 +26,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 
 import { visuallyHidden } from '@mui/utils';
-import Tooltip from "@mui/material/Tooltip";
 import { TextField } from '@mui/material';
-import { openCompany } from '../../../constants/helper';
 // import InsiderPopup from './InsiderPopup';
 import { useEffect } from 'react';
 import { GlobalContext } from '../../../context/GlobalContext';
@@ -110,7 +108,7 @@ export default function PriceTableComponent(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('column_2');
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [ToggleCheckBox, setToggleCheckBox] = React.useState(false);
 
@@ -194,23 +192,20 @@ const EnhancedTableHead = (props0) => {
 
   return (
     <TableHead>
-      <TableRow className='!bg-[#1E233A]'>
+      <TableRow>
       
       { tableColumns && 
         tableColumns.map((column, i0) => {
 
 
           if(column?.isVisible){
-            let width = column?.width;
             let cStyle = { 
-              width: width,
-              minWidth: "200px",
+              minWidth: column.minWidth,
               maxWidth: column.maxWidth,
               textAlign: 'left',
               padding: '0.5rem',
               fontSize: '12px',
               fontWeight: '500',
-              whiteSpace : 'normal',
             }
   
             var cStyleLeft = 0;
@@ -221,9 +216,7 @@ const EnhancedTableHead = (props0) => {
               cStyle.top = '0px';
               cStyle.left = cStyleLeft;
               cStyle.zIndex = 9;
-              cStyle.whiteSpace = 'no-wrap'; 
             }
-            
             
             cStyle.backgroundColor = (column?.bgColor || '#1E233A');
             cStyle.color = (column?.textColor || '#fff');
@@ -239,11 +232,11 @@ const EnhancedTableHead = (props0) => {
               align={column.align}
               sortDirection={orderBy === column.id ? order : false}
               style={cStyle}
-              className='tableHeader  !text-white  text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]'
+              className='tableHeader'
             >
 
         {/* header */}
-     
+        <th className="!text-white  text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
             <div className='flex item-center gap-1 tableHeaderWithCheckandSort'>
             <TableSortLabel
                     active={orderBy === column.id}
@@ -275,8 +268,10 @@ const EnhancedTableHead = (props0) => {
                   }
                 </div>
             </div>
-    
+        </th>
         {/* header */}
+
+  
             </TableCell>
         )
 
@@ -365,16 +360,12 @@ const handlePreviousPage = () => {
   setPage((prevPage) => prevPage - 1);
 };
 
-const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
-
-
-
   return (
 
     <>
 
-    {/* ========= Start Header Page =========== */}
-  <div className="flex justify-between items-center pb-4 paginationHeader">
+          {/* ========= Start Header Page =========== */}
+          <div className="flex justify-between items-center pb-4">
               <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
                 <div>
                   <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
@@ -463,7 +454,7 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
               <IoIosArrowForward size={16} />
                  </Button>
                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                  onClick={() => {{setPage(totalPages - 1)}  {console.log("page", page)} }}
+                  onClick={() => setPage(totalPages)}
                   >
                     <IoIosArrowForward />
                     <IoIosArrowForward />
@@ -479,7 +470,7 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
       <Paper sx={{ width: '100%', mb: 2 }}>
 
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
-        <TableContainer className='table-wo-border tableHeightManage'  sx={{ 
+        <TableContainer className='table-wo-border'  sx={{ 
           maxHeight:'calc(100vh - 250px)'
          }} ref={divRef} >
           <Table stickyHeader aria-label="sticky table " id="table-to-xls">
@@ -502,62 +493,68 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
                         // console.log('row >>> ', row)
                     }
                   const labelId = `enhanced-table-checkbox-${index}`;
-                  
+
                   return (
 
-                    <TableRow role="checkbox" tabIndex={-1} key={index} style={{ background: '#fff' }}>
-                    {tableColumns && tableColumns.map((column, i0) => {
-                      if (column?.isVisible) {
-                        const value = row[column.key]; // Value for the current cell
-                  
-                        // Basic styling for each cell
-                        let cStyle = {
-                          minWidth: column.minWidth,
-                          maxWidth: column.maxWidth,
-                          textAlign: column.id !== "column_2" && column.id !== "column_4" ? 'center' : 'left',
-                          padding: '0.5rem',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                        };
-                  
-                        // Additional styles for sticky columns
-                        if (i0 < 3 || column.sticky) {
-                          let cStyleLeft = i0 * 140; 
-                          cStyle.position = 'sticky';
-                          cStyle.top = '0px';
-                          cStyle.left = `${cStyleLeft}px`;
-                          cStyle.zIndex = 5; 
-                          cStyle.backgroundColor = column?.bgColor || '#fff'; 
-                        }
-                  
-                        return (
-                          <TableCell key={column.key} align={column.align} style={cStyle}>
-                          {column.key === 'Company_Name' ? (
-                            <Tooltip title={value} placement="top" disableInteractive>
-                              <span
-                                className='texttableEliplse'
-                                onClick={() => {
-                                  // Check if it's the Company_Name column and type is not specified (or false)
-                                  if (  column.key === 'Company_Name') {
-                                    console.log('rowData >>>> ', row);
-                                    openCompany({ CompanyID: row.CompanyID }, '', true);
-                                  }
-                                }}
-                                style={{ cursor: 'pointer' }} // Optional: Add styles for better visual indication of clickability
-                              >
-                                {value}
-                              </span>
-                            </Tooltip>
-                          ) : (
-                            value // Directly render the value for other columns
-                          )}
-                        </TableCell>
+                    <TableRow role="checkbox" tabIndex={-1} key={index} style={{ 
+                      background: '#fff'
+                     }}>
+                      { 
+                      tableColumns && 
+                      tableColumns.map((column, i0) => {
+
+                      
                         
-                        );
-                      }
-                    })}
-                  </TableRow>
+
+
+                        if(i0 < 10){
+                            // console.log('row >>> ', column)
+                        }
+
+                        if(column?.isVisible){
+                          const customItem = row[column.key + '_all'];
+                          const value = row[column.key];
+                        
+                            let cStyle = { 
+                              minWidth: column.minWidth,
+                              maxWidth: column.maxWidth,
+                              textAlign: 'left',
+                              padding: '0.5rem',
+                              fontSize: '12px',
+                              fontWeight: '600',
+                            }
                   
+                            var cStyleLeft = 0;
+                  
+                            if (column.sticky) {
+                              cStyleLeft = i0 * 140;
+                              cStyle.position = 'sticky';
+                              cStyle.top = '0px';
+                              cStyle.left = cStyleLeft;
+                              cStyle.zIndex = 5;
+                              cStyle.backgroundColor = (column?.bgColor || '#fff');
+                            }
+                            
+                            // cStyle.backgroundColor = ((i0 % 2 === 0 ) ? "#E8F0F4" : '#fff');
+
+                            // cStyle.color = (column?.textColor || '#fff');
+                  
+                            if(column.id !== "column_2" && column.id !== "column_4" ){
+                              cStyle.textAlign = 'center';
+                            }
+
+
+
+
+                          return (
+                            <TableCell key={column.key} align={column.align} style={cStyle} >
+                              { value }
+                            </TableCell>
+                          );
+                        }
+                      })}
+                      
+                    </TableRow>
                   );
                 })}
                 
@@ -573,7 +570,7 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
  {/* start Bottom Pagination Button */}
  <div className="mt-4">
       <div className="flex justify-end">
-      <div className="flex-grow-0 flex justify-center mx-[14px] paginationHeader">
+      <div className="flex-grow-0 flex justify-center mx-[14px] ">
       <TablePagination
           className='table-pagination-top cst-customchange'
           rowsPerPageOptions={rowPerPageArr}

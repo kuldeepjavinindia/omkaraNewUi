@@ -92,7 +92,7 @@ export default function BulkDealMUITable(props) {
   
   const [SelectedCompany, setSelectedCompany] = React.useState({});
 
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [rowsPerPage, setRowsPerPage] = React.useState(50);
   const { 
     tableColumns, 
     setTableColumns, 
@@ -110,7 +110,7 @@ export default function BulkDealMUITable(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('column_2');
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
   const [dense, setDense] = React.useState(false);
   const [ToggleCheckBox, setToggleCheckBox] = React.useState(false);
 
@@ -184,6 +184,8 @@ export default function BulkDealMUITable(props) {
     // setOpen(true)
   };
 
+ 
+
   
 const EnhancedTableHead = (props0) => {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, handleCheckbox } =
@@ -255,7 +257,8 @@ const EnhancedTableHead = (props0) => {
                     <Checkbox
                       className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff]'
                       checked={column?.isCheckbox}
-                      onClick={() => handleCheckbox(column)}
+                      onChange={() => handleCheckbox(column)}
+                      
                     />
                   )}
                 </div>
@@ -315,7 +318,6 @@ const handleCheckbox = (item) => {
 
 
     let rowPerPageArr = [
-      { label: 25, value: 25 },
       { label: 50, value: 50 },
       { label: 100, value: 100 },
       { label: 500, value: 500 },
@@ -351,7 +353,7 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
   return (
    <>
   {/* ========= Start Header Page =========== */}
-    <div className="flex justify-between items-center pb-4">
+    <div className="flex justify-between items-center pb-4 paginationHeader">
               <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
                 <div>
                   <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
@@ -413,8 +415,6 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
                   <div className="w-[100px]">
                     <Input
                       type="number"
-                      defaultValue="1"
-                      
                       size="md"
                       className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
@@ -437,7 +437,7 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
             page >= Math.ceil((FilterData && FilterData.length) / rowsPerPage) - 1
           }
              onClick={handleNextPage}
-          >
+           >
               <IoIosArrowForward size={16} />
                  </Button>
                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
@@ -453,7 +453,7 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
 
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableContainer className='table-wo-border'  sx={{ 
+        <TableContainer className='table-wo-border tableHeightManage'  sx={{ 
           maxHeight:'calc(100vh - 250px)'
          }} ref={divRef} >
           <Table stickyHeader aria-label="sticky table " id="table-to-xls">
@@ -597,13 +597,13 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
             <TableFooter >
           
             <TableRow className='!bg-[#1E233A]'>
-  {tableColumns &&
+   {tableColumns &&
     tableColumns.map((column, i0) => {
       if (column?.isVisible) {
         let width = column?.width;
         
         // Base cell style
-        let cStyle = {
+          let cStyle = {
           width: width,
           minWidth: column.minWidth,
           maxWidth: column.maxWidth,
@@ -656,7 +656,7 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
  {/* start Bottom Pagination Button */}
    <div className="mt-4">
       <div className="flex justify-end">
-      <div className="flex-grow-0 flex justify-center mx-[14px] ">
+      <div className="flex-grow-0 flex justify-center mx-[14px] paginationHeader ">
       <TablePagination
           className='table-pagination-top cst-customchange'
           rowsPerPageOptions={rowPerPageArr}

@@ -538,8 +538,8 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
                                 className='texttableEliplse'
                                 onClick={() => {
                                   // Check if it's the Company_Name column and type is not specified (or false)
-                                  if (  column.key === 'Company_Name') {
-                                    console.log('rowData >>>> ', row);
+                                  if (  column.key === 'Company_Name' && !type) {
+                                    // console.log('rowData >>>> ', row);
                                     openCompany({ CompanyID: row.CompanyID }, '', true);
                                   }
                                 }}

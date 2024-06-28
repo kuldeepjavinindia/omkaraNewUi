@@ -309,10 +309,137 @@ const handleResetAll = (value) => {
     
   };
 
-  const inputBothVal = ["Date", "Market_Cap"];
+  // let CurrentSelectedWishListData = 
+
+  // const inputBothVal = ["Date", "Market_Cap"];
 
 
 
+  // const topLabelReq = (inputs) => {
+  //     return {
+      
+  //       // "WatchListID": {
+  //       //   "label": "WatchListID",
+  //       //   "value1": (CurrentSelectedWishListData?.ID || 0),
+  //       //   "value2": ""
+  //       // },
+  //       "Market_Cap": {
+  //         "label": "Market Cap",
+  //         "value1": (inputs.MarketCapFrom || ''),
+  //         "value2": (inputs.MarketCapTo || '')
+  //       },
+  //       "date_range": {
+  //         "label": "Date Range",
+  //         "value1": (inputs.FromDate ? Moment(inputs.FromDate).format('MM/DD/YYYY') : null),
+  //         "value2": (inputs.ToDate ? Moment(inputs.ToDate).format('MM/DD/YYYY') : null)
+  //       },
+  //       "LTP": {
+  //         "label": "LTP",
+  //         "value1": (inputs.LTP || ''),
+  //         "value2": ""
+  //       },
+  //       "TTM_P_B": {
+  //         "label": "TTM (P/B)",
+  //         "value1": (inputs.TTM_P_B || ""),
+  //         "value2": ""
+  //       },
+  //       "TTM_P_E": {
+  //         "label": "TTM (P/E)",
+  //         "value1": (inputs.TTM_P_E || ""),
+  //         "value2": ""
+  //       },
+  //       "ROCE": {
+  //         "label": "ROCE",
+  //         "value1": (inputs.ROCE || ""),
+  //         "value2": ""
+  //       },
+  //       "TTM_Sales_Abs": {
+  //         "label": "TTM_Sales_Abs",
+  //         "value1": (inputs.TTM_Sales_Abs || ""),
+  //         "value2": ""
+  //       },
+  //       "TTM_PAT_Abs": {
+  //         "label": "TTM_PAT_Abs",
+  //         "value1": (inputs.TTM_PAT_Abs || ""),
+  //         "value2": ""
+  //       },
+  //       "Sales_YOY": {
+  //         "label": "Sales_YOY",
+  //         "value1": (inputs.Sales_YOY || ""),
+  //         "value2": ""
+  //       },
+  //       "Sales_QOQ": {
+  //         "label": "Sales_QOQ",
+  //         "value1": (inputs.Sales_QOQ || ""),
+  //         "value2": ""
+  //       },
+  //       "EBDITA_YOY": {
+  //         "label": "EBDITA_YOY",
+  //         "value1": (inputs.EBDITA_YOY || ""),
+  //         "value2": ""
+  //       },
+  //       "EBDITA_QOQ": {
+  //         "label": "EBDITA_QOQ",
+  //         "value1": (inputs.EBDITA_QOQ || ""),
+  //         "value2": ""
+  //       },
+  //       "PAT_YOY": {
+  //         "label": "PAT_YOY",
+  //         "value1": (inputs.PAT_YOY || ""),
+  //         "value2": ""
+  //       },
+  //       "PAT_QOQ": {
+  //         "label": "PAT_QOQ",
+  //         "value1": (inputs.PAT_QOQ || ""),
+  //         "value2": ""
+  //       },
+  //       "GROSS_PROFIT_YOY": {
+  //         "label": "GROSS_PROFIT_YOY",
+  //         "value1": (inputs.GROSS_PROFIT_YOY || ""),
+  //         "value2": ""
+  //       },
+  //       "GROSS_PROFIT_QOQ": {
+  //         "label": "GROSS_PROFIT_QOQ",
+  //         "value1": (inputs.GROSS_PROFIT_QOQ || ""),
+  //         "value2": ""
+  //       },
+  //       "EBDITA_TO": {
+  //         "label": "EBIDTA Margin (%) - To +",
+  //         "value1": (inputs.EBDITA_TO || ""),
+  //         "value2": ""
+  //       },
+  //       "PAT_TO": {
+  //         "label": "PAT-TO +",
+  //         "value1": (inputs.PAT_TO || ""),
+  //         "value2": ""
+  //       },
+  //       "ColorCode": {
+  //         "label": "Color Code",
+  //         "value1": (inputs.ColorCode || ""),
+  //         "value2": ""
+  //       },
+  //       "sectors": {
+  //         "label": "Sector",
+  //         "value1": (inputs.Sectors || ""),
+  //         "value2": ""
+  //       },
+  //       "industry": {
+  //         "label": "Industry",
+  //         "value1": (inputs.Industry || ""),
+  //         "value2": ""
+  //       },
+  //       "company": {
+  //         "label": "Company",
+  //         "value1": (inputs.Company || ""),
+  //         "value2": ""
+  //       },
+  //       "portfolio": {
+  //         "label": "Portfolio",
+  //         "value1": (inputs.Portfolio || false),
+  //         "value2": ""
+  //       }
+  //     }
+  // }
 
 
 
@@ -352,6 +479,8 @@ const handleResetAll = (value) => {
         };
       }
     });
+
+    // let params1 = topLabelReq(FilterInputs)
   
     
   

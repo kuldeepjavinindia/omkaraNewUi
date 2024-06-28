@@ -79,6 +79,19 @@ const FilterItemChips = ({dispatchName, dispatchName2, finalRquest}) => {
   };
 
   const handleLabelClose = (itemKey) => {
+    // setFilterDataChip((prevChips) =>
+    //   prevChips.map((chip) =>
+    //     chip.keyname === keyname ? { ...chip, value1: '', value2: '' } : chip
+    //   )
+    // );
+
+    // if (setFilterDataChip) {
+    //   setFilterDataChip((prevData) => {
+    //     const newData = { ...prevData };
+    //     delete newData[keyname];
+    //     return newData;
+    //   });
+    // }
 
     const topLabels = filterDataChip;
     let topLabels1 = null;
@@ -98,8 +111,8 @@ const FilterItemChips = ({dispatchName, dispatchName2, finalRquest}) => {
      rr_dispatch(dispatchName(finalParams))
      rr_dispatch(dispatchName2(finalParams))
 
-    };
-    // console.log("toggle state >>>>>> ", filterDataChip);
+    // console.log("toggle state >>>>>>", filterDataChip);
+  };
 
   
   useEffect(() => {
@@ -112,6 +125,7 @@ const FilterItemChips = ({dispatchName, dispatchName2, finalRquest}) => {
     window.location.reload();
   }
 
+  // console.log(chipsCards);
 
   return (
     <>
@@ -121,8 +135,8 @@ const FilterItemChips = ({dispatchName, dispatchName2, finalRquest}) => {
       {
         filterDataChip && Object.keys(filterDataChip).map( (key, index) => {
           let item = filterDataChip?.[key];
-          // console.log('item.value1 >> ', item)
-          if(item.value1 != "" &&  item.value1 !== undefined ){
+          console.log('item.value1 >> ', item)
+          if(item.value1 != ""){
             return (
               <div key={index} className="bg-[#fff] p-3 relative">
                 <span
@@ -146,17 +160,18 @@ const FilterItemChips = ({dispatchName, dispatchName2, finalRquest}) => {
         })
       }
       </div>
-      {
-      filterDataChip && Object.keys(filterDataChip).some((key) => {
-        let item = filterDataChip?.[key];
-         return item.value1 !== "" || item.value2 !== "";
-         }) && (
-     <div>
-      <Button className="mr-1 bg-theme text-[#fff] py-2 px-2 rounded shadow-none" onClick={resetAll}>Reset</Button>
+     
+      <div>
+   <Button className="mr-1 bg-theme text-[#fff] py-2 px-2 rounded shadow-none" onClick={resetAll} >   Reset</Button>
+      </div>
+
+
+
     </div>
-  )
-}
-    </div> 
+
+              
+
+      
     </>
   );
 };

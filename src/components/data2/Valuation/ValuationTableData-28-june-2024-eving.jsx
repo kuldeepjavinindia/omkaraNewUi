@@ -7,15 +7,16 @@ import {
 Checkbox,
   Button,
 } from "@material-tailwind/react";
+
 import { CgSearch } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
-
 
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import TableFooter from '@mui/material/TableFooter';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -26,9 +27,8 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 
 import { visuallyHidden } from '@mui/utils';
-import Tooltip from "@mui/material/Tooltip";
-import { TextField } from '@mui/material';
-import { openCompany } from '../../../constants/helper';
+import {TextField } from '@mui/material';
+
 // import InsiderPopup from './InsiderPopup';
 import { useEffect } from 'react';
 import { GlobalContext } from '../../../context/GlobalContext';
@@ -85,7 +85,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function PriceTableComponent(props) {
+export default function BulkDealMUITable(props) {
   
   
   const [Open, setOpen] = React.useState(false);
@@ -110,7 +110,7 @@ export default function PriceTableComponent(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('column_2');
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [ToggleCheckBox, setToggleCheckBox] = React.useState(false);
 
@@ -192,99 +192,81 @@ const EnhancedTableHead = (props0) => {
     onRequestSort(event, property);
   };
 
+  
   return (
     <TableHead>
-      <TableRow className='!bg-[#1E233A]'>
-      
-      { tableColumns && 
-        tableColumns.map((column, i0) => {
+     <TableRow >
+  {tableColumns &&
+    tableColumns.map((column, i0) => {
+      if (column?.isVisible) {
+        let width = column?.width;
 
+        // Base cell style
+        let cStyle = {
+          width: width,
+          minWidth: column.minWidth,
+          maxWidth: column.maxWidth,
+          textAlign: column.id !== "column_2" && column.id !== "column_4" ? 'center' : 'left',
+          padding: '0.5rem',
+          fontSize: '12px',
+          fontWeight: '500',
+          position: 'sticky',
+          top: 0, // Ensure header sticks to the top when scrolling
+          backgroundColor: column?.bgColor || '#1E233A',
+          color: column?.textColor || '#fff',
+          zIndex: 10, // Base zIndex for the header cells
+        };
 
-          if(column?.isVisible){
-            let width = column?.width;
-            let cStyle = { 
-              width: width,
-              minWidth: "200px",
-              maxWidth: column.maxWidth,
-              textAlign: 'left',
-              padding: '0.5rem',
-              fontSize: '12px',
-              fontWeight: '500',
-              whiteSpace : 'normal',
-            }
-  
-            var cStyleLeft = 0;
-  
-            if (column.sticky) {
-              cStyleLeft = i0 * 140;
-              cStyle.position = 'sticky';
-              cStyle.top = '0px';
-              cStyle.left = cStyleLeft;
-              cStyle.zIndex = 9;
-              cStyle.whiteSpace = 'no-wrap'; 
-            }
-            
-            
-            cStyle.backgroundColor = (column?.bgColor || '#1E233A');
-            cStyle.color = (column?.textColor || '#fff');
-  
-            if(column.id !== "column_2" && column.id !== "column_4" ){
-              cStyle.textAlign = 'center';
-            }
-  
-  
-            return (
-            <TableCell
-              key={column.id}
-              align={column.align}
-              sortDirection={orderBy === column.id ? order : false}
-              style={cStyle}
-              className='tableHeader  !text-white  text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]'
-            >
+        // Specific styles for the first three sticky columns
+        if (i0 < 3) {
+          cStyle.left = `${i0 * 122}px`; // Adjust `140px` to match your column widths
+          cStyle.zIndex = 11; // Higher zIndex for the first three header columns
+        }
 
-        {/* header */}
-     
-            <div className='flex item-center gap-1 tableHeaderWithCheckandSort'>
-            <TableSortLabel
-                    active={orderBy === column.id}
-                    direction={orderBy === column.id ? order : 'asc'}
-                    onClick={createSortHandler(column.id)}
-                    sx={{ 
-                      justifyContent: column.id !== 'column_2' && column.id !== 'column_4' ? 'center' : 'start',
-                      width: '100%', 
-                     }}
-                     className=' !text-white'
-                  >
-                    <span dangerouslySetInnerHTML={{ 
-                        __html: column?.label
-                     }}></span>
-                    {orderBy === column.id ? (
-                      <Box component="span" sx={visuallyHidden}>
-                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                      </Box>
-                    ) : null}
-                  </TableSortLabel>
+        return (
+          <TableCell
+            key={column.id}
+            align={column.align}
+            sortDirection={orderBy === column.id ? order : false}
+            style={cStyle}
+            className='tableHeader'
+          >
+            <th className="!text-white text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+              <div className='flex items-center gap-1 tableHeaderWithCheckandSort'>
+                <TableSortLabel
+                  active={orderBy === column.id}
+                  direction={orderBy === column.id ? order : 'asc'}
+                  onClick={createSortHandler(column.id)}
+                  sx={{ 
+                    justifyContent: column.id !== 'column_2' && column.id !== 'column_4' ? 'center' : 'start',
+                    width: '100%', 
+                  }}
+                  className='!text-white'
+                >
+                  {column.label}
+                  {orderBy === column.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
                 <div>
-               
-                {
-                    column?.isCheckbox && (
-                      <Checkbox
-                      className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
-                      sx={{ padding: 0 }} checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
-                    )
-                  }
+                  {column?.isCheckbox && (
+                    <Checkbox
+                      className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff]'
+                      checked={column?.isCheckbox}
+                      onClick={() => handleCheckbox(column)}
+                    />
+                  )}
                 </div>
-            </div>
-    
-        {/* header */}
-            </TableCell>
-        )
+              </div>
+            </th>
+          </TableCell>
+        );
+      }
+    })}
+</TableRow>
 
-          }
-    }
-      )}
-      
-      </TableRow>
     </TableHead>
   );
 }
@@ -306,6 +288,7 @@ const handleCheckbox = (item) => {
   let cols = tableColumns;
   let updatedItem = item;
   updatedItem.isVisible = !item.isVisible;
+
   let findIndex = tableColumns.indexOf(item)
   cols[findIndex] = updatedItem
   console.log('item >>> ', {cols, updatedItem})
@@ -317,7 +300,6 @@ const handleCheckbox = (item) => {
 
   const requestSearch = (searchedVal) => {
     const filteredRows = tableRows.filter((row) => {
-      
         return Object.keys(row).some((key) => {
           return String(row[key]).toLowerCase().includes(searchedVal.toLowerCase());
         });
@@ -350,8 +332,6 @@ const handleCheckbox = (item) => {
     }, [tableRows])
     
 
-    
-
 useEffect(() => {
     // console.log('TableColumns >>> ', TableColumns)
 }, [ToggleCheckBox])
@@ -365,16 +345,13 @@ const handlePreviousPage = () => {
   setPage((prevPage) => prevPage - 1);
 };
 
-const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
 
-
+const totalPages = Math.ceil(tableRows.length / rowsPerPage);
 
   return (
-
-    <>
-
-    {/* ========= Start Header Page =========== */}
-  <div className="flex justify-between items-center pb-4 paginationHeader">
+   <>
+  {/* ========= Start Header Page =========== */}
+    <div className="flex justify-between items-center pb-4">
               <div className="flex-grow-2 flex items-center gap-2 w-[60%]">
                 <div>
                   <Typography className="text-[11px] lg:text-[12px] font-semibold text-[#000]">
@@ -437,6 +414,7 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
                     <Input
                       type="number"
                       defaultValue="1"
+                      
                       size="md"
                       className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
@@ -463,7 +441,7 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
               <IoIosArrowForward size={16} />
                  </Button>
                  <Button className="w-[48px] h-[30px] p-0 border border-[#C7C7C7] bg-[#fff] text-[#C7C7C7] rounded shadow-none !h-8 flex items-center justify-center"
-                  onClick={() => {{setPage(totalPages - 1)}  {console.log("page", page)} }}
+                  onClick={() => setPage(totalPages)}
                   >
                     <IoIosArrowForward />
                     <IoIosArrowForward />
@@ -473,13 +451,9 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
     </div>
   {/* ========= End Header Page =========== */}
 
-
-
-     <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-
-        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
-        <TableContainer className='table-wo-border tableHeightManage'  sx={{ 
+        <TableContainer className='table-wo-border'  sx={{ 
           maxHeight:'calc(100vh - 250px)'
          }} ref={divRef} >
           <Table stickyHeader aria-label="sticky table " id="table-to-xls">
@@ -492,88 +466,197 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
               handleCheckbox={handleCheckbox}
               rowCount={FilterData && FilterData.length}
             />
-            <TableBody>
-    
+            <TableBody >
               { FilterData && stableSort(FilterData, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                    if(index <10){
-
-                        // console.log('row >>> ', row)
-                    }
+                  
                   const labelId = `enhanced-table-checkbox-${index}`;
-                  
-                  return (
+                  let a0_new = 0;
 
-                    <TableRow role="checkbox" tabIndex={-1} key={index} style={{ background: '#fff' }}>
-                    {tableColumns && tableColumns.map((column, i0) => {
-                      if (column?.isVisible) {
-                        const value = row[column.key]; // Value for the current cell
-                  
-                        // Basic styling for each cell
-                        let cStyle = {
-                          minWidth: column.minWidth,
-                          maxWidth: column.maxWidth,
-                          textAlign: column.id !== "column_2" && column.id !== "column_4" ? 'center' : 'left',
-                          padding: '0.5rem',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                        };
-                  
-                        // Additional styles for sticky columns
-                        if (i0 < 3 || column.sticky) {
-                          let cStyleLeft = i0 * 140; 
-                          cStyle.position = 'sticky';
-                          cStyle.top = '0px';
-                          cStyle.left = `${cStyleLeft}px`;
-                          cStyle.zIndex = 5; 
-                          cStyle.backgroundColor = column?.bgColor || '#fff'; 
-                        }
-                  
-                        return (
-                          <TableCell key={column.key} align={column.align} style={cStyle}>
-                          {column.key === 'Company_Name' ? (
-                            <Tooltip title={value} placement="top" disableInteractive>
-                              <span
-                                className='texttableEliplse'
-                                onClick={() => {
-                                  // Check if it's the Company_Name column and type is not specified (or false)
-                                  if (  column.key === 'Company_Name') {
-                                    console.log('rowData >>>> ', row);
-                                    openCompany({ CompanyID: row.CompanyID }, '', true);
-                                  }
-                                }}
-                                style={{ cursor: 'pointer' }} // Optional: Add styles for better visual indication of clickability
-                              >
-                                {value}
-                              </span>
-                            </Tooltip>
-                          ) : (
-                            value // Directly render the value for other columns
-                          )}
-                        </TableCell>
-                        
-                        );
-                      }
-                    })}
-                  </TableRow>
-                  
+
+                   return (
+
+                    // <TableRow role="checkbox " tabIndex={-1} key={index}   >
+                    //   { 
+                    //   tableColumns && 
+                    //   tableColumns.map((column, i0) => {
+                    //     if(column?.isVisible){
+                    //       const customItem = row[column.key + '_all'];
+                    //       const value = row[column.key];
+                          
+                    //       if(i0 == 0){
+                    //         a0_new = 0
+                    //       }
+                    //     let width = column?.width;
+
+                    //     // let cStyle = {
+                    //     //   width: width,
+                    //     //   maxWidth: width,
+                    //     //   // padding: '0.5rem',
+                    //     //   fontSize: '12px',
+                    //     //   fontWeight: '500',
+                    //     //   position: 'sticky',
+                    //     //   top: 0, 
+                    //     //   zIndex: 2, 
+                    //     // };
+
+                    //       let cStyle = { 
+                    //         fontSize: '12px',
+                    //         fontWeight: '500',
+                    //         position: 'sticky',
+                    //         top: 0, 
+                    //         zIndex: 2,
+                    //       }
+
+                    //       var cStyleLeft = 0;
+  
+                    //       if (column.sticky) {
+                    //         cStyleLeft = i0 * 140;
+                    //         cStyle.position = 'sticky';
+                    //         cStyle.top = '0px';
+                    //         cStyle.left = cStyleLeft;
+                    //         cStyle.zIndex = 9;
+                    //       }
+                     
+                    //     if (i0 < 3) {
+                    //       cStyle.backgroundColor = '#fff';
+                    //       // cStyle.left = `${a0_new}px`; 
+                    //       cStyle.zIndex = 9;
+                    //       a0_new = a0_new + width
+                    //     }
+                    //     if (i0 == 2) {
+                          
+                    //       // cStyle.backgroundColor = '#fff000';
+                    //       // cStyle.borderRight = '1px solid #000000';
+                    //     }
+                    //     if (i0 < 2) {
+                    //       cStyle.textAlign = 'left';
+                    //     }else{
+                    //       cStyle.textAlign = 'center';
+                    //     }
+
+                    //       return (
+                    //        <TableCell key={column.key} align={column.align} style={cStyle} > 
+                    //         { value }
+                    //      </TableCell>
+                    //       );
+                    //     }
+                    //   })}
+                      
+                    // </TableRow>
+                    <TableRow role="checkbox" tabIndex={-1} key={index}>
+  {tableColumns &&
+    tableColumns.map((column, i0) => {
+      if (column?.isVisible) {
+        const customItem = row[column.key + '_all'];
+        const value = row[column.key];
+        let width = column?.width;
+        if(i0 == 0){
+          a0_new = 0
+        }
+
+        // Base cell style
+        let cStyle = {
+          fontSize: '12px',
+          fontWeight: '500',
+          position: 'sticky',
+          top: 0, // Ensure cells stick to the top when scrolling vertically
+          zIndex: 1, // Default zIndex
+        };
+
+        // Additional styles for the first three columns
+        if (i0 < 3) {
+          cStyle.backgroundColor = '#fff'; // Add background for visibility
+          cStyle.left = `${i0 * 120}px`; // Calculate left based on the column index (adjust 140px as needed)
+          cStyle.zIndex = 9; // Higher zIndex for the first three columns
+
+        }
+
+        // Text alignment adjustments
+        if (i0 < 3) {
+          cStyle.textAlign = 'left';
+        } else {
+          cStyle.textAlign = 'center';
+        }
+
+        return (
+          <TableCell key={column.key} align={column.align} style={cStyle}>
+            {value}
+          </TableCell>
+        );
+      }
+    })}
+</TableRow>
+
                   );
                 })}
                 
             </TableBody>
+    
+            <TableFooter >
+          
+            <TableRow className='!bg-[#1E233A]'>
+  {tableColumns &&
+    tableColumns.map((column, i0) => {
+      if (column?.isVisible) {
+        let width = column?.width;
+        
+        // Base cell style
+        let cStyle = {
+          width: width,
+          minWidth: column.minWidth,
+          maxWidth: column.maxWidth,
+          textAlign: column.id !== "column_2" && column.id !== "column_4" ? 'center' : 'left',
+          padding: '0.5rem',
+          fontSize: '12px',
+          fontWeight: '500',
+          backgroundColor: column?.bgColor || '#1E233A',
+          color: column?.textColor || '#fff',
+          position: 'sticky',
+          bottom: 0, // Stick to the bottom of the container
+          zIndex: 11, // Base zIndex for the footer
+        };
+
+        // Specific styles for the first three sticky columns
+        if (i0 < 3) {
+          cStyle.left = `${i0 * 122}px`; // Adjust `140px` to match your column widths
+          cStyle.zIndex = 12; // Higher zIndex to stay above the table body
+        }
+
+        return (
+          <TableCell
+            key={column.id}
+            align={column.align}
+            sortDirection={orderBy === column.id ? order : false}
+            style={cStyle}
+            className='tableHeader !text-white text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]'
+          >
+            <div className='flex item-center gap-1 tableHeaderWithCheckandSort'>
+              {column.label}
+            </div>
+          </TableCell>
+        );
+      }
+    })}
+</TableRow>
+
+
+
+        </TableFooter>
+
+
+
           </Table>
         </TableContainer>
-        
-        
-        
+
       </Paper>
     </Box>
 
  {/* start Bottom Pagination Button */}
- <div className="mt-4">
+   <div className="mt-4">
       <div className="flex justify-end">
-      <div className="flex-grow-0 flex justify-center mx-[14px] paginationHeader">
+      <div className="flex-grow-0 flex justify-center mx-[14px] ">
       <TablePagination
           className='table-pagination-top cst-customchange'
           rowsPerPageOptions={rowPerPageArr}
@@ -643,9 +726,6 @@ const totalPages = Math.ceil(tableRows?.length / rowsPerPage);
   
     </div>
 {/* End Bottom Pagination Button */}
-
-
-    </>
-   
+   </>
   );
 }

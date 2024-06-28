@@ -6,7 +6,7 @@ import {
   Checkbox,
   TextField,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import Select from "react-select";
 import {
@@ -22,7 +22,6 @@ import {
 } from "../../../constants/helper";
 import { useDispatch, useSelector } from "react-redux";
 import { PriceActionApi } from "../../../store/slice/Data2Slice";
-import { GlobalContext } from "../../../context/GlobalContext";
 
 const FilterSidebarPriceAction = () => {
   // const [open, setOpen] = useState(1);
@@ -56,12 +55,6 @@ const FilterSidebarPriceAction = () => {
     };
     setInputs(prev);
   };
-
-
-  const {
-    filterDataChip,
-    setFilterDataChip
-  } = useContext(GlobalContext)
 
   const topLabels = (data) =>{
 
@@ -130,19 +123,9 @@ const FilterSidebarPriceAction = () => {
   const  applyNow = () => {
     let n_topLabels = topLabels(Inputs);
     let params = priceActionFilters(n_topLabels)
-    setFilterDataChip(n_topLabels);
     rr_dispatch(PriceActionApi(params))
   }
 
-
-
-  useEffect(()=> {
-    let params1 = {...topLabels}
-    setFilterDataChip(params1)
-   },[])
-
-
- console.log("item chips", filterDataChip);
 
   useEffect(() => {
     rr_dispatch(sectorMasterAPI());
