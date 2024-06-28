@@ -30,8 +30,8 @@ const ValuationTable = () => {
     
     if(!ValuationLoading){
 
-      let headers = ValuationData.Headers
-      let bodyData = ValuationData.Data
+      let headers = ValuationData?.Headers || [];
+      let bodyData = ValuationData?.Data || [];
 
       let a1 = 0;
       let mColArr = [];

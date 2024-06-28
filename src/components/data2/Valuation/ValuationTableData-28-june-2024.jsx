@@ -192,56 +192,63 @@ const EnhancedTableHead = (props0) => {
     onRequestSort(event, property);
   };
 
-  
   return (
     <TableHead>
-     <TableRow >
-  {tableColumns &&
-    tableColumns.map((column, i0) => {
-      if (column?.isVisible) {
-        let width = column?.width;
+      <TableRow>
+      
+      { tableColumns && 
+        tableColumns.map((column, i0) => {
 
-        // Base cell style
-        let cStyle = {
-          width: width,
-          minWidth: column.minWidth,
-          maxWidth: column.maxWidth,
-          textAlign: column.id !== "column_2" && column.id !== "column_4" ? 'center' : 'left',
-          padding: '0.5rem',
-          fontSize: '12px',
-          fontWeight: '500',
-          position: 'sticky',
-          top: 0, // Ensure header sticks to the top when scrolling
-          backgroundColor: column?.bgColor || '#1E233A',
-          color: column?.textColor || '#fff',
-          zIndex: 10, // Base zIndex for the header cells
-        };
 
-        // Specific styles for the first three sticky columns
-        if (i0 < 3) {
-          cStyle.left = `${i0 * 122}px`; // Adjust `140px` to match your column widths
-          cStyle.zIndex = 11; // Higher zIndex for the first three header columns
-        }
+          if(column?.isVisible){
+            let cStyle = { 
+              minWidth: column.minWidth,
+              maxWidth: column.maxWidth,
+              textAlign: 'left',
+              padding: '0.5rem',
+              fontSize: '12px',
+              fontWeight: '500',
+            }
+  
+            var cStyleLeft = 0;
+  
+            if (column.sticky) {
+              cStyleLeft = i0 * 170;
+              cStyle.position = 'sticky';
+              cStyle.top = '0px';
+              cStyle.left = cStyleLeft;
+              cStyle.zIndex = 9;
+            }
+            
+            cStyle.backgroundColor = (column?.bgColor || '#1E233A');
+            cStyle.color = (column?.textColor || '#fff');
+  
+            if(column.id !== "column_2" && column.id !== "column_4" ){
+              cStyle.textAlign = 'center';
+            }
+  
+  
+            return (
+            <TableCell
+              key={column.id}
+              align={column.align}
+              sortDirection={orderBy === column.id ? order : false}
+              style={cStyle}
+              className='tableHeader'
+            >
 
-        return (
-          <TableCell
-            key={column.id}
-            align={column.align}
-            sortDirection={orderBy === column.id ? order : false}
-            style={cStyle}
-            className='tableHeader'
-          >
-            <th className="!text-white text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
-              <div className='flex items-center gap-1 tableHeaderWithCheckandSort'>
-                <TableSortLabel
+            
+          <th className="!text-white  text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]">
+          <div className='flex item-center gap-1 tableHeaderWithCheckandSort'>
+              <TableSortLabel
                   active={orderBy === column.id}
                   direction={orderBy === column.id ? order : 'asc'}
                   onClick={createSortHandler(column.id)}
                   sx={{ 
                     justifyContent: column.id !== 'column_2' && column.id !== 'column_4' ? 'center' : 'start',
                     width: '100%', 
-                  }}
-                  className='!text-white'
+                    }}
+                    className=' !text-white'
                 >
                   {column.label}
                   {orderBy === column.id ? (
@@ -250,23 +257,26 @@ const EnhancedTableHead = (props0) => {
                     </Box>
                   ) : null}
                 </TableSortLabel>
-                <div>
-                  {column?.isCheckbox && (
-                    <Checkbox
-                      className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff]'
-                      checked={column?.isCheckbox}
-                      onClick={() => handleCheckbox(column)}
-                    />
-                  )}
-                </div>
+              <div>
+              
+              {
+                  column?.isCheckbox && (
+                    <Checkbox className='border !border-[#fff] !bg-transparent h-4 w-4 rounded bg-transparent border border-[#fff] checked:border-[#fff] '
+                    checked={column?.isCheckbox} onClick={()=>handleCheckbox(column)} />
+                  )
+                }
               </div>
-            </th>
-          </TableCell>
-        );
-      }
-    })}
-</TableRow>
+          </div>
+      </th>
 
+            </TableCell>
+        )
+
+          }
+    }
+      )}
+      
+      </TableRow>
     </TableHead>
   );
 }
@@ -330,6 +340,8 @@ const handleCheckbox = (item) => {
         setFilterData(tableRows) 
       }
     }, [tableRows])
+    
+
     
 
 useEffect(() => {
@@ -414,7 +426,6 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
                     <Input
                       type="number"
                       defaultValue="1"
-                      
                       size="md"
                       className="smallInput two border-none !h-8 !bg-[#fff] text-[#000] ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100"
                       labelProps={{
@@ -472,177 +483,46 @@ const totalPages = Math.ceil(tableRows.length / rowsPerPage);
                 .map((row, index) => {
                   
                   const labelId = `enhanced-table-checkbox-${index}`;
-                  let a0_new = 0;
 
+                  return (
 
-                   return (
-
-                    // <TableRow role="checkbox " tabIndex={-1} key={index}   >
-                    //   { 
-                    //   tableColumns && 
-                    //   tableColumns.map((column, i0) => {
-                    //     if(column?.isVisible){
-                    //       const customItem = row[column.key + '_all'];
-                    //       const value = row[column.key];
+                    <TableRow role="checkbox " tabIndex={-1} key={index}   >
+                      { 
+                      tableColumns && 
+                      tableColumns.map((column, i0) => {
+                        if(column?.isVisible){
+                          const customItem = row[column.key + '_all'];
+                          const value = row[column.key];
                           
-                    //       if(i0 == 0){
-                    //         a0_new = 0
-                    //       }
-                    //     let width = column?.width;
-
-                    //     // let cStyle = {
-                    //     //   width: width,
-                    //     //   maxWidth: width,
-                    //     //   // padding: '0.5rem',
-                    //     //   fontSize: '12px',
-                    //     //   fontWeight: '500',
-                    //     //   position: 'sticky',
-                    //     //   top: 0, 
-                    //     //   zIndex: 2, 
-                    //     // };
-
-                    //       let cStyle = { 
-                    //         fontSize: '12px',
-                    //         fontWeight: '500',
-                    //         position: 'sticky',
-                    //         top: 0, 
-                    //         zIndex: 2,
-                    //       }
-
-                    //       var cStyleLeft = 0;
-  
-                    //       if (column.sticky) {
-                    //         cStyleLeft = i0 * 140;
-                    //         cStyle.position = 'sticky';
-                    //         cStyle.top = '0px';
-                    //         cStyle.left = cStyleLeft;
-                    //         cStyle.zIndex = 9;
-                    //       }
-                     
-                    //     if (i0 < 3) {
-                    //       cStyle.backgroundColor = '#fff';
-                    //       // cStyle.left = `${a0_new}px`; 
-                    //       cStyle.zIndex = 9;
-                    //       a0_new = a0_new + width
-                    //     }
-                    //     if (i0 == 2) {
-                          
-                    //       // cStyle.backgroundColor = '#fff000';
-                    //       // cStyle.borderRight = '1px solid #000000';
-                    //     }
-                    //     if (i0 < 2) {
-                    //       cStyle.textAlign = 'left';
-                    //     }else{
-                    //       cStyle.textAlign = 'center';
-                    //     }
-
-                    //       return (
-                    //        <TableCell key={column.key} align={column.align} style={cStyle} > 
-                    //         { value }
-                    //      </TableCell>
-                    //       );
-                    //     }
-                    //   })}
+                            let cStyle = {}
+                          return (
+                            <TableCell key={column.key} align={column.align} style={cStyle} >
+                              { value }
+                            </TableCell>
+                          );
+                        }
+                      })}
                       
-                    // </TableRow>
-                    <TableRow role="checkbox" tabIndex={-1} key={index}>
-  {tableColumns &&
-    tableColumns.map((column, i0) => {
-      if (column?.isVisible) {
-        const customItem = row[column.key + '_all'];
-        const value = row[column.key];
-        let width = column?.width;
-        if(i0 == 0){
-          a0_new = 0
-        }
-
-        // Base cell style
-        let cStyle = {
-          fontSize: '12px',
-          fontWeight: '500',
-          position: 'sticky',
-          top: 0, // Ensure cells stick to the top when scrolling vertically
-          zIndex: 1, // Default zIndex
-        };
-
-        // Additional styles for the first three columns
-        if (i0 < 3) {
-          cStyle.backgroundColor = '#fff'; // Add background for visibility
-          cStyle.left = `${i0 * 120}px`; // Calculate left based on the column index (adjust 140px as needed)
-          cStyle.zIndex = 9; // Higher zIndex for the first three columns
-
-        }
-
-        // Text alignment adjustments
-        if (i0 < 3) {
-          cStyle.textAlign = 'left';
-        } else {
-          cStyle.textAlign = 'center';
-        }
-
-        return (
-          <TableCell key={column.key} align={column.align} style={cStyle}>
-            {value}
-          </TableCell>
-        );
-      }
-    })}
-</TableRow>
-
+                    </TableRow>
                   );
                 })}
                 
             </TableBody>
     
-            <TableFooter >
+            <TableFooter className='sticky bottom-0'>
+          <TableRow>
+             {
+              tableColumns && tableColumns.length > 0 && tableColumns.map((item) => {
+                return (
+                  <>
+              <TableCell className='!text-white  text-[12px] xl:text-[13px] font-semibold bg-[#1E233A]'>{item.label} </TableCell>
+                  </>
+                )
+              })
+            } 
           
-            <TableRow className='!bg-[#1E233A]'>
-  {tableColumns &&
-    tableColumns.map((column, i0) => {
-      if (column?.isVisible) {
-        let width = column?.width;
-        
-        // Base cell style
-        let cStyle = {
-          width: width,
-          minWidth: column.minWidth,
-          maxWidth: column.maxWidth,
-          textAlign: column.id !== "column_2" && column.id !== "column_4" ? 'center' : 'left',
-          padding: '0.5rem',
-          fontSize: '12px',
-          fontWeight: '500',
-          backgroundColor: column?.bgColor || '#1E233A',
-          color: column?.textColor || '#fff',
-          position: 'sticky',
-          bottom: 0, // Stick to the bottom of the container
-          zIndex: 11, // Base zIndex for the footer
-        };
-
-        // Specific styles for the first three sticky columns
-        if (i0 < 3) {
-          cStyle.left = `${i0 * 122}px`; // Adjust `140px` to match your column widths
-          cStyle.zIndex = 12; // Higher zIndex to stay above the table body
-        }
-
-        return (
-          <TableCell
-            key={column.id}
-            align={column.align}
-            sortDirection={orderBy === column.id ? order : false}
-            style={cStyle}
-            className='tableHeader !text-white text-[12px] xl:text-[13px] font-semibold !bg-[#1E233A]'
-          >
-            <div className='flex item-center gap-1 tableHeaderWithCheckandSort'>
-              {column.label}
-            </div>
-          </TableCell>
-        );
-      }
-    })}
-</TableRow>
-
-
-
+            
+          </TableRow>
         </TableFooter>
 
 

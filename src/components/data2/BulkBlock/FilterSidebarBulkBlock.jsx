@@ -92,6 +92,9 @@ const handleSelectChange = (name, value) => {
 };
 
 
+  
+  let CurrentSelectedWishListData = localStorage.getItem("selectedWL") ? JSON.parse(localStorage.getItem("selectedWL")) : null;
+
   // Log the inputValue whenever it updates
   useEffect(() => {
     console.log('inputValue updated:', Inputs);
@@ -140,11 +143,12 @@ const applyNow = ()=> {
       "netvalue": [Inputs?.netValueFrom || "",  Inputs?.netValueTo || ""],
       "Exchange": Inputs?.exchangevalue || "",
       "DealType": Inputs?.dealType || "", 
-      "CompanyName": Company || ""
+      "CompanyName": Company || "",
+      "watchlistid": (CurrentSelectedWishListData?.ID || 0)
  }
  
-console.log(param);
   rr_dispatch(BulkDealApi(param))
+  
 }
 
 

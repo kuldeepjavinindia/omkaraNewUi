@@ -84,23 +84,29 @@ const MainHeader = () => {
                   }
                   {
                     wlLoading === false && wldata && wldata.length > 0 && wldata.map((item, i)=>{
-                      return (
-                        <>
-                          <MenuItem className="p-0" key={i} onClick={()=>{
-                            localStorage.setItem('selectedWL', JSON.stringify(item))
-                            window.location.href = import.meta.env.VITE_BASE_URL+'/bse-news'
-                          }}>
-                            <label
-                              htmlFor="item-1"
-                              className="flex cursor-pointer items-center gap-2 p-2"
-                            >
-                              {item?.WatchListNAme}
-                            </label>
-                          </MenuItem>
-                        </>
-                      )
-                    })
-                  }
+
+                      if(window.location.href.includes('/bse-news') && item.ID == 0 || window.location.href.includes('/watchlist') && item.ID == 0){
+                        return 
+                      }else{
+                        return (
+                          <>
+                            <MenuItem className="p-0" key={i} onClick={()=>{
+                              localStorage.setItem('selectedWL', JSON.stringify(item))
+                              window.location.href = import.meta.env.VITE_BASE_URL+'/bse-news'
+                            }}>
+                              <label
+                                htmlFor="item-1"
+                                className="flex cursor-pointer items-center gap-2 p-2"
+                              >
+                                {item?.WatchListNAme}
+                              </label>
+                            </MenuItem>
+                          </>
+                        )
+                      }
+                      })
+                  
+                    }
                   
                 </MenuList>
               </Menu>

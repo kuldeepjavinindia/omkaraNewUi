@@ -218,6 +218,12 @@ const ReportOfReportUpload = () => {
     },
   });
 
+
+  const submitData = () => {
+      console.log('submitData >>>>> ', Inputs);
+  }
+
+
   const handleUpload = () => {
     console.log("File uploaded:", selectedFile);
   };
@@ -572,7 +578,7 @@ const ReportOfReportUpload = () => {
       {/* End second box*/}
 
       <div className="mt-5">
-        <Button className="mr-1 bg-theme text-[#fff] py-2 rounded shadow-none hover:shadow-md">
+        <Button className="mr-1 bg-theme text-[#fff] py-2 rounded shadow-none hover:shadow-md" onClick={()=>submitData()}>
           {" "}
           SUBMIT{" "}
         </Button>

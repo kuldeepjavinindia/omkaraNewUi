@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_BASE_URL } from "../../constants/helper";
 
@@ -94,7 +94,24 @@ const WatchListSlice = createSlice({
     builder.addCase(wlAPI.fulfilled, (state, action) => {
       //   let allData = current(state);
 
-      state.wl.data = action.payload;
+      // let a0  = current(state);
+      let AllArr = {
+          "$id": "",  
+          "ID": "0",
+          "UserID": "0",
+          "WatchListNAme": "Default"
+      }
+      let data = action.payload;
+
+      // if(!window.location.href.includes('/corporate-announcement') && !window.location.href.includes('/wishlist/create')  && !window.location.href.includes('/manage-company')){
+      // }
+
+      let a00 = [AllArr].concat(data.Data); 
+          data['Data'] = a00
+
+
+
+      state.wl.data = data;
       state.wl.loading = false;
       state.wl.msg = "success";
       state.wl.msgType = "success";

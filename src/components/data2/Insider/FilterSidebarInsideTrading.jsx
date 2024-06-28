@@ -70,6 +70,10 @@ const {
   const [Company, setCompany] = useState([]);
 
 
+  
+  let CurrentSelectedWishListData = localStorage.getItem("selectedWL") ? JSON.parse(localStorage.getItem("selectedWL")) : null;
+
+
 
   const applyFun = () => {
     
@@ -78,7 +82,7 @@ const {
       ...params,
       "date":[Inputs.formDate,Inputs.toDate],
       "mcap":[Inputs.mCapFrom,Inputs.mCapTo],
-      // "watchlistid":"0",
+      "watchlistid": (CurrentSelectedWishListData?.ID || 0),
       "netvalue":[Inputs.nValueFrom,Inputs.nValueTo],
       "Sector":Inputs.Sector,
       "Industry":Inputs.Industry,

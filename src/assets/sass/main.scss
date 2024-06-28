@@ -487,6 +487,17 @@ $border-color_3: $color_4;
   color: #fff !important;
   white-space: break-spaces;
   line-height: 1.25;
+  // &:first-child{
+  //   word-wrap: break-word;
+  //   width: 30px;
+  // }
+  // svg{
+  //   background: red;
+  //   opacity: 1;
+  //   margin: 0;
+  //   padding: 0;
+  //   font-size: 0.85rem;
+  // }
   &>*{
     color: #fff !important;
   }

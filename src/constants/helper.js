@@ -575,7 +575,7 @@ export const industryMasterFun = (industryMasterData, setIndustryMasterArr) => {
   if (industryMasterData && industryMasterData.length > 0) {
     var data1 = [];
     industryMasterData.map((item) => {
-      var d1 = { title: item.Industry, value: item.sectorID };
+      var d1 = { title: item.Industry, value: item.IndustryID };
       data1.push(d1);
     });
     setIndustryMasterArr(data1);

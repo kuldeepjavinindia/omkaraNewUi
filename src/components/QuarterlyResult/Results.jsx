@@ -102,14 +102,14 @@ const Results = () => {
           "Company_Name": resBody?._CompanyDetail?.Company_Name,
           "Sector": resBody.Sector,
           "MarketCap": resBody.MarketCap ? parseFloat(resBody.MarketCap) : "",
-          "LTP": resBody.LTP,
-          "week52_high": resBody.week52_high,
-          "Chg_from_week52_highPer": resBody.Chg_from_week52_highPer,
-          "week52_low": resBody.week52_low,
-          "Chng_from_week52_lowPer": resBody.Chng_from_week52_lowPer,
-          "TTM_P_E": resBody.TTM_P_E,
-          "TTM_P_B": resBody.TTM_P_B,
-          "TTM_End": resBody.TTM_End,
+          "LTP": resBody.LTP ? parseFloat(resBody.LTP) : "",
+          "week52_high": resBody.week52_high ? parseFloat(resBody.week52_high) : "",
+          "Chg_from_week52_highPer": resBody.Chg_from_week52_highPer ? parseFloat(resBody.Chg_from_week52_highPer) : "",
+          "week52_low": resBody.week52_low ? parseFloat(resBody.week52_low) : "",
+          "Chng_from_week52_lowPer": resBody.Chng_from_week52_lowPer ? parseFloat(resBody.Chng_from_week52_lowPer) : "",
+          "TTM_P_E": resBody.TTM_P_E ? parseFloat(resBody.TTM_P_E) : "",
+          "TTM_P_B": resBody.TTM_P_B ? parseFloat(resBody.TTM_P_B) : "",
+          "TTM_End": resBody.TTM_End ? parseFloat(resBody.TTM_End) : "",
 
 
           "Sales_YoY_Per_obj": resBody.Sales_YoY_Per,
@@ -132,8 +132,8 @@ const Results = () => {
           "PAT_Growth_QoQ_Per": resBody.PAT_Growth_QoQ_Per?.value ? parseFloat(resBody.PAT_Growth_QoQ_Per?.value) : "",
 
 
-          "D_E": resBody.D_E,
-          "RoCE_per": resBody.RoCE_per,
+          "D_E": resBody.D_E ? parseFloat(resBody.D_E) : "",
+          "RoCE_per": resBody.RoCE_per ? parseFloat(resBody.RoCE_per) : "",
           "Info_div": "", 
       }
       allRowsData.push(singleRow);

@@ -26,6 +26,8 @@ import { GlobalContext } from "../../../context/GlobalContext";
 
 const FilterSidebarValuation = () => {
   const rr_dispatch = useDispatch();
+  
+  let CurrentSelectedWishListData = localStorage.getItem("selectedWL") ? JSON.parse(localStorage.getItem("selectedWL")) : null;
 
   const {
     sectorMaster: { loading: sectorMasterLoading, data: sectorMasterData },
@@ -82,7 +84,7 @@ const FilterSidebarValuation = () => {
   }, [allCompanyLoading]);
 
 
-  const topLabels0 = (inputs) => {
+  const topLabels0 = (inputs={}) => {
 
 
     return {
@@ -320,6 +322,7 @@ const FilterSidebarValuation = () => {
 
   useEffect(() => {
     let finalValuation_Req = valuation_Req();
+    setFilterDataChip(topLabels0())
     rr_dispatch(ValuationApi(finalValuation_Req));
   }, [])
   
@@ -329,6 +332,7 @@ const FilterSidebarValuation = () => {
   return (
     <>
       <div className="filterSidebar  rounded py-2 px-2 bg-[#E9EDEF]  overflow-y-scroll relative screen-height">
+        
         <div className="flex items-center justify-between pl-2 sticky top-[-9px] z-10  bg-[#E9EDEF]">
           <Typography className="text-[15px] text-[#000] font-semibold">
             Filter
@@ -340,7 +344,9 @@ const FilterSidebarValuation = () => {
             >
               APPLY
             </Button>
-            <Button className="mr-1 bg-[#FAE0E0] text-[#DD2025] py-2 px-2 rounded shadow-none">
+            <Button className="mr-1 bg-[#FAE0E0] text-[#DD2025] py-2 px-2 rounded shadow-none" onClick={()=> {
+              window.location.reload()
+            }}>
               RESET{" "}
             </Button>
           </div>
